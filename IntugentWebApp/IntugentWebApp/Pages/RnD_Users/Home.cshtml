@@ -1,0 +1,303 @@
+﻿@page
+@using IntugentWebApp.Models
+@using System.Data;
+@model IntugentWebApp.Pages.RnD_Users.HomeModel
+@{
+    ViewData["ActivePage"] = "R&D Home Page";
+}
+
+<!-- Error message -->
+@if (TempData["ErrorOnServer"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        Error: @TempData["ErrorOnServer"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<div class="row">
+    <div class="col">
+
+        <!-- Search Card -->
+        <div class="card card-default">
+            <div class="card-header align-items-center">
+                <h2 class="">Search Historical Data</h2>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <!-- Testing Status -->
+                            <div class="form-floating mb-2">
+                                <select class="form-select" id="testingStatus">
+                              @foreach (DataRowView row in Model.gTestStat1)
+                                {
+                                    <option value="@row["ID"]" selected="@(Model.gTestStat1SelectedValue == Int32.Parse(row["ID"].ToString()))">@row["sName"]</option>
+                                }  
+                                </select>
+                                <label for="testingStatus">Testing Status</label>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <!-- Product Code -->
+                            <div class="form-floating mb-2">
+                                <select class="form-select" id="productCode">
+                                     @foreach (DataRowView row in Model.gProd1)
+                                {
+                                    <option value="@row["Product"]" selected="@(Model.gProd1SelectedValue == (row["Product Code"].ToString()))">@row["Product"]</option>
+                                }   
+                                </select>
+                                <label for="productCode">Product Code</label>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <!-- Study Type -->
+                            <div class="form-floating mb-2">
+                                <select class="form-select" id="studyType">
+                               @foreach (DataRowView row in Model.gStudyType)
+                                {
+                                    <option value="@row["ID"]" selected="@(Model.gStudyTypeSelectedValue == Int32.Parse(row["ID"].ToString()))">@row["sName"]</option>
+                                }  
+                                </select>
+                                <label for="studyType">Study Type</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <!-- Group -->
+                            <div class="mb-2 row">
+                                <label for="Groups" class="col-md-3 text-right mr-5 col-form-label">Group</label>
+                                <div class="col-md-8">
+                                    <input type="text" value="@Model.gLoc1" class="form-control" id="Groups" readonly>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <!-- After Date -->
+                            <div class="form-floating mb-2">
+                                <input type="date" class="form-control" value="@Model.gRndDate2?.ToString("yyyy-MM-dd")" id="afterDate" placeholder="">
+                                <label for="afterDate">Experiment Date - After or At</label>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+
+                            <!-- Before Date -->
+                            <div class="form-floating mb-2">
+                                <input type="date" class="form-control" value="@Model.gRndDate1?.ToString("yyyy-MM-dd")" id="beforeDate">
+                                <label for="beforeDate">Experiment Date - Before or At</label>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <!-- Project Study Name -->
+                            <div class="form-floating mb-2">
+                                <input type="text" class="form-control" value="@Model.gRNDNameSearch" id="projectStudyName" placeholder="">
+                                <label for="projectStudyName">Project/Study Name - Contains</label>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 d-flex justify-content-end">
+                            <div class="row" style="margin: 0;">
+                                <button type="button" class="btn btn-primary m-auto" onclick="gSearchDataSets()">
+                                    Retrieve Top 20 Datasets
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="text-end">
+    <button type="button" class="btn btn-primary mb-5" onclick="gCopy_Click()">
+        Copy All Datasets Meeting Search Criteria
+    </button>
+</div>
+
+<div class="row">
+    <div class="col">
+
+        <!-- Search Results -->
+        <div class="card card-default">
+            <div class="card-header align-items-center">
+                <h2 class="">Search Results - Select any Data Record in the List Below to see Detailed Data</h2>
+            </div>
+            <div class="card-body">
+                <table id="searchResultsTable" class="table table-hover table-product dataTable" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Date Started</th>
+                            <th>Study Name</th>
+                            <th>Operator</th>
+                            <th>Chemist</th>
+                            <th>Product</th>
+                            @* <th>Select</th> *@
+                        </tr>
+                    </thead>
+                    <tbody>
+                            @foreach (DataRowView sr in Model.gRNDSearch)
+                            {
+                                <tr>
+                                    <td>@sr["ID"]</td>
+                                    <td>@sr["DateDSCreated"]</td>
+                                    <td>@sr["Study Name"]</td>
+                                    <td>@sr["Operator"]</td>
+                                    <td>@sr["Chemist"]</td>
+                                    <td>@sr["Product ID"]</td>
+                                   @*  <td>
+                                        <label class="switch switch-primary switch-pill form-control-label ">
+                                            <input type="checkbox" class="switch-input form-check-input" id="">
+                                            <span class="switch-label"></span>
+                                            <span class="switch-handle"></span>
+                                        </label>
+                                    </td> *@
+                                </tr>
+                            }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="text-end">
+    <button type="button" class="btn btn-primary mb-2" onclick="gNewDataSetRND()">
+        Create A New Dataset
+    </button>
+</div>
+
+
+@{
+    // if some dataset is already selected.. set its checkbox to checked..
+    if (Model.selectedDatasetID != null)
+    {
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                var currentId = @Html.Raw(Model.selectedDatasetID);
+
+                if (currentId) {
+
+                    var checkbox = document.getElementById('select_' + currentId);
+
+                    if (checkbox) {
+                        checkbox.checked = true;
+                    }
+                }
+            });
+        </script>
+    }
+}
+
+@section Scripts {
+
+    <script>
+        
+        // handle checkbox change event
+        $('input[type="checkbox"]').change(function () {
+            if ($(this).is(':checked')) {
+                var selectedID = $(this).attr('id').substring(7); // remove "select_" prefix
+                unselectAllRows($(this).attr('id'));
+                localStorage.setItem('selectedDataSetId', selectedID);
+                sendIdToServer(selectedID);
+            }
+        });
+
+        // unselect all other rows
+        function unselectAllRows(selectedID) {
+            $('input[type="checkbox"]').each(function () {
+                if ($(this).attr('id') !== selectedID) {
+                    $(this).prop('checked', false);
+                }
+            });
+        }
+
+        // send id to server-side
+        function sendIdToServer(selectedID) {
+
+            $.ajax({
+                type: "POST",
+                url: "/RnD_Users/Home?handler=CheckboxSelected",
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                data: { id: selectedID },
+                success: function (response) {
+                    console.log('Server response:', response);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+
+            
+        }
+
+        function gSearchDataSets() {
+
+            $.ajax({
+                type: "POST",
+                url: "/RnD_Users/Home?handler=GSearchDataSets_Click",
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                success: function (response) {
+                    console.log('Server response:', response);
+                    location.reload();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+
+
+        }
+
+        function gNewDataSetRND() {
+
+            $.ajax({
+                type: "POST",
+                url: "/RnD_Users/Home?handler=GNewDataSetRND_Click",
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                success: function (response) {
+                    console.log('Server response:', response);
+                    location.reload();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+
+
+        }
+        function gCopy_Click() {
+
+            $.ajax({
+                type: "POST",
+                url: "/RnD_Users/Home?handler=GCopy_Click",
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                success: function (response) {
+                    console.log('Server response:', response);
+                    location.reload();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+
+
+        }
+
+    </script>
+}
+

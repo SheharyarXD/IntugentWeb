@@ -1,0 +1,1182 @@
+﻿@page
+@model IntugentWebApp.Pages.Mfg_Group.DimensionStabilityModel
+@{
+    ViewData["ActivePage"] = "Dimension Stability";
+}
+
+@if (TempData["ErrorOnServer"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        Error: @TempData["ErrorOnServer"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+<div class="row ">
+    <!-- General Info Card -->
+    <div class="card card-default col-md-3" >
+        <div class="card-header align-items-center">
+            <h2 class="">General Info</h2>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-12 mb-2 d-flex align-items-center">
+                    <!-- Dataset -->
+                    <label class="col-3 col-form-label text-end">Dataset</label>
+                    <div class="input-group col-9 d-flex">
+                        <button class="btn btn-primary m-auto" type="button" style="padding: 9px" @(Model.gDataSetPrevIsEnabled ? "" : "disabled") onclick="gNavClick('prev')"><span class="mdi mdi-chevron-left"></span></button>
+                        <input type="number" class="form-control text-center w-50" disabled value="@Model.gID">
+                        <button onclick="gNavClick('next')" @(Model.gDataSetNextIsEnabled ? "" : "disabled") name="" class="btn btn-primary m-auto" type="button" style="padding: 9px"><span class="mdi mdi-chevron-right"></span></button>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <!-- mfgDate -->
+                    <div class="form-floating mb-2">
+                        <input type="datetime-local" class="form-control" id="mfgDate" value="@Model.gProductionDate" disabled>
+                        <label for="mfgDate">Production Date</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <!-- productCode -->
+                    <div class="form-floating mb-2">
+                        <input type="text" class="form-control" id="productCode" placeholder="" value="@Model.gProductCode" disabled>
+                        <label for="productCode">Product Code</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+
+
+                <div class="col-md-6">
+                    <!-- MfgTimeStamp -->
+                    <div class="form-floating mb-2">
+                        <input type="datetime-local" class="form-control" id="MfgTimeStamp" value="@Model.gProductionTime" onblur="" disabled>
+                        <label for="MfgTimeStamp">Mfg Time Stamp</label>
+                    </div>
+                </div>
+
+
+
+                <div class="col-md-6">
+                    <!-- DimTestingComplete -->
+                    <div class="custom-control custom-checkbox align-items-center">
+                        <input type="checkbox" class="custom-control-input" id="fgTestingComplete" checked="@Model.gDimStabilityDoneIsChecked" onchange="CheckBoxes_LFClick('gDimStabilityDone', this)">
+                        <label class="custom-control-label" for="fgTestingComplete">Dimensional Stability Testing Complete</label>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- Dimesion Stability edge collapsed -->
+    <div class="card card-default col-md-2 ">
+        <div class="card-header text-left align-items-center">
+            <h2 class="">Dimension Stability Edge Collapsed</h2>
+        </div>
+        <div class="card-body">
+            <div class="row mb-2">
+                <!-- DimTestingComplete -->
+                <div class="custom-control custom-checkbox align-items-center">
+                    <input type="checkbox" class="custom-control-input" id="gEdgeH1" checked="@Model.gEdgeH1IsChecked" onchange="CheckBoxes_LFClick('gEdgeH1', this)">
+                    <label class="custom-control-label" for="gEdgeH1">Edge H1</label>
+                </div>
+                </div>
+            <div class="row mb-2">
+                <!-- DimTestingComplete -->
+                <div class="custom-control custom-checkbox align-items-center">
+                    <input type="checkbox" class="custom-control-input" id="EdgeH2" checked="@Model.gEdgeH2IsChecked" onchange="CheckBoxes_LFClick('gEdgeH2', this)">
+                    <label class="custom-control-label" for="EdgeH2">Edge H2</label>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <!-- DimTestingComplete -->
+                <div class="custom-control custom-checkbox align-items-center">
+                    <input type="checkbox" class="custom-control-input" id="EdgeC1" checked="@Model.gEdgeC1IsChecked" onchange="CheckBoxes_LFClick('gEdgeC1', this)">
+                    <label class="custom-control-label" for="EdgeC1">Edge C1</label>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <!-- DimTestingComplete -->
+                    <div class="custom-control custom-checkbox align-items-center">
+                    <input type="checkbox" class="custom-control-input" id="EdgeC2" checked="@Model.gEdgeC2IsChecked" onchange="CheckBoxes_LFClick('gEdgeC2', this)">
+                    <label class="custom-control-label" for="EdgeC2">Edge C2</label>
+                    </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- Dim Stability % Change in dims -->
+    <div class="card card-default col-md-3">
+        <div class="card-header align-items-center">
+            <h2 class="">Dimensions Stability % Change in dimensions</h2>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <!-- % Change Length Oven -->
+                    <div class="form-floating mb-2">
+                        <input type="text" class="form-control" id="ChangeLengthOven" placeholder="" value="@Model.gChangeOvenLength" disabled>
+                        <label for="ChangeLengthOven">% Change Length Oven</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <!-- % Change Width Oven -->
+                    <div class="form-floating mb-2">
+                        <input type="text" class="form-control" id="ChangeWidthOven" placeholder="" value="@Model.gChangeOvenWidth" disabled>
+                        <label for="ChangeWidthOven">% Change Width Oven</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <!-- % Change Thickness Oven -->
+                    <div class="form-floating mb-2">
+                        <input type="text" class="form-control" id="ChangeThicknessOven" placeholder="" value="@Model.gChangeOvenThickness" disabled>
+                        <label for="ChangeThicknessOven">% Change Thickness Oven</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <!-- % Change Length Freezer -->
+                    <div class="form-floating mb-2">
+                        <input type="text" class="form-control" id="ChangeLengthFreezer" placeholder="" value="@Model.gChangeFreezerLength" disabled>
+                        <label for="ChangeLengthFreezer">% Change Length Freezer</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <!-- % Change Width Freezer -->
+                    <div class="form-floating mb-2">
+                        <input type="text" class="form-control" id="ChangeWidthFreezer" placeholder="" value="@Model.gChangeFreezerWidth" disabled>
+                        <label for="ChangeWidthFreezer">% Change Width Freezer</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <!-- % Change Thickness Freezer -->
+                    <div class="form-floating mb-2">
+                        <input type="text" class="form-control" id="ChangeThicknessFreezer" placeholder="" value="@Model.gChangeFreezerThickness" disabled>
+                        <label for="ChangeThicknessFreezer">% Change Thickness Freezer</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Walk-in Freezer: Test Summary -->
+    <div class="card card-default col-md-2">
+        <div class="card-header align-items-center">
+            <h2 class="">Walk-in Freezer: Test Summary</h2>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- % Change Length -->
+                    <div class="form-floating mb-2">
+                        <input type="text" class="form-control" id="ChangeLengths" placeholder="" value="@Model.gChangeWFLength" disabled>
+                        <label for="ChangeLengths">% Change Length</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+            <div class="col-md-12">
+                    <!-- % Change Width -->
+                    <div class="form-floating mb-2">
+                        <input type="text" class="form-control" id="ChangeWidths" placeholder="" value="@Model.gChangeWFWidth" disabled>
+                        <label for="ChangeWidths">% Change Width</label>
+                    </div>
+                </div>
+             </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <!-- Average Depth -->
+                    <div class="form-floating mb-2">
+                        <input type="text" class="form-control" id="AverageDepth" placeholder="" value="@Model.gAvgDepth" disabled>
+                        <label for="AverageDepth">Average Depth</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <!-- Max Depth -->
+                    <div class="form-floating mb-2">
+                        <input type="text" class="form-control" id="MaxDepth" placeholder="" value="@Model.gMaxDepth" disabled>
+                        <label for="MaxDepth">Max Depth</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Walk-in Freezer Testing -->
+    <div class="card card-default h-auto col-md-2">
+        <div class="card-header align-items-center">
+            <h2 class="">Walk-in Freezer Testing</h2>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- Date & time sample put in Freezer -->
+                    <div class="form-floating mb-2">
+                        <input type="datetime-local" class="form-control" id="DatetimesampleputinFreezer" placeholder="" value="@Model.gTestDateTime?.ToString("yyyy-MM-ddThh:mm")" onblur="GDateTime_LF(this.value)">
+                        <label for="DatetimesampleputinFreezer">Date & time sample put in Freezer</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <!-- Deviation from Table -->
+                    <label for="DeviationfromTable">Deviation from Table</label>
+                    <div class="form-floating mb-2">
+                        <input type="text" class="form-control" id="DeviationfromTable" placeholder="" value="@Model.gDeviation" onblur="GWF_Info_LF('gDeviation', this.value)">
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <!-- Deviation (Bowing) Type -->
+                    <label for="DeviationType">Deviation Type</label>
+                    <div class="form-floating mb-2" onblur="GWF_Info_LF('gDevType', this.value)">
+                        <select class="form-select" id="DeviationType" asp-for="gDevType" onblur="GWF_Info_LF('gDevType', this.value)">
+                            <option value="Up">Up</option>
+                            <option value="Down">Down</option>
+                        </select>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row">
+    <!-- Dimensional Stability Oven - 1 -->
+    <div class="card card-default col-md-5">
+        <div class="card-header align-items-center">
+            <h2 class="">Dimensional Stability Oven - 1</h2>
+        </div>
+      <div class="row px-4">
+            <!-- Initial H1 -->
+            <div class="card-body d-flex flex-column col-md-6 justify-content-evenly">
+              <div class="row">
+            <!-- Initial H1 - L1 -->
+            <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="InitialH1L1" placeholder="" value="@Model.gInit_H1_L1" onblur=" GOven1_LF('gInit_H1_L1', this.value) ">
+                <label for="InitialH1L1">Initial H1 - L1</label>
+            </div>
+            <!-- Initial H1 - L2 -->
+            <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="InitialH1L2" placeholder="" value="@Model.gInit_H1_L2" onblur="GOven1_LF('gInit_H1_L2', this.value)">
+                <label for="InitialH1L2">Initial H1 - L2</label>
+            </div>
+                </div>
+              <div class="row">
+                <!-- Initial H1 - L3 -->
+            <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="InitialH1L3" placeholder="" value="@Model.gInit_H1_L3" onblur=" GOven1_LF('gInit_H1_L3', this.value) ">
+                <label for="InitialH1L3">Initial H1 - L3</label>
+            </div>
+            <!-- Initial H1 - W1 -->
+            <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="InitialH1W1" placeholder="" value="@Model.gInit_H1_W1" onblur=" GOven1_LF('gInit_H1_W1', this.value) ">
+                <label for="InitialH1W1">Initial H1 - W1</label>
+            </div>
+            </div>
+              <div class="row">
+            <!-- Initial H1 - W2 -->
+            <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="InitialH1W2" placeholder="" value="@Model.gInit_H1_W2" onblur=" GOven1_LF('gInit_H1_W2', this.value)">
+                <label for="InitialH1W2">Initial H1 - W2</label>
+            </div>
+            <!-- Initial H1 - W3 -->
+            <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="InitialH1W3" placeholder="" value="@Model.gInit_H1_W3" onblur=" GOven1_LF('gInit_H1_W3', this.value) ">
+                <label for="InitialH1W3">Initial H1 - W3</label>
+            </div>
+            </div>
+              <div class="row">
+            <!-- Initial H1 - T1 -->
+            <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="InitialH1T1" placeholder="" value="@Model.gInit_H1_T1" onblur=" GOven1_LF('gInit_H1_T1', this.value) ">
+                <label for="InitialH1T1">Initial H1 - T1</label>
+            </div>
+            <!-- Initial H1 - T2 -->
+            <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="InitialH1T2" placeholder="" value="@Model.gInit_H1_T2" onblur=" GOven1_LF('gInit_H1_T2', this.value) ">
+                <label for="InitialH1T2">Initial H1 - T2</label>
+            </div>
+            </div>
+              <div class="row">
+            <!-- Initial H1 - T3 -->
+            <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="InitialH1T3" placeholder="" value="@Model.gInit_H1_T3" onblur=" GOven1_LF('gInit_H1_T3', this.value) ">
+                <label for="InitialH1T3">Initial H1 - T3</label>
+            </div>
+            <!-- Initial H1 - T4 -->
+            <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="InitialH1T4" placeholder="" value="@Model.gInit_H1_T4" onblur=" GOven1_LF('gInit_H1_T4', this.value) ">
+                <label for="InitialH1T4">Initial H1 - T4</label>
+            </div>
+            </div>   
+            <!-- Initial H1 - T5 -->
+            <div class="form-floating mb-2">
+                    <input type="number" class="form-control" id="InitialH1T5" placeholder="" value="@Model.gInit_H1_T5" onblur=" GOven1_LF('gInit_H1_T5', this.value) ">
+                <label for="InitialH1T5">Initial H1 - T5</label>
+            </div>        
+        </div>
+            <!-- Final H1 -->
+            <div class="card-body d-flex flex-column col-md-6 justify-content-evenly">
+            <div class="row">
+            <!-- Final H1 - L1 -->
+            <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="FinalH1L1" placeholder="" value="@Model.gFinal_H1_L1" onblur=" GOven1_LF('gFinal_H1_L1', this.value) ">
+                <label for="FinalH1L1">Final H1 - L1</label>
+            </div>
+            <!-- Final H1 - L2 -->         
+            <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="FinalH1L2" placeholder="" value="@Model.gFinal_H1_L2" onblur=" GOven1_LF('gFinal_H1_L2', this.value) ">
+                <label for="FinalH1L2">Final H1 - L2</label>
+            </div>
+            </div>
+             <div class="row">              
+            <!-- Final H1 - L3 -->         
+            <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="FinalH1L3" placeholder="" value="@Model.gFinal_H1_L3" onblur=" GOven1_LF('gFinal_H1_L3', this.value) ">
+                <label for="FinalH1L3">Final H1 - L3</label>
+            </div>
+            <!-- Final H1 - W1 -->        
+            <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="FinalH1W1" placeholder="" value="@Model.gFinal_H1_W1" onblur=" GOven1_LF('gFinal_H1_W1', this.value) ">
+                <label for="FinalH1W1">Final H1 - W1</label>
+            </div>
+                </div>
+            <div class="row">
+            <!-- Final H1 - W2 -->         
+            <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="FinalH1W2" placeholder="" value="@Model.gFinal_H1_W2" onblur=" GOven1_LF('gFinal_H1_W2', this.value) ">
+                <label for="FinalH1W2">Final H1 - W2</label>
+            </div>
+            <!-- Final H1 - W3 -->         
+            <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="FinalH1W3" placeholder="" value="@Model.gFinal_H1_W3" onblur=" GOven1_LF('gFinal_H1_W3', this.value) ">
+                <label for="FinalH1W3">Final H1 - W3</label>
+            </div>
+             </div>
+            <div class="row">
+            <!-- Final H1 - T1 -->         
+            <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="FinalH1T1" placeholder="" value="@Model.gFinal_H1_T1" onblur=" GOven1_LF('gFinal_H1_T1', this.value) ">
+                <label for="FinalH1T1">Final H1 - T1</label>
+            </div>
+            <!-- Final H1 - T2 -->       
+            <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="FinalH1T2" placeholder="" value="@Model.gFinal_H1_T2" onblur=" GOven1_LF('gFinal_H1_T2', this.value) ">
+                <label for="FinalH1T2">Final H1 - T2</label>
+            </div>
+                </div>
+            <div class="row">
+            <!-- Final H1 - T3 -->
+            <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="FinalH1T3" placeholder="" value="@Model.gFinal_H1_T3" onblur=" GOven1_LF('gFinal_H1_T3', this.value) ">
+                <label for="FinalH1T3">Final H1 - T3</label>
+            </div>
+            <!-- Final H1 - T4 -->
+            <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="FinalH1T4" placeholder="" value="@Model.gFinal_H1_T4" onblur=" GOven1_LF('gFinal_H1_T4', this.value) ">
+                <label for="FinalH1T4">Final H1 - T4</label>
+            </div>
+                </div>
+            <!-- Final H1 - T5 -->
+            <div class="form-floating mb-2">
+                    <input type="number" class="form-control" id="FinalH1T5" placeholder="" value="@Model.gFinal_H1_T5" onblur=" GOven1_LF('gFinal_H1_T5', this.value) ">
+                <label for="FinalH1T5">Final H1 - T5</label>
+            </div>
+        </div>
+       </div>
+    </div>
+    <!-- Dimensional Stability Oven - 2 -->
+    <div class="card card-default col-md-5">
+        <div class="card-header align-items-center">
+            <h2 class="">Dimensional Stability Oven - 2</h2>
+        </div>
+        <div class="row px-4">
+            <!-- Initial H2 -->
+            <div class="card-body d-flex flex-column col-md-6 justify-content-evenly">
+                <div class="row">
+                    <!-- Initial H2 - L1 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="InitialH2L1" placeholder="" value="@Model.gInit_H2_L1" onblur="GOven2_LF('gInit_H2_L1', this.value)">
+                        <label for="InitialH2L1">Initial H2 - L1</label>
+                    </div>
+                    <!-- Initial H2 - L2 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="InitialH2L2" placeholder="" value="@Model.gInit_H2_L2" onblur="GOven2_LF('gInit_H2_L2', this.value)">
+                        <label for="InitialH2L2">Initial H2 - L2</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- Initial H2 - L3 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="InitialH2L3" placeholder="" value="@Model.gInit_H2_L3" onblur="GOven2_LF('gInit_H2_L3', this.value)">
+                        <label for="InitialH2L3">Initial H2 - L3</label>
+                    </div>
+                    <!-- Initial H2 - W1 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="InitialH2W1" placeholder="" value="@Model.gInit_H2_W1" onblur="GOven2_LF('gInit_H2_W1', this.value)">
+                        <label for="InitialH2W1">Initial H2 - W1</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- Initial H2 - W2 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="InitialH2W2" placeholder="" value="@Model.gInit_H2_W2" onblur="GOven2_LF('gInit_H2_W2', this.value)">
+                        <label for="InitialH2W2">Initial H2 - W2</label>
+                    </div>
+                    <!-- Initial H2 - W3 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="InitialH2W3" placeholder="" value="@Model.gInit_H2_W3" onblur="GOven2_LF('gInit_H2_W3', this.value)">
+                        <label for="InitialH2W3">Initial H2 - W3</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- Initial H2 - T1 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="InitialH2T1" placeholder="" value="@Model.gInit_H2_T1" onblur="GOven2_LF('gInit_H2_T1', this.value)">
+                        <label for="InitialH2T1">Initial H2 - T1</label>
+                    </div>
+                    <!-- Initial H2 - T2 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="InitialH2T2" placeholder="" value="@Model.gInit_H2_T2" onblur="GOven2_LF('gInit_H2_T2', this.value)">
+                        <label for="InitialH2T2">Initial H2 - T2</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- Initial H2 - T3 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="InitialH2T3" placeholder="" value="@Model.gInit_H2_T3" onblur="GOven2_LF('gInit_H2_T3', this.value)">
+                        <label for="InitialH2T3">Initial H2 - T3</label>
+                    </div>
+                    <!-- Initial H2 - T4 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="InitialH2T4" placeholder="" value="@Model.gInit_H2_T4" onblur="GOven2_LF('gInit_H2_T4', this.value)">
+                        <label for="InitialH2T4">Initial H2 - T4</label>
+                    </div>
+                </div>
+                <!-- Initial H2 - T5 -->
+                <div class="form-floating mb-2">
+                    <input type="number" class="form-control" id="InitialH2T5" placeholder="" value="@Model.gInit_H2_T5" onblur="GOven2_LF('gInit_H2_T5', this.value)">
+                    <label for="InitialH2T5">Initial H2 - T5</label>
+                </div>
+            </div>
+            <!-- Final H2 -->
+            <div class="card-body d-flex flex-column col-md-6 justify-content-evenly">
+                <div class="row">
+                    <!-- Final H2 - L1 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="FinalH2L1" placeholder="" value="@Model.gFinal_H2_L1" onblur="GOven2_LF('gFinal_H2_L1', this.value)">
+                        <label for="FinalH2L1">Final H2 - L1</label>
+                    </div>
+                    <!-- Final H2 - L2 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="FinalH2L2" placeholder="" value="@Model.gFinal_H2_L2" onblur="GOven2_LF('gFinal_H2_L2', this.value)">
+                        <label for="FinalH2L2">Final H2 - L2</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- Final H2 - L3 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="FinalH2L3" placeholder="" value="@Model.gFinal_H2_L3" onblur="GOven2_LF('gFinal_H2_L3', this.value)">
+                        <label for="FinalH2L3">Final H2 - L3</label>
+                    </div>
+                    <!-- Final H2 - W1 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="FinalH2W1" placeholder="" value="@Model.gFinal_H2_W1" onblur="GOven2_LF('gFinal_H2_W1', this.value)">
+                        <label for="FinalH2W1">Final H2 - W1</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- Final H2 - W2 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="FinalH2W2" placeholder="" value="@Model.gFinal_H2_W2" onblur="GOven2_LF('gFinal_H2_W2', this.value)">
+                        <label for="FinalH2W2">Final H2 - W2</label>
+                    </div>
+                    <!-- Final H2 - W3 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="FinalH2W3" placeholder="" value="@Model.gFinal_H2_W3" onblur="GOven2_LF('gFinal_H2_W3', this.value)">
+                        <label for="FinalH2W3">Final H2 - W3</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- Final H2 - T1 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="FinalH2T1" placeholder="" value="@Model.gFinal_H2_T1" onblur="GOven2_LF('gFinal_H2_T1', this.value)">
+                        <label for="FinalH2T1">Final H2 - T1</label>
+                    </div>
+                    <!-- Final H2 - T2 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="FinalH2T2" placeholder="" value="@Model.gFinal_H2_T2" onblur="GOven2_LF('gFinal_H2_T2', this.value)">
+                        <label for="FinalH2T2">Final H2 - T2</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- Final H2 - T3 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="FinalH2T3" placeholder="" value="@Model.gFinal_H2_T3" onblur="GOven2_LF('gFinal_H2_T3', this.value)">
+                        <label for="FinalH2T3">Final H2 - T3</label>
+                    </div>
+                    <!-- Final H2 - T4 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="FinalH2T4" placeholder="" value="@Model.gFinal_H2_T4" onblur="GOven2_LF('gFinal_H2_T4', this.value)">
+                        <label for="FinalH2T4">Final H2 - T4</label>
+                    </div>
+                </div>
+                <!-- Final H2 - T5 -->
+                <div class="form-floating mb-2">
+                    <input type="number" class="form-control" id="FinalH2T5" placeholder="" value="@Model.gFinal_H2_T5" onblur="GOven2_LF('gFinal_H2_T5', this.value)">
+                    <label for="FinalH2T5">Final H2 - T5</label>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+    <div class=" col-md-2">
+     
+  
+        <!-- Walk-in Freezer Testing: Changes in Major Dimensions -->
+        <div class="card card-default h-auto">
+            <div class="card-header align-items-center">
+                <h2 class="">Walk-in Freezer Testing: Changes in Major Dimensions</h2>
+            </div>
+            <div class="row px-4">
+                <!-- Initial WF -->
+                <div class="card-body d-flex flex-column col-md-6 justify-content-evenly">
+                    <!-- Initial WF - L1 -->
+                    <div class="form-floating mb-2">
+                        <input type="number" class="form-control" id="InitialWFL1" placeholder="" value="@Model.gInit_WF_L1" onblur="GWFDim_LF('gInit_WF_L1', this.value)">
+                        <label for="InitialWFL1">Initial WF - L1</label>
+                    </div>
+                    <!-- Initial WF - L2 -->
+                    <div class="form-floating mb-2">
+                        <input type="number" class="form-control" id="InitialWFL2" placeholder="" value="@Model.gInit_WF_L2" onblur="GWFDim_LF('gInit_WF_L2', this.value)">
+                        <label for="InitialWFL2">Initial WF - L2</label>
+                    </div>
+                    <!-- Initial WF - L3 -->
+                    <div class="form-floating mb-2">
+                        <input type="number" class="form-control" id="InitialWFL3" placeholder="" value="@Model.gInit_WF_L3" onblur="GWFDim_LF('gInit_WF_L3', this.value)">
+                        <label for="InitialWFL3">Initial WF - L3</label>
+                    </div>
+                    <!-- Initial WF - W1 -->
+                    <div class="form-floating mb-2">
+                        <input type="number" class="form-control" id="InitialWFW1" placeholder="" value="@Model.gInit_WF_W1" onblur="GWFDim_LF('gInit_WF_W1', this.value)">
+                        <label for="InitialWFW1">Initial WF - W1</label>
+                    </div>
+                    <!-- Initial WF - W2 -->
+                    <div class="form-floating mb-2">
+                        <input type="number" class="form-control" id="InitialWFW2" placeholder="" value="@Model.gInit_WF_W2" onblur="GWFDim_LF('gInit_WF_W2', this.value)">
+                        <label for="InitialWFW2">Initial WF - W2</label>
+                    </div>
+                    <!-- Initial WF - W3 -->
+                    <div class="form-floating mb-2">
+                        <input type="number" class="form-control" id="InitialWFW3" placeholder="" value="@Model.gInit_WF_W3" onblur="GWFDim_LF('gInit_WF_W3', this.value)">
+                        <label for="InitialWFW3">Initial WF - W3</label>
+                    </div>
+                </div>
+                <!-- Final WF -->
+                <div class="card-body d-flex flex-column col-md-6 justify-content-evenly">
+                    <!-- Final WF - L1 -->
+                    <div class="form-floating mb-2">
+                        <input type="number" class="form-control" id="FinalWFL1" placeholder="" value="@Model.gFinal_WF_L1" onblur="GWFDim_LF('gFinal_WF_L1', this.value)">
+                        <label for="FinalWFL1">Final WF - L1</label>
+                    </div>
+                    <!-- Final WF - L2 -->
+                    <div class="form-floating mb-2">
+                        <input type="number" class="form-control" id="FinalWFL2" placeholder="" value="@Model.gFinal_WF_L2" onblur="GWFDim_LF('gFinal_WF_L2', this.value)">
+                        <label for="FinalWFL2">Final WF - L2</label>
+                    </div>
+                    <!-- Final WF - L3 -->
+                    <div class="form-floating mb-2">
+                        <input type="number" class="form-control" id="FinalWFL3" placeholder="" value="@Model.gFinal_WF_L3" onblur="GWFDim_LF('gFinal_WF_L3', this.value)">
+                        <label for="FinalWFL3">Final WF - L3</label>
+                    </div>
+                    <!-- Final WF - W1 -->
+                    <div class="form-floating mb-2">
+                        <input type="number" class="form-control" id="FinalWFW1" placeholder="" value="@Model.gFinal_WF_W1" onblur="GWFDim_LF('gFinal_WF_W1', this.value)">
+                        <label for="FinalWFW1">Final WF - W1</label>
+                    </div>
+                    <!-- Final WF - W2 -->
+                    <div class="form-floating mb-2">
+                        <input type="number" class="form-control" id="FinalWFW2" placeholder="" value="@Model.gFinal_WF_W2" onblur="GWFDim_LF('gFinal_WF_W2', this.value)">
+                        <label for="FinalWFW2">Final WF - W2</label>
+                    </div>
+                    <!-- Final WF - W3 -->
+                    <div class="form-floating mb-2">
+                        <input type="number" class="form-control" id="FinalWFW3" placeholder="" value="@Model.gFinal_WF_W3" onblur="GWFDim_LF('gFinal_WF_W3', this.value)">
+                        <label for="FinalWFW3">Final WF - W3</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+     
+    </div>
+</div>
+
+<div class="row">
+    <!-- Dimensional Stability Freezer - 1 -->
+    <div class="card card-default col-md-5">
+        <div class="card-header align-items-center">
+            <h2 class="">Dimensional Stability Freezer - 1</h2>
+        </div>
+        <div class="row px-3">
+            <!-- Initial C1 -->
+            <div class="card-body d-flex flex-column col-md-6 justify-content-evenly px-3">
+                <div class="row">
+                    <!-- Initial C1 - L1 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="Initial C1 - L1" placeholder="" value="@Model.gInit_C1_L1" onblur="GFreezer1_LF('gInit_C1_L1', this.value)">
+                        <label for="Initial C1 - L1">Initial C1 - L1</label>
+                    </div>
+                    <!-- Initial C1 - L2 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="Initial C1 - L2" placeholder="" value="@Model.gInit_C1_L2" onblur="GFreezer1_LF('gInit_C1_L2', this.value)">
+                        <label for="Initial C1 - L2">Initial C1 - L2</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- Initial C1 - L3 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="Initial C1 - L3" placeholder="" value="@Model.gInit_C1_L3" onblur="GFreezer1_LF('gInit_C1_L3', this.value)">
+                        <label for="Initial C1 - L3">Initial C1 - L3</label>
+                    </div>
+                    <!-- Initial C1 - W1 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="Initial C1 - W1" placeholder="" value="@Model.gInit_C1_W1" onblur="GFreezer1_LF('gInit_C1_W1', this.value)">
+                        <label for="Initial C1 - W1">Initial C1 - W1</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- Initial C1 - W2 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="Initial C1 - W2" placeholder="" value="@Model.gInit_C1_W2" onblur="GFreezer1_LF('gInit_C1_W2', this.value)">
+                        <label for="Initial C1 - W2">Initial C1 - W2</label>
+                    </div>
+                    <!-- Initial C1 - W3 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="Initial C1 - W3" placeholder="" value="@Model.gInit_C1_W3" onblur="GFreezer1_LF('gInit_C1_W3', this.value)">
+                        <label for="Initial C1 - W3">Initial C1 - W3</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- Initial C1 - T1 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="Initial C1 - T1" placeholder="" value="@Model.gInit_C1_T1" onblur="GFreezer1_LF('gInit_C1_T1', this.value)">
+                        <label for="Initial C1 - T1">Initial C1 - T1</label>
+                    </div>
+                    <!-- Initial C1 - T2 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="Initial C1 - T2" placeholder="" value="@Model.gInit_C1_T2" onblur="GFreezer1_LF('gInit_C1_T2', this.value)">
+                        <label for="Initial C1 - T2">Initial C1 - T2</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- Initial C1 - T3 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="Initial C1 - T3" placeholder="" value="@Model.gInit_C1_T3" onblur="GFreezer1_LF('gInit_C1_T3', this.value)">
+                        <label for="Initial C1 - T3">Initial C1 - T3</label>
+                    </div>
+                    <!-- Initial C1 - T4 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="Initial C1 - T4" placeholder="" value="@Model.gInit_C1_T4" onblur="GFreezer1_LF('gInit_C1_T4', this.value)">
+                        <label for="Initial C1 - T4">Initial C1 - T4</label>
+                    </div>
+                </div>
+                <!-- Initial C1 - T5 -->
+                <div class="form-floating mb-2">
+                    <input type="number" class="form-control" id="Initial C1 - T5" placeholder="" value="@Model.gInit_C1_T5" onblur="GFreezer1_LF('gInit_C1_T5', this.value)">
+                    <label for="Initial C1 - T5">Initial C1 - T5</label>
+                </div>
+            </div>
+            <!-- Final C1 -->
+            <div class="card-body d-flex flex-column col-md-6 justify-content-evenly px-3">
+                <div class="row">
+                    <!-- Final C1 - L1 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="Final C1 - L1" placeholder="" value="@Model.gFinal_C1_L1" onblur="GFreezer1_LF('gFinal_C1_L1', this.value)">
+                        <label for="Final C1 - L1">Final C1 - L1</label>
+                    </div>
+                    <!-- Final C1 - L2 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="Final C1 - L2" placeholder="" value="@Model.gFinal_C1_L2" onblur="GFreezer1_LF('gFinal_C1_L2', this.value)">
+                        <label for="Final C1 - L2">Final C1 - L2</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- Final C1 - L3 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="Final C1 - L3" placeholder="" value="@Model.gFinal_C1_L3" onblur="GFreezer1_LF('gFinal_C1_L3', this.value)">
+                        <label for="Final C1 - L3">Final C1 - L3</label>
+                    </div>
+                    <!-- Final C1 - W1 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="Final C1 - W1" placeholder="" value="@Model.gFinal_C1_W1" onblur="GFreezer1_LF('gFinal_C1_W1', this.value)">
+                        <label for="Final C1 - W1">Final C1 - W1</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- Final C1 - W2 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="Final C1 - W2" placeholder="" value="@Model.gFinal_C1_W2" onblur="GFreezer1_LF('gFinal_C1_W2', this.value)">
+                        <label for="Final C1 - W2">Final C1 - W2</label>
+                    </div>
+                    <!-- Final C1 - W3 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="Final C1 - W3" placeholder="" value="@Model.gFinal_C1_W3" onblur="GFreezer1_LF('gFinal_C1_W3', this.value)">
+                        <label for="Final C1 - W3">Final C1 - W3</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- Final C1 - T1 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="Final C1 - T1" placeholder="" value="@Model.gFinal_C1_T1" onblur="GFreezer1_LF('gFinal_C1_T1', this.value)">
+                        <label for="Final C1 - T1">Final C1 - T1</label>
+                    </div>
+                    <!-- Final C1 - T2 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="Final C1 - T2" placeholder="" value="@Model.gFinal_C1_T2" onblur="GFreezer1_LF('gFinal_C1_T2', this.value)">
+                        <label for="Final C1 - T2">Final C1 - T2</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- Final C1 - T3 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="Final C1 - T3" placeholder="" value="@Model.gFinal_C1_T3" onblur="GFreezer1_LF('gFinal_C1_T3', this.value)">
+                        <label for="Final C1 - T3">Final C1 - T3</label>
+                    </div>
+                    <!-- Final C1 - T4 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="Final C1 - T4" placeholder="" value="@Model.gFinal_C1_T4" onblur="GFreezer1_LF('gFinal_C1_T4', this.value)">
+                        <label for="Final C1 - T4">Final C1 - T4</label>
+                    </div>
+                </div>
+                <!-- Final C1 - T5 -->
+                <div class="form-floating mb-2">
+                    <input type="number" class="form-control" id="Final C1 - T5" placeholder="" value="@Model.gFinal_C1_T5" onblur="GFreezer1_LF('gFinal_C1_T5', this.value)">
+                    <label for="Final C1 - T5">Final C1 - T5</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Dimensional Stability Freezer - 2 -->
+    <div class="card card-default col-md-5">
+        <div class="card-header align-items-center">
+            <h2 class="">Dimensional Stability Freezer - 2</h2>
+        </div>
+        <div class="row px-4">
+            <!-- Initial C2 -->
+            <div class="card-body d-flex flex-column col-md-6 px-3 justify-content-evenly">
+                <div class="row">
+                    <!-- Initial C2 - L1 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="Initial C2 - L1" placeholder="" value="@Model.gInit_C2_L1" onblur="GFreezer2_LF('gInit_C2_L1', this.value)">
+                        <label for="Initial C2 - L1">Initial C2 - L1</label>
+                    </div>
+                    <!-- Initial C2 - L2 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="Initial C2 - L2" placeholder="" value="@Model.gInit_C2_L2" onblur="GFreezer2_LF('gInit_C2_L2', this.value)">
+                        <label for="Initial C2 - L2">Initial C2 - L2</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- Initial C2 - L3 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="Initial C2 - L3" placeholder="" value="@Model.gInit_C2_L3" onblur="GFreezer2_LF('gInit_C2_L3', this.value)">
+                        <label for="Initial C2 - L3">Initial C2 - L3</label>
+                    </div>
+                    <!-- Initial C2 - W1 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="Initial C2 - W1" placeholder="" value="@Model.gInit_C2_W1" onblur="GFreezer2_LF('gInit_C2_W1', this.value)">
+                        <label for="Initial C2 - W1">Initial C2 - W1</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- Initial C2 - W2 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="Initial C2 - W2" placeholder="" value="@Model.gInit_C2_W2" onblur="GFreezer2_LF('gInit_C2_W2', this.value)">
+                        <label for="Initial C2 - W2">Initial C2 - W2</label>
+                    </div>
+                    <!-- Initial C2 - W3 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="Initial C2 - W3" placeholder="" value="@Model.gInit_C2_W3" onblur="GFreezer2_LF('gInit_C2_W3', this.value)">
+                        <label for="Initial C2 - W3">Initial C2 - W3</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- Initial C2 - T1 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="Initial C2 - T1" placeholder="" value="@Model.gInit_C2_T1" onblur="GFreezer2_LF('gInit_C2_T1', this.value)">
+                        <label for="Initial C2 - T1">Initial C2 - T1</label>
+                    </div>
+                    <!-- Initial C2 - T2 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="Initial C2 - T2" placeholder="" value="@Model.gInit_C2_T2" onblur="GFreezer2_LF('gInit_C2_T2', this.value)">
+                        <label for="Initial C2 - T2">Initial C2 - T2</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- Initial C2 - T3 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="Initial C2 - T3" placeholder="" value="@Model.gInit_C2_T3" onblur="GFreezer2_LF('gInit_C2_T3', this.value)">
+                        <label for="Initial C2 - T3">Initial C2 - T3</label>
+                    </div>
+                    <!-- Initial C2 - T4 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="Initial C2 - T4" placeholder="" value="@Model.gInit_C2_T4" onblur="GFreezer2_LF('gInit_C2_T4', this.value)">
+                        <label for="Initial C2 - T4">Initial C2 - T4</label>
+                    </div>
+                </div>
+                <!-- Initial C2 - T5 -->
+                <div class="form-floating mb-2">
+                    <input type="number" class="form-control" id="Initial C2 - T5" placeholder="" value="@Model.gInit_C2_T5" onblur="GFreezer2_LF('gInit_C2_T5', this.value)">
+                    <label for="Initial C2 - T5">Initial C2 - T5</label>
+                </div>
+            </div>
+            <!-- Final C2 -->
+            <div class="card-body d-flex flex-column col-md-6 px-3 justify-content-evenly">
+                <div class="row">
+                    <!-- Final C2 - L1 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="Final C2 - L1" placeholder="" value="@Model.gFinal_C2_L1" onblur="GFreezer2_LF('gFinal_C2_L1', this.value)">
+                        <label for="Final C2 - L1">Final C2 - L1</label>
+                    </div>
+                    <!-- Final C2 - L2 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="Final C2 - L2" placeholder="" value="@Model.gFinal_C2_L2" onblur="GFreezer2_LF('gFinal_C2_L2', this.value)">
+                        <label for="Final C2 - L2">Final C2 - L2</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- Final C2 - L3 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="Final C2 - L3" placeholder="" value="@Model.gFinal_C2_L3" onblur="GFreezer2_LF('gFinal_C2_L3', this.value)">
+                        <label for="Final C2 - L3">Final C2 - L3</label>
+                    </div>
+                    <!-- Final C2 - W1 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="Final C2 - W1" placeholder="" value="@Model.gFinal_C2_W1" onblur="GFreezer2_LF('gFinal_C2_W1', this.value)">
+                        <label for="Final C2 - W1">Final C2 - W1</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- Final C2 - W2 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="Final C2 - W2" placeholder="" value="@Model.gFinal_C2_W2" onblur="GFreezer2_LF('gFinal_C2_W2', this.value)">
+                        <label for="Final C2 - W2">Final C2 - W2</label>
+                    </div>
+                    <!-- Final C2 - W3 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="Final C2 - W3" placeholder="" value="@Model.gFinal_C2_W3" onblur="GFreezer2_LF('gFinal_C2_W3', this.value)">
+                        <label for="Final C2 - W3">Final C2 - W3</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- Final C2 - T1 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="Final C2 - T1" placeholder="" value="@Model.gFinal_C2_T1" onblur="GFreezer2_LF('gFinal_C2_T1', this.value)">
+                        <label for="Final C2 - T1">Final C2 - T1</label>
+                    </div>
+                    <!-- Final C2 - T2 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="Final C2 - T2" placeholder="" value="@Model.gFinal_C2_T2" onblur="GFreezer2_LF('gFinal_C2_T2', this.value)">
+                        <label for="Final C2 - T2">Final C2 - T2</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- Final C2 - T3 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="Final C2 - T3" placeholder="" value="@Model.gFinal_C2_T3" onblur="GFreezer2_LF('gFinal_C2_T3', this.value)">
+                        <label for="Final C2 - T3">Final C2 - T3</label>
+                    </div>
+                    <!-- Final C2 - T4 -->
+                    <div class="form-floating mb-2 col-6">
+                        <input type="number" class="form-control" id="Final C2 - T4" placeholder="" value="@Model.gFinal_C2_T4" onblur="GFreezer2_LF('gFinal_C2_T4', this.value)">
+                        <label for="Final C2 - T4">Final C2 - T4</label>
+                    </div>
+                </div>
+                <!-- Final C2 - T5 -->
+                <div class="form-floating mb-2">
+                    <input type="number" class="form-control" id="Final C2 - T5" placeholder="" value="@Model.gFinal_C2_T5" onblur="GFreezer2_LF('gFinal_C2_T5', this.value)">
+                    <label for="Final C2 - T5">Final C2 - T5</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Walk-in Freezer Testing: Depths on Each Side -->
+    <div class="card card-default h-auto col-md-2">
+        <div class="card-header align-items-center">
+            <h2 class="">Walk-in Freezer Testing: Depths on Each Side</h2>
+        </div>
+        <div class="row px-4">
+            <!-- Loc 1 -->
+            <div class="card-body d-flex flex-column col-md-6 justify-content-evenly">
+                <p class="text-center mb-1">Loc 1</p>
+                <!-- Depth 1 -->
+                <div class="form-floating mb-2">
+                    <input type="number" class="form-control" id="Depth1" placeholder="" value="@Model.gSide1_Depth1" onblur="GWFDepth_LF('gSide1_Depth1', this.value)">
+                    <label for="Depth1">Depth 1</label>
+                </div>
+                <!-- Depth 2 -->
+                <div class="form-floating mb-2">
+                    <input type="number" class="form-control" id="Depth2" placeholder="" value="@Model.gSide1_Depth2" onblur="GWFDepth_LF('gSide1_Depth2', this.value)">
+                    <label for="Depth2">Depth 2</label>
+                </div>
+                <!-- Depth 3 -->
+                <div class="form-floating mb-2">
+                    <input type="number" class="form-control" id="Depth3" placeholder="" value="@Model.gSide1_Depth3" onblur="GWFDepth_LF('gSide1_Depth3', this.value)">
+                    <label for="Depth3">Depth 3</label>
+                </div>
+                <!-- Depth 4 -->
+                <div class="form-floating mb-2">
+                    <input type="number" class="form-control" id="Depth4" placeholder="" value="@Model.gSide1_Depth4" onblur="GWFDepth_LF('gSide1_Depth4', this.value)">
+                    <label for="Depth4">Depth 4</label>
+                </div>
+                <!-- Depth 5 -->
+                <div class="form-floating mb-2">
+                    <input type="number" class="form-control" id="Depth5" placeholder="" value="@Model.gSide1_Depth5" onblur="GWFDepth_LF('gSide1_Depth5', this.value)">
+                    <label for="Depth5">Depth 5</label>
+                </div>
+            </div>
+            <!-- Loc 3 -->
+            <div class="card-body d-flex flex-column col-md-6 justify-content-evenly">
+                <p class="text-center mb-1">Loc 3</p>
+                <!-- Depth 1 -->
+                <div class="form-floating mb-2">
+                    <input type="number" class="form-control" id="Depth1_2" placeholder="" value="@Model.gSide2_Depth1" onblur="GWFDepth_LF('gSide2_Depth1', this.value)">
+                    <label for="Depth1_2">Depth 1</label>
+                </div>
+                <!-- Depth 2 -->
+                <div class="form-floating mb-2">
+                    <input type="number" class="form-control" id="Depth2_2" placeholder="" value="@Model.gSide2_Depth2" onblur="GWFDepth_LF('gSide2_Depth2', this.value)">
+                    <label for="Depth2_2">Depth 2</label>
+                </div>
+                <!-- Depth 3 -->
+                <div class="form-floating mb-2">
+                    <input type="number" class="form-control" id="Depth3_2" placeholder="" value="@Model.gSide2_Depth3" onblur="GWFDepth_LF('gSide2_Depth3', this.value)">
+                    <label for="Depth3_2">Depth 3</label>
+                </div>
+                <!-- Depth 4 -->
+                <div class="form-floating mb-2">
+                    <input type="number" class="form-control" id="Depth4_2" placeholder="" value="@Model.gSide2_Depth4" onblur="GWFDepth_LF('gSide2_Depth4', this.value)">
+                    <label for="Depth4_2">Depth 4</label>
+                </div>
+                <!-- Depth 5 -->
+                <div class="form-floating mb-2">
+                    <input type="number" class="form-control" id="Depth5_2" placeholder="" value="@Model.gSide2_Depth5" onblur="GWFDepth_LF('gSide2_Depth5', this.value)">
+                    <label for="Depth5_2">Depth 5</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+@section scripts{
+
+    <script>
+        function gNavClick(direction) {
+
+            var form = $('#SearchParamsForm');
+
+            $.ajax({
+                type: "POST",
+                url: "/Mfg_Group/DimStability?handler=NavigateDataSet",
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                data: { direction: direction },
+                success: function (response) {
+                    // console.log('Server response:', response);
+                    location.reload();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+        
+        function CheckBoxes_LFClick(Name, element) {
+            let value;
+
+            if (element.type === "checkbox") {
+                value = element.checked ? "true" : "false";
+            } else {
+                value = element.value;
+            }
+
+            // var form = $('#SearchParamsForm');
+
+            $.ajax({
+                type: "POST",
+                url: "/Mfg_Group/DimStability?handler=GCheckBoxes_LF",
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                data: { Name: Name, value: value },
+                success: function (response) {
+                   // console.log('Server response:', response);
+                    location.reload();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+
+        function GOven1_LF(name, value) {
+            //console.log('Input values - Name:', Name, //Model.gRValueKnitPresent3.ToString());
+            // var form = $('#SearchParamsForm');
+
+            $.ajax({
+                type: "POST",
+                url: "/Mfg_Group/DimStability?handler=GOven1_LF",
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                data: { name: name, value: value },
+                success: function (response) {
+                    //console.log('Server response:', response);
+                    location.reload();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+
+        function GOven2_LF(name, value) {
+            //console.log('Input values - Name:', Name, //Model.gRValueKnitPresent3.ToString());
+            // var form = $('#SearchParamsForm');
+
+            $.ajax({
+                type: "POST",
+                url: "/Mfg_Group/DimStability?handler=GOven2_LF",
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                data: { name: name, value: value },
+                success: function (response) {
+                    //console.log('Server response:', response);
+                    location.reload();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+
+        function GFreezer1_LF(name, value) {
+            //console.log('Input values - Name:', Name, //Model.gRValueKnitPresent3.ToString());
+            // var form = $('#SearchParamsForm');
+
+            $.ajax({
+                type: "POST",
+                url: "/Mfg_Group/DimStability?handler=GFreezer1_LF",
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                data: { name: name, value: value },
+                success: function (response) {
+                    //console.log('Server response:', response);
+                    location.reload();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+       
+        function GFreezer2_LF(name, value) {
+            //console.log('Input values - Name:', Name, //Model.gRValueKnitPresent3.ToString());
+            // var form = $('#SearchParamsForm');
+
+            $.ajax({
+                type: "POST",
+                url: "/Mfg_Group/DimStability?handler=GFreezer2_LF",
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                data: { name: name, value: value },
+                success: function (response) {
+                    //console.log('Server response:', response);
+                    location.reload();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+
+        function GWFDim_LF(name, value) {
+            //console.log('Input values - Name:', Name, //Model.gRValueKnitPresent3.ToString());
+            // var form = $('#SearchParamsForm');
+
+            $.ajax({
+                type: "POST",
+                url: "/Mfg_Group/DimStability?handler=GWFDim_LF",
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                data: { name: name, value: value },
+                success: function (response) {
+                    //console.log('Server response:', response);
+                    location.reload();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+
+        function GWFDepth_LF(name, value) {
+            //console.log('Input values - Name:', Name, //Model.gRValueKnitPresent3.ToString());
+            // var form = $('#SearchParamsForm');
+
+            $.ajax({
+                type: "POST",
+                url: "/Mfg_Group/DimStability?handler=GWFDepth_LF",
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                data: { name: name, value: value },
+                success: function (response) {
+                    //console.log('Server response:', response);
+                    location.reload();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+
+        function GDateTime_LF(value) {
+            //console.log('Input values - Name:', Name, Model.gRValueKnitPresent3.ToString());
+            // var form = $('#SearchParamsForm');
+
+            $.ajax({
+                type: "POST",
+                url: "/Mfg_Group/DimStability?handler=GDateTime_LF",
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                data: { value: value },
+                success: function (response) {
+                   // console.log('Server response:', response);
+                    location.reload();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+
+        function GWF_Info_LF(name, value) {
+            //console.log('Input values - Name:', Name, //Model.gRValueKnitPresent3.ToString());
+            // var form = $('#SearchParamsForm');
+
+            $.ajax({
+                type: "POST",
+                url: "/Mfg_Group/DimStability?handler=GWF_Info_LF",
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                data: { name: name, value: value },
+                success: function (response) {
+                   // console.log('Server response:', response);
+                    location.reload();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+
+    </script>
+
+}

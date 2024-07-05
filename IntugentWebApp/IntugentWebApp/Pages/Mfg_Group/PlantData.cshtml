@@ -1,0 +1,305 @@
+﻿@page
+@using System.Data;
+@model IntugentWebApp.Pages.Mfg_Group.Plant_DataModel
+@{
+    ViewData["ActivePage"] = "Plant Data";
+}
+    @* Error Message *@
+@if (TempData["ErrorOnServer"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        Error: @TempData["ErrorOnServer"]
+        <button type="button" class="btn-close"  data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+<div class="row align-items-center"> 
+    <div class="row col-2">
+          @* DataSet Card *@
+     <div class="card card-default">
+        <div class="card-header align-items-center">
+            <h2 class="">DataSet</h2>
+        </div>
+        <div class="card-body">
+            <!-- Dataset -->
+            <div class="input-group col-12 d-flex">
+                    <button class="btn btn-primary m-auto" type="button" style="padding: 9px" onclick="gNavClick('prev')" @(Model.gDataSetPrevIsEnabled ? "" : "disabled")><span class="mdi mdi-chevron-left"></span></button>
+                <input type="number" class="form-control text-center w-50" disabled value="@Model.gID">
+                    <button onclick="gNavClick('next')" @(Model.gDataSetNextIsEnabled ? "" : "disabled") name="" class="btn btn-primary m-auto" type="button" style="padding: 9px"><span class="mdi mdi-chevron-right"></span></button>
+            </div>
+        </div>
+     </div>
+    </div>
+    <div class="row col-2 mx-2 px-3">
+        <button type="button" onclick=gGetData() class="btn btn-primary btn-sm">Extract Relevant Process Data</button>
+    </div>
+    <div class="row col-4 mr-1">
+        <!-- General Info Card -->
+        <div class="card card-default">
+            <div class="card-header align-items-center">
+                <h2 class="">General Info</h2>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-5">
+                        <!-- mfgDate -->
+                        <div class="form-floating">
+                            <input type="datetime-local" class="form-control" id="mfgDate" value="@Model.gProductionDate" disabled>
+                            <label for="mfgDate">Mfg. Date</label>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <!-- productCode -->
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="productCode" placeholder="" value="@Model.gProductCode" disabled>
+                            <label for="productCode">Product Code</label>
+                        </div>
+                    </div>
+                    <!-- QCTime Check -->
+                    <div class="form-floating col-md-4">
+                        <input type="time" class="form-control text-center" id="timePourTable" value="@Model.gQCCheckTime" disabled>
+                        <label for="timePourTable">Pour Table QC Time Check</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row col-4 align-items-center ml-1">
+        <!-- Boards Times Card -->
+        <div class="card card-default">
+            <div class="card-header align-items-center">
+                <h2 class="">Board Time Stamp</h2>
+            </div>
+            <div class="card-body">
+                <div class="row">
+
+                <!-- inProcessBoardTimeStamp -->
+                <div class="form-floating  col-6">
+                    <input type="datetime-local" class="form-control text-center" id="inProcessBoardTimeStamp" value="@Model.gProductionTime" disabled>
+                    <label for="inProcessBoardTimeStamp">Green/Fresh Props. Board Time Stamp</label>
+                </div>
+                <!-- FinishBoardTimeStamp -->
+                <div class="form-floating col-6">
+                    <input type="datetime-local" class="form-control text-center" id="inProcessBoardTimeStamp" value="@Model.gFBTime" disabled>
+                    <label for="inProcessBoardTimeStamp">Finished Goods Props Board Time Stamp</label>
+                </div>
+                </div>
+            </div>
+            <p class="mb-1 ml-2"><small>@Model.gDelTimeButton</small></p>
+        </div>
+    </div>
+</div>
+<div class="row">
+        @* Chemical Delivery-A *@
+    <div class="col-3">
+        <div class="card card-default">
+          <div class="card-header align-items-center">
+                <h2 class="">Chemical Delivery-A</h2>
+            </div>
+         <div class="card-body">
+                <table class="table table-sm table-bordered table-hover table-striped table-responsive-md">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">Property</th>
+                            <th scope="col">Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (DataRow row in Model.gChemDel.Rows)
+                        {
+
+                            <tr>
+                                    <td>@row["sName"]</td>
+                                    <td>@row["sValue"]</td>
+                            </tr>
+
+                        }
+                    </tbody>
+                </table>
+        </div>
+        </div>
+    </div>
+        @* Chemical Delivery-B *@
+    <div class="col-2">
+                <div class="card card-default">
+                    <div class="card-header align-items-center">
+                        <h2 class="">Chemical Delivery-B</h2>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-sm table-bordered table-hover table-striped table-responsive-md">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th scope="col">Property</th>
+                                    <th scope="col">Value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                        @foreach (DataRow row in Model.gChemDel1.Rows)
+                        {
+
+                            <tr>
+                                <td>@row["sName"]</td>
+                                <td>@row["sValue"]</td>
+                            </tr>
+
+                        }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+      </div>
+    <div class="col-2">
+        @* Pour Table *@
+        <div class="card card-default">
+            <div class="card-header align-items-center">
+                <h2 class="">Pour Table</h2>
+            </div>
+            <div class="card-body">
+                <table class="table table-sm table-bordered table-hover table-striped table-responsive-md">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">Property</th>
+                            <th scope="col">Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (DataRow row in Model.gPTable.Rows)
+                        {
+
+                            <tr>
+                                <td>@row["sName"]</td>
+                                <td>@row["sValue"]</td>
+                            </tr>
+
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        @* Unwinders and Others *@
+        <div class="card card-default">
+            <div class="card-header align-items-center">
+                <h2 class="">Unwinders and Others</h2>
+            </div>
+            <div class="card-body">
+                <table class="table table-sm table-bordered table-hover table-striped table-responsive-md">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">Property</th>
+                            <th scope="col">Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (DataRow row in Model.gOthers.Rows)
+                        {
+
+                            <tr>
+                                <td>@row["sName"]</td>
+                                <td>@row["sValue"]</td>
+                            </tr>
+
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+       @* Double Belt *@
+    <div class="col-2">
+        <div class="card card-default">
+            <div class="card-header align-items-center">
+                <h2 class="">Double Belt</h2>
+            </div>
+            <div class="card-body">
+                <table class="table table-sm table-bordered table-hover table-striped table-responsive-md">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">Property</th>
+                            <th scope="col">Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (DataRow row in Model.gDBelt.Rows)
+                        {
+
+                            <tr>
+                                <td>@row["sName"]</td>
+                                <td>@row["sValue"]</td>
+                            </tr>
+
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    @* New Instrument Data *@
+     <div class="col-3">
+        <div class="card card-default">
+            <div class="card-header align-items-center">
+                <h2 class="">New Instrument Data</h2>
+            </div>
+            <div class="card-body">
+                <table class="table table-sm table-bordered table-hover table-striped table-responsive-md">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">Property</th>
+                            <th scope="col">Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (DataRow row in Model.gNewInsData.Rows)
+                        {
+
+                            <tr>
+                                <td>@row["sName"]</td>
+                                <td>@row["sValue"]</td>
+                            </tr>
+
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        function gNavClick(direction) {
+
+            var form = $('#SearchParamsForm');
+
+            $.ajax({
+                type: "POST",
+                url: "/Mfg_Group/PlantData?handler=NavigateDataSet",
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                data: { direction: direction },
+                success: function (response) {
+                    // console.log('Server response:', response);
+                   location.reload();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+        function gGetData() {
+
+            var form = $('#SearchParamsForm');
+
+            $.ajax({
+                type: "POST",
+                url: "/Mfg_Group/PlantData?handler=GetPlantData_Click",
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                // data: { direction: direction },
+                success: function (response) {
+                    // console.log('Server response:', response);
+                    location.reload();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+    </script>
+}

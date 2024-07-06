@@ -1,17 +1,21 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\XD GAMING\\Desktop\\Intugent\\Intugent\\Library\\IntugentClassLbrary\\",
+  "WorkspaceRootPath": "C:\\Users\\XD GAMING\\Desktop\\Intugent\\Intugent\\Intugent\\Library\\IntugentClassLbrary\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{3B846FCC-A353-4DAC-BDE0-C9DA9C4DFC58}|IntugentClassLbrary\\IntugentClassLibrary.csproj|c:\\users\\xd gaming\\desktop\\intugent\\intugent\\library\\intugentclasslbrary\\intugentclasslbrary\\pages\\rnd\\rndhome.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{3B846FCC-A353-4DAC-BDE0-C9DA9C4DFC58}|IntugentClassLbrary\\IntugentClassLibrary.csproj|c:\\users\\xd gaming\\desktop\\intugent\\intugent\\intugent\\library\\intugentclasslbrary\\intugentclasslbrary\\pages\\rnd\\rndhome.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3B846FCC-A353-4DAC-BDE0-C9DA9C4DFC58}|IntugentClassLbrary\\IntugentClassLibrary.csproj|solutionrelative:intugentclasslbrary\\pages\\rnd\\rndhome.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3B846FCC-A353-4DAC-BDE0-C9DA9C4DFC58}|IntugentClassLbrary\\IntugentClassLibrary.csproj|c:\\users\\xd gaming\\desktop\\intugent\\intugent\\library\\intugentclasslbrary\\intugentclasslbrary\\classes\\cparams.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{3B846FCC-A353-4DAC-BDE0-C9DA9C4DFC58}|IntugentClassLbrary\\IntugentClassLibrary.csproj|c:\\users\\xd gaming\\desktop\\intugent\\intugent\\intugent\\library\\intugentclasslbrary\\intugentclasslbrary\\pages\\rnd\\rndformulations.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3B846FCC-A353-4DAC-BDE0-C9DA9C4DFC58}|IntugentClassLbrary\\IntugentClassLibrary.csproj|solutionrelative:intugentclasslbrary\\pages\\rnd\\rndformulations.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3B846FCC-A353-4DAC-BDE0-C9DA9C4DFC58}|IntugentClassLbrary\\IntugentClassLibrary.csproj|c:\\users\\xd gaming\\desktop\\intugent\\intugent\\intugent\\library\\intugentclasslbrary\\intugentclasslbrary\\classes\\cparams.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3B846FCC-A353-4DAC-BDE0-C9DA9C4DFC58}|IntugentClassLbrary\\IntugentClassLibrary.csproj|solutionrelative:intugentclasslbrary\\classes\\cparams.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3B846FCC-A353-4DAC-BDE0-C9DA9C4DFC58}|IntugentClassLbrary\\IntugentClassLibrary.csproj|c:\\users\\xd gaming\\desktop\\intugent\\intugent\\library\\intugentclasslbrary\\intugentclasslbrary\\classes\\cforms.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{3B846FCC-A353-4DAC-BDE0-C9DA9C4DFC58}|IntugentClassLbrary\\IntugentClassLibrary.csproj|c:\\users\\xd gaming\\desktop\\intugent\\intugent\\intugent\\library\\intugentclasslbrary\\intugentclasslbrary\\classes\\cforms.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3B846FCC-A353-4DAC-BDE0-C9DA9C4DFC58}|IntugentClassLbrary\\IntugentClassLibrary.csproj|solutionrelative:intugentclasslbrary\\classes\\cforms.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -32,22 +36,34 @@
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "RndHome.cs",
-              "DocumentMoniker": "C:\\Users\\XD GAMING\\Desktop\\Intugent\\Intugent\\Library\\IntugentClassLbrary\\IntugentClassLbrary\\Pages\\Rnd\\RndHome.cs",
+              "DocumentMoniker": "C:\\Users\\XD GAMING\\Desktop\\Intugent\\Intugent\\Intugent\\Library\\IntugentClassLbrary\\IntugentClassLbrary\\Pages\\Rnd\\RndHome.cs",
               "RelativeDocumentMoniker": "IntugentClassLbrary\\Pages\\Rnd\\RndHome.cs",
-              "ToolTip": "C:\\Users\\XD GAMING\\Desktop\\Intugent\\Intugent\\Library\\IntugentClassLbrary\\IntugentClassLbrary\\Pages\\Rnd\\RndHome.cs",
+              "ToolTip": "C:\\Users\\XD GAMING\\Desktop\\Intugent\\Intugent\\Intugent\\Library\\IntugentClassLbrary\\IntugentClassLbrary\\Pages\\Rnd\\RndHome.cs",
               "RelativeToolTip": "IntugentClassLbrary\\Pages\\Rnd\\RndHome.cs",
-              "ViewState": "AQIAAEIAAAAAAAAAAAAowC8AAAAhAAAA",
+              "ViewState": "AQIAAAYAAAAAAAAAAAAAAC8AAAAhAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-05T13:17:46.152Z",
+              "WhenOpened": "2024-07-05T19:11:37.074Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "RNDFormulations.cs",
+              "DocumentMoniker": "C:\\Users\\XD GAMING\\Desktop\\Intugent\\Intugent\\Intugent\\Library\\IntugentClassLbrary\\IntugentClassLbrary\\Pages\\Rnd\\RNDFormulations.cs",
+              "RelativeDocumentMoniker": "IntugentClassLbrary\\Pages\\Rnd\\RNDFormulations.cs",
+              "ToolTip": "C:\\Users\\XD GAMING\\Desktop\\Intugent\\Intugent\\Intugent\\Library\\IntugentClassLbrary\\IntugentClassLbrary\\Pages\\Rnd\\RNDFormulations.cs",
+              "RelativeToolTip": "IntugentClassLbrary\\Pages\\Rnd\\RNDFormulations.cs",
+              "ViewState": "AQIAADMAAAAAAAAAAAAowAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-05T18:59:50.469Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "CParams.cs",
-              "DocumentMoniker": "C:\\Users\\XD GAMING\\Desktop\\Intugent\\Intugent\\Library\\IntugentClassLbrary\\IntugentClassLbrary\\Classes\\CParams.cs",
+              "DocumentMoniker": "C:\\Users\\XD GAMING\\Desktop\\Intugent\\Intugent\\Intugent\\Library\\IntugentClassLbrary\\IntugentClassLbrary\\Classes\\CParams.cs",
               "RelativeDocumentMoniker": "IntugentClassLbrary\\Classes\\CParams.cs",
-              "ToolTip": "C:\\Users\\XD GAMING\\Desktop\\Intugent\\Intugent\\Library\\IntugentClassLbrary\\IntugentClassLbrary\\Classes\\CParams.cs",
+              "ToolTip": "C:\\Users\\XD GAMING\\Desktop\\Intugent\\Intugent\\Intugent\\Library\\IntugentClassLbrary\\IntugentClassLbrary\\Classes\\CParams.cs",
               "RelativeToolTip": "IntugentClassLbrary\\Classes\\CParams.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABYAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -55,11 +71,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "CForms.cs",
-              "DocumentMoniker": "C:\\Users\\XD GAMING\\Desktop\\Intugent\\Intugent\\Library\\IntugentClassLbrary\\IntugentClassLbrary\\Classes\\CForms.cs",
+              "DocumentMoniker": "C:\\Users\\XD GAMING\\Desktop\\Intugent\\Intugent\\Intugent\\Library\\IntugentClassLbrary\\IntugentClassLbrary\\Classes\\CForms.cs",
               "RelativeDocumentMoniker": "IntugentClassLbrary\\Classes\\CForms.cs",
-              "ToolTip": "C:\\Users\\XD GAMING\\Desktop\\Intugent\\Intugent\\Library\\IntugentClassLbrary\\IntugentClassLbrary\\Classes\\CForms.cs",
+              "ToolTip": "C:\\Users\\XD GAMING\\Desktop\\Intugent\\Intugent\\Intugent\\Library\\IntugentClassLbrary\\IntugentClassLbrary\\Classes\\CForms.cs",
               "RelativeToolTip": "IntugentClassLbrary\\Classes\\CForms.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABMAAABrAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",

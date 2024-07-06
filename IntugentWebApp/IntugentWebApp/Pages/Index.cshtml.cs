@@ -65,6 +65,9 @@ namespace IntugentWebApp.Pages
 
                 RNDHome rNDHome = new RNDHome(_objectsService.CDefualts, _objectsService.CLists, _objectsService.Cbfile);
                 _objectsService.RNDHome = rNDHome;
+
+                RNDFormulations rNDFormulations = new RNDFormulations(_objectsService.CDefualts, _objectsService.Cbfile);
+                _objectsService.RNDFormulations = rNDFormulations;
             }
 
 

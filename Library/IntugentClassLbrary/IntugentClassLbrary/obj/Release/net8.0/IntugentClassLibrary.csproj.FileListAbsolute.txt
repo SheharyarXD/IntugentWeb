@@ -36,3 +36,16 @@ C:\Users\XD GAMING\Desktop\Intugent\Intugent\Library\IntugentClassLbrary\Intugen
 C:\Users\XD GAMING\Desktop\Intugent\Intugent\Library\IntugentClassLbrary\IntugentClassLbrary\obj\Release\net8.0\refint\IntugentClassLibrary.dll
 C:\Users\XD GAMING\Desktop\Intugent\Intugent\Library\IntugentClassLbrary\IntugentClassLbrary\obj\Release\net8.0\IntugentClassLibrary.pdb
 C:\Users\XD GAMING\Desktop\Intugent\Intugent\Library\IntugentClassLbrary\IntugentClassLbrary\obj\Release\net8.0\ref\IntugentClassLibrary.dll
+C:\Users\XD GAMING\Desktop\Intugent\Intugent\Intugent\Library\IntugentClassLbrary\IntugentClassLbrary\bin\Release\net8.0\IntugentClassLibrary.deps.json
+C:\Users\XD GAMING\Desktop\Intugent\Intugent\Intugent\Library\IntugentClassLbrary\IntugentClassLbrary\bin\Release\net8.0\IntugentClassLibrary.dll
+C:\Users\XD GAMING\Desktop\Intugent\Intugent\Intugent\Library\IntugentClassLbrary\IntugentClassLbrary\bin\Release\net8.0\IntugentClassLibrary.pdb
+C:\Users\XD GAMING\Desktop\Intugent\Intugent\Intugent\Library\IntugentClassLbrary\IntugentClassLbrary\obj\Release\net8.0\IntugentClassLibrary.csproj.AssemblyReference.cache
+C:\Users\XD GAMING\Desktop\Intugent\Intugent\Intugent\Library\IntugentClassLbrary\IntugentClassLbrary\obj\Release\net8.0\IntugentClassLibrary.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\XD GAMING\Desktop\Intugent\Intugent\Intugent\Library\IntugentClassLbrary\IntugentClassLbrary\obj\Release\net8.0\IntugentClassLibrary.AssemblyInfoInputs.cache
+C:\Users\XD GAMING\Desktop\Intugent\Intugent\Intugent\Library\IntugentClassLbrary\IntugentClassLbrary\obj\Release\net8.0\IntugentClassLibrary.AssemblyInfo.cs
+C:\Users\XD GAMING\Desktop\Intugent\Intugent\Intugent\Library\IntugentClassLbrary\IntugentClassLbrary\obj\Release\net8.0\IntugentClassLibrary.csproj.CoreCompileInputs.cache
+C:\Users\XD GAMING\Desktop\Intugent\Intugent\Intugent\Library\IntugentClassLbrary\IntugentClassLbrary\obj\Release\net8.0\IntugentClassLibrary.sourcelink.json
+C:\Users\XD GAMING\Desktop\Intugent\Intugent\Intugent\Library\IntugentClassLbrary\IntugentClassLbrary\obj\Release\net8.0\IntugentClassLibrary.dll
+C:\Users\XD GAMING\Desktop\Intugent\Intugent\Intugent\Library\IntugentClassLbrary\IntugentClassLbrary\obj\Release\net8.0\refint\IntugentClassLibrary.dll
+C:\Users\XD GAMING\Desktop\Intugent\Intugent\Intugent\Library\IntugentClassLbrary\IntugentClassLbrary\obj\Release\net8.0\IntugentClassLibrary.pdb
+C:\Users\XD GAMING\Desktop\Intugent\Intugent\Intugent\Library\IntugentClassLbrary\IntugentClassLbrary\obj\Release\net8.0\ref\IntugentClassLibrary.dll

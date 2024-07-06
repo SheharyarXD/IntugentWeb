@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\XD GAMING\\Desktop\\Intugent\\Intugent\\Library\\IntugentClassLbrary\\IntugentClassLbrary\\IntugentClassLibrary.csproj": {}
+    "C:\\Users\\XD GAMING\\Desktop\\Intugent\\Intugent\\Intugent\\Library\\IntugentClassLbrary\\IntugentClassLbrary\\IntugentClassLibrary.csproj": {}
   },
   "projects": {
-    "C:\\Users\\XD GAMING\\Desktop\\Intugent\\Intugent\\Library\\IntugentClassLbrary\\IntugentClassLbrary\\IntugentClassLibrary.csproj": {
+    "C:\\Users\\XD GAMING\\Desktop\\Intugent\\Intugent\\Intugent\\Library\\IntugentClassLbrary\\IntugentClassLbrary\\IntugentClassLibrary.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\XD GAMING\\Desktop\\Intugent\\Intugent\\Library\\IntugentClassLbrary\\IntugentClassLbrary\\IntugentClassLibrary.csproj",
+        "projectUniqueName": "C:\\Users\\XD GAMING\\Desktop\\Intugent\\Intugent\\Intugent\\Library\\IntugentClassLbrary\\IntugentClassLbrary\\IntugentClassLibrary.csproj",
         "projectName": "IntugentClassLibrary",
-        "projectPath": "C:\\Users\\XD GAMING\\Desktop\\Intugent\\Intugent\\Library\\IntugentClassLbrary\\IntugentClassLbrary\\IntugentClassLibrary.csproj",
+        "projectPath": "C:\\Users\\XD GAMING\\Desktop\\Intugent\\Intugent\\Intugent\\Library\\IntugentClassLbrary\\IntugentClassLbrary\\IntugentClassLibrary.csproj",
         "packagesPath": "C:\\Users\\XD GAMING\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\XD GAMING\\Desktop\\Intugent\\Intugent\\Library\\IntugentClassLbrary\\IntugentClassLbrary\\obj\\",
+        "outputPath": "C:\\Users\\XD GAMING\\Desktop\\Intugent\\Intugent\\Intugent\\Library\\IntugentClassLbrary\\IntugentClassLbrary\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\XD GAMING\\AppData\\Roaming\\NuGet\\NuGet.Config",

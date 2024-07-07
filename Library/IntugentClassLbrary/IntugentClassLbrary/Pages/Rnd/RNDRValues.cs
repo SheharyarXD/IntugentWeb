@@ -1,4 +1,5 @@
-﻿using IntugentClassLibrary.Classes;
+﻿using IntugentClassLbrary.Classes;
+using IntugentClassLibrary.Classes;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -14,9 +15,14 @@ namespace IntugentClassLibrary.Pages.Rnd
         public int nForms = Params.nFormMax;
         public CRCalc RCalc = new CRCalc();
         public CRData RData = new CRData();
+        public CLists CLists;
+        public RNDRValues(CLists cLists) { 
+            this.CLists = cLists;
+        }
 
         public DataTable dtGasComp = new DataTable();
-        int nForm = 5;
+       public int nForm = 5;
+
 
     }
 }

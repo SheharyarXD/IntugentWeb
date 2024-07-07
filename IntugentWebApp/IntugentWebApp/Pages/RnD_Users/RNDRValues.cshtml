@@ -23,22 +23,22 @@
             <div class="card-body">
                 <!-- gMeasureTemp -->
                 <div class="form-floating mb-2">
-                    <input type="number" class="form-control text-center" id="gMeasureTemp" placeholder="" value="" onblur="">
+                    <input type="number" class="form-control text-center" id="gMeasureTemp" placeholder="" value="@Model.gMeasureTemp" onblur="">
                     <label for="gMeasureTemp">Measuring Temperature (°F)</label>
                 </div>
                 <!-- Average Cell Size (microns) -->
                 <div class="form-floating mb-2">
-                    <input type="number" class="form-control text-center" id="gCellSize" placeholder="" value="" onblur="">
+                    <input type="number" class="form-control text-center" id="gCellSize" placeholder="" value="@Model.gCellSize" onblur="">
                     <label for="gCellSize">Average Cell Size (microns)</label>
                 </div>
                 <!-- gCellPress -->
                 <div class="form-floating mb-2">
-                    <input type="number" class="form-control text-center" id="gCellPress" placeholder="" value="" onblur="">
+                    <input type="number" class="form-control text-center" id="gCellPress" placeholder="" value="@Model.gCellPress" onblur="">
                     <label for="gCellPress">Initial Cell Pressure (atm)</label>
                 </div>
                 <!-- Polymer Density (lb/ft3³) -->
                 <div class="form-floating mb-2">
-                    <input type="number" class="form-control text-center" id="gPolDen" placeholder="" value="" onblur="GFacerPeel_LF('gFacerPeel1', this.value)">
+                    <input type="number" class="form-control text-center" id="gPolDen" placeholder="" value="@Model.gPolDen" onblur="">
                     <label for="gPolDen">Polymer Density (lb/ft3³)</label>
                 </div>
                 <div class="form-floating col-12 ">

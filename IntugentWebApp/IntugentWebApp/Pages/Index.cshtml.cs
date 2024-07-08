@@ -65,6 +65,21 @@ namespace IntugentWebApp.Pages
 
                 RNDHome rNDHome = new RNDHome(_objectsService.CDefualts, _objectsService.CLists, _objectsService.Cbfile);
                 _objectsService.RNDHome = rNDHome;
+
+                RNDFormulations rNDFormulations = new RNDFormulations(_objectsService.CDefualts, _objectsService.Cbfile);
+                _objectsService.RNDFormulations = rNDFormulations;
+               
+                RNDRValues rNDRValues = new RNDRValues(_objectsService.CLists);
+                _objectsService.RNDRValues = rNDRValues;
+                
+                RNDRawProps rNDRawProps = new RNDRawProps();
+                _objectsService.RNDRawProps = rNDRawProps;
+               
+                RNDProperties rNDProperties=new RNDProperties();
+                _objectsService.RNDProperties = rNDProperties;
+                
+                RNDTDRV rNDTDRV = new RNDTDRV();
+                _objectsService.RNDTDRV = rNDTDRV;
             }
 
 

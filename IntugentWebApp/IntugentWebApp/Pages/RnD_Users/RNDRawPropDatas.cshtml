@@ -1,4 +1,5 @@
 ﻿@page
+@using System.Data;
 @model IntugentWebApp.Pages.RnD_Users.RNDRawPropDataModel
 @{
     ViewData["ActivePage"] = "Raw Prop. Data";
@@ -22,7 +23,7 @@
                 <table class="table table-sm table-bordered table-hover table-striped table-responsive-md">
                     <thead class="thead-light">
                         <tr>
-                            <th scope="col">Bind Gas Name Here</th>
+                            <th scope="col">Property</th>
                             <th scope="col">#1</th>
                             <th scope="col">#2</th>
                             <th scope="col">#3</th>
@@ -34,15 +35,22 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @*      @foreach (DataRow row in Model.gChemDel.Rows)
+                        @foreach (DataRow row in Model.gDensityE)
                         {
 
                         <tr>
-                        <td>@row["sName"]</td>
-                        <td>@row["sValue"]</td>
+                                <td>@row["PropName"]</td>
+                                <td>@row["PropE1"]</td>
+                                <td>@row["PropE2"]</td>
+                                <td>@row["PropE3"]</td>
+                                <td>@row["PropE4"]</td>
+                                <td>@row["PropE5"]</td>
+                                <td>@row["PropE6"]</td>
+                                <td>@row["PropE7"]</td>
+                                <td>@row["PropE8"]</td>
                         </tr>
 
-                        } *@
+                        } 
                     </tbody>
                 </table>
             </div>
@@ -58,7 +66,7 @@
                 <table class="table table-sm table-bordered table-hover table-striped table-responsive-md">
                     <thead class="thead-light">
                         <tr>
-                            <th scope="col">Bind Gas Name Here</th>
+                            <th scope="col">Property</th>
                             <th scope="col">#1</th>
                             <th scope="col">#2</th>
                             <th scope="col">#3</th>
@@ -70,15 +78,34 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @*      @foreach (DataRow row in Model.gChemDel.Rows)
+                      @foreach (DataRow row in Model.gPoreScanE)
                         {
-
                         <tr>
-                        <td>@row["sName"]</td>
-                        <td>@row["sValue"]</td>
+                        <td>@row["PropName"]</td>
+                        <td>@row["PropE1"]</td>
+                        <td>@row["PropE2"]</td>
+                        <td>@row["PropE3"]</td>
+                        <td>@row["PropE4"]</td>
+                        <td>@row["PropE5"]</td>
+                        <td>@row["PropE6"]</td>
+                        <td>@row["PropE7"]</td>
+                        <td>@row["PropE8"]</td>
                         </tr>
-
-                        } *@
+                        }
+                        @foreach (DataRow row in Model.gPoreScanC)
+                        {
+                            <tr>
+                                <td>@row["PropName"]</td>
+                                <td>@row["PropC1"]</td>
+                                <td>@row["PropC2"]</td>
+                                <td>@row["PropC3"]</td>
+                                <td>@row["PropC4"]</td>
+                                <td>@row["PropC5"]</td>
+                                <td>@row["PropC6"]</td>
+                                <td>@row["PropC7"]</td>
+                                <td>@row["PropC8"]</td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
             </div>
@@ -109,16 +136,39 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @*      @foreach (DataRow row in Model.gChemDel.Rows)
+                        @foreach (DataRow row in Model.gCompStrE)
                             {
 
                             <tr>
-                            <td>@row["sName"]</td>
-                            <td>@row["sValue"]</td>
+                                <td>@row["PropName"]</td>
+                                <td>@row["PropE1"]</td>
+                                <td>@row["PropE2"]</td>
+                                <td>@row["PropE3"]</td>
+                                <td>@row["PropE4"]</td>
+                                <td>@row["PropE5"]</td>
+                                <td>@row["PropE6"]</td>
+                                <td>@row["PropE7"]</td>
+                                <td>@row["PropE8"]</td>
                             </tr>
 
-                            } *@
-                        </tbody>
+                            }
+                        @foreach (DataRow row in Model.gCompStrC)
+                        {
+
+                            <tr>
+                                <td>@row["PropName"]</td>
+                                <td>@row["PropC1"]</td>
+                                <td>@row["PropC2"]</td>
+                                <td>@row["PropC3"]</td>
+                                <td>@row["PropC4"]</td>
+                                <td>@row["PropC5"]</td>
+                                <td>@row["PropC6"]</td>
+                                <td>@row["PropC7"]</td>
+                                <td>@row["PropC8"]</td>
+                            </tr>
+
+                        }
+                    </tbody>
                     </table>
                 </div>
             </div>
@@ -143,15 +193,38 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @*      @foreach (DataRow row in Model.gChemDel.Rows)
+                        @foreach (DataRow row in Model.gCloseCellE)
                             {
 
                             <tr>
-                            <td>@row["sName"]</td>
-                            <td>@row["sValue"]</td>
+                                <td>@row["PropName"]</td>
+                                <td>@row["PropE1"]</td>
+                                <td>@row["PropE2"]</td>
+                                <td>@row["PropE3"]</td>
+                                <td>@row["PropE4"]</td>
+                                <td>@row["PropE5"]</td>
+                                <td>@row["PropE6"]</td>
+                                <td>@row["PropE7"]</td>
+                                <td>@row["PropE8"]</td>
                             </tr>
 
-                            } *@
+                            }
+                        @foreach (DataRow row in Model.gCloseCellC)
+                        {
+
+                            <tr>
+                                <td>@row["PropName"]</td>
+                                <td>@row["PropC1"]</td>
+                                <td>@row["PropC2"]</td>
+                                <td>@row["PropC3"]</td>
+                                <td>@row["PropC4"]</td>
+                                <td>@row["PropC5"]</td>
+                                <td>@row["PropC6"]</td>
+                                <td>@row["PropC7"]</td>
+                                <td>@row["PropC8"]</td>
+                            </tr>
+
+                        }
                         </tbody>
                     </table>
                 </div>
@@ -188,15 +261,68 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @*      @foreach (DataRow row in Model.gChemDel.Rows)
+                       @foreach (DataRow row in Model.gHotPlatesE)
                         {
 
-                        <tr>
-                        <td>@row["sName"]</td>
-                        <td>@row["sValue"]</td>
+                       <tr>
+                       <td>@row["PropName"]</td>
+                       <td>@row["PropEi1"]</td>
+                       <td>@row["PropEf1"]</td>
+                       <td>@row["PropEi2"]</td>
+                       <td>@row["PropEf2"]</td>
+                       <td>@row["PropEi3"]</td>
+                       <td>@row["PropEf3"]</td>
+                       <td>@row["PropEi4"]</td>
+                       <td>@row["PropEf4"]</td>
+                       <td>@row["PropEi5"]</td>
+                       <td>@row["PropEf5"]</td>
+                       <td>@row["PropEi6"]</td>
+                       <td>@row["PropEf6"]</td>
+                       <td>@row["PropEi7"]</td>
+                       <td>@row["PropEf7"]</td>
+                       <td>@row["PropEi8"]</td>
+                       <td>@row["PropEf8"]</td>
                         </tr>
+                        }
+                        @foreach (DataRow row in Model.gHotPlatesC1)
+                        {
 
-                        } *@
+                            <tr>
+                                <td>@row["PropName"]</td>
+                                <td>@row["PropEi1"]</td>
+                                <td>@row["PropEf1"]</td>
+                                <td>@row["PropEi2"]</td>
+                                <td>@row["PropEf2"]</td>
+                                <td>@row["PropEi3"]</td>
+                                <td>@row["PropEf3"]</td>
+                                <td>@row["PropEi4"]</td>
+                                <td>@row["PropEf4"]</td>
+                                <td>@row["PropEi5"]</td>
+                                <td>@row["PropEf5"]</td>
+                                <td>@row["PropEi6"]</td>
+                                <td>@row["PropEf6"]</td>
+                                <td>@row["PropEi7"]</td>
+                                <td>@row["PropEf7"]</td>
+                                <td>@row["PropEi8"]</td>
+                                <td>@row["PropEf8"]</td>
+                            </tr>
+                        }
+                        @foreach (DataRow row in Model.gHotPlatesC)
+                        {
+
+                            <tr>
+                                <td>@row["PropName"]</td>
+                                <td>@row["PropC1"]</td>
+                                <td>@row["PropC2"]</td>
+                                <td>@row["PropC3"]</td>
+                                <td>@row["PropC4"]</td>
+                                <td>@row["PropC5"]</td>
+                                <td>@row["PropC6"]</td>
+                                <td>@row["PropC7"]</td>
+                                <td>@row["PropC8"]</td>
+                            </tr>
+
+                        }
                     </tbody>
                 </table>
             </div>

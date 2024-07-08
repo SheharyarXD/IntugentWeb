@@ -36,10 +36,11 @@ namespace IntugentWebApp.Pages.RnD_Users
         public HomeModel(ObjectsService objectsService)
         {
             _objectsService = objectsService;
-            Startup();
         }
         public async void OnGet()
         {
+            Startup();
+            _objectsService.RNDHome.bInit = false;
             gLoc1 = _objectsService.CDefualts.sLocation;
             gProd1 = _objectsService.CLists.dvComProdAll;
            //_objectsService.Recipe_1.gProductID.ItemsSource = _objectsService.CLists.dvComProd;

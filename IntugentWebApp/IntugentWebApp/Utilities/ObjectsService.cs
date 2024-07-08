@@ -29,8 +29,12 @@ namespace IntugentWebApp.Utilities
         public MfgReports MfgReport { get; set; }
 
         //              RND Variables
-        public RNDHome RNDHome { get; set; }
-        public RNDFormulations RNDFormulations { get; set; }
+        public RNDHome? RNDHome { get; set; }
+        public RNDFormulations? RNDFormulations { get; set; }
+        public RNDRValues? RNDRValues { get; set; }
+        public RNDRawProps RNDRawProps { get; set; }
+        public RNDProperties RNDProperties { get; set; }
+        public RNDTDRV RNDTDRV {  get; set; }
 
 
         //              local variables

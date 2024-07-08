@@ -34,7 +34,7 @@ namespace IntugentClassLibrary.Pages.Rnd
         public int IdSet = -1;
         public int indSet = -1;  // set by the program after the new dataset transfer is complete
         public bool bDataRead;
-        public Cbfile CBfile;
+        public Cbfile CBfiles;
         public CDefualts CDefualts;
         public CLists CList;
         public RNDHome(CDefualts CDefualts, CLists CList, Cbfile CBfile)
@@ -55,12 +55,12 @@ namespace IntugentClassLibrary.Pages.Rnd
             string sql = "Select Next Value for [dbo].[IDRNDSeq]";
             //           using (Cbfile.conAZ)
             {
-                SqlCommand cmd = new SqlCommand(sql, CBfile.conAZ);
+                SqlCommand cmd = new SqlCommand(sql, CBfiles.conAZ);
                 try
                 {
-                    CBfile.conAZ.Open();
+                    CBfiles.conAZ.Open();
                     iDummy = (int)cmd.ExecuteScalar();
-                    CBfile.conAZ.Close();
+                    CBfiles.conAZ.Close();
                 }
                 catch (Exception ex)
                 {
@@ -73,7 +73,7 @@ namespace IntugentClassLibrary.Pages.Rnd
             } //Get seq. #
 
             string sSqlQuery = "Select * from [RNDDatasets] where ID =" + iDummy.ToString(); //1943";  //3137
-            daS = new SqlDataAdapter(sSqlQuery, CBfile.conAZ);
+            daS = new SqlDataAdapter(sSqlQuery, CBfiles.conAZ);
             dtS.Clear();
             int itmp = daS.Fill(dtS);  //check if this already id exisits
             if (itmp > 0)
@@ -118,7 +118,7 @@ namespace IntugentClassLibrary.Pages.Rnd
 
             try
             {
-                daF = new SqlDataAdapter(sSqlQuery, CBfile.conAZ);
+                daF = new SqlDataAdapter(sSqlQuery, CBfiles.conAZ);
                 dtF.Clear();
                 itmp = daF.Fill(dtF);  //check if this already id exisits
                 if (itmp > 0)
@@ -162,7 +162,7 @@ namespace IntugentClassLibrary.Pages.Rnd
             try
             {
                 string sSqlQuery = "Select * from [RNDDatasets] where ID =" + IdSet.ToString(); //1943";  //3137
-                daS = new SqlDataAdapter(sSqlQuery, CBfile.conAZ);
+                daS = new SqlDataAdapter(sSqlQuery, CBfiles.conAZ);
 
                 dtS.Clear();
                 itmp = daS.Fill(dtS);
@@ -175,7 +175,7 @@ namespace IntugentClassLibrary.Pages.Rnd
                 }
                 //Get Formulations
                 sSqlQuery = "Select * from [RNDFormulations] where IDDataset =" + IdSet.ToString(); //1943";  //3137
-                daF = new SqlDataAdapter(sSqlQuery, CBfile.conAZ);
+                daF = new SqlDataAdapter(sSqlQuery, CBfiles.conAZ);
 
                 dtF.Clear();
                 itmp = daF.Fill(dtF);

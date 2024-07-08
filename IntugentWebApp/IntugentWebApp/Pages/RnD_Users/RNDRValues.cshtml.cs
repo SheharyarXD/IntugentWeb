@@ -1,550 +1,653 @@
 using Google.Api.Gax;
 using IntugentClassLbrary.Classes;
 using IntugentClassLibrary.Classes;
+using IntugentClassLibrary.Pages.Rnd;
+using IntugentWebApp.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Data;
+using System.Text.Json;
 using System.Xml.Linq;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace IntugentWebApp.Pages.RnD_Users
 {
+    [BindProperties]
     public class RNDRValuesModel : PageModel
     {
+        public string gMeasureTemp {  get; set; }
+        public string gCellSize {  get; set; }
+        public string gCellPress {  get; set; }
+        public string gPolDen {  get; set; }
+        public string gPolCond {  get; set; }
+        public string gFracStruts {  get; set; }
+        public DataView gXAxis {  get; set; }
+        public DataView gYAxis {  get; set; }
+        public DataView gGasComp {  get; set; }
+
+        public readonly ObjectsService _objectsService;
+                
+            public RNDRValuesModel(ObjectsService objectsService)
+            {
+            _objectsService = objectsService;
+                Startup();
+            }
+
+            public void OnGet()
+            {
+           // CPages.PageRecipe_1.ReadDataset();
+           // CPages.PageRecipe_1.FormDescriptors();
+
 
-        //    public RNDRValuesModel()
-        //    {
-        //        Startup();
-        //    }
 
-        //    public void OnGet()
-        //    {
-        //    CPages.PageRecipe_1.ReadDataset();
-        //    CPages.PageRecipe_1.FormDescriptors();
+            for (int ifo = 0; ifo < Params.nFormMax; ifo++)
+            {
+                _objectsService.RNDRValues.RCalc.FoamDensityBase[ifo] = _objectsService.RNDFormulations.Forms.FormAr[ifo].FoamDensity;
+                _objectsService.RNDRValues.RCalc.FoamDensityTT[ifo] = _objectsService.RNDFormulations.Forms.FormAr[ifo].FoamDensity;
+            }
+            _objectsService.RNDRValues.RCalc.dTempKTT = _objectsService.RNDRValues.RData.dTestTempC + 273.0;  // Calculation are done using _objectsService.RNDRValues.RCalc.dTempKTT
+            CollectBlowGases();
+            _objectsService.RNDRValues.RCalc.CalBlowGasesProps(_objectsService.RNDRValues.RData.dTestTempC);
 
+            SetFields();
+            SetView();
+            }
 
 
-        //    for (int ifo = 0; ifo < Params.nFormMax; ifo++)
-        //    {
-        //        RCalc.FoamDensityBase[ifo] = CPages.PageRecipe_1.Forms.FormAr[ifo].FoamDensity;
-        //        RCalc.FoamDensityTT[ifo] = CPages.PageRecipe_1.Forms.FormAr[ifo].FoamDensity;
-        //    }
-        //    RCalc.dTempKTT = RData.dTestTempC + 273.0;  // Calculation are done using RCalc.dTempKTT
-        //    RCalc.CollectBlowGases();
-        //    RCalc.CalBlowGasesProps(RData.dTestTempC);
+        public void CollectBlowGases()
+        {
+            double temp1, dTerm1, dTerm2, dTerm3;
+            int ico, iba, jba, ifo, idpt;
 
-        //    SetFields();
-        //    SetView();
-        //    }
 
+
+            #region  //Collect all the blowing agent materials in the formulations and their moles.  Add Air as first blowing agent.  
 
+            _objectsService.RNDRValues.RCalc.GasMats.Clear();
+
+            iba = -1;
+            for (ico = 0; ico < _objectsService.RNDFormulations.Forms.POMats.Count; ico++)
+            {
+                if (_objectsService.RNDFormulations.Forms.POMats[ico].GassToLiqWtRatio > 0)
+                {
+                    iba += 1;
+                    _objectsService.RNDRValues.RCalc.GasMats.Add(new CMaterial());
+                    _objectsService.RNDRValues.RCalc.GasMats[iba] = _objectsService.RNDFormulations.Forms.POMats[ico];
+                    for (ifo = 0; ifo < Params.nFormMax; ifo++)
+                    {
+                        _objectsService.RNDRValues.RCalc.MoleFracs[ifo, iba] = _objectsService.RNDFormulations.Forms.FormAr[ifo].POMatPbw[ico] * _objectsService.RNDRValues.RCalc.GasMats[iba].GassToLiqWtRatio / _objectsService.RNDRValues.RCalc.GasMats[iba].GassMolWt;
+                    }
+                }
+            }
+
+            _objectsService.RNDRValues.RCalc.IAirBAIndex = -1;                            //Add Air if it is already not included
+            for (ico = 0; ico < _objectsService.RNDRValues.RCalc.GasMats.Count; ico++)
+            {
+                if (_objectsService.RNDRValues.RCalc.GasMats[ico].ID == Params.iAirDBId)
+                { _objectsService.RNDRValues.RCalc.IAirBAIndex = ico; break; }
+            }
 
-        //    public void RPreData(CRCalc RCalc)
-        //    {
-        //        double temp1, dTerm1, dTerm2, dTerm3;
-        //        int ico, iba, jba, ifo, idpt;
+            if (_objectsService.RNDRValues.RCalc.IAirBAIndex == -1)
+            {
+                for (ico = 0; ico < _objectsService.RNDFormulations.dtPO.Rows.Count; ico++)
+                {
+                    if (_objectsService.RNDFormulations.dtPO.Rows[ico]["ID"].ToString() == Params.iAirDBId.ToString())
+                    {
+                        iba += 1;
+                        if (iba + 1 > _objectsService.RNDRValues.RCalc.GasMats.Count) _objectsService.RNDRValues.RCalc.GasMats.Add(new CMaterial());
+                        _objectsService.RNDFormulations.ModifyPOIsoLists(iba, ref _objectsService.RNDRValues.RCalc.GasMats, ico, _objectsService.RNDFormulations.dtPO);
+                        _objectsService.RNDRValues.RCalc.IAirBAIndex = iba;
 
 
+                        break;
 
-        //        #region  //Calculate the temperature range.  Collect all the blowing agent materials in the formulations and their moles.  Add Air as first blowing agent.  The datbase must have Air as raw material with record number Params.AirDBId.
+                    }
+                }
 
 
-        //        for (idpt = 0; idpt < Params.nDataPts; idpt++)
-        //        { RCalc.TempC[idpt] = RData.dTestTempC - 50.0 + idpt * 2.0; RCalc.TempK[idpt] = RCalc.TempC[idpt] + 273.0; }
+            }
 
-        //        RCalc.GasMats.Clear();
-        //        iba = -1;
+            _objectsService.RNDRValues.RCalc.nBlowAg = iba + 1;
 
+            #endregion
 
-        //        for (ico = 0; ico < CPages.PageRecipe_1.Forms.POMats.Count; ico++)
-        //        {
+            #region // Calculate the mole fraction each gas in the cell (gaesous phase) and output values in the data grid
 
-        //            if (CPages.PageRecipe_1.Forms.POMats[ico].GassToLiqWtRatio > 0)
-        //            {
-        //                iba += 1;
-        //                RCalc.GasMats.Add(new CMaterial());
-        //                RCalc.GasMats[iba] = CPages.PageRecipe_1.Forms.POMats[ico];
-        //                for (ifo = 0; ifo < nForm; ifo++)
-        //                {
-        //                    RCalc.MoleFracs[ifo, iba] = CPages.PageRecipe_1.Forms.FormAr[ifo].POMatPbw[ico] * RCalc.GasMats[iba].GassToLiqWtRatio / RCalc.GasMats[iba].GassMolWt;
-        //                }
-        //            }
-        //        }
+            for (ifo = 0; ifo < Params.nFormMax; ifo++)
+            {
+                temp1 = 0.0;
+                for (iba = 0; iba < _objectsService.RNDRValues.RCalc.nBlowAg; iba++) temp1 += _objectsService.RNDRValues.RCalc.MoleFracs[ifo, iba];
+                if (temp1 > 0.0)
+                    for (iba = 0; iba < _objectsService.RNDRValues.RCalc.nBlowAg; iba++)
+                    {
+                        _objectsService.RNDRValues.RCalc.MoleFracs[ifo, iba] = _objectsService.RNDRValues.RCalc.MoleFracs[ifo, iba] / temp1;
+                        _objectsService.RNDRValues.RCalc.MoleFracsTT[ifo, iba] = _objectsService.RNDRValues.RCalc.MoleFracs[ifo, iba];
+                    }
+            }
 
-        //        RCalc.IAirBAIndex = -1;                            //Add Air if it is already not included
-        //        for (ico = 0; ico < RCalc.GasMats.Count; ico++)
-        //        {
-        //            if (RCalc.GasMats[ico].ID == Params.iAirDBId)
-        //            { RCalc.IAirBAIndex = ico; break; }
-        //        }
 
-        //        if (RCalc.IAirBAIndex == -1)
-        //        {
-        //            for (ico = 0; ico < CPages.PageRecipe_1.dtPO.Rows.Count; ico++)
-        //            {
-        //                if (CPages.PageRecipe_1.dtPO.Rows[ico]["ID"].ToString() == Params.iAirDBId.ToString())
-        //                {
-        //                    iba += 1;
-        //                    if (iba + 1 > RCalc.GasMats.Count) RCalc.GasMats.Add(new CMaterial());
+            #endregion
 
-        //                    CPages.PageRecipe_1.ModifyPOIsoLists(iba, ref RCalc.GasMats, ico, CPages.PageRecipe_1.dtPO);
-        //                    RCalc.IAirBAIndex = iba;
+        }
+        public void RPreData(CRCalc RCalc)
+            {
+                double temp1, dTerm1, dTerm2, dTerm3;
+                int ico, iba, jba, ifo, idpt;
 
 
-        //                    break;
 
-        //                }
-        //            }
+                #region  //Calculate the temperature range.  Collect all the blowing agent materials in the formulations and their moles.  Add Air as first blowing agent.  The datbase must have Air as raw material with record number Params.AirDBId.
 
 
-        //        }
+                for (idpt = 0; idpt < Params.nDataPts; idpt++)
+                { _objectsService.RNDRValues.RCalc.TempC[idpt] = _objectsService.RNDRValues.RData.dTestTempC - 50.0 + idpt * 2.0; _objectsService.RNDRValues.RCalc.TempK[idpt] = _objectsService.RNDRValues.RCalc.TempC[idpt] + 273.0; }
 
-        //        RCalc.nBlowAg = iba + 1;
+                _objectsService.RNDRValues.RCalc.GasMats.Clear();
+                iba = -1;
 
-        //        #endregion
 
-        //        #region // Calculate the gaseous phase properties of all the blowing agents at all the temperatues
+                for (ico = 0; ico < _objectsService.RNDFormulations.Forms.POMats.Count; ico++)
+                {
 
-        //        for (iba = 0; iba < RCalc.nBlowAg; iba++)
-        //        {
-        //            for (idpt = 0; idpt < Params.nDataPts; idpt++)
-        //            {
-        //                RCalc.Lambda[iba, idpt] = RCalc.GasMats[iba].GasCond_A * Math.Pow(RCalc.TempK[idpt] / 273, RCalc.GasMats[iba].GasCond_B);
-        //                RCalc.VapPres[iba, idpt] = Math.Exp(RCalc.GasMats[iba].GasVapPAtm_A - RCalc.GasMats[iba].GasVapPAtm_B / RCalc.TempK[idpt]);
-        //            }
-
-        //        }
-
-
-        //        idpt = Params.nDataPts / 2;  // //Calculate the Aij at mid temperature
-
-        //        RCalc.dTempKTT = RData.dTestTempC + 273;
-        //        for (iba = 0; iba < RCalc.nBlowAg; iba++)
-        //        {
-        //            RCalc.ViscosityTT[iba] = RCalc.GasMats[iba].GasVis_A * Math.Pow(RCalc.dTempKTT / 273, RCalc.GasMats[iba].GasVis_B);
-        //            RCalc.LambdaTT[iba] = RCalc.Lambda[iba, idpt];
-        //        }
-
-        //        for (iba = 0; iba < RCalc.nBlowAg; iba++)
-        //            for (jba = 0; jba < RCalc.nBlowAg; jba++)
-        //            {
-        //                dTerm1 = RCalc.ViscosityTT[iba] / RCalc.ViscosityTT[jba] * Math.Sqrt(RCalc.GasMats[jba].MolWt / RCalc.GasMats[iba].MolWt);
-        //                dTerm2 = 8.0 * (1.0 + RCalc.GasMats[iba].MolWt / RCalc.GasMats[jba].MolWt);
-        //                dTerm3 = (1.0 + Math.Sqrt(dTerm1));
-        //                RCalc.AijTT[iba, jba] = dTerm3 * dTerm3 / Math.Sqrt(dTerm2);
-        //            }
-
-
-
-        //        #endregion
-
-        //        #region // Calculate the mole fraction each gas in the cell (gaesous phase) and output values in the data grid
-
-        //        for (ifo = 0; ifo < nForms; ifo++)
-        //        {
-        //            temp1 = 0.0;
-        //            for (iba = 0; iba < RCalc.nBlowAg; iba++) temp1 += RCalc.MoleFracs[ifo, iba];
-        //            if (temp1 > 0.0)
-        //                for (iba = 0; iba < RCalc.nBlowAg; iba++)
-        //                {
-        //                    RCalc.MoleFracs[ifo, iba] = RCalc.MoleFracs[ifo, iba] / temp1 * 100;
-        //                    RCalc.MoleFracsTT[ifo, iba] = RCalc.MoleFracs[ifo, iba];
-        //                }
-        //        }
-
-
-        //        #endregion
-
-        //    }
-        //    /*
-        //            public void KValuesFn(CRCalc RCalc)
-        //            {
-        //                double dSum1, dSum2;
-        //                int iba, ifo, jba;
-
-        //                for (ifo = 0; ifo < nForms; ifo++)
-        //                {
-        //                    dSum1 = 0.0;
-        //                    for (iba = 0; iba < RCalc.nBlowAg; iba++)
-        //                    {
-        //                        dSum2 = 0.0;
-        //                        for (jba = 0; jba < RCalc.nBlowAg; jba++)
-        //                            dSum2 += RCalc.AijTT[iba, jba] * RCalc.MoleFracsTT[ifo, jba];
-        //                        dSum1 += RCalc.LambdaTT[iba] * RCalc.MoleFracsTT[ifo, iba] / dSum2;
-        //                    }
-        //                    RCalc.KOutTT[ifo] = dSum1;
-        //                }
-        //            }
-        //    */
-
-        //    /*
-        //            public void RKValuesBase(CRCalc RCalc)
-        //            {
-        //                int ifo;
-
-
-        //                KValuesFn(RCalc);
-
-        //                for (ifo = 0; ifo < nForms; ifo++) 
-        //                {
-        //                    RCalc.KValuesBase[ifo] = RCalc.KOutTT[ifo];
-        //                    RCalc.RValuesBase[ifo] = Params.RKConFactor/ RCalc.KOutTT[ifo];
-        //                }
-        //            }
-        //    */
-        //    private void Click_ExportData(object sender, RoutedEventArgs e)
-        //    {
-        //        SetDefaultValues();
-        //        SetFields();
-        //        SetView();
-        //        UpdateDataset();
-        //    }
-
-        //    private void SetView()
-        //    {
-        //        #region // Declaration and initialization
-        //        int idpt, ncount, iba, ifo;
-        //        double AvFoamDen, dsum1, dtemp;
-        //        double[] dAr0 = new double[Params.nDataPts];
-        //        double[] dAr1 = new double[Params.nDataPts];
-        //        double[] dAr2 = new double[Params.nDataPts];
-        //        double[] dAr3 = new double[Params.nDataPts];
-        //        double[] dAr4 = new double[Params.nDataPts];
-        //        double[] dArX = new double[Params.nDataPts];
-
-        //        RCalc.dTempKTT = RData.dTestTempC + 273.0;//Reset Lambdas and vap press to base values
-        //        RCalc.dCellPressTT = RData.dInitCellPress;
-        //        RCalc.dCellSizeTT = RData.dCellSize;
-        //        RCalc.dPolyDenTT = RData.dPolDensity;
-        //        RCalc.dPolyCondTT = RData.dPolCond;
-        //        RCalc.dFracStrut = RData.dFracStrut;
-        //        for (ifo = 0; ifo < Params.nFormMax; ifo++) RCalc.FoamDensityTT[ifo] = RCalc.FoamDensityBase[ifo];
-
-        //        #endregion
-        //        #region  // Calculate the k values at the standard condiction. Fill the Data table with conductivities and mole fractions
-
-
-        //        for (iba = 0; iba < RCalc.nBlowAg; iba++)
-        //        {
-        //            RCalc.VapPresTT[iba] = RCalc.VapPresBase[iba];
-        //            RCalc.LambdaTT[iba] = RCalc.LambdaBase[iba];
-
-        //        }
-        //        RCalc.AdjMoleFracs();    // Adjust molefracs for vapor pressue
-
-        //        RCalc.KValuesFn();  //Calculate k values
-
-        //        for (ifo = 0; ifo < nForms; ifo++)
-        //        {
-        //            RCalc.KValuesBase[ifo] = RCalc.KOutTT[ifo];
-        //            RCalc.RValuesBase[ifo] = Params.RKConFactor / RCalc.KOutTT[ifo];
-        //        }
-
-        //        dtGasComp.Clear();   //Clear datatable and fill it.
-        //        for (int i = 0; i < Params.nComps; i++) dtGasComp.Rows.Add();
-
-        //        int ir = 0;
-        //        dtGasComp.Rows[ir][0] = "Thermal Properties";
-        //        dtGasComp.Rows[ir + 1][0] = "   Thermal Conductivity (mW/m-K)";
-        //        dtGasComp.Rows[ir + 2][0] = "   RValue (°F-ft2-hr/Btu)";
-        //        for (ifo = 0; ifo < Params.nFormMax; ifo++)
-        //        {
-        //            dtGasComp.Rows[ir + 1][ifo + 1] = (RCalc.KValuesBase[ifo] * 1000.0).ToString("0.0");
-        //            dtGasComp.Rows[ir + 2][ifo + 1] = (RCalc.RValuesBase[ifo]).ToString("0.0");
-        //        }
-
-
-        //        ir += 4;
-
-        //        dtGasComp.Rows[ir][0] = "Gas Composition (Mole Freaction)";
-
-        //        for (iba = 0; iba < RCalc.nBlowAg; iba++)
-        //        {
-        //            dtGasComp.Rows[ir + 1 + iba]["GasName"] = "   " + RCalc.GasMats[iba].GasName;
-        //            for (ifo = 0; ifo < Params.nFormMax; ifo++)
-        //                dtGasComp.Rows[ir + 1 + iba][ifo + 1] = (RCalc.MoleFracs[ifo, iba] * 100.0).ToString("0.000");
-        //        }
-
-        //        gGasComp.ItemsSource = dtGasComp.DefaultView;
-
-        //        #endregion
-
-
-        //        switch (RData.sXaxisTag)
-        //        {
-        //            case "CS":
-        //                #region //Plot  R/K Values with Cell Size
-
-        //                //                    RCalc.dCellPressTT = RData.dInitCellPress;  //Set the input values fro KValuesFn
-        //                for (idpt = 0; idpt < Params.nDataPts; idpt++)
-        //                {
-        //                    RCalc.dCellSizeTT = 0.5 * (1.0 + 2.0 * idpt / (double)Params.nDataPts) * RData.dCellSize;
-        //                    dArX[idpt] = 1.0E6 * RCalc.dCellSizeTT;
-
-        //                    RCalc.AdjMoleFracs();    // Adjust molefracs for vapor pressue
-
-        //                    RCalc.KValuesFn();  //Calculate k values
-
-        //                    for (ifo = 0; ifo < nForms; ifo++)
-        //                        RCalc.KValues[ifo, idpt] = RCalc.KOutTT[ifo];
-        //                }
-
-        //                #endregion
-        //                break;
-
-        //            case "DE":
-        //                #region //Plot  R/K Values with Density
-
-        //                ncount = 0;
-        //                dsum1 = 0.0;
-        //                for (ifo = 0; ifo < nForms; ifo++)
-        //                    if (RCalc.FoamDensityBase[ifo] > 0 && RCalc.FoamDensityBase[ifo] < 0.9 * Params.PolymerDensity)
-        //                    { ncount += 1; dsum1 += RCalc.FoamDensityBase[ifo]; }
-        //                AvFoamDen = dsum1 / ncount;
-
-        //                for (idpt = 0; idpt < Params.nDataPts; idpt++)
-        //                {
-
-        //                    dArX[idpt] = 0.5 * (1.0 + 2.0 * idpt / (double)Params.nDataPts) * AvFoamDen;
-        //                    for (ifo = 0; ifo < nForms; ifo++) RCalc.FoamDensityTT[ifo] = dArX[idpt];
-
-        //                    RCalc.AdjMoleFracs();    // Adjust molefracs for vapor pressue
-
-        //                    RCalc.KValuesFn();  //Calculate k values
-
-        //                    for (ifo = 0; ifo < nForms; ifo++)
-        //                        RCalc.KValues[ifo, idpt] = RCalc.KOutTT[ifo];
-        //                }
-
-        //                #endregion
-        //                break;
-
-        //            default:
-        //                #region //Plot  R/K Values with Temperature
-
-        //                RCalc.dCellPressTT = RData.dInitCellPress;  //Set the input values fro KValuesFn
-        //                RCalc.dCellSizeTT = RData.dCellSize;
-        //                for (idpt = 0; idpt < Params.nDataPts; idpt++)
-        //                {
-        //                    RCalc.dTempKTT = RCalc.TempK[idpt];
-        //                    dArX[idpt] = RCalc.TempC[idpt] * 1.8 + 32;
-        //                    for (iba = 0; iba < RCalc.nBlowAg; iba++)
-        //                    {
-        //                        RCalc.LambdaTT[iba] = RCalc.Lambda[iba, idpt];
-        //                        RCalc.VapPresTT[iba] = RCalc.VapPres[iba, idpt];
-        //                    }
-
-        //                    RCalc.AdjMoleFracs();    // Adjust molefracs for vapor pressue
-
-        //                    RCalc.KValuesFn();  //Calculate k values
-
-        //                    for (ifo = 0; ifo < nForms; ifo++)
-        //                        RCalc.KValues[ifo, idpt] = RCalc.KOutTT[ifo];
-        //                }
-
-        //                #endregion
-        //                break;
-        //        }
-
-        //        #region //Draw Plots
-
-        //        if (RData.sYaxisTag == "KV")
-        //        {
-
-        //            for (idpt = 0; idpt < Params.nDataPts; idpt++)
-        //            {
-        //                dAr0[idpt] = RCalc.KValues[0, idpt] * 1000.0;
-        //                dAr1[idpt] = RCalc.KValues[1, idpt] * 1000.0;
-        //                dAr2[idpt] = RCalc.KValues[2, idpt] * 1000.0;
-        //                dAr3[idpt] = RCalc.KValues[3, idpt] * 1000.0;
-        //                dAr4[idpt] = RCalc.KValues[4, idpt] * 1000.0;
-        //            }
-        //        }
-
-        //        else
-        //            for (idpt = 0; idpt < Params.nDataPts; idpt++)
-        //            {
-        //                dAr0[idpt] = Params.RKConFactor / RCalc.KValues[0, idpt];
-        //                dAr1[idpt] = Params.RKConFactor / RCalc.KValues[1, idpt];
-        //                dAr2[idpt] = Params.RKConFactor / RCalc.KValues[2, idpt];
-        //                dAr3[idpt] = Params.RKConFactor / RCalc.KValues[3, idpt];
-        //                dAr4[idpt] = Params.RKConFactor / RCalc.KValues[4, idpt];
-        //            }
-
-        //        gdegcure1_1.Plot(dArX, dAr0);
-        //        gdegcure2_1.Plot(dArX, dAr1);
-        //        gdegcure3_1.Plot(dArX, dAr2);
-        //        gdegcure4_1.Plot(dArX, dAr3);
-        //        gdegcure5_1.Plot(dArX, dAr4);
-
-        //        gCureChart1.BottomTitle = RCalc.sXAxisTitle;
-        //        gCureChart1.LeftTitle = RCalc.sYAxisTitle;
-
-        //        gCureChart1.IsAutoFitEnabled = true;
-
-        //        #endregion
-        //    }
-
-        //    #region //Control Actions
-        //    /*
-
-
-
-
-
-
-        //            private void gYAxis_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        //            {
-        //                ComboBoxItem cmi = (ComboBoxItem)(gYAxis.SelectedItem);
-        //                RData.sYaxisTag = cmi.Tag.ToString();
-        //                RCalc.sYAxisTitle = cmi.Content.ToString();
-        //                SetView();
-        //            }
-
-        //            private void gXAxis_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        //            {
-        //                ComboBoxItem cmi = (ComboBoxItem)(gXAxis.SelectedItem);
-        //                RData.sXaxisTag = cmi.Tag.ToString();
-        //                RCalc.sXAxisTitle = cmi.Content.ToString();
-        //                SetView();
-        //            }
-        //    */
-        //    private void gAxis_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        //    {
-        //        string sFld = String.Empty, sMsg;
-        //        Control ctrl = sender as Control;
-        //        ComboBoxItem cmi;
-        //        string sName = ctrl.Name;
-
-        //        switch (sName)
-        //        {
-        //            case "gXAxis":
-        //                cmi = (ComboBoxItem)(gXAxis.SelectedItem);
-        //                RData.sXaxisTag = cmi.Tag.ToString();
-        //                RCalc.sXAxisTitle = cmi.Content.ToString(); break;
-
-        //            case "gYAxis":
-        //                cmi = (ComboBoxItem)(gYAxis.SelectedItem);
-        //                RData.sYaxisTag = cmi.Tag.ToString();
-        //                RCalc.sYAxisTitle = cmi.Content.ToString(); break;
-        //        }
-
-        //        SetView();
-
-        //        UpdateDataset();
-        //    }
-
-
-        //    private void LostFocus_Fields(object sender, RoutedEventArgs e)
-        //    {
-        //        string sFld = String.Empty, sMsg;
-        //        Control ctrl = sender as Control;
-        //        string sName = ctrl.Name;
-        //        double dtemp;
-        //        switch (sName)
-        //        {
-        //            case "gMeasureTemp":
-        //                if (Double.TryParse(gMeasureTemp.Text, out dtemp)) { RData.dTestTempC = (dtemp - 32.0) / 1.8; RCalc.CalBlowGasesProps(RData.dTestTempC); }
-        //                else { MessageBox.Show("Improper Value. New Value is not accepted."); if (RData.dTestTempC > -459) gMeasureTemp.Text = (RData.dTestTempC * 1.8 + 32.0).ToString("0.000"); else gMeasureTemp.Text = string.Empty; }
-        //                break;
-
-        //            case "gCellSize":
-        //                if (Double.TryParse(gCellSize.Text, out dtemp)) RData.dCellSize = 1.0E-6 * dtemp;
-        //                else { MessageBox.Show("Improper Value. New Value is not accepted."); if (RData.dCellSize > 0) gCellSize.Text = (RData.dCellSize * 1.0E+6).ToString("0.000"); else gCellSize.Text = string.Empty; }
-        //                break;
-
-        //            case "gCellPress":
-        //                if (Double.TryParse(gCellPress.Text, out dtemp)) RData.dInitCellPress = dtemp;
-        //                else { MessageBox.Show("Improper Value. New Value is not accepted."); if (RData.dInitCellPress > 0) gCellPress.Text = (RData.dInitCellPress).ToString("0.000"); else gCellPress.Text = string.Empty; }
-        //                break;
-
-        //            case "gPolDen":
-        //                if (Double.TryParse(gPolDen.Text, out dtemp)) RData.dPolDensity = dtemp * CUConv.ToSi_Dens;
-        //                else { MessageBox.Show("Improper Value. New Value is not accepted."); if (RData.dPolDensity > 0) gPolDen.Text = (RData.dPolDensity / CUConv.ToSi_Dens).ToString("0.000"); else gPolDen.Text = string.Empty; }
-        //                break;
-
-        //            case "gPolCond":
-        //                if (Double.TryParse(gPolCond.Text, out dtemp)) RData.dPolCond = 0.001 * dtemp;
-        //                else { MessageBox.Show("Improper Value. New Value is not accepted."); if (RData.dPolCond > 0) gPolCond.Text = (RData.dPolCond * 1000.0).ToString("0.000"); else gPolCond.Text = string.Empty; }
-        //                break;
-
-        //            case "gFracStruts":
-        //                if (Double.TryParse(gFracStruts.Text, out dtemp)) RData.dFracStrut = 0.01 * dtemp;
-        //                else { MessageBox.Show("Improper Value. New Value is not accepted."); if (RData.dFracStrut > 0) gFracStruts.Text = (RData.dFracStrut * 100.0).ToString("0.000"); else gFracStruts.Text = string.Empty; }
-        //                break;
-        //        }
-
-        //        SetView();
-        //        UpdateDataset();
-        //    }
-
-
-
-        //    #endregion
-
-        //    void UpdateDataset()
-        //    {
-        //        string js1 = System.Text.Json.JsonSerializer.Serialize(RData);
-        //        CLists.drEmployee["sRValueParams"] = js1;
-        //        CLists.UpdateEmployee();
-        //    }
-
-        //    public void Startup()
-        //    {
-        //        int idpt;
-
-        //        SetDefaultValues();
-        //        nForm = Params.nFormMax;
-
-        //        dtGasComp.Columns.Add("GasName", typeof(string));
-        //        for (int i = 1; i < nForm + 1; i++)
-        //        {
-        //            dtGasComp.Columns.Add("#" + i, typeof(double));
-        //        }
-        //        for (int i = 0; i < Params.nComps; i++) dtGasComp.Rows.Add();
-        //        gGasComp.ItemsSource = dtGasComp.DefaultView;
-        //        try
-        //        {
-        //            if (CLists.drEmployee["sRValueParams"] == DBNull.Value) SetDefaultValues();
-        //            else
-        //            {
-        //                string js1 = (string)CLists.drEmployee["sRValueParams"];
-        //                RData = (CRData)System.Text.Json.JsonSerializer.Deserialize(js1, typeof(CRData));
-        //            }
-        //        }
-        //        catch { SetDefaultValues(); }
-
-        //    }
-
-        //    public void SetDefaultValues()
-        //    {
-        //        RData.dTestTempC = 25;  // microns
-        //        RData.dCellSize = 250E-6;  // microns
-        //        RData.dInitCellPress = 0.8; //atm
-        //        RData.dPolDensity = 1200.0;  //kg/m3
-        //        RData.dAgeTempC = 50;
-        //        RData.dPolCond = 0.225;
-        //        RData.dFracStrut = 0.7;
-        //        RData.sYaxisTag = "RV";
-        //        RData.sXaxisTag = "TE";
-        //    }
-
-        //    public void SetFields()
-        //    {
-        //        gMeasureTemp.Text = (RData.dTestTempC * 1.8 + 32.0).ToString("0.0");
-        //        gCellSize.Text = (1.0E6 * RData.dCellSize).ToString("0.0");
-        //        gCellPress.Text = RData.dInitCellPress.ToString("0.00");
-        //        gPolDen.Text = (RData.dPolDensity / CUConv.ToSi_Dens).ToString("0.00");
-        //        gPolCond.Text = (1000.0 * RData.dPolCond).ToString("0.00");
-        //        gFracStruts.Text = (100.0 * RData.dFracStrut).ToString("0.00");
-
-        //        foreach (ComboBoxItem cmi in gYAxis.Items)
-        //            if (cmi.Tag.ToString() == RData.sYaxisTag)
-        //            { cmi.IsSelected = true; RCalc.sYAxisTitle = cmi.Content.ToString(); }
-        //        foreach (ComboBoxItem cmi in gXAxis.Items)
-        //            if (cmi.Tag.ToString() == RData.sXaxisTag)
-        //            { cmi.IsSelected = true; RCalc.sXAxisTitle = cmi.Content.ToString(); }
-        //    }
+                    if (_objectsService.RNDFormulations.Forms.POMats[ico].GassToLiqWtRatio > 0)
+                    {
+                        iba += 1;
+                        _objectsService.RNDRValues.RCalc.GasMats.Add(new CMaterial());
+                        _objectsService.RNDRValues.RCalc.GasMats[iba] = _objectsService.RNDFormulations.Forms.POMats[ico];
+                        for (ifo = 0; ifo < _objectsService.RNDRValues.nForm; ifo++)
+                        {
+                            _objectsService.RNDRValues.RCalc.MoleFracs[ifo, iba] = _objectsService.RNDFormulations.Forms.FormAr[ifo].POMatPbw[ico] * _objectsService.RNDRValues.RCalc.GasMats[iba].GassToLiqWtRatio / _objectsService.RNDRValues.RCalc.GasMats[iba].GassMolWt;
+                        }
+                    }
+                }
+
+                _objectsService.RNDRValues.RCalc.IAirBAIndex = -1;                            //Add Air if it is already not included
+                for (ico = 0; ico < _objectsService.RNDRValues.RCalc.GasMats.Count; ico++)
+                {
+                    if (_objectsService.RNDRValues.RCalc.GasMats[ico].ID == Params.iAirDBId)
+                    { _objectsService.RNDRValues.RCalc.IAirBAIndex = ico; break; }
+                }
+
+                if (_objectsService.RNDRValues.RCalc.IAirBAIndex == -1)
+                {
+                    for (ico = 0; ico < _objectsService.RNDFormulations.dtPO.Rows.Count; ico++)
+                    {
+                        if (_objectsService.RNDFormulations.dtPO.Rows[ico]["ID"].ToString() == Params.iAirDBId.ToString())
+                        {
+                            iba += 1;
+                            if (iba + 1 > _objectsService.RNDRValues.RCalc.GasMats.Count) _objectsService.RNDRValues.RCalc.GasMats.Add(new CMaterial());
+
+                            _objectsService.RNDFormulations.ModifyPOIsoLists(iba, ref _objectsService.RNDRValues.RCalc.GasMats, ico, _objectsService.RNDFormulations.dtPO);
+                            _objectsService.RNDRValues.RCalc.IAirBAIndex = iba;
+
+
+                            break;
+
+                        }
+                    }
+
+
+                }
+
+                _objectsService.RNDRValues.RCalc.nBlowAg = iba + 1;
+
+                #endregion
+
+                #region // Calculate the gaseous phase properties of all the blowing agents at all the temperatues
+
+                for (iba = 0; iba < _objectsService.RNDRValues.RCalc.nBlowAg; iba++)
+                {
+                    for (idpt = 0; idpt < Params.nDataPts; idpt++)
+                    {
+                        _objectsService.RNDRValues.RCalc.Lambda[iba, idpt] = _objectsService.RNDRValues.RCalc.GasMats[iba].GasCond_A * Math.Pow(_objectsService.RNDRValues.RCalc.TempK[idpt] / 273, _objectsService.RNDRValues.RCalc.GasMats[iba].GasCond_B);
+                        _objectsService.RNDRValues.RCalc.VapPres[iba, idpt] = Math.Exp(_objectsService.RNDRValues.RCalc.GasMats[iba].GasVapPAtm_A - _objectsService.RNDRValues.RCalc.GasMats[iba].GasVapPAtm_B / _objectsService.RNDRValues.RCalc.TempK[idpt]);
+                    }
+
+                }
+
+
+                idpt = Params.nDataPts / 2;  // //Calculate the Aij at mid temperature
+
+                _objectsService.RNDRValues.RCalc.dTempKTT = _objectsService.RNDRValues.RData.dTestTempC + 273;
+                for (iba = 0; iba < _objectsService.RNDRValues.RCalc.nBlowAg; iba++)
+                {
+                    _objectsService.RNDRValues.RCalc.ViscosityTT[iba] = _objectsService.RNDRValues.RCalc.GasMats[iba].GasVis_A * Math.Pow(_objectsService.RNDRValues.RCalc.dTempKTT / 273, _objectsService.RNDRValues.RCalc.GasMats[iba].GasVis_B);
+                    _objectsService.RNDRValues.RCalc.LambdaTT[iba] = _objectsService.RNDRValues.RCalc.Lambda[iba, idpt];
+                }
+
+                for (iba = 0; iba < _objectsService.RNDRValues.RCalc.nBlowAg; iba++)
+                    for (jba = 0; jba < _objectsService.RNDRValues.RCalc.nBlowAg; jba++)
+                    {
+                        dTerm1 = _objectsService.RNDRValues.RCalc.ViscosityTT[iba] / _objectsService.RNDRValues.RCalc.ViscosityTT[jba] * Math.Sqrt(_objectsService.RNDRValues.RCalc.GasMats[jba].MolWt / _objectsService.RNDRValues.RCalc.GasMats[iba].MolWt);
+                        dTerm2 = 8.0 * (1.0 + _objectsService.RNDRValues.RCalc.GasMats[iba].MolWt / _objectsService.RNDRValues.RCalc.GasMats[jba].MolWt);
+                        dTerm3 = (1.0 + Math.Sqrt(dTerm1));
+                        _objectsService.RNDRValues.RCalc.AijTT[iba, jba] = dTerm3 * dTerm3 / Math.Sqrt(dTerm2);
+                    }
+
+
+
+                #endregion
+
+                #region // Calculate the mole fraction each gas in the cell (gaesous phase) and output values in the data grid
+
+                for (ifo = 0; ifo < _objectsService.RNDRValues.nForms; ifo++)
+                {
+                    temp1 = 0.0;
+                    for (iba = 0; iba < _objectsService.RNDRValues.RCalc.nBlowAg; iba++) temp1 += _objectsService.RNDRValues.RCalc.MoleFracs[ifo, iba];
+                    if (temp1 > 0.0)
+                        for (iba = 0; iba < _objectsService.RNDRValues.RCalc.nBlowAg; iba++)
+                        {
+                            _objectsService.RNDRValues.RCalc.MoleFracs[ifo, iba] = _objectsService.RNDRValues.RCalc.MoleFracs[ifo, iba] / temp1 * 100;
+                            _objectsService.RNDRValues.RCalc.MoleFracsTT[ifo, iba] = _objectsService.RNDRValues.RCalc.MoleFracs[ifo, iba];
+                        }
+                }
+
+
+                #endregion
+
+            }
+            /*
+                    public void KValuesFn(C_objectsService.RNDRValues.RCalc _objectsService.RNDRValues.RCalc)
+                    {
+                        double dSum1, dSum2;
+                        int iba, ifo, jba;
+
+                        for (ifo = 0; ifo < _objectsService.RNDRValues._objectsService.RNDRValues.nForms; ifo++)
+                        {
+                            dSum1 = 0.0;
+                            for (iba = 0; iba < _objectsService.RNDRValues.RCalc.nBlowAg; iba++)
+                            {
+                                dSum2 = 0.0;
+                                for (jba = 0; jba < _objectsService.RNDRValues.RCalc.nBlowAg; jba++)
+                                    dSum2 += _objectsService.RNDRValues.RCalc.AijTT[iba, jba] * _objectsService.RNDRValues.RCalc.MoleFracsTT[ifo, jba];
+                                dSum1 += _objectsService.RNDRValues.RCalc.LambdaTT[iba] * _objectsService.RNDRValues.RCalc.MoleFracsTT[ifo, iba] / dSum2;
+                            }
+                            _objectsService.RNDRValues.RCalc.KOutTT[ifo] = dSum1;
+                        }
+                    }
+            */
+
+            /*
+                    public void RKValuesBase(C_objectsService.RNDRValues.RCalc _objectsService.RNDRValues.RCalc)
+                    {
+                        int ifo;
+
+
+                        KValuesFn(_objectsService.RNDRValues.RCalc);
+
+                        for (ifo = 0; ifo < _objectsService.RNDRValues._objectsService.RNDRValues.nForms; ifo++) 
+                        {
+                            _objectsService.RNDRValues.RCalc.KValuesBase[ifo] = _objectsService.RNDRValues.RCalc.KOutTT[ifo];
+                            _objectsService.RNDRValues.RCalc.RValuesBase[ifo] = Params.RKConFactor/ _objectsService.RNDRValues.RCalc.KOutTT[ifo];
+                        }
+                    }
+            */
+            public IActionResult Click_ExportData()
+            {
+                SetDefaultValues();
+                SetFields();
+                SetView();
+                UpdateDataset();
+                return new JsonResult(true);
+            }
+
+            private void SetView()
+            {
+                #region // Declaration and initialization
+                int idpt, ncount, iba, ifo;
+                double AvFoamDen, dsum1, dtemp;
+                double[] dAr0 = new double[Params.nDataPts];
+                double[] dAr1 = new double[Params.nDataPts];
+                double[] dAr2 = new double[Params.nDataPts];
+                double[] dAr3 = new double[Params.nDataPts];
+                double[] dAr4 = new double[Params.nDataPts];
+                double[] dArX = new double[Params.nDataPts];
+
+                _objectsService.RNDRValues.RCalc.dTempKTT = _objectsService.RNDRValues.RData.dTestTempC + 273.0;//Reset Lambdas and vap press to base values
+                _objectsService.RNDRValues.RCalc.dCellPressTT = _objectsService.RNDRValues.RData.dInitCellPress;
+                _objectsService.RNDRValues.RCalc.dCellSizeTT = _objectsService.RNDRValues.RData.dCellSize;
+                _objectsService.RNDRValues.RCalc.dPolyDenTT = _objectsService.RNDRValues.RData.dPolDensity;
+                _objectsService.RNDRValues.RCalc.dPolyCondTT = _objectsService.RNDRValues.RData.dPolCond;
+                _objectsService.RNDRValues.RCalc.dFracStrut = _objectsService.RNDRValues.RData.dFracStrut;
+                for (ifo = 0; ifo < Params.nFormMax; ifo++) _objectsService.RNDRValues.RCalc.FoamDensityTT[ifo] = _objectsService.RNDRValues.RCalc.FoamDensityBase[ifo];
+
+                #endregion
+                #region  // Calculate the k values at the standard condiction. Fill the Data table with conductivities and mole fractions
+
+
+                for (iba = 0; iba < _objectsService.RNDRValues.RCalc.nBlowAg; iba++)
+                {
+                    _objectsService.RNDRValues.RCalc.VapPresTT[iba] = _objectsService.RNDRValues.RCalc.VapPresBase[iba];
+                    _objectsService.RNDRValues.RCalc.LambdaTT[iba] = _objectsService.RNDRValues.RCalc.LambdaBase[iba];
+
+                }
+                _objectsService.RNDRValues.RCalc.AdjMoleFracs();    // Adjust molefracs for vapor pressue
+
+                _objectsService.RNDRValues.RCalc.KValuesFn();  //Calculate k values
+
+                for (ifo = 0; ifo < _objectsService.RNDRValues.nForms; ifo++)
+                {
+                    _objectsService.RNDRValues.RCalc.KValuesBase[ifo] = _objectsService.RNDRValues.RCalc.KOutTT[ifo];
+                    _objectsService.RNDRValues.RCalc.RValuesBase[ifo] = Params.RKConFactor / _objectsService.RNDRValues.RCalc.KOutTT[ifo];
+                }
+
+                _objectsService.RNDRValues.dtGasComp.Clear();   //Clear datatable and fill it.
+                for (int i = 0; i < Params.nComps; i++) _objectsService.RNDRValues.dtGasComp.Rows.Add();
+
+                int ir = 0;
+                _objectsService.RNDRValues.dtGasComp.Rows[ir][0] = "Thermal Properties";
+                _objectsService.RNDRValues.dtGasComp.Rows[ir + 1][0] = "   Thermal Conductivity (mW/m-K)";
+                _objectsService.RNDRValues.dtGasComp.Rows[ir + 2][0] = "   RValue (°F-ft2-hr/Btu)";
+                for (ifo = 0; ifo < Params.nFormMax; ifo++)
+                {
+                    _objectsService.RNDRValues.dtGasComp.Rows[ir + 1][ifo + 1] = (_objectsService.RNDRValues.RCalc.KValuesBase[ifo] * 1000.0).ToString("0.0");
+                    _objectsService.RNDRValues.dtGasComp.Rows[ir + 2][ifo + 1] = (_objectsService.RNDRValues.RCalc.RValuesBase[ifo]).ToString("0.0");
+                }
+
+
+                ir += 4;
+
+                _objectsService.RNDRValues.dtGasComp.Rows[ir][0] = "Gas Composition (Mole Freaction)";
+
+                for (iba = 0; iba < _objectsService.RNDRValues.RCalc.nBlowAg; iba++)
+                {
+                    _objectsService.RNDRValues.dtGasComp.Rows[ir + 1 + iba]["GasName"] = "   " + _objectsService.RNDRValues.RCalc.GasMats[iba].GasName;
+                    for (ifo = 0; ifo < Params.nFormMax; ifo++)
+                        _objectsService.RNDRValues.dtGasComp.Rows[ir + 1 + iba][ifo + 1] = (_objectsService.RNDRValues.RCalc.MoleFracs[ifo, iba] * 100.0).ToString("0.000");
+                }
+
+                gGasComp = _objectsService.RNDRValues.dtGasComp.DefaultView;
+
+                #endregion
+
+
+                switch (_objectsService.RNDRValues.RData.sXaxisTag)
+                {
+                    case "CS":
+                        #region //Plot  R/K Values with Cell Size
+
+                        //                    _objectsService.RNDRValues.RCalc.dCellPressTT = _objectsService.RNDRValues.RData.dInitCellPress;  //Set the input values fro KValuesFn
+                        for (idpt = 0; idpt < Params.nDataPts; idpt++)
+                        {
+                            _objectsService.RNDRValues.RCalc.dCellSizeTT = 0.5 * (1.0 + 2.0 * idpt / (double)Params.nDataPts) * _objectsService.RNDRValues.RData.dCellSize;
+                            dArX[idpt] = 1.0E6 * _objectsService.RNDRValues.RCalc.dCellSizeTT;
+
+                            _objectsService.RNDRValues.RCalc.AdjMoleFracs();    // Adjust molefracs for vapor pressue
+
+                            _objectsService.RNDRValues.RCalc.KValuesFn();  //Calculate k values
+
+                            for (ifo = 0; ifo < _objectsService.RNDRValues.nForms; ifo++)
+                                _objectsService.RNDRValues.RCalc.KValues[ifo, idpt] = _objectsService.RNDRValues.RCalc.KOutTT[ifo];
+                        }
+
+                        #endregion
+                        break;
+
+                    case "DE":
+                        #region //Plot  R/K Values with Density
+
+                        ncount = 0;
+                        dsum1 = 0.0;
+                        for (ifo = 0; ifo < _objectsService.RNDRValues.nForms; ifo++)
+                            if (_objectsService.RNDRValues.RCalc.FoamDensityBase[ifo] > 0 && _objectsService.RNDRValues.RCalc.FoamDensityBase[ifo] < 0.9 * Params.PolymerDensity)
+                            { ncount += 1; dsum1 += _objectsService.RNDRValues.RCalc.FoamDensityBase[ifo]; }
+                        AvFoamDen = dsum1 / ncount;
+
+                        for (idpt = 0; idpt < Params.nDataPts; idpt++)
+                        {
+
+                            dArX[idpt] = 0.5 * (1.0 + 2.0 * idpt / (double)Params.nDataPts) * AvFoamDen;
+                            for (ifo = 0; ifo < _objectsService.RNDRValues.nForms; ifo++) _objectsService.RNDRValues.RCalc.FoamDensityTT[ifo] = dArX[idpt];
+
+                            _objectsService.RNDRValues.RCalc.AdjMoleFracs();    // Adjust molefracs for vapor pressue
+
+                            _objectsService.RNDRValues.RCalc.KValuesFn();  //Calculate k values
+
+                            for (ifo = 0; ifo < _objectsService.RNDRValues.nForms; ifo++)
+                                _objectsService.RNDRValues.RCalc.KValues[ifo, idpt] = _objectsService.RNDRValues.RCalc.KOutTT[ifo];
+                        }
+
+                        #endregion
+                        break;
+
+                    default:
+                        #region //Plot  R/K Values with Temperature
+
+                        _objectsService.RNDRValues.RCalc.dCellPressTT = _objectsService.RNDRValues.RData.dInitCellPress;  //Set the input values fro KValuesFn
+                        _objectsService.RNDRValues.RCalc.dCellSizeTT = _objectsService.RNDRValues.RData.dCellSize;
+                        for (idpt = 0; idpt < Params.nDataPts; idpt++)
+                        {
+                            _objectsService.RNDRValues.RCalc.dTempKTT = _objectsService.RNDRValues.RCalc.TempK[idpt];
+                            dArX[idpt] = _objectsService.RNDRValues.RCalc.TempC[idpt] * 1.8 + 32;
+                            for (iba = 0; iba < _objectsService.RNDRValues.RCalc.nBlowAg; iba++)
+                            {
+                                _objectsService.RNDRValues.RCalc.LambdaTT[iba] = _objectsService.RNDRValues.RCalc.Lambda[iba, idpt];
+                                _objectsService.RNDRValues.RCalc.VapPresTT[iba] = _objectsService.RNDRValues.RCalc.VapPres[iba, idpt];
+                            }
+
+                            _objectsService.RNDRValues.RCalc.AdjMoleFracs();    // Adjust molefracs for vapor pressue
+
+                            _objectsService.RNDRValues.RCalc.KValuesFn();  //Calculate k values
+
+                            for (ifo = 0; ifo < _objectsService.RNDRValues.nForms; ifo++)
+                                _objectsService.RNDRValues.RCalc.KValues[ifo, idpt] = _objectsService.RNDRValues.RCalc.KOutTT[ifo];
+                        }
+
+                        #endregion
+                        break;
+                }
+
+                #region //Draw Plots
+
+                if (_objectsService.RNDRValues.RData.sYaxisTag == "KV")
+                {
+
+                    for (idpt = 0; idpt < Params.nDataPts; idpt++)
+                    {
+                        dAr0[idpt] = _objectsService.RNDRValues.RCalc.KValues[0, idpt] * 1000.0;
+                        dAr1[idpt] = _objectsService.RNDRValues.RCalc.KValues[1, idpt] * 1000.0;
+                        dAr2[idpt] = _objectsService.RNDRValues.RCalc.KValues[2, idpt] * 1000.0;
+                        dAr3[idpt] = _objectsService.RNDRValues.RCalc.KValues[3, idpt] * 1000.0;
+                        dAr4[idpt] = _objectsService.RNDRValues.RCalc.KValues[4, idpt] * 1000.0;
+                    }
+                }
+
+                else
+                    for (idpt = 0; idpt < Params.nDataPts; idpt++)
+                    {
+                        dAr0[idpt] = Params.RKConFactor / _objectsService.RNDRValues.RCalc.KValues[0, idpt];
+                        dAr1[idpt] = Params.RKConFactor / _objectsService.RNDRValues.RCalc.KValues[1, idpt];
+                        dAr2[idpt] = Params.RKConFactor / _objectsService.RNDRValues.RCalc.KValues[2, idpt];
+                        dAr3[idpt] = Params.RKConFactor / _objectsService.RNDRValues.RCalc.KValues[3, idpt];
+                        dAr4[idpt] = Params.RKConFactor / _objectsService.RNDRValues.RCalc.KValues[4, idpt];
+                    }
+
+                //gdegcure1_1.Plot(dArX, dAr0);
+                //gdegcure2_1.Plot(dArX, dAr1);
+                //gdegcure3_1.Plot(dArX, dAr2);
+                //gdegcure4_1.Plot(dArX, dAr3);
+                //gdegcure5_1.Plot(dArX, dAr4);
+
+                //gCureChart1.BottomTitle = _objectsService.RNDRValues.RCalc.sXAxisTitle;
+                //gCureChart1.LeftTitle = _objectsService.RNDRValues.RCalc.sYAxisTitle;
+
+                //gCureChart1.IsAutoFitEnabled = true;
+
+                #endregion
+            }
+
+            #region //Control Actions
+            /*
+
+
+
+
+
+
+                    private void gYAxis_SelectionChanged(object sender, SelectionChangedEventArgs e)
+                    {
+                        ComboBoxItem cmi = (ComboBoxItem)(gYAxis.SelectedItem);
+                        _objectsService.RNDRValues.RData.sYaxisTag = cmi.Tag.ToString();
+                        _objectsService.RNDRValues.RCalc.sYAxisTitle = cmi.Content.ToString();
+                        SetView();
+                    }
+
+                    private void gXAxis_SelectionChanged(object sender, SelectionChangedEventArgs e)
+                    {
+                        ComboBoxItem cmi = (ComboBoxItem)(gXAxis.SelectedItem);
+                        _objectsService.RNDRValues.RData.sXaxisTag = cmi.Tag.ToString();
+                        _objectsService.RNDRValues.RCalc.sXAxisTitle = cmi.Content.ToString();
+                        SetView();
+                    }
+            */
+            public IActionResult OnPostgAxis_SelectionChanged(string Name,string value)
+            {
+                string sFld = null, sMsg;
+                //ComboBoxItem cmi;
+                string sName = Name;
+
+                //switch (sName)
+                //{
+                //    case "gXAxis":
+                //        cmi = (ComboBoxItem)(gXAxis.SelectedItem);
+                //        _objectsService.RNDRValues.RData.sXaxisTag = cmi.Tag.ToString();
+                //        _objectsService.RNDRValues.RCalc.sXAxisTitle = cmi.Content.ToString(); break;
+
+                //    case "gYAxis":
+                //        cmi = (ComboBoxItem)(gYAxis.SelectedItem);
+                //        _objectsService.RNDRValues.RData.sYaxisTag = cmi.Tag.ToString();
+                //        _objectsService.RNDRValues.RCalc.sYAxisTitle = cmi.Content.ToString(); break;
+                //}
+
+                SetView();
+
+                UpdateDataset();
+            return null;
+            }
+
+
+            public IActionResult OnPostLostFocus_Fields(string Name,string value)
+            {
+                string sFld = null, sMsg;
+                string sName = Name;
+                double dtemp;
+                switch (sName)
+                {
+                    case "gMeasureTemp":
+                        if (Double.TryParse(gMeasureTemp , out dtemp)) { _objectsService.RNDRValues.RData.dTestTempC = (dtemp - 32.0) / 1.8; _objectsService.RNDRValues.RCalc.CalBlowGasesProps(_objectsService.RNDRValues.RData.dTestTempC); }
+                        else {
+                        //MessageBox.Show("Improper Value. New Value is not accepted.");
+                        if (_objectsService.RNDRValues.RData.dTestTempC > -459) gMeasureTemp  = (_objectsService.RNDRValues.RData.dTestTempC * 1.8 + 32.0).ToString("0.000"); else gMeasureTemp  = string.Empty; }
+                        break;
+
+                    case "gCellSize":
+                        if (Double.TryParse(gCellSize , out dtemp)) _objectsService.RNDRValues.RData.dCellSize = 1.0E-6 * dtemp;
+                        else {
+                      //  MessageBox.Show("Improper Value. New Value is not accepted.");
+                        if (_objectsService.RNDRValues.RData.dCellSize > 0) gCellSize  = (_objectsService.RNDRValues.RData.dCellSize * 1.0E+6).ToString("0.000"); else gCellSize  = string.Empty; }
+                        break;
+
+                    case "gCellPress":
+                        if (Double.TryParse(gCellPress , out dtemp)) _objectsService.RNDRValues.RData.dInitCellPress = dtemp;
+                        else {
+                       // MessageBox.Show("Improper Value. New Value is not accepted.");
+                        if (_objectsService.RNDRValues.RData.dInitCellPress > 0) gCellPress  = (_objectsService.RNDRValues.RData.dInitCellPress).ToString("0.000"); else gCellPress  = string.Empty; }
+                        break;
+
+                    case "gPolDen":
+                        if (Double.TryParse(gPolDen , out dtemp)) _objectsService.RNDRValues.RData.dPolDensity = dtemp * _objectsService.CUconv.ToSi_Dens;
+                        else {
+                            //MessageBox.Show("Improper Value. New Value is not accepted.");
+                            if (_objectsService.RNDRValues.RData.dPolDensity > 0) gPolDen  = (_objectsService.RNDRValues.RData.dPolDensity / _objectsService.CUconv.ToSi_Dens).ToString("0.000"); else gPolDen  = string.Empty; }
+                        break;
+
+                    case "gPolCond":
+                        if (Double.TryParse(gPolCond , out dtemp)) _objectsService.RNDRValues.RData.dPolCond = 0.001 * dtemp;
+                        else { 
+                        //MessageBox.Show("Improper Value. New Value is not accepted.");
+                        if (_objectsService.RNDRValues.RData.dPolCond > 0) gPolCond  = (_objectsService.RNDRValues.RData.dPolCond * 1000.0).ToString("0.000"); else gPolCond  = string.Empty; }
+                        break;
+
+                    case "gFracStruts":
+                        if (Double.TryParse(gFracStruts , out dtemp)) _objectsService.RNDRValues.RData.dFracStrut = 0.01 * dtemp;
+                        else {
+                       // MessageBox.Show("Improper Value. New Value is not accepted."); 
+                        if (_objectsService.RNDRValues.RData.dFracStrut > 0) gFracStruts  = (_objectsService.RNDRValues.RData.dFracStrut * 100.0).ToString("0.000"); else gFracStruts  = string.Empty; }
+                        break;
+                }
+
+                SetView();
+                UpdateDataset();
+            return null;
+            }
+
+
+
+            #endregion
+
+            void UpdateDataset()
+            {
+                string js1 = System.Text.Json.JsonSerializer.Serialize(_objectsService.RNDRValues.RData);
+                _objectsService.RNDRValues.CLists.drEmployee["sRValueParams"] = js1;
+                _objectsService.RNDRValues.CLists.UpdateEmployee();
+            }
+
+            public void Startup()
+            {
+                int idpt;
+
+                SetDefaultValues();
+                _objectsService.RNDRValues.nForm = Params.nFormMax;
+
+                _objectsService.RNDRValues.dtGasComp.Columns.Add("GasName", typeof(string));
+                for (int i = 1; i < _objectsService.RNDRValues.nForm + 1; i++)
+                {
+                    _objectsService.RNDRValues.dtGasComp.Columns.Add("#" + i, typeof(double));
+                }
+                for (int i = 0; i < Params.nComps; i++) _objectsService.RNDRValues.dtGasComp.Rows.Add();
+                gGasComp = _objectsService.RNDRValues.dtGasComp.DefaultView;
+                try
+                {
+                    if (_objectsService.RNDRValues.CLists.drEmployee["sRValueParams"] == DBNull.Value) SetDefaultValues();
+                    else
+                    {
+                        string js1 = (string)_objectsService.RNDRValues.CLists.drEmployee["sRValueParams"];
+                        _objectsService.RNDRValues.RData = (CRData)System.Text.Json.JsonSerializer.Deserialize(js1, typeof(CRData));
+                    }
+                }
+                catch { SetDefaultValues(); }
+
+            }
+
+            public void SetDefaultValues()
+            {
+                _objectsService.RNDRValues.RData.dTestTempC = 25;  // microns
+                _objectsService.RNDRValues.RData.dCellSize = 250E-6;  // microns
+                _objectsService.RNDRValues.RData.dInitCellPress = 0.8; //atm
+                _objectsService.RNDRValues.RData.dPolDensity = 1200.0;  //kg/m3
+                _objectsService.RNDRValues.RData.dAgeTempC = 50;
+                _objectsService.RNDRValues.RData.dPolCond = 0.225;
+                _objectsService.RNDRValues.RData.dFracStrut = 0.7;
+                _objectsService.RNDRValues.RData.sYaxisTag = "RV";
+                _objectsService.RNDRValues.RData.sXaxisTag = "TE";
+            }
+
+            public void SetFields()
+            {
+                gMeasureTemp  = (_objectsService.RNDRValues.RData.dTestTempC * 1.8 + 32.0).ToString("0.0");
+                gCellSize  = (1.0E6 * _objectsService.RNDRValues.RData.dCellSize).ToString("0.0");
+                gCellPress  = _objectsService.RNDRValues.RData.dInitCellPress.ToString("0.00");
+                gPolDen  = (_objectsService.RNDRValues.RData.dPolDensity / _objectsService.CUconv.ToSi_Dens).ToString("0.00");
+                gPolCond  = (1000.0 * _objectsService.RNDRValues.RData.dPolCond).ToString("0.00");
+                gFracStruts  = (100.0 * _objectsService.RNDRValues.RData.dFracStrut).ToString("0.00");
+
+                //foreach (ComboBoxItem cmi in gYAxis)
+                //    if (cmi.Tag.ToString() == _objectsService.RNDRValues.RData.sYaxisTag)
+                //    { cmi.IsSelected = true; _objectsService.RNDRValues.RCalc.sYAxisTitle = cmi.Content.ToString(); }
+                //foreach (ComboBoxItem cmi in gXAxis)
+                //    if (cmi.Tag.ToString() == _objectsService.RNDRValues.RData.sXaxisTag)
+                //    { cmi.IsSelected = true; _objectsService.RNDRValues.RCalc.sXAxisTitle = cmi.Content.ToString(); }
+            }
     }
 
 }

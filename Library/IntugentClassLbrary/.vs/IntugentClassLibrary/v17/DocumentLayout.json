@@ -3,6 +3,14 @@
   "WorkspaceRootPath": "C:\\Users\\XD GAMING\\Desktop\\Intugent\\Intugent\\Intugent\\Library\\IntugentClassLbrary\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{3B846FCC-A353-4DAC-BDE0-C9DA9C4DFC58}|IntugentClassLbrary\\IntugentClassLibrary.csproj|c:\\users\\xd gaming\\desktop\\intugent\\intugent\\intugent\\library\\intugentclasslbrary\\intugentclasslbrary\\pages\\rnd\\rndhome.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3B846FCC-A353-4DAC-BDE0-C9DA9C4DFC58}|IntugentClassLbrary\\IntugentClassLibrary.csproj|solutionrelative:intugentclasslbrary\\pages\\rnd\\rndhome.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3B846FCC-A353-4DAC-BDE0-C9DA9C4DFC58}|IntugentClassLbrary\\IntugentClassLibrary.csproj|c:\\users\\xd gaming\\desktop\\intugent\\intugent\\intugent\\library\\intugentclasslbrary\\intugentclasslbrary\\pages\\mfg\\mfghome.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3B846FCC-A353-4DAC-BDE0-C9DA9C4DFC58}|IntugentClassLbrary\\IntugentClassLibrary.csproj|solutionrelative:intugentclasslbrary\\pages\\mfg\\mfghome.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{3B846FCC-A353-4DAC-BDE0-C9DA9C4DFC58}|IntugentClassLbrary\\IntugentClassLibrary.csproj|c:\\users\\xd gaming\\desktop\\intugent\\intugent\\intugent\\library\\intugentclasslbrary\\intugentclasslbrary\\pages\\rnd\\rndtdrv.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3B846FCC-A353-4DAC-BDE0-C9DA9C4DFC58}|IntugentClassLbrary\\IntugentClassLibrary.csproj|solutionrelative:intugentclasslbrary\\pages\\rnd\\rndtdrv.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
@@ -14,7 +22,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -22,7 +30,32 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MfgHome.cs",
+              "DocumentMoniker": "C:\\Users\\XD GAMING\\Desktop\\Intugent\\Intugent\\Intugent\\Library\\IntugentClassLbrary\\IntugentClassLbrary\\Pages\\Mfg\\MfgHome.cs",
+              "RelativeDocumentMoniker": "IntugentClassLbrary\\Pages\\Mfg\\MfgHome.cs",
+              "ToolTip": "C:\\Users\\XD GAMING\\Desktop\\Intugent\\Intugent\\Intugent\\Library\\IntugentClassLbrary\\IntugentClassLbrary\\Pages\\Mfg\\MfgHome.cs",
+              "RelativeToolTip": "IntugentClassLbrary\\Pages\\Mfg\\MfgHome.cs",
+              "ViewState": "AQIAACIAAAAAAAAAAAAgwBIAAAAbAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-09T08:29:33.869Z"
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "RndHome.cs",
+              "DocumentMoniker": "C:\\Users\\XD GAMING\\Desktop\\Intugent\\Intugent\\Intugent\\Library\\IntugentClassLbrary\\IntugentClassLbrary\\Pages\\Rnd\\RndHome.cs",
+              "RelativeDocumentMoniker": "IntugentClassLbrary\\Pages\\Rnd\\RndHome.cs",
+              "ToolTip": "C:\\Users\\XD GAMING\\Desktop\\Intugent\\Intugent\\Intugent\\Library\\IntugentClassLbrary\\IntugentClassLbrary\\Pages\\Rnd\\RndHome.cs",
+              "RelativeToolTip": "IntugentClassLbrary\\Pages\\Rnd\\RndHome.cs",
+              "ViewState": "AQIAAJwAAAAAAAAAAAAnwOcAAAApAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-09T08:24:10.519Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "RNDTDRV.cs",
               "DocumentMoniker": "C:\\Users\\XD GAMING\\Desktop\\Intugent\\Intugent\\Intugent\\Library\\IntugentClassLbrary\\IntugentClassLbrary\\Pages\\Rnd\\RNDTDRV.cs",
               "RelativeDocumentMoniker": "IntugentClassLbrary\\Pages\\Rnd\\RNDTDRV.cs",
@@ -30,8 +63,7 @@
               "RelativeToolTip": "IntugentClassLbrary\\Pages\\Rnd\\RNDTDRV.cs",
               "ViewState": "AQIAADQAAAAAAAAAAAAgwEoAAAA7AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-07T14:15:03.138Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-07T14:15:03.138Z"
             }
           ]
         }

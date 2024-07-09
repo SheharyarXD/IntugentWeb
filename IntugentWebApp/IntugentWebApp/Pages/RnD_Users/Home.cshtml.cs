@@ -621,6 +621,37 @@ namespace IntugentWebApp.Pages.RnD_Users
             else { _objectsService.RNDHome.EnableRNDPages(false); gRNDSearch = _objectsService.RNDHome.dt.DefaultView; }
         }
 
+        public IActionResult OnPostGSelectDataSet(int gRNDSearchSelectedIndex, int gRNDSearchRowsCount, int gRNDSelectedDatasetID)
+        {
+            /*_objectsService.CLists.drEmployee["MfgIDSelected"] = id;
+            CLists_UpdateEmployee.UpdateEmployee(_objectsService.CLists);*/
+
+            if (!_objectsService.Cbfile.bCanSwitchRecord)
+            {
+                gRNDSearchSelectedIndex = _objectsService.Cbfile.iIDMfgIndex;
+                //MessageBox.Show(Cbfile.sNoRecSwitchMsg, Cbfile.sAppName);
+                return new JsonResult(new { message = "canswitch: " });
+            }
+
+            if (gRNDSearchSelectedIndex < 0 || gRNDSearchSelectedIndex > gRNDSearchRowsCount - 1) return new JsonResult(new { message = "idx < 0: " + gRNDSearchSelectedIndex + " -- " + gRNDSearchRowsCount });
+            if (_objectsService.RNDHome.dt.Rows[gRNDSearchSelectedIndex]["ID"] == DBNull.Value)
+            {
+                // sMsg = "The selected dataset does not have a valid ID and can not be selected.";
+                // MessageBox.Show(sMsg, Cbfile.sAppName, MessageBoxButton.OK, MessageBoxImage.Stop);
+                // EnableMfgPages(false);
+                return Page();
+            }
+
+
+            ///////////////// this is index of gMFGSearch dataview not dataset ID
+            _objectsService.Cbfile.iIDMfgIndex = gRNDSearchSelectedIndex;
+
+            _objectsService.Cbfile.iIDMfg = gRNDSelectedDatasetID;
+            //EnableMfgPages(true);
+            //(_objectsService.MfgInProcess, _objectsService.MfgFinishedGoods, _objectsService.MfgDimensionsStability, _objectsService.MfgPlantsData, _objectsService.MfgJetMixing) = _objectsService.MfgHome.GetAllMfgData(_objectsService.MfgInProcess, _objectsService.MfgFinishedGoods, _objectsService.MfgDimensionsStability, _objectsService.MfgPlantsData, _objectsService.MfgJetMixing);
+
+            return new JsonResult(new { message = "Dataset selected: " + gRNDSearchSelectedIndex + " -- " + gRNDSelectedDatasetID });
+        }
 
     }
 

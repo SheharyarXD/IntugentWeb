@@ -139,34 +139,55 @@
                 <table id="searchResultsTable" class="table table-hover table-product dataTable" style="width:100%">
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Date Started</th>
-                            <th>Study Name</th>
-                            <th>Operator</th>
-                            <th>Chemist</th>
+                            @* <th>ID</th>
+                            <th>Date</th>
+                            <th>Shift</th>
+                            <th>Green Board Time Stamp</th>
+                            <th>FG Board Time Stamp</th>
                             <th>Product</th>
-                            @* <th>Select</th> *@
+                            <th>Location</th>
+                            <th>Select</th> *@
+
+                            @* Verify From Asjad sb !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*@
+                            @if (Model.gRNDSearch.Table != null)
+                            {
+                                foreach (DataColumn column in Model.gRNDSearch.Table.Columns)
+                                {
+                                    <th>@column.ColumnName</th>
+                                }
+                                <th>Select</th>
+                            }
                         </tr>
                     </thead>
                     <tbody>
-                            @foreach (DataRowView sr in Model.gRNDSearch)
+                        @if (Model.gRNDSearch != null && Model.gRNDSearch.Count > 0)
+                        {
+                            int rowIndex = 0;
+                            foreach (DataRowView rowView in Model.gRNDSearch)
                             {
+
                                 <tr>
-                                    <td>@sr["ID"]</td>
-                                    <td>@sr["DateDSCreated"]</td>
-                                    <td>@sr["Study Name"]</td>
-                                    <td>@sr["Operator"]</td>
-                                    <td>@sr["Chemist"]</td>
-                                    <td>@sr["Product ID"]</td>
-                                   @*  <td>
+                                    @{
+                                        var itemArray = rowView.Row.ItemArray;
+                                        var id = itemArray[0]; // first item is the ID
+                                        for (int i = 0; i < itemArray.Length; i++)
+                                        {
+                                            <td>@itemArray[i]</td>
+                                        }
+                                    }
+
+                                    <td>
                                         <label class="switch switch-primary switch-pill form-control-label ">
-                                            <input type="checkbox" class="switch-input form-check-input" id="">
+                                            <input type="checkbox" class="switch-input form-check-input" id="select_@rowIndex" data-index="@id">
                                             <span class="switch-label"></span>
                                             <span class="switch-handle"></span>
                                         </label>
-                                    </td> *@
+                                    </td>
                                 </tr>
+                                rowIndex++;
                             }
+
+                        }
                     </tbody>
                 </table>
             </div>
@@ -184,12 +205,12 @@
 
 @{
     // if some dataset is already selected.. set its checkbox to checked..
-    if (Model.selectedDatasetID != null)
+    if (Model.gRNDSearchSelectedIndex != null)
     {
         <script>
             document.addEventListener("DOMContentLoaded", function () {
-                var currentId = @Html.Raw(Model.selectedDatasetID);
-
+                var currentId = @Html.Raw(Model.gRNDSearchSelectedIndex);
+                console.log(@Model.gRNDSearchSelectedIndex)
                 if (currentId) {
 
                     var checkbox = document.getElementById('select_' + currentId);
@@ -202,18 +223,17 @@
         </script>
     }
 }
-
 @section Scripts {
 
     <script>
-        
+
         // handle checkbox change event
         $('input[type="checkbox"]').change(function () {
             if ($(this).is(':checked')) {
                 var selectedID = $(this).attr('id').substring(7); // remove "select_" prefix
                 unselectAllRows($(this).attr('id'));
-                localStorage.setItem('selectedDataSetId', selectedID);
-                sendIdToServer(selectedID);
+                var selectedDatasetID = $(this).data('index');
+                sendIdToServer(selectedID, selectedDatasetID);
             }
         });
 
@@ -227,13 +247,12 @@
         }
 
         // send id to server-side
-        function sendIdToServer(selectedID) {
-
+        function sendIdToServer(selectedID, selectedDatasetID) {
             $.ajax({
                 type: "POST",
-                url: "/RnD_Users/Home?handler=CheckboxSelected",
+                url: "/RnD_Users/Home?handler=GSelectDataSet",
                 headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
-                data: { id: selectedID },
+                data: { gRnDSearchSelectedIndex: selectedID, gRnDSearchRowsCount: @Model.gRNDSearch.Count, gRnDSelectedDatasetID: selectedDatasetID },
                 success: function (response) {
                     console.log('Server response:', response);
                 },
@@ -241,9 +260,8 @@
                     console.error('Error:', error);
                 }
             });
-
-            
         }
+
 
         function gSearchDataSets() {
 

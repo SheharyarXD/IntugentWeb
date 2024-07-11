@@ -43,14 +43,14 @@
                             int[] colIndex = { 0, 1, 2, 3, 4, 5, 6 ,7 ,8};
                             <tr id="row-@rowIndex">
                                 <td id="DensityE-@rowIndex-@colIndex[0]">@row["PropName"]</td>
-                                <td id="DensityE-@rowIndex-@colIndex[1]">@row["PropE1"]</td>
-                                <td id="DensityE-@rowIndex-@colIndex[2]">@row["PropE2"]</td>
-                                <td id="DensityE-@rowIndex-@colIndex[3]">@row["PropE3"]</td>
-                                <td id="DensityE-@rowIndex-@colIndex[4]">@row["PropE4"]</td>
-                                <td id="DensityE-@rowIndex-@colIndex[5]">@row["PropE5"]</td>
-                                <td id="DensityE-@rowIndex-@colIndex[6]">@row["PropE6"]</td>
-                                <td id="DensityE-@rowIndex-@colIndex[7]">@row["PropE7"]</td>
-                                <td id="DensityE-@rowIndex-@colIndex[8]">@row["PropE8"]</td>
+                                <td class="td" id="DensityE-@rowIndex-@colIndex[1]">@row["PropE1"]</td>
+                                <td class="td" id="DensityE-@rowIndex-@colIndex[2]">@row["PropE2"]</td>
+                                <td class="td" id="DensityE-@rowIndex-@colIndex[3]">@row["PropE3"]</td>
+                                <td class="td" id="DensityE-@rowIndex-@colIndex[4]">@row["PropE4"]</td>
+                                <td class="td" id="DensityE-@rowIndex-@colIndex[5]">@row["PropE5"]</td>
+                                <td class="td" id="DensityE-@rowIndex-@colIndex[6]">@row["PropE6"]</td>
+                                <td class="td" id="DensityE-@rowIndex-@colIndex[7]">@row["PropE7"]</td>
+                                <td class="td" id="DensityE-@rowIndex-@colIndex[8]">@row["PropE8"]</td>
                             </tr>
                             rowIndex++;
                         }
@@ -105,14 +105,14 @@
                             int[] colIndex = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
                             <tr id="row-@rowIndex1">
                                 <td id="PoreScanE-@rowIndex1-@colIndex[0]">@row["PropName"]</td>
-                                <td id="PoreScanE-@rowIndex1-@colIndex[1]">@row["PropE1"]</td>
-                                <td id="PoreScanE-@rowIndex1-@colIndex[2]">@row["PropE2"]</td>
-                                <td id="PoreScanE-@rowIndex1-@colIndex[3]">@row["PropE3"]</td>
-                                <td id="PoreScanE-@rowIndex1-@colIndex[4]">@row["PropE4"]</td>
-                                <td id="PoreScanE-@rowIndex1-@colIndex[5]">@row["PropE5"]</td>
-                                <td id="PoreScanE-@rowIndex1-@colIndex[6]">@row["PropE6"]</td>
-                                <td id="PoreScanE-@rowIndex1-@colIndex[7]">@row["PropE7"]</td>
-                                <td id="PoreScanE-@rowIndex1-@colIndex[8]">@row["PropE8"]</td>
+                                <td class="td" id="PoreScanE-@rowIndex1-@colIndex[1]">@row["PropE1"]</td>
+                                <td class="td" id="PoreScanE-@rowIndex1-@colIndex[2]">@row["PropE2"]</td>
+                                <td class="td" id="PoreScanE-@rowIndex1-@colIndex[3]">@row["PropE3"]</td>
+                                <td class="td" id="PoreScanE-@rowIndex1-@colIndex[4]">@row["PropE4"]</td>
+                                <td class="td" id="PoreScanE-@rowIndex1-@colIndex[5]">@row["PropE5"]</td>
+                                <td class="td" id="PoreScanE-@rowIndex1-@colIndex[6]">@row["PropE6"]</td>
+                                <td class="td" id="PoreScanE-@rowIndex1-@colIndex[7]">@row["PropE7"]</td>
+                                <td class="td" id="PoreScanE-@rowIndex1-@colIndex[8]">@row["PropE8"]</td>
                             </tr>
                             rowIndex1++;
                         }
@@ -136,11 +136,10 @@
         </div>
     </div>
 </div>
-<div class="row">
-    <div class="col-3 ">
+    <div class="col-12 row">
 
             <!-- Experimental Compressive Strength Data -->
-        <div class="card card-default" style="min-height:250px;">
+        <div class="card card-default col-6" style="min-height:250px;">
                 <div class="card-header align-items-center">
                     <h2 class="">Experimental Compressive Strength Data</h2>
                 </div>
@@ -148,7 +147,7 @@
                     <table class="table table-sm table-bordered table-hover table-striped table-responsive-md">
                         <thead class="thead-light">
                             <tr>
-                                <th scope="col">Bind Gas Name Here</th>
+                                <th scope="col">Property</th>
                                 <th scope="col">#1</th>
                                 <th scope="col">#2</th>
                                 <th scope="col">#3</th>
@@ -168,14 +167,14 @@
                             int[] colIndex = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
                             <tr id="row-@rowIndex2">
                                 <td id="CompStrE-@rowIndex2-@colIndex[0]">@row["PropName"]</td>
-                                <td id="CompStrE-@rowIndex2-@colIndex[1]">@row["PropE1"]</td>
-                                <td id="CompStrE-@rowIndex2-@colIndex[2]">@row["PropE2"]</td>
-                                <td id="CompStrE-@rowIndex2-@colIndex[3]">@row["PropE3"]</td>
-                                <td id="CompStrE-@rowIndex2-@colIndex[4]">@row["PropE4"]</td>
-                                <td id="CompStrE-@rowIndex2-@colIndex[5]">@row["PropE5"]</td>
-                                <td id="CompStrE-@rowIndex2-@colIndex[6]">@row["PropE6"]</td>
-                                <td id="CompStrE-@rowIndex2-@colIndex[7]">@row["PropE7"]</td>
-                                <td id="CompStrE-@rowIndex2-@colIndex[8]">@row["PropE8"]</td>
+                                <td class="td" id="CompStrE-@rowIndex2-@colIndex[1]">@row["PropE1"]</td>
+                                <td class="td" id="CompStrE-@rowIndex2-@colIndex[2]">@row["PropE2"]</td>
+                                <td class="td" id="CompStrE-@rowIndex2-@colIndex[3]">@row["PropE3"]</td>
+                                <td class="td" id="CompStrE-@rowIndex2-@colIndex[4]">@row["PropE4"]</td>
+                                <td class="td" id="CompStrE-@rowIndex2-@colIndex[5]">@row["PropE5"]</td>
+                                <td class="td" id="CompStrE-@rowIndex2-@colIndex[6]">@row["PropE6"]</td>
+                                <td class="td" id="CompStrE-@rowIndex2-@colIndex[7]">@row["PropE7"]</td>
+                                <td class="td" id="CompStrE-@rowIndex2-@colIndex[8]">@row["PropE8"]</td>
                             </tr>
                             rowIndex2++;
                             }
@@ -200,7 +199,7 @@
                 </div>
             </div>
             <!-- Percent Closed Cell (%CC) Data -->
-        <div class="card card-default" style="min-height:250px;">
+        <div class="card card-default col-6" style="min-height:250px;">
                 <div class="card-header align-items-center">
                     <h2 class="">Percent Closed Cell (%CC) Data</h2>
                 </div>
@@ -208,7 +207,7 @@
                     <table class="table table-sm table-bordered table-hover table-striped table-responsive-md">
                         <thead class="thead-light">
                             <tr>
-                                <th scope="col">Bind Gas Name Here</th>
+                                <th scope="col">Property</th>
                                 <th scope="col">#1</th>
                                 <th scope="col">#2</th>
                                 <th scope="col">#3</th>
@@ -228,14 +227,14 @@
                             int[] colIndex = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
                             <tr id="row-@rowIndex3">
                                 <td id="CloseCellE-@rowIndex3-@colIndex[0]">@row["PropName"]</td>
-                                <td id="CloseCellE-@rowIndex3-@colIndex[1]">@row["PropE1"]</td>
-                                <td id="CloseCellE-@rowIndex3-@colIndex[2]">@row["PropE2"]</td>
-                                <td id="CloseCellE-@rowIndex3-@colIndex[3]">@row["PropE3"]</td>
-                                <td id="CloseCellE-@rowIndex3-@colIndex[4]">@row["PropE4"]</td>
-                                <td id="CloseCellE-@rowIndex3-@colIndex[5]">@row["PropE5"]</td>
-                                <td id="CloseCellE-@rowIndex3-@colIndex[6]">@row["PropE6"]</td>
-                                <td id="CloseCellE-@rowIndex3-@colIndex[7]">@row["PropE7"]</td>
-                                <td id="CloseCellE-@rowIndex3-@colIndex[8]">@row["PropE8"]</td>
+                                <td class="td" id="CloseCellE-@rowIndex3-@colIndex[1]">@row["PropE1"]</td>
+                                <td class="td" id="CloseCellE-@rowIndex3-@colIndex[2]">@row["PropE2"]</td>
+                                <td class="td" id="CloseCellE-@rowIndex3-@colIndex[3]">@row["PropE3"]</td>
+                                <td class="td" id="CloseCellE-@rowIndex3-@colIndex[4]">@row["PropE4"]</td>
+                                <td class="td" id="CloseCellE-@rowIndex3-@colIndex[5]">@row["PropE5"]</td>
+                                <td class="td" id="CloseCellE-@rowIndex3-@colIndex[6]">@row["PropE6"]</td>
+                                <td class="td" id="CloseCellE-@rowIndex3-@colIndex[7]">@row["PropE7"]</td>
+                                <td class="td" id="CloseCellE-@rowIndex3-@colIndex[8]">@row["PropE8"]</td>
                             </tr>
                             rowIndex3++;
 
@@ -260,9 +259,8 @@
                     </table>
                 </div>
             </div>
-
     </div>
-    <div class="col-9">
+    <div class="col-12">
         <!-- Experimental Hot Plates' Data -->
         <div class="card card-default" style="min-height:500px;">
             <div class="card-header align-items-center">
@@ -301,22 +299,22 @@
                        int[] colIndex = { 0, 1, 2, 3, 4, 5, 6, 7, 8 ,9,10,11,12,13,14,15,16};
                             <tr id="row-@rowIndex4">
                        <td id="HotPlatesE-@rowIndex4-@colIndex[0]">@row["PropName"]</td>
-                       <td id="HotPlatesE-@rowIndex4-@colIndex[1]">@row["PropEi1"]</td>
-                       <td id="HotPlatesE-@rowIndex4-@colIndex[2]">@row["PropEf1"]</td>
-                       <td id="HotPlatesE-@rowIndex4-@colIndex[3]">@row["PropEi2"]</td>
-                       <td id="HotPlatesE-@rowIndex4-@colIndex[4]">@row["PropEf2"]</td>
-                       <td id="HotPlatesE-@rowIndex4-@colIndex[5]">@row["PropEi3"]</td>
-                       <td id="HotPlatesE-@rowIndex4-@colIndex[6]">@row["PropEf3"]</td>
-                       <td id="HotPlatesE-@rowIndex4-@colIndex[7]">@row["PropEi4"]</td>
-                       <td id="HotPlatesE-@rowIndex4-@colIndex[8]">@row["PropEf4"]</td>
-                       <td id="HotPlatesE-@rowIndex4-@colIndex[9]">@row["PropEi5"]</td>
-                       <td id="HotPlatesE-@rowIndex4-@colIndex[10]">@row["PropEf5"]</td>
-                       <td id="HotPlatesE-@rowIndex4-@colIndex[11]">@row["PropEi6"]</td>
-                       <td id="HotPlatesE-@rowIndex4-@colIndex[12]">@row["PropEf6"]</td>
-                       <td id="HotPlatesE-@rowIndex4-@colIndex[13]">@row["PropEi7"]</td>
-                       <td id="HotPlatesE-@rowIndex4-@colIndex[14]">@row["PropEf7"]</td>
-                       <td id="HotPlatesE-@rowIndex4-@colIndex[15]">@row["PropEi8"]</td>
-                       <td id="HotPlatesE-@rowIndex4-@colIndex[16]">@row["PropEf8"]</td>
+                       <td class="td" id="HotPlatesE-@rowIndex4-@colIndex[1]">@row["PropEi1"]</td>
+                       <td class="td" id="HotPlatesE-@rowIndex4-@colIndex[2]">@row["PropEf1"]</td>
+                       <td class="td" id="HotPlatesE-@rowIndex4-@colIndex[3]">@row["PropEi2"]</td>
+                       <td class="td" id="HotPlatesE-@rowIndex4-@colIndex[4]">@row["PropEf2"]</td>
+                       <td class="td" id="HotPlatesE-@rowIndex4-@colIndex[5]">@row["PropEi3"]</td>
+                       <td class="td" id="HotPlatesE-@rowIndex4-@colIndex[6]">@row["PropEf3"]</td>
+                       <td class="td" id="HotPlatesE-@rowIndex4-@colIndex[7]">@row["PropEi4"]</td>
+                       <td class="td" id="HotPlatesE-@rowIndex4-@colIndex[8]">@row["PropEf4"]</td>
+                       <td class="td" id="HotPlatesE-@rowIndex4-@colIndex[9]">@row["PropEi5"]</td>
+                       <td class="td" id="HotPlatesE-@rowIndex4-@colIndex[10]">@row["PropEf5"]</td>
+                       <td class="td" id="HotPlatesE-@rowIndex4-@colIndex[11]">@row["PropEi6"]</td>
+                       <td class="td" id="HotPlatesE-@rowIndex4-@colIndex[12]">@row["PropEf6"]</td>
+                       <td class="td" id="HotPlatesE-@rowIndex4-@colIndex[13]">@row["PropEi7"]</td>
+                       <td class="td" id="HotPlatesE-@rowIndex4-@colIndex[14]">@row["PropEf7"]</td>
+                       <td class="td" id="HotPlatesE-@rowIndex4-@colIndex[15]">@row["PropEi8"]</td>
+                       <td class="td" id="HotPlatesE-@rowIndex4-@colIndex[16]">@row["PropEf8"]</td>
                         </tr>
                          rowIndex4++;
                         }
@@ -364,12 +362,11 @@
             </div>
         </div>
     </div>
-</div>
 @section Scripts{
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {
             $(function () {
-                $("td").click(function (event) {
+                $(".td").click(function (event) {
                     if ($(this).children("input").length > 0)
                         return false;
 

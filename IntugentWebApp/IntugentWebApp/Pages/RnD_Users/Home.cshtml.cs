@@ -628,7 +628,7 @@ namespace IntugentWebApp.Pages.RnD_Users
 
             if (!_objectsService.Cbfile.bCanSwitchRecord)
             {
-                gRNDSearchSelectedIndex = _objectsService.Cbfile.iIDMfgIndex;
+                gRNDSearchSelectedIndex = _objectsService.RNDHome.indSet;
                 //MessageBox.Show(Cbfile.sNoRecSwitchMsg, Cbfile.sAppName);
                 return new JsonResult(new { message = "canswitch: " });
             }
@@ -644,13 +644,25 @@ namespace IntugentWebApp.Pages.RnD_Users
 
 
             ///////////////// this is index of gMFGSearch dataview not dataset ID
-            _objectsService.Cbfile.iIDMfgIndex = gRNDSearchSelectedIndex;
+            _objectsService.Cbfile.iIndexRND = gRNDSelectedDatasetID;
+            _objectsService.RNDHome.indSet = gRNDSearchSelectedIndex;
+            _objectsService.RNDHome.IdSet= gRNDSelectedDatasetID;
+            //try
+            //{
 
-            _objectsService.Cbfile.iIDMfg = gRNDSelectedDatasetID;
+            //_objectsService.RNDHome.GetDataSet();
+            //    return new JsonResult(_objectsService.RNDHome.GetDataSet());
+            //    //_objectsService.Cbfile.iIndexRND = gRNDSelectedDatasetID;
+            //}
+            //catch
+            //{
+            //    return new JsonResult("bruh");
+
+            //}
             //EnableMfgPages(true);
             //(_objectsService.MfgInProcess, _objectsService.MfgFinishedGoods, _objectsService.MfgDimensionsStability, _objectsService.MfgPlantsData, _objectsService.MfgJetMixing) = _objectsService.MfgHome.GetAllMfgData(_objectsService.MfgInProcess, _objectsService.MfgFinishedGoods, _objectsService.MfgDimensionsStability, _objectsService.MfgPlantsData, _objectsService.MfgJetMixing);
 
-            return new JsonResult(new { message = "Dataset selected: " + gRNDSearchSelectedIndex + " -- " + gRNDSelectedDatasetID });
+            return new JsonResult(new { message = "Dataset selected: " + gRNDSearchSelectedIndex + " -- " + gRNDSelectedDatasetID +"--"+ _objectsService.RNDHome.IdSet });
         }
 
     }

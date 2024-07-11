@@ -32,7 +32,7 @@ namespace IntugentClassLibrary.Pages.Rnd
         public DataTable dtS = new DataTable();
         public DataRow drS, drF;
         public int IdSet = -1;
-        public int indSet = -1;  // set by the program after the new dataset transfer is complete
+        public int indSet = 23;  // set by the program after the new dataset transfer is complete
         public bool bDataRead;
         public Cbfile CBfiles;
         public CDefualts CDefualts;

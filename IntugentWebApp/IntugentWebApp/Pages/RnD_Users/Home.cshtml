@@ -178,12 +178,13 @@
 
                                     <td>
                                         <label class="switch switch-primary switch-pill form-control-label ">
-                                            <input type="checkbox" class="switch-input form-check-input" id="select_@rowIndex" data-index="@id">
+                                            <input type="checkbox" class="switch-input form-check-input" id="@rowView["ID"]" data-index="@rowView["ID"]">
                                             <span class="switch-label"></span>
                                             <span class="switch-handle"></span>
                                         </label>
                                     </td>
                                 </tr>
+                                <p>@rowView["ID"]</p>
                                 rowIndex++;
                             }
 
@@ -203,14 +204,12 @@
 </div>
 
 
-@{
+@* @{
     // if some dataset is already selected.. set its checkbox to checked..
-    if (Model.gRNDSearchSelectedIndex != null)
-    {
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 var currentId = @Html.Raw(Model.gRNDSearchSelectedIndex);
-                console.log(@Model.gRNDSearchSelectedIndex)
+                console.log(@Model.gRNDSearchSelectedIndex "+" @Model.selectedDatasetID)
                 if (currentId) {
 
                     var checkbox = document.getElementById('select_' + currentId);
@@ -221,11 +220,22 @@
                 }
             });
         </script>
-    }
-}
+} *@
 @section Scripts {
 
     <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var currentId = @Html.Raw(Model.gRNDSearchSelectedIndex);
+            console.log(@Model.gRNDSearchSelectedIndex , currentId)
+            if (currentId) {
+
+                var checkbox = document.getElementById('select_' + currentId);
+
+                if (checkbox) {
+                    checkbox.checked = true;
+                }
+            }
+        });
 
         // handle checkbox change event
         $('input[type="checkbox"]').change(function () {

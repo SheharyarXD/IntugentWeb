@@ -40,9 +40,9 @@ namespace IntugentClassLibrary.Pages.Rnd
         public RNDHome(CDefualts CDefualts, CLists CList, Cbfile CBfile)
         {
             bInit = false;
-            CDefualts = CDefualts;
+            this.CDefualts = CDefualts;
             this.CList = CList;
-            CBfile = CBfile;
+            this.CBfiles = CBfile;
         }
 
         public bool GetNewDataset()

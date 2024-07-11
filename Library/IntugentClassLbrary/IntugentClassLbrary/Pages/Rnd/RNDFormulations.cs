@@ -34,7 +34,91 @@ namespace IntugentClassLibrary.Pages.Rnd
         public RNDFormulations(CDefualts cDefualts,Cbfile cbfile) { 
                 this.cDefualts = cDefualts;
             this.cbfile = cbfile;
+            Startup();
         }
+        public void Startup()
+        {
+            int id = 0, id1 = 0;
+
+            // Formulation Array
+            for (int i = 0; i <  Forms.nForm; i++)  Forms.FormAr[i] = new CForm();
+
+
+            //Table of Properties          ;
+
+             dtFormProp.Columns.Add("Descriptors", typeof(string));
+            for (int i = 1; i <  Forms.nForm + 1; i++)
+            {
+                 dtFormProp.Columns.Add("#" + i, typeof(double));
+            }
+            for (int i = 0; i < 30; i++)  dtFormProp.Rows.Add();
+
+
+
+            //Initialize Material lists on the PO and Iso Sides
+
+            //            Forms.dtFormIso.Add("Descriptors", typeof(string));
+            //           for (int i = 1; i <  Forms.nForm + 1; i++)
+
+
+             Forms.POMats.Add(new CMaterial());
+             Forms.POMats.Add(new CMaterial());
+
+             Forms.IsoMats.Add(new CMaterial()
+            {
+                ID = 62,
+                MatName = "Lupranat® M 20R",
+                MatType = "Iso-PMDI",
+                MatFunc = 2.7,
+                MatNco = 31.5,
+                //                Pbw1 = 50.0, Pbw8 = 10
+            });
+
+
+
+
+             Forms.NCOIndexMats.Add(new CMaterial()
+            {
+                MatName = "NCO Index (Equivalents of NCO per 100 Equivalents of Active-H",
+                Pbw1 = "270",
+                Pbw2 = "270",
+                Pbw3 = "270",
+                Pbw4 = "270",
+                Pbw5 = "270",
+                Pbw6 = "270",
+                Pbw7 = "270",
+                Pbw8 = "270"
+
+            });
+            for (int ifo = 0; ifo <  Forms.nForm; ifo++)
+            {
+                 Forms.FormAr[ifo].NcoIndex = 270;
+                 Forms.FormAr[ifo].BasisPbwPOSide = 100;
+            }
+
+            //gPO  =  Forms.POMats;
+            //gNco =  Forms.NCOIndexMats;
+            //gIso =  Forms.IsoMats;
+
+            //             Forms.dtFormIso.Add
+
+            //            GetMatList();
+             GetMatListSql();
+
+             ModifyPOIsoLists(0, ref  Forms.IsoMats, 0,  dtIso);  //fill the grid with the 1st material on the list
+
+            for (int i = 0; i <  dtPO.Rows.Count; i++)
+            {
+                if ( dtPO.Rows[i]["ID"].ToString() == "106") id = i;
+                if ( dtPO.Rows[i]["ID"].ToString() == "89") id1 = i;
+
+            }
+             ModifyPOIsoLists(0, ref  Forms.POMats, id,  dtPO);
+             ModifyPOIsoLists(1, ref  Forms.POMats, id1,  dtPO);
+
+
+        }
+
         public void GetMatListSql()
         {
             string sql;

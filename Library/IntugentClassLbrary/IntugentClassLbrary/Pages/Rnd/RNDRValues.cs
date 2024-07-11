@@ -16,6 +16,7 @@ namespace IntugentClassLibrary.Pages.Rnd
         public CRCalc RCalc = new CRCalc();
         public CRData RData = new CRData();
         public CLists CLists;
+        public CUConv CUConv = new CUConv();
         public RNDRValues(CLists cLists) { 
             this.CLists = cLists;
         }

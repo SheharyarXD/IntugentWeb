@@ -637,7 +637,7 @@ namespace IntugentWebApp.Pages.RnD_Users
                 gMeasureTemp  = (_objectsService.RNDRValues.RData.dTestTempC * 1.8 + 32.0).ToString("0.0");
                 gCellSize  = (1.0E6 * _objectsService.RNDRValues.RData.dCellSize).ToString("0.0");
                 gCellPress  = _objectsService.RNDRValues.RData.dInitCellPress.ToString("0.00");
-                gPolDen  = (_objectsService.RNDRValues.RData.dPolDensity / _objectsService.CUconv.ToSi_Dens).ToString("0.00");
+                gPolDen  = (_objectsService.RNDRValues.RData.dPolDensity / _objectsService.RNDRValues.CUConv.ToSi_Dens).ToString("0.00");
                 gPolCond  = (1000.0 * _objectsService.RNDRValues.RData.dPolCond).ToString("0.00");
                 gFracStruts  = (100.0 * _objectsService.RNDRValues.RData.dFracStrut).ToString("0.00");
 

@@ -184,7 +184,6 @@
                                         </label>
                                     </td>
                                 </tr>
-                                <p>@rowView["ID"]</p>
                                 rowIndex++;
                             }
 
@@ -229,7 +228,7 @@
             console.log(@Model.gRNDSearchSelectedIndex , currentId)
             if (currentId) {
 
-                var checkbox = document.getElementById('select_' + currentId);
+                var checkbox = document.getElementById(currentId);
 
                 if (checkbox) {
                     checkbox.checked = true;

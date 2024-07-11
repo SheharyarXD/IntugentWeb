@@ -49,7 +49,7 @@
     </div>
     <div class="col-8">
         <!-- R  Values and Cell Gas Composition -->
-        <div class="card card-default" style="height:300px;">
+        <div class="card card-default" style="min-height:300px;">
             <div class="card-header align-items-center">
                 <h2 class="">R  Values and Cell Gas Composition</h2>
             </div>
@@ -95,7 +95,7 @@
                 <!-- X Axis -->
                 <div class="form-floating mb-2">
                     <select class="form-select" id="XAxis">
-                        @*       @foreach (DataRowView row in Model.gProd1)
+                        @*      @foreach (DataRowView row in Model.gProd1)
                         {
                         <option value="@row["Product"]" selected="@(Model.gProd1SelectedValue == (row["Product Code"].ToString()))">@row["Product"]</option>
                         }   *@

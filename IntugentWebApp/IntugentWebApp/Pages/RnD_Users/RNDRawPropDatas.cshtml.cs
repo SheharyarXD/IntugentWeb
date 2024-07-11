@@ -106,370 +106,373 @@ namespace IntugentWebApp.Pages.RnD_Users
         }
 
 
-//        public IActionResult OnPostOngDensityE()
-//        {
-//            string sMsg;
-//            int irow = e.Row.GetIndex();
-//            int icol = e.Column.DisplayIndex;
-//            bool bT = false, bW = false, bL = false, b = false;
-//            int icol1 = icol - 1;
+        public IActionResult OnPostGBlurDensityE_Click(string rowId,string colId,string text)
+        {
+            string sMsg;
+            int irow = Int32.Parse(rowId);
+            int icol = Int32.Parse(colId);
+            bool bT = false, bW = false, bL = false, b = false;
+            int icol1 = icol - 1;
 
-//            string[] sFields = { "DensT1", "DensT2", "DensT3", "DensT4", "DensT5", "DensL1", "DensL2", "DensW1", "DensW2", "DensMass" };
+            string[] sFields = { "DensT1", "DensT2", "DensT3", "DensT4", "DensT5", "DensL1", "DensL2", "DensW1", "DensW2", "DensMass" };
 
-//            int iSel;
-//            double dtemp;
+            int iSel;
+            double dtemp;
 
-//            if (icol == 0) return null;
-//            if (irow > 9) return null;
+            if (icol == 0) return null;
+            if (irow > 9) return null;
 
-//            DataGridRow dgr = e.Row;
-//            TextBox tb = gDensityE.Columns[icol].GetCellContent(dgr) as TextBox;
-//            b = GetDoubleFromGrid(sFields, irow, icol1, tb);
+            //DataGridRow dgr = e.Row;
+            //TextBox tb = gDensityE.Columns[icol].GetCellContent(dgr) as TextBox;
+            b = GetDoubleFromGrid(sFields, irow, icol1, text);
+            b = true;
+            if (irow < 5) bT = b;
+            else if (irow < 7) bL = b;
+            else if (irow < 9) bW = b;
 
-//            if (irow < 5) bT = b;
-//            else if (irow < 7) bL = b;
-//            else if (irow < 9) bW = b;
+            double dSum = 0, dtemp1 = 0; int nCount = 0;
+            if (bT)
+            {
+                if (_objectsService.RNDHome.dtF.Rows[icol1]["DensT1"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[icol1]["DensT1"]; }
+                if (_objectsService.RNDHome.dtF.Rows[icol1]["DensT2"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[icol1]["DensT2"]; }
+                if (_objectsService.RNDHome.dtF.Rows[icol1]["DensT3"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[icol1]["DensT3"]; }
+                if (_objectsService.RNDHome.dtF.Rows[icol1]["DensT4"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[icol1]["DensT4"]; }
+                if (_objectsService.RNDHome.dtF.Rows[icol1]["DensT5"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[icol1]["DensT5"]; }
+                if (nCount > 0) { dtemp1 = dSum / nCount; _objectsService.RNDHome.dtF.Rows[icol1]["DensAvgT"] = dtemp1; _objectsService.RNDRawProps.dtDensityC.Rows[0][icol] = dtemp1.ToString("0.###"); }
+                else { _objectsService.RNDHome.dtF.Rows[icol1]["DensAvgT"] = DBNull.Value; _objectsService.RNDRawProps.dtDensityC.Rows[0][icol] = string.Empty; }
+            }
+            else if (bL)
+            {
+                if (_objectsService.RNDHome.dtF.Rows[icol1]["DensL1"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[icol1]["DensL1"]; }
+                if (_objectsService.RNDHome.dtF.Rows[icol1]["DensL2"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[icol1]["DensL2"]; }
+                if (nCount > 0) { dtemp1 = dSum / nCount; _objectsService.RNDHome.dtF.Rows[icol1]["DensAvgL"] = dtemp1; _objectsService.RNDRawProps.dtDensityC.Rows[1][icol] = dtemp1.ToString("0.###"); }
+                else { _objectsService.RNDHome.dtF.Rows[icol1]["DensAvgL"] = DBNull.Value; _objectsService.RNDRawProps.dtDensityC.Rows[1][icol] = string.Empty; }
+            }
 
+            else if (bW)
+            {
+                if (_objectsService.RNDHome.dtF.Rows[icol1]["DensW1"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[icol1]["DensW1"]; }
+                if (_objectsService.RNDHome.dtF.Rows[icol1]["DensW2"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[icol1]["DensW2"]; }
+                if (nCount > 0) { dtemp1 = dSum / nCount; _objectsService.RNDHome.dtF.Rows[icol1]["DensAvgW"] = dtemp1; _objectsService.RNDRawProps.dtDensityC.Rows[2][icol] = dtemp1.ToString("0.###"); }
+                else { _objectsService.RNDHome.dtF.Rows[icol1]["DensAvgW"] = DBNull.Value; _objectsService.RNDRawProps.dtDensityC.Rows[2][icol] = string.Empty; }
+            }
 
-//            double dSum = 0, dtemp1 = 0; int nCount = 0;
-//            if (bT)
-//            {
-//                if (_objectsService.RNDHome.dtF.Rows[icol1]["DensT1"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[icol1]["DensT1"]; }
-//                if (_objectsService.RNDHome.dtF.Rows[icol1]["DensT2"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[icol1]["DensT2"]; }
-//                if (_objectsService.RNDHome.dtF.Rows[icol1]["DensT3"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[icol1]["DensT3"]; }
-//                if (_objectsService.RNDHome.dtF.Rows[icol1]["DensT4"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[icol1]["DensT4"]; }
-//                if (_objectsService.RNDHome.dtF.Rows[icol1]["DensT5"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[icol1]["DensT5"]; }
-//                if (nCount > 0) { dtemp1 = dSum / nCount; _objectsService.RNDHome.dtF.Rows[icol1]["DensAvgT"] = dtemp1; _objectsService.RNDRawProps.dtDensityC.Rows[0][icol] = dtemp1.ToString("0.###"); }
-//                else { _objectsService.RNDHome.dtF.Rows[icol1]["DensAvgT"] = DBNull.Value; _objectsService.RNDRawProps.dtDensityC.Rows[0][icol] = string.Empty; }
-//            }
-//            else if (bL)
-//            {
-//                if (_objectsService.RNDHome.dtF.Rows[icol1]["DensL1"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[icol1]["DensL1"]; }
-//                if (_objectsService.RNDHome.dtF.Rows[icol1]["DensL2"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[icol1]["DensL2"]; }
-//                if (nCount > 0) { dtemp1 = dSum / nCount; _objectsService.RNDHome.dtF.Rows[icol1]["DensAvgL"] = dtemp1; _objectsService.RNDRawProps.dtDensityC.Rows[1][icol] = dtemp1.ToString("0.###"); }
-//                else { _objectsService.RNDHome.dtF.Rows[icol1]["DensAvgL"] = DBNull.Value; _objectsService.RNDRawProps.dtDensityC.Rows[1][icol] = string.Empty; }
-//            }
+            if (_objectsService.RNDHome.dtF.Rows[icol1]["DensAvgT"] == DBNull.Value || _objectsService.RNDHome.dtF.Rows[icol1]["DensAvgL"] == DBNull.Value || _objectsService.RNDHome.dtF.Rows[icol1]["DensAvgW"] == DBNull.Value || _objectsService.RNDHome.dtF.Rows[icol1]["DensMass"] == DBNull.Value) { _objectsService.RNDHome.dtF.Rows[icol1]["Density"] = DBNull.Value; _objectsService.RNDRawProps.dtDensityC.Rows[3][icol] = string.Empty; }
+            else
+            {
+                dtemp1 = 0.000578704 * (double)_objectsService.RNDHome.dtF.Rows[icol1]["DensAvgT"] * (double)_objectsService.RNDHome.dtF.Rows[icol1]["DensAvgL"] * (double)_objectsService.RNDHome.dtF.Rows[icol1]["DensAvgW"];
+                if (dtemp1 > 0)
+                {
+                    dtemp1 = 0.00220462 * (double)_objectsService.RNDHome.dtF.Rows[icol1]["DensMass"] / dtemp1;
+                    _objectsService.RNDHome.dtF.Rows[icol1]["Density"] = dtemp1; _objectsService.RNDRawProps.dtDensityC.Rows[3][icol] = dtemp1.ToString("0.###");
+                }
+                else { _objectsService.RNDHome.dtF.Rows[icol1]["Density"] = DBNull.Value; _objectsService.RNDRawProps.dtDensityC.Rows[3][icol] = string.Empty; }
+            }
+            gDensityC  = _objectsService.RNDRawProps.dtDensityC.DefaultView;
+            _objectsService.RNDHome.UpdateFormulatiions();
+            return new JsonResult(new { message = rowId, colId, text });
+        }
 
-//            else if (bW)
-//            {
-//                if (_objectsService.RNDHome.dtF.Rows[icol1]["DensW1"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[icol1]["DensW1"]; }
-//                if (_objectsService.RNDHome.dtF.Rows[icol1]["DensW2"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[icol1]["DensW2"]; }
-//                if (nCount > 0) { dtemp1 = dSum / nCount; _objectsService.RNDHome.dtF.Rows[icol1]["DensAvgW"] = dtemp1; _objectsService.RNDRawProps.dtDensityC.Rows[2][icol] = dtemp1.ToString("0.###"); }
-//                else { _objectsService.RNDHome.dtF.Rows[icol1]["DensAvgW"] = DBNull.Value; _objectsService.RNDRawProps.dtDensityC.Rows[2][icol] = string.Empty; }
-//            }
+        public bool GetDoubleFromGrid(string[] sFields, int irow, int icol1, string tb)
+        {
+            string stmp, stmp0;
+            double dtmp;
+            bool b = false;
 
-//            if (_objectsService.RNDHome.dtF.Rows[icol1]["DensAvgT"] == DBNull.Value || _objectsService.RNDHome.dtF.Rows[icol1]["DensAvgL"] == DBNull.Value || _objectsService.RNDHome.dtF.Rows[icol1]["DensAvgW"] == DBNull.Value || _objectsService.RNDHome.dtF.Rows[icol1]["DensMass"] == DBNull.Value) { _objectsService.RNDHome.dtF.Rows[icol1]["Density"] = DBNull.Value; _objectsService.RNDRawProps.dtDensityC.Rows[3][icol] = string.Empty; }
-//            else
-//            {
-//                dtemp1 = 0.000578704 * (double)_objectsService.RNDHome.dtF.Rows[icol1]["DensAvgT"] * (double)_objectsService.RNDHome.dtF.Rows[icol1]["DensAvgL"] * (double)_objectsService.RNDHome.dtF.Rows[icol1]["DensAvgW"];
-//                if (dtemp1 > 0)
-//                {
-//                    dtemp1 = 0.00220462 * (double)_objectsService.RNDHome.dtF.Rows[icol1]["DensMass"] / dtemp1;
-//                    _objectsService.RNDHome.dtF.Rows[icol1]["Density"] = dtemp1; _objectsService.RNDRawProps.dtDensityC.Rows[3][icol] = dtemp1.ToString("0.###");
-//                }
-//                else { _objectsService.RNDHome.dtF.Rows[icol1]["Density"] = DBNull.Value; _objectsService.RNDRawProps.dtDensityC.Rows[3][icol] = string.Empty; }
-//            }
-//            gDensityC  = _objectsService.RNDRawProps.dtDensityC.DefaultView;
-//            _objectsService.RNDHome.UpdateFormulatiions();
-//            return null;
-//        }
+            string sField = sFields[irow];
+            if (_objectsService.RNDHome.dtF.Rows[icol1][sField] == DBNull.Value) stmp0 = string.Empty;
+            else if ((double)_objectsService.RNDHome.dtF.Rows[icol1][sField] > 0) stmp0 = ((double)_objectsService.RNDHome.dtF.Rows[icol1][sField]).ToString("0.####");
+            else stmp0 = string.Empty;
 
-//        public bool GetDoubleFromGrid(string[] sFields, int irow, int icol1, TextBox tb)
-//        {
-//            string stmp, stmp0;
-//            double dtmp;
-//            bool b = false;
+            if (tb == string.Empty) _objectsService.RNDHome.dtF.Rows[icol1][sField] = DBNull.Value;
+            else if (double.TryParse(tb, out dtmp)) { _objectsService.RNDHome.dtF.Rows[icol1][sField] = dtmp; b = true; }
+            else { 
+                //MessageBox.Show("Improper Value. New Value is not accepted.");
+                  tb = stmp0; }
+            return true;
+        }
 
-//            string sField = sFields[irow];
-//            if (_objectsService.RNDHome.dtF.Rows[icol1][sField] == DBNull.Value) stmp0 = string.Empty;
-//            else if ((double)_objectsService.RNDHome.dtF.Rows[icol1][sField] > 0) stmp0 = ((double)_objectsService.RNDHome.dtF.Rows[icol1][sField]).ToString("0.####");
-//            else stmp0 = string.Empty;
+        public IActionResult OnPostGCompStrE(string rowId, string colId, string text)
+        {
+            string sMsg;
+            string[] sFields = { "CompStr1", "CompStr2", "CompStr3", "CompStr4" };
+            int irow = Int32.Parse(rowId);
+            int icol = Int32.Parse(colId);
+            bool bd = false;
+            int icol1 = icol - 1;
 
-//            if (tb.Text == string.Empty) _objectsService.RNDHome.dtF.Rows[icol1][sField] = DBNull.Value;
-//            else if (double.TryParse(tb.Text, out dtmp)) { _objectsService.RNDHome.dtF.Rows[icol1][sField] = dtmp; b = true; }
-//            else { 
-//                //MessageBox.Show("Improper Value. New Value is not accepted.");
-//                  tb.Text = stmp0; }
-//            return true;
-//        }
+            double dtemp;
 
-//        public IActionResult OnPostOngCompStrE()
-//        {
-//            string sMsg;
-//            string[] sFields = { "CompStr1", "CompStr2", "CompStr3", "CompStr4" };
-//            int irow = e.Row.GetIndex();
-//            int icol = e.Column.DisplayIndex;
-//            bool bd = false;
-//            int icol1 = icol - 1;
+            if (icol == 0) return null;
+            if (irow > 3) return null;
 
-//            double dtemp;
+            //DataGridRow dgr = e.Row;
+            //TextBox tb = gCompStrE.Columns[icol].GetCellContent(dgr) as TextBox;
+            string tb = text;
+            bool b = GetDoubleFromGrid(sFields, irow, icol1, tb);
 
-//            if (icol == 0) return null;
-//            if (irow > 3) return null;
+            /*
+                        bd = double.TryParse(tb.Text, out dtemp);
+                        if (!bd) tb.Text = String.Empty;
+                        //                dtDensityE.Rows[irow][icol] = dtemp;
 
-//            DataGridRow dgr = e.Row;
-//            TextBox tb = gCompStrE.Columns[icol].GetCellContent(dgr) as TextBox;
-//            bool b = GetDoubleFromGrid(sFields, irow, icol1, tb);
+                        switch (irow)
+                        {
+                            case 0: if (bd) _objectsService.RNDHome.dtF.Rows[icol1]["CompStr1"] = dtemp; else _objectsService.RNDHome.dtF.Rows[icol1]["CompStr1"] = DBNull.Value; break;
+                            case 1: if (bd) _objectsService.RNDHome.dtF.Rows[icol1]["CompStr2"] = dtemp; else _objectsService.RNDHome.dtF.Rows[icol1]["CompStr2"] = DBNull.Value; break;
+                            case 2: if (bd) _objectsService.RNDHome.dtF.Rows[icol1]["CompStr3"] = dtemp; else _objectsService.RNDHome.dtF.Rows[icol1]["CompStr3"] = DBNull.Value; break;
+                            case 3: if (bd) _objectsService.RNDHome.dtF.Rows[icol1]["CompStr4"] = dtemp; else _objectsService.RNDHome.dtF.Rows[icol1]["CompStr4"] = DBNull.Value; break;
+                        }
+            */
+            double dSum = 0, dtemp1 = 0; int nCount = 0;
+            if (_objectsService.RNDHome.dtF.Rows[icol1]["CompStr1"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[icol1]["CompStr1"]; }
+            if (_objectsService.RNDHome.dtF.Rows[icol1]["CompStr2"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[icol1]["CompStr2"]; }
+            if (_objectsService.RNDHome.dtF.Rows[icol1]["CompStr3"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[icol1]["CompStr3"]; }
+            if (_objectsService.RNDHome.dtF.Rows[icol1]["CompStr4"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[icol1]["CompStr4"]; }
 
-//            /*
-//                        bd = double.TryParse(tb.Text, out dtemp);
-//                        if (!bd) tb.Text = String.Empty;
-//                        //                dtDensityE.Rows[irow][icol] = dtemp;
+            if (nCount > 0) { dtemp1 = dSum / nCount; _objectsService.RNDHome.dtF.Rows[icol1]["CompStr"] = dtemp1; _objectsService.RNDRawProps.dtCompStrC.Rows[0][icol] = dtemp1.ToString("0.###"); }
+            else { _objectsService.RNDHome.dtF.Rows[icol1]["CompStr"] = DBNull.Value; _objectsService.RNDRawProps.dtCompStrC.Rows[0][icol] = string.Empty; }
 
-//                        switch (irow)
-//                        {
-//                            case 0: if (bd) _objectsService.RNDHome.dtF.Rows[icol1]["CompStr1"] = dtemp; else _objectsService.RNDHome.dtF.Rows[icol1]["CompStr1"] = DBNull.Value; break;
-//                            case 1: if (bd) _objectsService.RNDHome.dtF.Rows[icol1]["CompStr2"] = dtemp; else _objectsService.RNDHome.dtF.Rows[icol1]["CompStr2"] = DBNull.Value; break;
-//                            case 2: if (bd) _objectsService.RNDHome.dtF.Rows[icol1]["CompStr3"] = dtemp; else _objectsService.RNDHome.dtF.Rows[icol1]["CompStr3"] = DBNull.Value; break;
-//                            case 3: if (bd) _objectsService.RNDHome.dtF.Rows[icol1]["CompStr4"] = dtemp; else _objectsService.RNDHome.dtF.Rows[icol1]["CompStr4"] = DBNull.Value; break;
-//                        }
-//            */
-//            double dSum = 0, dtemp1 = 0; int nCount = 0;
-//            if (_objectsService.RNDHome.dtF.Rows[icol1]["CompStr1"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[icol1]["CompStr1"]; }
-//            if (_objectsService.RNDHome.dtF.Rows[icol1]["CompStr2"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[icol1]["CompStr2"]; }
-//            if (_objectsService.RNDHome.dtF.Rows[icol1]["CompStr3"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[icol1]["CompStr3"]; }
-//            if (_objectsService.RNDHome.dtF.Rows[icol1]["CompStr4"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[icol1]["CompStr4"]; }
+            gCompStrC  = _objectsService.RNDRawProps.dtCompStrC.DefaultView;
+            _objectsService.RNDHome.UpdateFormulatiions();
+            return new JsonResult(true);
 
-//            if (nCount > 0) { dtemp1 = dSum / nCount; _objectsService.RNDHome.dtF.Rows[icol1]["CompStr"] = dtemp1; dtCompStrC.Rows[0][icol] = dtemp1.ToString("0.###"); }
-//            else { _objectsService.RNDHome.dtF.Rows[icol1]["CompStr"] = DBNull.Value; _objectsService.RNDRawProps.dtCompStrC.Rows[0][icol] = string.Empty; }
+        }
 
-//            gCompStrC  = _objectsService.RNDRawProps.dtCompStrC.DefaultView;
-//            _objectsService.RNDHome.UpdateFormulatiions();
-//            return null;
+                public IActionResult OnPostCloseCellEBlur(string rowId, string colId, string text)
+                {
+                    string sMsg;
+                    string[] sFields = { "ClosedCellPer1", "ClosedCellPer2", "ClosedCellPer3" };
+                    int irow = Int32.Parse(rowId);
+                    int icol = Int32.Parse(colId);
+                    bool bd = false;
+                    int icol1 = icol - 1;
 
-//        }
-
-//        public IActionResult OnPostOngCloseCellE()
-//        {
-//            string sMsg;
-//            string[] sFields = { "ClosedCellPer1", "ClosedCellPer2", "ClosedCellPer3" };
-//            int irow = e.Row.GetIndex();
-//            int icol = e.Column.DisplayIndex;
-//            bool bd = false;
-//            int icol1 = icol - 1;
-
-//            double dtemp;
-
-
-//            if (icol == 0) return null;
-//            if (irow > 2) return null;
-
-//            DataGridRow dgr = e.Row;
-//            TextBox tb = gCompStrE.Columns[icol].GetCellContent(dgr) as TextBox;
-//            bool b = GetDoubleFromGrid(sFields, irow, icol1, tb);
-
-//            /*
-//            bd = double.TryParse(tb.Text, out dtemp);
-//            if (!bd) tb.Text = String.Empty;
-//            //                dtDensityE.Rows[irow][icol] = dtemp;
-
-//            switch (irow)
-//            {
-//                case 0: if (bd) _objectsService.RNDHome.dtF.Rows[icol1]["ClosedCellPer1"] = dtemp; else _objectsService.RNDHome.dtF.Rows[icol1]["ClosedCellPer1"] = DBNull.Value; break;
-//                case 1: if (bd) _objectsService.RNDHome.dtF.Rows[icol1]["ClosedCellPer2"] = dtemp; else _objectsService.RNDHome.dtF.Rows[icol1]["ClosedCellPer2"] = DBNull.Value; break;
-//                case 2: if (bd) _objectsService.RNDHome.dtF.Rows[icol1]["ClosedCellPer3"] = dtemp; else _objectsService.RNDHome.dtF.Rows[icol1]["ClosedCellPer3"] = DBNull.Value; break;
-
-//            }
-//*/
-//            double dSum = 0, dtemp1 = 0; int nCount = 0;
-//            if (_objectsService.RNDHome.dtF.Rows[icol1]["ClosedCellPer1"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[icol1]["ClosedCellPer1"]; }
-//            if (_objectsService.RNDHome.dtF.Rows[icol1]["ClosedCellPer2"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[icol1]["ClosedCellPer2"]; }
-//            if (_objectsService.RNDHome.dtF.Rows[icol1]["ClosedCellPer3"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[icol1]["ClosedCellPer3"]; }
-
-//            if (nCount > 0) { dtemp1 = dSum / nCount; _objectsService.RNDHome.dtF.Rows[icol1]["ClosedCellPer"] = dtemp1; dtClosedCellC.Rows[0][icol] = dtemp1.ToString("0.###"); }
-//            else { _objectsService.RNDHome.dtF.Rows[icol1]["ClosedCellPer"] = DBNull.Value; dtClosedCellC.Rows[0][icol] = string.Empty; }
-
-//            gCloseCellC  = _objectsService.RNDRawProps.dtClosedCellC.DefaultView;
-//            _objectsService.RNDHome.UpdateFormulatiions();
-//            return null;
-
-//        }
-
-//        public IActionResult OnPostOngPoreScaneE()
-//        {
-
-//            string sMsg;
-//            string[] sFields = { "CellDiaTop", "CellStDevTop", "CellCountTop", "CellDiaSide", "CellStDevSide", "CellCountSide" };
-//            int irow = e.Row.GetIndex();
-//            int icol = e.Column.DisplayIndex;
-//            bool bd = false, bDi = false, bS = false, bC = false;
-//            int icol1 = icol - 1;
-
-//            int iSel;
-//            double dtemp;
+                    double dtemp;
 
 
+                    if (icol == 0) return null;
+                    if (irow > 2) return null;
+
+            //DataGridRow dgr = e.Row;
+            //TextBox tb = gCompStrE.Columns[icol].GetCellContent(dgr) as TextBox;
+                   string tb = text; 
+                    bool b = GetDoubleFromGrid(sFields, irow, icol1, tb);
+
+                    /*
+                    bd = double.TryParse(tb.Text, out dtemp);
+                    if (!bd) tb.Text = String.Empty;
+                    //                dtDensityE.Rows[irow][icol] = dtemp;
+
+                    switch (irow)
+                    {
+                        case 0: if (bd) _objectsService.RNDHome.dtF.Rows[icol1]["ClosedCellPer1"] = dtemp; else _objectsService.RNDHome.dtF.Rows[icol1]["ClosedCellPer1"] = DBNull.Value; break;
+                        case 1: if (bd) _objectsService.RNDHome.dtF.Rows[icol1]["ClosedCellPer2"] = dtemp; else _objectsService.RNDHome.dtF.Rows[icol1]["ClosedCellPer2"] = DBNull.Value; break;
+                        case 2: if (bd) _objectsService.RNDHome.dtF.Rows[icol1]["ClosedCellPer3"] = dtemp; else _objectsService.RNDHome.dtF.Rows[icol1]["ClosedCellPer3"] = DBNull.Value; break;
+
+                    }
+        */
+                    double dSum = 0, dtemp1 = 0; int nCount = 0;
+                    if (_objectsService.RNDHome.dtF.Rows[icol1]["ClosedCellPer1"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[icol1]["ClosedCellPer1"]; }
+                    if (_objectsService.RNDHome.dtF.Rows[icol1]["ClosedCellPer2"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[icol1]["ClosedCellPer2"]; }
+                    if (_objectsService.RNDHome.dtF.Rows[icol1]["ClosedCellPer3"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[icol1]["ClosedCellPer3"]; }
+
+                    if (nCount > 0) { dtemp1 = dSum / nCount; _objectsService.RNDHome.dtF.Rows[icol1]["ClosedCellPer"] = dtemp1; _objectsService.RNDRawProps.dtClosedCellC.Rows[0][icol] = dtemp1.ToString("0.###"); }
+                    else { _objectsService.RNDHome.dtF.Rows[icol1]["ClosedCellPer"] = DBNull.Value; _objectsService.RNDRawProps.dtClosedCellC.Rows[0][icol] = string.Empty; }
+
+                    gCloseCellC  = _objectsService.RNDRawProps.dtClosedCellC.DefaultView;
+                    _objectsService.RNDHome.UpdateFormulatiions();
+                    return new JsonResult(true);
+
+                }
+
+        public IActionResult OnPostOngPoreScaneE(string rowId, string colId, string text)
+        {
+
+            string sMsg;
+            string[] sFields = { "CellDiaTop", "CellStDevTop", "CellCountTop", "CellDiaSide", "CellStDevSide", "CellCountSide" };
+            int irow = Int32.Parse(rowId);
+            int icol = Int32.Parse(colId);
+            bool bd = false, bDi = false, bS = false, bC = false;
+            int icol1 = icol - 1;
+
+            int iSel;
+            double dtemp;
 
 
-//            if (icol == 0) return null;
-//            if (irow > 5) return null;
-
-//            DataGridRow dgr = e.Row;
-//            TextBox tb = gCompStrE.Columns[icol].GetCellContent(dgr) as TextBox;
-//            bool b = GetDoubleFromGrid(sFields, irow, icol1, tb);
-//            if (!b) return null;
-//            if (irow == 0 || irow == 3) bDi = true;
-//            if (irow == 1 || irow == 4) bS = true;
-//            if (irow == 2 || irow == 5) bC = true;
-//            /*
-//                                                TextBox tb = gDensityE.Columns[icol].GetCellContent(dgr) as TextBox;
-//                                                bd = double.TryParse(tb.Text, out dtemp);
-//                                                if (!bd) tb.Text = String.Empty;
-//                                                //                dtDensityE.Rows[irow][icol] = dtemp;
-
-//                                                switch (irow)
-//                                                {
-//                                                    case 0: if (bd) _objectsService.RNDHome.dtF.Rows[icol1]["CellDiaTop"] = dtemp; else _objectsService.RNDHome.dtF.Rows[icol1]["CellDiaTop"] = DBNull.Value; bDi = true; break;
-//                                                    case 1: if (bd) _objectsService.RNDHome.dtF.Rows[icol1]["CellStDevTop"] = dtemp; else _objectsService.RNDHome.dtF.Rows[icol1]["CellStDevTop"] = DBNull.Value; bS = true; break;
-//                                                    case 2: if (bd) _objectsService.RNDHome.dtF.Rows[icol1]["CellCountTop"] = dtemp; else _objectsService.RNDHome.dtF.Rows[icol1]["CellCountTop",] = DBNull.Value; bC = true; break;
-//                                                    case 3: if (bd) _objectsService.RNDHome.dtF.Rows[icol1]["CellDiaSide"] = dtemp; else _objectsService.RNDHome.dtF.Rows[icol1]["CellDiaSide"] = DBNull.Value; bDi = true; break;
-//                                                    case 4: if (bd) _objectsService.RNDHome.dtF.Rows[icol1]["CellStDevSide"] = dtemp; else _objectsService.RNDHome.dtF.Rows[icol1]["CellStDevSide"] = DBNull.Value; bS = true; break;
-//                                                    case 5: if (bd) _objectsService.RNDHome.dtF.Rows[icol1]["CellCountSide"] = dtemp; else _objectsService.RNDHome.dtF.Rows[icol1]["CellCountSide"] = DBNull.Value; bC = true; break;
-//                                                }
-//                                    */
-//            double dSum = 0, dtemp1 = 0, num = 0.0, denom = 0.0; int nCount = 0;
-//            if (bDi)
-//            {
-//                if (_objectsService.RNDHome.dtF.Rows[icol1]["CellDiaTop"] != DBNull.Value) { nCount++; num = (double)_objectsService.RNDHome.dtF.Rows[icol1]["CellDiaTop"]; dSum += num; }
-//                if (_objectsService.RNDHome.dtF.Rows[icol1]["CellDiaSide"] != DBNull.Value) { nCount++; denom = (double)_objectsService.RNDHome.dtF.Rows[icol1]["CellDiaSide"]; dSum += denom; }
-//                if (nCount > 0) { dtemp1 = dSum / nCount; _objectsService.RNDHome.dtF.Rows[icol1]["CellDia"] = dtemp1; _objectsService.RNDRawProps.dtPoreScanC.Rows[0][icol] = dtemp1.ToString("0"); }
-//                else { _objectsService.RNDHome.dtF.Rows[icol1]["CellDia"] = DBNull.Value; _objectsService.RNDRawProps.dtPoreScanC.Rows[0][icol] = string.Empty; }
-
-//                if (_objectsService.RNDHome.dtF.Rows[icol1]["CellDiaTop"] == DBNull.Value || _objectsService.RNDHome.dtF.Rows[icol1]["CellDiaSide"] == DBNull.Value)
-//                { _objectsService.RNDHome.dtF.Rows[icol1]["CellDiaIsotropy"] = DBNull.Value; _objectsService.RNDRawProps.dtPoreScanC.Rows[2][icol] = string.Empty; }
-//                else if (denom > 0)
-//                { dtemp1 = num / denom; _objectsService.RNDHome.dtF.Rows[icol1]["CellDiaIsotropy"] = dtemp1; _objectsService.RNDRawProps.dtPoreScanC.Rows[2][icol] = dtemp1.ToString("0.###"); }
-//                else { _objectsService.RNDHome.dtF.Rows[icol1]["CellDiaIsotropy"] = DBNull.Value; _objectsService.RNDRawProps.dtPoreScanC.Rows[2][icol] = string.Empty; }
-//            }
-//            else if (bC)
-//            {
-//                if (_objectsService.RNDHome.dtF.Rows[icol1]["CellCountTop"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[icol1]["CellCountTop"]; }
-//                if (_objectsService.RNDHome.dtF.Rows[icol1]["CellCountSide"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[icol1]["CellCountSide"]; }
-//                if (nCount > 0) { dtemp1 = dSum / nCount; _objectsService.RNDHome.dtF.Rows[icol1]["CellCount"] = dtemp1; _objectsService.RNDRawProps.dtPoreScanC.Rows[1][icol] = dtemp1.ToString("0"); }
-//                else { _objectsService.RNDHome.dtF.Rows[icol1]["CellCount"] = DBNull.Value; _objectsService.RNDRawProps.dtPoreScanC.Rows[1][icol] = string.Empty; }
-//            }
 
 
-//            gPoreScanC  = _objectsService.RNDRawProps.dtPoreScanC.DefaultView;
-//            _objectsService.RNDHome.UpdateFormulatiions();
-//            return null;
-//        }
+            if (icol == 0) return null;
+            if (irow > 5) return null;
 
-//        public IActionResult OnPostOngHotPlatesE()
-//        {
+            //DataGridRow dgr = e.Row;
+            //TextBox tb = gCompStrE.Columns[icol].GetCellContent(dgr) as TextBox;
+            string tb = text;
+            bool b = GetDoubleFromGrid(sFields, irow, icol1, tb);
+            if (!b) return null;
+            if (irow == 0 || irow == 3) bDi = true;
+            if (irow == 1 || irow == 4) bS = true;
+            if (irow == 2 || irow == 5) bC = true;
+            /*
+                                                TextBox tb = gDensityE.Columns[icol].GetCellContent(dgr) as TextBox;
+                                                bd = double.TryParse(tb.Text, out dtemp);
+                                                if (!bd) tb.Text = String.Empty;
+                                                //                dtDensityE.Rows[irow][icol] = dtemp;
 
-//            string sMsg;
-//            string[] sFieldInit = { "HotPlateInitMass", "HotPlateInitH1", "HotPlateInitH2", "HotPlateInitH3", "HotPlateInitH4", "HotPlateInitH5" };
-//            string[] sFieldFinal = { "HotPlateFinalMass", "HotPlateFinalH1", "HotPlateFinalH2", "HotPlateFinalH3", "HotPlateFinalH4", "HotPlateFinalH5" };
-//            int irow = e.Row.GetIndex();
-//            int icol = e.Column.DisplayIndex;
-//            bool bd, bm = false, bH = false, bi = false, bf = false, bC = false;
-//            int ic, icf, icol1, itest;
+                                                switch (irow)
+                                                {
+                                                    case 0: if (bd) _objectsService.RNDHome.dtF.Rows[icol1]["CellDiaTop"] = dtemp; else _objectsService.RNDHome.dtF.Rows[icol1]["CellDiaTop"] = DBNull.Value; bDi = true; break;
+                                                    case 1: if (bd) _objectsService.RNDHome.dtF.Rows[icol1]["CellStDevTop"] = dtemp; else _objectsService.RNDHome.dtF.Rows[icol1]["CellStDevTop"] = DBNull.Value; bS = true; break;
+                                                    case 2: if (bd) _objectsService.RNDHome.dtF.Rows[icol1]["CellCountTop"] = dtemp; else _objectsService.RNDHome.dtF.Rows[icol1]["CellCountTop",] = DBNull.Value; bC = true; break;
+                                                    case 3: if (bd) _objectsService.RNDHome.dtF.Rows[icol1]["CellDiaSide"] = dtemp; else _objectsService.RNDHome.dtF.Rows[icol1]["CellDiaSide"] = DBNull.Value; bDi = true; break;
+                                                    case 4: if (bd) _objectsService.RNDHome.dtF.Rows[icol1]["CellStDevSide"] = dtemp; else _objectsService.RNDHome.dtF.Rows[icol1]["CellStDevSide"] = DBNull.Value; bS = true; break;
+                                                    case 5: if (bd) _objectsService.RNDHome.dtF.Rows[icol1]["CellCountSide"] = dtemp; else _objectsService.RNDHome.dtF.Rows[icol1]["CellCountSide"] = DBNull.Value; bC = true; break;
+                                                }
+                                    */
+            double dSum = 0, dtemp1 = 0, num = 0.0, denom = 0.0; int nCount = 0;
+            if (bDi)
+            {
+                if (_objectsService.RNDHome.dtF.Rows[icol1]["CellDiaTop"] != DBNull.Value) { nCount++; num = (double)_objectsService.RNDHome.dtF.Rows[icol1]["CellDiaTop"]; dSum += num; }
+                if (_objectsService.RNDHome.dtF.Rows[icol1]["CellDiaSide"] != DBNull.Value) { nCount++; denom = (double)_objectsService.RNDHome.dtF.Rows[icol1]["CellDiaSide"]; dSum += denom; }
+                if (nCount > 0) { dtemp1 = dSum / nCount; _objectsService.RNDHome.dtF.Rows[icol1]["CellDia"] = dtemp1; _objectsService.RNDRawProps.dtPoreScanC.Rows[0][icol] = dtemp1.ToString("0"); }
+                else { _objectsService.RNDHome.dtF.Rows[icol1]["CellDia"] = DBNull.Value; _objectsService.RNDRawProps.dtPoreScanC.Rows[0][icol] = string.Empty; }
 
-//            int iSel;
-//            double dtemp;
+                if (_objectsService.RNDHome.dtF.Rows[icol1]["CellDiaTop"] == DBNull.Value || _objectsService.RNDHome.dtF.Rows[icol1]["CellDiaSide"] == DBNull.Value)
+                { _objectsService.RNDHome.dtF.Rows[icol1]["CellDiaIsotropy"] = DBNull.Value; _objectsService.RNDRawProps.dtPoreScanC.Rows[2][icol] = string.Empty; }
+                else if (denom > 0)
+                { dtemp1 = num / denom; _objectsService.RNDHome.dtF.Rows[icol1]["CellDiaIsotropy"] = dtemp1; _objectsService.RNDRawProps.dtPoreScanC.Rows[2][icol] = dtemp1.ToString("0.###"); }
+                else { _objectsService.RNDHome.dtF.Rows[icol1]["CellDiaIsotropy"] = DBNull.Value; _objectsService.RNDRawProps.dtPoreScanC.Rows[2][icol] = string.Empty; }
+            }
+            else if (bC)
+            {
+                if (_objectsService.RNDHome.dtF.Rows[icol1]["CellCountTop"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[icol1]["CellCountTop"]; }
+                if (_objectsService.RNDHome.dtF.Rows[icol1]["CellCountSide"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[icol1]["CellCountSide"]; }
+                if (nCount > 0) { dtemp1 = dSum / nCount; _objectsService.RNDHome.dtF.Rows[icol1]["CellCount"] = dtemp1; _objectsService.RNDRawProps.dtPoreScanC.Rows[1][icol] = dtemp1.ToString("0"); }
+                else { _objectsService.RNDHome.dtF.Rows[icol1]["CellCount"] = DBNull.Value; _objectsService.RNDRawProps.dtPoreScanC.Rows[1][icol] = string.Empty; }
+            }
 
 
-//            if (icol == 0 || icol == 17) return null;
-//            if (irow > 17) return null;
+            gPoreScanC  = _objectsService.RNDRawProps.dtPoreScanC.DefaultView;
+            _objectsService.RNDHome.UpdateFormulatiions();
+            return null;
+        }
 
-//            icol1 = icol - 1;
-//            ic = icol1 / 2;
-//            itest = icol1 - 2 * ic;
-//            if (itest == 0) bi = true; else bf = true;
+        public IActionResult OnPostOngHotPlatesE(string rowId, string colId, string text)
+        {
 
-//            DataGridRow dgr = e.Row;
-//            TextBox tb = gHotPlatesE.Columns[icol].GetCellContent(dgr) as TextBox;
-//            //            bd = double.TryParse(tb.Text, out dtemp);
-//            //            if (!bd) tb.Text = String.Empty;
-//            //                dtDensityE.Rows[irow][icol] = dtemp;
+            string sMsg;
+            string[] sFieldInit = { "HotPlateInitMass", "HotPlateInitH1", "HotPlateInitH2", "HotPlateInitH3", "HotPlateInitH4", "HotPlateInitH5" };
+            string[] sFieldFinal = { "HotPlateFinalMass", "HotPlateFinalH1", "HotPlateFinalH2", "HotPlateFinalH3", "HotPlateFinalH4", "HotPlateFinalH5" };
+            int irow = Int32.Parse(rowId);
+            int icol = Int32.Parse(colId);
+            bool bd, bm = false, bH = false, bi = false, bf = false, bC = false;
+            int ic, icf, icol1, itest;
 
-//            double dSum = 0, dtemp1 = 0, num = 0.0, denom = 0.0; int nCount = 0;
+            int iSel;
+            double dtemp;
 
-//            if (bi)
-//            {
-//                /*              switch (irow)
-//                              {
-//                                  case 0: if (bd) _objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitMass"] = dtemp; else _objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitMass"] = DBNull.Value; bm = true; break;
-//                                  case 1: if (bd) _objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitH1"] = dtemp; else _objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitH1"] = DBNull.Value; bH = true; break;
-//                                  case 2: if (bd) _objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitH2"] = dtemp; else _objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitH2"] = DBNull.Value; bH = true; break;
-//                                  case 3: if (bd) _objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitH3"] = dtemp; else _objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitH3"] = DBNull.Value; bH = true; break;
-//                                  case 4: if (bd) _objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitH4"] = dtemp; else _objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitH4"] = DBNull.Value; bH = true; break;
-//                                  case 5: if (bd) _objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitH5"] = dtemp; else _objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitH5"] = DBNull.Value; bH = true; break;
-//                              }
-//                */
-//                bool b = GetDoubleFromGrid(sFieldInit, irow, ic, tb);
-//                if (!b) return null;
-//                if (irow == 0) bm = true; else bH = true;
 
-//                if (bH)
-//                {
-//                    if (_objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitH1"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitH1"]; }
-//                    if (_objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitH2"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitH2"]; }
-//                    if (_objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitH3"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitH3"]; }
-//                    if (_objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitH4"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitH4"]; }
-//                    if (_objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitH5"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitH5"]; }
+            if (icol == 0 || icol == 17) return null;
+            if (irow > 17) return null;
 
-//                    if (nCount > 0) { dtemp1 = dSum / nCount; _objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitH"] = dtemp1; _objectsService.RNDRawProps.dtHotPlatesC1.Rows[0][icol] = dtemp1.ToString("0.###"); }
-//                    else { _objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitH"] = DBNull.Value; _objectsService.RNDRawProps.dtHotPlatesC1.Rows[0][icol] = string.Empty; }
-//                }
-//            }
-//            else
-//            {
-//                /*             switch (irow)
-//                             {
-//                                 case 0: if (bd) _objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalMass"] = dtemp; else _objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalMass"] = DBNull.Value; bm = true; break;
-//                                 case 1: if (bd) _objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalH1"] = dtemp; else _objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalH1"] = DBNull.Value; bH = true; break;
-//                                 case 2: if (bd) _objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalH2"] = dtemp; else _objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalH2"] = DBNull.Value; bH = true; break;
-//                                 case 3: if (bd) _objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalH3"] = dtemp; else _objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalH3"] = DBNull.Value; bH = true; break;
-//                                 case 4: if (bd) _objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalH4"] = dtemp; else _objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalH4"] = DBNull.Value; bH = true; break;
-//                                 case 5: if (bd) _objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalH5"] = dtemp; else _objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalH5"] = DBNull.Value; bH = true; break;
-//                             }
-//                */
-//                bool b = GetDoubleFromGrid(sFieldFinal, irow, ic, tb);
-//                if (!b) return null;
-//                if (irow == 0) bm = true; else bH = true;
-//                if (bH)
-//                {
-//                    if (_objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalH1"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalH1"]; }
-//                    if (_objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalH2"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalH2"]; }
-//                    if (_objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalH3"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalH3"]; }
-//                    if (_objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalH4"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalH4"]; }
-//                    if (_objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalH5"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalH5"]; }
+            icol1 = icol - 1;
+            ic = icol1 / 2;
+            itest = icol1 - 2 * ic;
+            if (itest == 0) bi = true; else bf = true;
 
-//                    if (nCount > 0) { dtemp1 = dSum / nCount; _objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalH"] = dtemp1; _objectsService.RNDRawProps.dtHotPlatesC1.Rows[0][icol] = dtemp1.ToString("0.###"); }
-//                    else { _objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalH"] = DBNull.Value; _objectsService.RNDRawProps.dtHotPlatesC1.Rows[0][icol] = string.Empty; }
-//                }
-//            }
-//            if (bH)
-//            {
-//                if (_objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitH"] == DBNull.Value || _objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalH"] == DBNull.Value)
-//                { _objectsService.RNDHome.dtF.Rows[ic]["HotPlateRetainThick"] = DBNull.Value; _objectsService.RNDRawProps.dtHotPlatesC.Rows[1][ic + 1] = string.Empty; }
-//                else
-//                {
-//                    denom = (double)_objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitH"];
-//                    num = (double)_objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalH"];
-//                }
-//                if (denom > 0) { _objectsService.RNDHome.dtF.Rows[ic]["HotPlateRetainThick"] = 100.0 * num / denom; _objectsService.RNDRawProps.dtHotPlatesC.Rows[1][ic + 1] = (100.0 * num / denom).ToString("0.###"); }
-//                else { _objectsService.RNDHome.dtF.Rows[ic]["HotPlateRetainThick"] = DBNull.Value; _objectsService.RNDRawProps.dtHotPlatesC.Rows[1][ic + 1] = string.Empty; }
-//            }
-//            else
-//            {
-//                if (_objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitMass"] == DBNull.Value || _objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalMass"] == DBNull.Value)
-//                { _objectsService.RNDHome.dtF.Rows[ic]["HotPlateRetainMass"] = DBNull.Value; _objectsService.RNDRawProps.dtHotPlatesC.Rows[0][ic + 1] = string.Empty; }
-//                else
-//                {
-//                    denom = (double)_objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitMass"];
-//                    num = (double)_objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalMass"];
-//                }
-//                if (denom > 0) { _objectsService.RNDHome.dtF.Rows[ic]["HotPlateRetainMass"] = 100.0 * num / denom; _objectsService.RNDRawProps.dtHotPlatesC.Rows[0][ic + 1] = (100.0 * num / denom).ToString("0.###"); }
-//                else { _objectsService.RNDHome.dtF.Rows[ic]["HotPlateRetainMass"] = DBNull.Value; _objectsService.RNDRawProps.dtHotPlatesC.Rows[0][ic + 1] = string.Empty; }
-//            }
-//            gHotPlatesC1  = _objectsService.RNDRawProps.dtHotPlatesC1.DefaultView;
-//            gHotPlatesC  = _objectsService.RNDRawProps.dtHotPlatesC.DefaultView;
-//            _objectsService.RNDHome.UpdateFormulatiions();
-//            return null;
-//        }
+            //DataGridRow dgr = e.Row;
+            //TextBox tb = gHotPlatesE.Columns[icol].GetCellContent(dgr) as TextBox;
+            string tb = text;
+            //            bd = double.TryParse(tb.Text, out dtemp);
+            //            if (!bd) tb.Text = String.Empty;
+            //                dtDensityE.Rows[irow][icol] = dtemp;
+
+            double dSum = 0, dtemp1 = 0, num = 0.0, denom = 0.0; int nCount = 0;
+
+            if (bi)
+            {
+                /*              switch (irow)
+                              {
+                                  case 0: if (bd) _objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitMass"] = dtemp; else _objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitMass"] = DBNull.Value; bm = true; break;
+                                  case 1: if (bd) _objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitH1"] = dtemp; else _objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitH1"] = DBNull.Value; bH = true; break;
+                                  case 2: if (bd) _objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitH2"] = dtemp; else _objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitH2"] = DBNull.Value; bH = true; break;
+                                  case 3: if (bd) _objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitH3"] = dtemp; else _objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitH3"] = DBNull.Value; bH = true; break;
+                                  case 4: if (bd) _objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitH4"] = dtemp; else _objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitH4"] = DBNull.Value; bH = true; break;
+                                  case 5: if (bd) _objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitH5"] = dtemp; else _objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitH5"] = DBNull.Value; bH = true; break;
+                              }
+                */
+                bool b = GetDoubleFromGrid(sFieldInit, irow, ic, tb);
+                if (!b) return null;
+                if (irow == 0) bm = true; else bH = true;
+
+                if (bH)
+                {
+                    if (_objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitH1"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitH1"]; }
+                    if (_objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitH2"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitH2"]; }
+                    if (_objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitH3"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitH3"]; }
+                    if (_objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitH4"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitH4"]; }
+                    if (_objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitH5"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitH5"]; }
+
+                    if (nCount > 0) { dtemp1 = dSum / nCount; _objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitH"] = dtemp1; _objectsService.RNDRawProps.dtHotPlatesC1.Rows[0][icol] = dtemp1.ToString("0.###"); }
+                    else { _objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitH"] = DBNull.Value; _objectsService.RNDRawProps.dtHotPlatesC1.Rows[0][icol] = string.Empty; }
+                }
+            }
+            else
+            {
+                /*             switch (irow)
+                             {
+                                 case 0: if (bd) _objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalMass"] = dtemp; else _objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalMass"] = DBNull.Value; bm = true; break;
+                                 case 1: if (bd) _objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalH1"] = dtemp; else _objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalH1"] = DBNull.Value; bH = true; break;
+                                 case 2: if (bd) _objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalH2"] = dtemp; else _objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalH2"] = DBNull.Value; bH = true; break;
+                                 case 3: if (bd) _objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalH3"] = dtemp; else _objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalH3"] = DBNull.Value; bH = true; break;
+                                 case 4: if (bd) _objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalH4"] = dtemp; else _objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalH4"] = DBNull.Value; bH = true; break;
+                                 case 5: if (bd) _objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalH5"] = dtemp; else _objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalH5"] = DBNull.Value; bH = true; break;
+                             }
+                */
+                bool b = GetDoubleFromGrid(sFieldFinal, irow, ic, tb);
+                if (!b) return null;
+                if (irow == 0) bm = true; else bH = true;
+                if (bH)
+                {
+                    if (_objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalH1"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalH1"]; }
+                    if (_objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalH2"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalH2"]; }
+                    if (_objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalH3"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalH3"]; }
+                    if (_objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalH4"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalH4"]; }
+                    if (_objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalH5"] != DBNull.Value) { nCount++; dSum += (double)_objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalH5"]; }
+
+                    if (nCount > 0) { dtemp1 = dSum / nCount; _objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalH"] = dtemp1; _objectsService.RNDRawProps.dtHotPlatesC1.Rows[0][icol] = dtemp1.ToString("0.###"); }
+                    else { _objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalH"] = DBNull.Value; _objectsService.RNDRawProps.dtHotPlatesC1.Rows[0][icol] = string.Empty; }
+                }
+            }
+            if (bH)
+            {
+                if (_objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitH"] == DBNull.Value || _objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalH"] == DBNull.Value)
+                { _objectsService.RNDHome.dtF.Rows[ic]["HotPlateRetainThick"] = DBNull.Value; _objectsService.RNDRawProps.dtHotPlatesC.Rows[1][ic + 1] = string.Empty; }
+                else
+                {
+                    denom = (double)_objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitH"];
+                    num = (double)_objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalH"];
+                }
+                if (denom > 0) { _objectsService.RNDHome.dtF.Rows[ic]["HotPlateRetainThick"] = 100.0 * num / denom; _objectsService.RNDRawProps.dtHotPlatesC.Rows[1][ic + 1] = (100.0 * num / denom).ToString("0.###"); }
+                else { _objectsService.RNDHome.dtF.Rows[ic]["HotPlateRetainThick"] = DBNull.Value; _objectsService.RNDRawProps.dtHotPlatesC.Rows[1][ic + 1] = string.Empty; }
+            }
+            else
+            {
+                if (_objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitMass"] == DBNull.Value || _objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalMass"] == DBNull.Value)
+                { _objectsService.RNDHome.dtF.Rows[ic]["HotPlateRetainMass"] = DBNull.Value; _objectsService.RNDRawProps.dtHotPlatesC.Rows[0][ic + 1] = string.Empty; }
+                else
+                {
+                    denom = (double)_objectsService.RNDHome.dtF.Rows[ic]["HotPlateInitMass"];
+                    num = (double)_objectsService.RNDHome.dtF.Rows[ic]["HotPlateFinalMass"];
+                }
+                if (denom > 0) { _objectsService.RNDHome.dtF.Rows[ic]["HotPlateRetainMass"] = 100.0 * num / denom; _objectsService.RNDRawProps.dtHotPlatesC.Rows[0][ic + 1] = (100.0 * num / denom).ToString("0.###"); }
+                else { _objectsService.RNDHome.dtF.Rows[ic]["HotPlateRetainMass"] = DBNull.Value; _objectsService.RNDRawProps.dtHotPlatesC.Rows[0][ic + 1] = string.Empty; }
+            }
+            gHotPlatesC1  = _objectsService.RNDRawProps.dtHotPlatesC1.DefaultView;
+            gHotPlatesC  = _objectsService.RNDRawProps.dtHotPlatesC.DefaultView;
+            _objectsService.RNDHome.UpdateFormulatiions();
+            return new JsonResult(true);
+        }
   
     
     

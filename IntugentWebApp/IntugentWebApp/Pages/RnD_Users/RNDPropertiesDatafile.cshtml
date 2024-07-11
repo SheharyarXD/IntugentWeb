@@ -15,7 +15,7 @@
 <div class="row">
     <div class="col-8 row" >
         <!-- Reactivity Data -->
-        <div class="row " style="height:300px;">
+        <div class="row " style="min-min-height:300px;">
         <div class="card card-default col-8">
             <div class="card-header align-items-center">
                 <h2 class="">Reactivity Data</h2>
@@ -38,7 +38,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                            @foreach (DataRow row in Model.gReacE)
+                            @foreach (DataRowView row in Model.gReacE)
                             {
                                 <tr>
                                     <td>@row["PropName"]</td>
@@ -76,7 +76,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                            @foreach (DataRow row in Model.gReacC)
+                            @foreach (DataRowView row in Model.gReacC)
                             {
                                 <tr>
                                     <td>@row["PropC1"]</td>
@@ -97,7 +97,7 @@
 
 
         <!-- FTIR, and Photoacoustic Data -->
-        <div class="row" style="height:200px;">
+        <div class="row" style="min-min-height:200px;">
             <div class="card card-default col-8">
                 <div class="card-header align-items-center">
                     <h2 class="">FTIR, and Photoacoustic Data</h2>
@@ -120,7 +120,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (DataRow row in Model.gPhotoE)
+                            @foreach (DataRowView row in Model.gPhotoE)
                             {
                                 <tr>
                                     <td>@row["PropName"]</td>
@@ -158,7 +158,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (DataRow row in Model.gPhotoC)
+                            @foreach (DataRowView row in Model.gPhotoC)
                             {
                                 <tr>
                                     <td>@row["PropC1"]</td>
@@ -179,7 +179,7 @@
 
 
         <!-- Calculated Physical & Hot Plate Propertes -->
-        <div class="row" style="height:300px;">
+        <div class="row" style="min-height:300px;">
             <div class="card card-default col-8">
                 <div class="card-header align-items-center">
                     <h2 class="">Calculated Physical & Hot Plate Propertes</h2>
@@ -202,7 +202,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (DataRow row in Model.gPropsE)
+                            @foreach (DataRowView row in Model.gPropsE)
                             {
                                 <tr>
                                     <td>@row["PropName"]</td>
@@ -240,7 +240,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (DataRow row in Model.gPropsC)
+                            @foreach (DataRowView row in Model.gPropsC)
                             {
                                 <tr>
                                     <td>@row["PropC1"]</td>
@@ -270,7 +270,7 @@
         </div>
      
         <!-- Commercial / Experimental Designation -->
-        <div class="row" style="height:300px;">
+        <div class="row" style="min-height:300px;">
             <div class="card card-default col-12">
                 <div class="card-header align-items-center">
                     <h2 class="">Commercial / Experimental Designation</h2>
@@ -285,7 +285,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (DataRow row in Model.gProd)
+                            @foreach (DataRowView row in Model.gProd)
                             {
 
                             <tr>
@@ -302,7 +302,7 @@
         </div>
      
         <!--Formulation Specific Notes (255 characters max) -->
-        <div class="row" style="height:300px;">
+        <div class="row" style="min-height:300px;">
             <div class="card card-default col-12">
                 <div class="card-header align-items-center">
                     <h2 class="">Formulation Specific Notes (255 characters max)</h2>
@@ -317,7 +317,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (DataRow row in Model.gNotes)
+                            @foreach (DataRowView row in Model.gNotes)
                             {
 
                             <tr>
@@ -336,7 +336,7 @@
     </div>
    
     <!-- Foamat & Other Data Files  (*** Enter or paste the file path in the cell ***) -->
-    <div class="row" style="height:150px;">
+    <div class="row" style="min-height:150px;">
         <div class="card card-default col-12">
             <div class="card-header align-items-center">
                 <h2 class="">Foamat & Other Data Files  (*** Enter or paste the file path in the cell ***)</h2>
@@ -358,7 +358,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                             @foreach (DataRow row in Model.gDataFiles)
+                             @foreach (DataRowView row in Model.gDataFiles)
                         {
 
                         <tr>

@@ -45,11 +45,13 @@ namespace IntugentWebApp.Pages.RnD_Users
               public FormulationsModel(ObjectsService objectsService) {
       
                   _objectsService = objectsService;
-              }
+            gFormProps =  _objectsService.RNDFormulations.dtFormProp.DefaultView;
+            gPolyolList = _objectsService.RNDFormulations.sMatNameListPO.ToList();
+            gIsoList =    _objectsService.RNDFormulations.sMatNameListIso.ToList();
+        }
       
               public void OnGet()
               {
-                  Startup();
                        gStudyType = _objectsService.CLists.dvRunTypeRND2;
                        gStudyTypeSelectedValue = 1;
                        gProductID = _objectsService.CLists.dvComProd;
@@ -90,90 +92,7 @@ namespace IntugentWebApp.Pages.RnD_Users
 
         }
 
-        public void Startup()
-        {
-            int id = 0, id1 = 0;
-
-            // Formulation Array
-            for (int i = 0; i < _objectsService.RNDFormulations.Forms.nForm; i++) _objectsService.RNDFormulations.Forms.FormAr[i] = new CForm();
-
-
-            //Table of Properties          ;
-
-            _objectsService.RNDFormulations.dtFormProp.Columns.Add("Descriptors", typeof(string));
-            for (int i = 1; i < _objectsService.RNDFormulations.Forms.nForm + 1; i++)
-            {
-                _objectsService.RNDFormulations.dtFormProp.Columns.Add("#" + i, typeof(double));
-            }
-            for (int i = 0; i < 30; i++) _objectsService.RNDFormulations.dtFormProp.Rows.Add();
-
-            gFormProps= _objectsService.RNDFormulations.dtFormProp.DefaultView;
-
-            //Initialize Material lists on the PO and Iso Sides
-
-            //           _objectsService.RNDFormulations.Forms.dtFormIso.Add("Descriptors", typeof(string));
-            //           for (int i = 1; i < _objectsService.RNDFormulations.Forms.nForm + 1; i++)
-
-
-            _objectsService.RNDFormulations.Forms.POMats.Add(new CMaterial());
-            _objectsService.RNDFormulations.Forms.POMats.Add(new CMaterial());
-
-            _objectsService.RNDFormulations.Forms.IsoMats.Add(new CMaterial()
-            {
-                ID = 62,
-                MatName = "Lupranat® M 20R",
-                MatType = "Iso-PMDI",
-                MatFunc = 2.7,
-                MatNco = 31.5,
-                //                Pbw1 = 50.0, Pbw8 = 10
-            });
-
-
-
-
-            _objectsService.RNDFormulations.Forms.NCOIndexMats.Add(new CMaterial()
-            {
-                MatName = "NCO Index (Equivalents of NCO per 100 Equivalents of Active-H",
-                Pbw1 = "270",
-                Pbw2 = "270",
-                Pbw3 = "270",
-                Pbw4 = "270",
-                Pbw5 = "270",
-                Pbw6 = "270",
-                Pbw7 = "270",
-                Pbw8 = "270"
-
-            });
-            for (int ifo = 0; ifo < _objectsService.RNDFormulations.Forms.nForm; ifo++)
-            {
-                _objectsService.RNDFormulations.Forms.FormAr[ifo].NcoIndex = 270;
-                _objectsService.RNDFormulations.Forms.FormAr[ifo].BasisPbwPOSide = 100;
-            }
-
-            //gPO  = _objectsService.RNDFormulations.Forms.POMats;
-            //gNco = _objectsService.RNDFormulations.Forms.NCOIndexMats;
-            //gIso = _objectsService.RNDFormulations.Forms.IsoMats;
-
-            //            _objectsService.RNDFormulations.Forms.dtFormIso.Add
-
-            //            GetMatList();
-            _objectsService.RNDFormulations.GetMatListSql();
-            gPolyolList = _objectsService.RNDFormulations.sMatNameListPO.ToList();
-            gIsoList = _objectsService.RNDFormulations.sMatNameListIso.ToList();
-            _objectsService.RNDFormulations.ModifyPOIsoLists(0, ref _objectsService.RNDFormulations.Forms.IsoMats, 0, _objectsService.RNDFormulations.dtIso);  //fill the grid with the 1st material on the list
-
-            for (int i = 0; i < _objectsService.RNDFormulations.dtPO.Rows.Count; i++)
-            {
-                if (_objectsService.RNDFormulations.dtPO.Rows[i]["ID"].ToString() == "106") id = i;
-                if (_objectsService.RNDFormulations.dtPO.Rows[i]["ID"].ToString() == "89") id1 = i;
-
-            }
-            _objectsService.RNDFormulations.ModifyPOIsoLists(0, ref _objectsService.RNDFormulations.Forms.POMats, id, _objectsService.RNDFormulations.dtPO);
-            _objectsService.RNDFormulations.ModifyPOIsoLists(1, ref _objectsService.RNDFormulations.Forms.POMats, id1, _objectsService.RNDFormulations.dtPO);
-
-
-        }
-
+       
         //private void OngNcoCellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         //{
         //    double dtmp, dtmp0;

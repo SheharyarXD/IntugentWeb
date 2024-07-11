@@ -43,7 +43,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                             @foreach (DataRow row in Model.gExpPropsE)
+                             @foreach (DataRowView row in Model.gExpPropsE)
                         {
                          <tr>
                         <td>@row["PropName"]</td>
@@ -82,7 +82,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (DataRow row in Model.gExpPropsC)
+                        @foreach (DataRowView row in Model.gExpPropsC)
                         {
                             <tr>
                                 <td>@row["PropC1"]</td>
@@ -120,7 +120,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (DataRow row in Model.gExpPropsP)
+                        @foreach (DataRowView row in Model.gExpPropsP)
                         {
                             <tr>
                                 <td>@row["PropP1"]</td>

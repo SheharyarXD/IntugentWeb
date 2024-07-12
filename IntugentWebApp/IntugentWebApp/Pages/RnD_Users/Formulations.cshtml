@@ -27,7 +27,7 @@
                     <div class="col-lg-3">
                         <!-- ID -->
                         <div class="mb-2 row">
-                            <label for="projectID" class="col-md-5 col-form-label">Project ID</label>
+                            <label for="projectID" class="col-md-3 col-form-label">Project ID</label>
                             <div class="col-md-7">
                                 <input type="text" class="form-control" id="projectID" value="@Model.gID" readonly>
                             </div>
@@ -37,9 +37,9 @@
                     <div class="col-lg-9">
                         <!-- Project/StudyName -->
                         <div class="mb-2 row">
-                            <label for="projectStudyName" class="col-md-3 col-form-label">Project/Study Name</label>
-                            <div class="col-md-9">
-                                <input type="text" class="form-control" id="projectStudyName" value="@Model.gStudyName" readonly>
+                            <label for="projectStudyName" class="col-md-2 col-form-label">Project/Study Name</label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" id="projectStudyName" value="@Model.gStudyName" onblur="OnGenInfo_LF('gStudyName',this.value)">
                             </div>
                         </div>
                     </div>
@@ -49,13 +49,10 @@
                     <div class="col-lg-3">
                         <!-- Study Type -->
                         <div class="form-floating mb-2">
-                            <select class="form-select" id="studyType">
-                                <option value="0">R&D Study</option>
-                                <option value="1">Mfg Study</option>
-                                <option value="2">Competitive Study</option>
+                            <select class="form-select" id="studyType" onblur="OnGenInfo_LF('gStudyType',this.value)">
                                 @foreach (DataRowView row in Model.gStudyType)
                                 {
-                                    <option value="@row["ID"]" selected="@(Model.gStudyTypeSelectedValue == Int32.Parse(row["ID"].ToString()))">@row["sName"]</option>
+                                    <option value="@row["ID"]" selected="@(Model.gStudyTypeSelectedValue == Int32.Parse(row["ID"].ToString()))" onblur="OnGenInfo_LF('gStudyType',this.value)">@row["sName"]</option>
                                 }
                             </select>
                             <label for="studyType">Study Type</label>
@@ -65,7 +62,7 @@
                     <div class="col-lg-3">
                         <!-- relatedProduct -->
                         <div class="form-floating mb-2">
-                            <select class="form-select" id="relatedProduct">
+                            <select class="form-select" id="relatedProduct" onblur="OnGenInfo_LF('gProductID',this.value)">
                                 @foreach (DataRowView row in Model.gProductID)
                                 {
                                     <option value="@row["Product Code"]" selected="@(Model.gProductIDSelectedValue== (row["Product Code"].ToString()))">@row["Product"]</option>
@@ -78,7 +75,7 @@
                     <div class="col-lg-3">
                         <!-- designedBy -->
                         <div class="form-floating mb-2">
-                            <select class="form-select" id="designedBy">
+                            <select class="form-select" id="designedBy" onblur="OnGenInfo_LF('gChemist',this.value)">
                                 @foreach (DataRowView row in Model.gChemist)
                                 {
                                     <option value="@row["ID"]" selected="@(Model.gChemistSelectedValue== Int32.Parse(row["ID"].ToString()))">@row["Employees"]</option>
@@ -91,7 +88,7 @@
                     <div class="col-lg-3">
                         <!-- conductedBy -->
                         <div class="form-floating mb-2">
-                            <select class="form-select" id="conductedBy">
+                            <select class="form-select" id="conductedBy" onblur="OnGenInfo_LF('gOperator',this.value)">
                                 @foreach (DataRowView row in Model.gOperator)
                                 {
                                     <option value="@row["ID"]" selected="@(Model.gOperatorSelectedValue== Int32.Parse(row["ID"].ToString()))">@row["Employees"]</option>
@@ -106,7 +103,7 @@
                     <div class="col-md-6">
                         <!-- experimentsDate -->
                         <div class="form-floating">
-                            <input type="date" class="form-control" id="experimentsDate" placeholder="" value="@Model.gDateDSCreated?.ToString("yyyy-MM-dd")">
+                            <input type="date" class="form-control" id="experimentsDate" placeholder="" value="@Model.gDateDSCreated?.ToString("yyyy-MM-dd")" onblur="OnGenInfo_LF('gDateDSCreated',this.value)">
                             <label for="experimentsDate">Date of Experiments</label>
                         </div>
                     </div>
@@ -114,7 +111,7 @@
                     <div class="col-md-6 d-flex justify-content-end align-items-center">
                         <!-- abandoned -->
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="abandoned" checked="@Model.gAbandonedIsChecked">
+                            <input type="checkbox" onchange="GCheckBox('gAbandoned',this)" class="custom-control-input" id="abandoned" checked="@Model.gAbandonedIsChecked">
                             <label class="custom-control-label" for="abandoned">Abandoned</label>
                         </div>
                     </div>
@@ -151,19 +148,19 @@
                     @{
                         int rowIndex2 = 0;
                     }
-                    @foreach (DataRow row in Model.gNco.Rows)
+                    @foreach (var row in Model.gNco)
                     {
                         int[] colIndex = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
                         <tr id="row-@rowIndex2">
-                            <td id="Descriptors-@rowIndex2-@colIndex[0]">@row["MatName"]</td>
-                            <td class="td" id="Descriptors-@rowIndex2-@colIndex[1]">@row["Pbw1"]</td>
-                            <td class="td" id="Descriptors-@rowIndex2-@colIndex[2]">@row["Pbw2"]</td>
-                            <td class="td" id="Descriptors-@rowIndex2-@colIndex[3]">@row["Pbw3"]</td>
-                            <td class="td" id="Descriptors-@rowIndex2-@colIndex[4]">@row["Pbw4"]</td>
-                            <td class="td" id="Descriptors-@rowIndex2-@colIndex[5]">@row["Pbw5"]</td>
-                            <td class="td" id="Descriptors-@rowIndex2-@colIndex[6]">@row["Pbw6"]</td>
-                            <td class="td" id="Descriptors-@rowIndex2-@colIndex[7]">@row["Pbw7"]</td>
-                            <td class="td" id="Descriptors-@rowIndex2-@colIndex[8]">@row["Pbw8"]</td>
+                            <td id="Nco-@rowIndex2-@colIndex[0]">@row.MatName</td>
+                            <td class="td" id="Nco-@rowIndex2-@colIndex[1]">@row.Pbw1</td>
+                            <td class="td" id="Nco-@rowIndex2-@colIndex[2]">@row.Pbw2</td>
+                            <td class="td" id="Nco-@rowIndex2-@colIndex[3]">@row.Pbw3</td>
+                            <td class="td" id="Nco-@rowIndex2-@colIndex[4]">@row.Pbw4</td>
+                            <td class="td" id="Nco-@rowIndex2-@colIndex[5]">@row.Pbw5</td>
+                            <td class="td" id="Nco-@rowIndex2-@colIndex[6]">@row.Pbw6</td>
+                            <td class="td" id="Nco-@rowIndex2-@colIndex[7]">@row.Pbw7</td>
+                            <td class="td" id="Nco-@rowIndex2-@colIndex[8]">@row.Pbw8</td> 
                         </tr>
                         rowIndex2++;
                     }
@@ -190,22 +187,28 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td scope="row">
-                            Rubinate 1850 Isocyanate
-                        </td>
-                        <td>Iso-PMDI</td>
-                        <td>33.5</td>
-                        <td>2.9</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                    </tr>
+                    @{
+                        int rowIndex4 = 0;
+                    }
+                    @foreach (var row in Model.gIso)
+                    {
+                        int[] colIndex = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
+                        <tr id="row-@rowIndex4">
+                            <td id="Descriptors-@rowIndex4-@colIndex[0]">@row.MatName</td>
+                            <td id="Descriptors-@rowIndex4-@colIndex[0]">@row.MatType</td>
+                            <td id="Descriptors-@rowIndex4-@colIndex[0]">@row.MatNco</td>
+                            <td id="Descriptors-@rowIndex4-@colIndex[0]">@row.MatFunc</td>
+                            <td class="td" id="Descriptors-@rowIndex4-@colIndex[1]">@row.Pbw1</td>
+                            <td class="td" id="Descriptors-@rowIndex4-@colIndex[2]">@row.Pbw2</td>
+                            <td class="td" id="Descriptors-@rowIndex4-@colIndex[3]">@row.Pbw3</td>
+                            <td class="td" id="Descriptors-@rowIndex4-@colIndex[4]">@row.Pbw4</td>
+                            <td class="td" id="Descriptors-@rowIndex4-@colIndex[5]">@row.Pbw5</td>
+                            <td class="td" id="Descriptors-@rowIndex4-@colIndex[6]">@row.Pbw6</td>
+                            <td class="td" id="Descriptors-@rowIndex4-@colIndex[7]">@row.Pbw7</td>
+                            <td class="td" id="Descriptors-@rowIndex4-@colIndex[8]">@row.Pbw8</td>
+                        </tr>
+                        rowIndex4++;
+                    }
                 </tbody>
             </table>
 
@@ -229,87 +232,28 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td scope="row">
-                            TEROL 563
-                        </td>
-                        <td>Polyol - Polyester</td>
-                        <td>245	2</td>
-                        <td>2.9</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                    </tr>
-
-                    <tr>
-                        <td scope="row">
-                            Rubinate 1850 Isocyanate
-                        </td>
-                        <td>Iso-PMDI</td>
-                        <td>33.5</td>
-                        <td>2.9</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                    </tr>
-                    <tr>
-                        <td scope="row">
-                            ExP. Catalyst 1
-                        </td>
-                        <td>Catalyst</td>
-                        <td>1730</td>
-                        <td>0</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                    </tr>
-                    <tr>
-                        <td scope="row">
-                            STEPANPOL PS 2352
-                        </td>
-                        <td>Polyol - Polyester</td>
-                        <td>240</td>
-                        <td>2.9</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                    </tr>
-                    <tr>
-                        <td scope="row">
-                            n-pentane
-                        </td>
-                        <td>Blowing Ag. - HC</td>
-                        <td>33.5</td>
-                        <td>2.9</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                    </tr>
+                    @{
+                        int rowIndex5 = 0;
+                    }
+                    @foreach (var row in Model.gPO)
+                    {
+                        int[] colIndex = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
+                        <tr id="row-@rowIndex5">
+                            <td id="Descriptors-@rowIndex5-@colIndex[0]">@row.MatName</td>
+                            <td id="Descriptors-@rowIndex5-@colIndex[0]">@row.MatType</td>
+                            <td id="Descriptors-@rowIndex5-@colIndex[0]">@row.MatNco</td>
+                            <td id="Descriptors-@rowIndex5-@colIndex[0]">@row.MatFunc</td>
+                            <td class="td" id="Descriptors-@rowIndex5-@colIndex[1]">@row.Pbw1</td>
+                            <td class="td" id="Descriptors-@rowIndex5-@colIndex[2]">@row.Pbw2</td>
+                            <td class="td" id="Descriptors-@rowIndex5-@colIndex[3]">@row.Pbw3</td>
+                            <td class="td" id="Descriptors-@rowIndex5-@colIndex[4]">@row.Pbw4</td>
+                            <td class="td" id="Descriptors-@rowIndex5-@colIndex[5]">@row.Pbw5</td>
+                            <td class="td" id="Descriptors-@rowIndex5-@colIndex[6]">@row.Pbw6</td>
+                            <td class="td" id="Descriptors-@rowIndex5-@colIndex[7]">@row.Pbw7</td>
+                            <td class="td" id="Descriptors-@rowIndex5-@colIndex[8]">@row.Pbw8</td>
+                        </tr>
+                        rowIndex5++;
+                    }
                 </tbody>
             </table>
 
@@ -327,7 +271,7 @@
                     <div class="row align-items-center justify-content-between">
                         <label for="sampleMass" class="col-md-9 col-form-label">Total Sample Mass needed for Foamat Experiment (gm) </label>
                         <div class="col-md-3">
-                            <input type="number" value="250" class="form-control" id="sampleMass">
+                            <input type="number" onblur="OngFoamatGmLostFocus(this.value)" value="@Model.gFoamatGm" class="form-control" id="sampleMass">
                         </div>
                     </div>
                 </div>
@@ -369,14 +313,14 @@
                         int[] colIndex = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
                         <tr id="row-@rowIndex3">
                             <td id="Descriptors-@rowIndex3-@colIndex[0]">@row["Descriptors"]</td>
-                            <td class="td" id="Descriptors-@rowIndex3-@colIndex[1]">@row["#1"]</td>
-                            <td class="td" id="Descriptors-@rowIndex3-@colIndex[2]">@row["#2"]</td>
-                            <td class="td" id="Descriptors-@rowIndex3-@colIndex[3]">@row["#3"]</td>
-                            <td class="td" id="Descriptors-@rowIndex3-@colIndex[4]">@row["#4"]</td>
-                            <td class="td" id="Descriptors-@rowIndex3-@colIndex[5]">@row["#5"]</td>
-                            <td class="td" id="Descriptors-@rowIndex3-@colIndex[6]">@row["#6"]</td>
-                            <td class="td" id="Descriptors-@rowIndex3-@colIndex[7]">@row["#7"]</td>
-                            <td class="td" id="Descriptors-@rowIndex3-@colIndex[8]">@row["#8"]</td>
+                            <td id="Descriptors-@rowIndex3-@colIndex[1]">@row["#1"]</td>
+                            <td id="Descriptors-@rowIndex3-@colIndex[2]">@row["#2"]</td>
+                            <td id="Descriptors-@rowIndex3-@colIndex[3]">@row["#3"]</td>
+                            <td id="Descriptors-@rowIndex3-@colIndex[4]">@row["#4"]</td>
+                            <td id="Descriptors-@rowIndex3-@colIndex[5]">@row["#5"]</td>
+                            <td id="Descriptors-@rowIndex3-@colIndex[6]">@row["#6"]</td>
+                            <td id="Descriptors-@rowIndex3-@colIndex[7]">@row["#7"]</td>
+                            <td id="Descriptors-@rowIndex3-@colIndex[8]">@row["#8"]</td>
                         </tr>
                         rowIndex3++;
                     }
@@ -386,3 +330,113 @@
         </div>
     </div>
 </div>
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            $(function () {
+                $(".td").click(function (event) {
+                    if ($(this).children("input").length > 0)
+                        return false;
+
+                    var tdObj = $(this);
+                    var preText = tdObj.html();
+                    var inputObj = $("<input type='text' />");
+                    tdObj.html("");
+
+                    inputObj.width(tdObj.width())
+                        .height(tdObj.height())
+                        .css({ border: "0px", fontSize: "13px" })
+                        .val(preText)
+                        .appendTo(tdObj)
+                        .trigger("focus")
+                        .trigger("select");
+
+                    inputObj.keyup(function (event) {
+                        if (13 == event.which) { // press ENTER-key
+                            var text = $(this).val();
+                            tdObj.html(text);
+                        }
+                        else if (27 == event.which) {  // press ESC-key
+                            tdObj.html(preText);
+                        }
+                    });
+
+                    inputObj.click(function () {
+                        return false;
+                    });
+                    inputObj.blur(function () {
+                        var text = $(this).val();
+                        tdObj.html(text);
+
+                        var cellId = tdObj.attr("id");
+                        var ids = cellId.split("-");
+                        var table = ids[0];
+                        var rowId = ids[1];
+                        var colId = ids[2];
+                        if (table == "Nco") {
+                            OnGNcoCell(rowId, colId, text);
+                        }
+                    });
+                });
+            });
+        });
+
+        function OnGNcoCell(rowId, colId, text) {
+            // console.log("Row ID: " + rowId + ", Column ID: " + colId + ", New Value: " + text);
+            $.ajax({
+                type: "POST",
+                url: "/RnD_Users/Formulations?handler=GNcoCellEditEnding",
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                data: { rowId: rowId, colId: colId, text: text },
+                success: function (response) {
+                    console.log('Server response:', response);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+        function OnGenInfo_LF(Name,Value) {
+            // console.log("Row ID: " + rowId + ", Column ID: " + colId + ", New Value: " + text);
+            $.ajax({
+                type: "POST",
+                url: "/RnD_Users/Formulations?handler=GenInfo_LF",
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                data: { Name: Name, Value : Value },
+                success: function (response) {
+                    console.log('Server response:', response);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+        function OngFoamatGmLostFocus(value) {
+            // console.log("Row ID: " + rowId + ", Column ID: " + colId + ", New Value: " + text);
+            $.ajax({
+                type: "POST",
+                url: "/RnD_Users/Formulations?handler=OngFoamatGmLostFocus",
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                data: { value: value },
+                success: function (response) {
+                    console.log('Server response:', response);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+        function GCheckBox(Name, element) {
+            let value;
+
+            if (element.type === "checkbox") {
+                value = element.checked ? "true" : "false";
+            } else {
+                value = element.value;
+            }
+            //console.log(Name,value)
+            OnGenInfo_LF(Name, value)
+        }
+
+    </script>
+}

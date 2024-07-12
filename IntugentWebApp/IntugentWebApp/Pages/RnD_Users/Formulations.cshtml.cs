@@ -35,13 +35,12 @@ namespace IntugentWebApp.Pages.RnD_Users
               public string gProductIDSelectedValue { get; set; }
               public DateTime? gDateDSCreated { get; set; }
               public DataView gFormProps {  get; set; }
-              public DataTable gPO {  get; set; }
-              //public DataTable gNco {  get; set; }
-              public DataTable gIso {  get; set; }
+              public ObservableCollection<CMaterial>  gPO {  get; set; }
+              public ObservableCollection<CMaterial> gIso {  get; set; }
               public string gFoamatGm {  get; set; }
               public List<string> gPolyolList {  get; set; }
               public List<string> gIsoList { get; set; }
-        public ObservableCollection<CMaterial> gNco = new ObservableCollection<CMaterial>();
+               public ObservableCollection<CMaterial> gNco = new ObservableCollection<CMaterial>();
 
         public readonly ObjectsService _objectsService;
               public FormulationsModel(ObjectsService objectsService) {
@@ -54,9 +53,9 @@ namespace IntugentWebApp.Pages.RnD_Users
       
               public void OnGet()
               {
-                       //gPO  =  _objectsService.RNDFormulations.Forms.POMats;
+                       gPO  =  _objectsService.RNDFormulations.Forms.POMats;
                        gNco =  _objectsService.RNDFormulations.Forms.NCOIndexMats;
-                       //gIso =  _objectsService.RNDFormulations.Forms.IsoMats;
+                       gIso =  _objectsService.RNDFormulations.Forms.IsoMats;
                        gStudyType = _objectsService.CLists.dvRunTypeRND2;
                        gStudyTypeSelectedValue = 1;
                        gProductID = _objectsService.CLists.dvComProd;
@@ -98,35 +97,41 @@ namespace IntugentWebApp.Pages.RnD_Users
         }
 
        
-        //private void OngNcoCellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
-        //{
-        //    double dtmp, dtmp0;
-        //    int irow = e.Row.GetIndex();
-        //    int icol = e.Column.DisplayIndex;
-        //    DataRow dgr = e.Row;
+        public IActionResult OnPostGNcoCellEditEnding(string rowId, string colId, string text)
+        {
+            string returns= "";
+            double dtmp, dtmp0;
+            int irow = Int32.Parse(rowId);
+            int icol = Int32.Parse(colId);
+            //DataRow dgr = e.Row;
 
-        //    if (irow == 0 && icol > 0 && icol < _objectsService.RNDFormulations.Forms.nForm + 1)
-        //    {
-        //        dtmp0 = _objectsService.RNDFormulations.Forms.FormAr[icol - 1].NcoIndex;
-        //        TextBox tb = gIso.Columns[icol].GetCellContent(dgr) as TextBox;
-        //        if (double.TryParse(tb.Text, out dtmp)) _objectsService.RNDFormulations.Forms.FormAr[icol - 1].NcoIndex = dtmp;
-        //        else {
-        //          //  MessageBox.Show("Improper Value. New Value is not accepted."); 
-        //            if (dtmp0 > 0) tb.Text = dtmp0.ToString("0.#####"); else tb.Text = string.Empty; }
-        //    }
+            if (irow == 0 && icol > 0 && icol < _objectsService.RNDFormulations.Forms.nForm + 1)
+            {
+                dtmp0 = _objectsService.RNDFormulations.Forms.FormAr[icol - 1].NcoIndex;
+                //TextBox tb = gIso.Columns[icol].GetCellContent(dgr) as TextBox;
+                string tb = text;
+                if (double.TryParse(tb, out dtmp))
+                {
 
-        //    SetView();
-        //    _objectsService.RNDHome.dtF.Rows[icol - 1]["NCOIndex"] = _objectsService.RNDFormulations.Forms.FormAr[icol - 1].NcoIndex; _objectsService.RNDHome.UpdateFormulatiions();
+                    _objectsService.RNDFormulations.Forms.FormAr[icol - 1].NcoIndex = dtmp;
+                }
+                else {
+                  //  MessageBox.Show("Improper Value. New Value is not accepted."); 
+                    if (dtmp0 > 0) tb = dtmp0.ToString("0.#####"); else tb = string.Empty; }
+            }
+
+            SetView();
+            _objectsService.RNDHome.dtF.Rows[icol - 1]["NCOIndex"] = _objectsService.RNDFormulations.Forms.FormAr[icol - 1].NcoIndex; _objectsService.RNDHome.UpdateFormulatiions();
 
 
-        //    //           dr["FormsStr"] = JsonSerializer.Serialize<CForms>(Forms);
-        //    // string sMsg = JsonSerializer.Serialize(Forms.FormAr[icol - 1].POMatPbw);
-        //    //            string sMsg = (string) JsonConvert.SerializeObject(Forms, Formatting.Indented);
+            //           dr["FormsStr"] = JsonSerializer.Serialize<CForms>(Forms);
+            // string sMsg = JsonSerializer.Serialize(Forms.FormAr[icol - 1].POMatPbw);
+            //            string sMsg = (string) JsonConvert.SerializeObject(Forms, Formatting.Indented);
 
-        //    //           MessageBox.Show(sMsg);
-        //    //           UpdateDataSet();
-
-        //}
+            //           MessageBox.Show(sMsg);
+            //           UpdateDataSet();
+            return new JsonResult(returns);
+        }
 
         //private void gPO_Paste(object sender, RoutedEventArgs e)
 
@@ -199,94 +204,97 @@ namespace IntugentWebApp.Pages.RnD_Users
 
 
         //}
-        //private void OngPOCellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
-        //{
-        //    string sMsg;
-        //    int irow = e.Row.GetIndex();
-        //    int icol = e.Column.DisplayIndex;
-        //    double dtmp, dtmp0; string stmp = string.Empty;
+        public IActionResult OnPostGPOCellEditEnding(string rowId, string colId, string text)
+        {
+            string sMsg;
+            int irow = Int32.Parse(rowId);
+            int icol = Int32.Parse(colId);
+            double dtmp, dtmp0; string stmp = string.Empty;
 
-        //    int iSel;
-        //    //         double dtemp;
+            int iSel;
+            //         double dtemp;
 
-        //    DataRow dgr = e.Row;
+            //DataRow dgr = e.Row;
 
-        //    if (irow > _objectsService.RNDFormulations.Forms.nComps - 2)
-        //    {
-        //        sMsg = "Number of components (rows) must be less than " + _objectsService.RNDFormulations.Forms.nComps.ToString();
-        //     //   MessageBox.Show(sMsg, Cbfile.sAppName, MessageBoxButton.OK, MessageBoxImage.Stop);
-        //        return;
-        //    }
-        //    if (icol == 0)
-        //    {
+            if (irow > _objectsService.RNDFormulations.Forms.nComps - 2)
+            {
+                sMsg = "Number of components (rows) must be less than " + _objectsService.RNDFormulations.Forms.nComps.ToString();
+             //   MessageBox.Show(sMsg, Cbfile.sAppName, MessageBoxButton.OK, MessageBoxImage.Stop);
+                return new JsonResult("No");
+            }
+            if (icol == 0)
+            {
+
+                int cmbSelectedIndex = 0;
+                //ComboBox cmb = gPO.Columns[0].GetCellContent(dgr) as ComboBox;
+                iSel = cmbSelectedIndex;
+
+                if (iSel > -1)
+                {
+                    _objectsService.RNDFormulations.ModifyPOIsoLists(irow, ref _objectsService.RNDFormulations.Forms.POMats, iSel, _objectsService.RNDFormulations.dtPO);
+                    string sMatIDs = _objectsService.RNDFormulations.Forms.POMats[0].ID.ToString();
+                    for (int j = 1; j < _objectsService.RNDFormulations.Forms.POMats.Count; j++) sMatIDs += "," + _objectsService.RNDFormulations.Forms.POMats[j].ID.ToString();
+                    _objectsService.RNDHome.drS["POMats"] = sMatIDs; _objectsService.RNDHome.UpdateDataSet();
+
+                    stmp = _objectsService.RNDFormulations.Forms.POMats[0].MatOHNum.ToString();
+                    for (int j = 1; j < _objectsService.RNDFormulations.Forms.POMats.Count; j++) stmp += "," + _objectsService.RNDFormulations.Forms.POMats[j].MatOHNum.ToString();
+                    _objectsService.RNDHome.drS["sPOMatsOH"] = stmp; _objectsService.RNDHome.UpdateDataSet();
+                    //  MessageBox.Show(sMatIDs);
+                    /*                   
+                                       _objectsService.RNDFormulations.Forms.POMats[irow].MatType = sMatTypeListPO[iSel];
+                                       POForm1.POMatOH[irow] = _objectsService.RNDFormulations.Forms.POMats[irow].MatOHNum = dMatOHListPO[iSel];
+                                       POForm1.POMatFunc[irow] = _objectsService.RNDFormulations.Forms.POMats[irow].MatFunc = dMatFuncListPO[iSel];
+                                       int.TryParse(dtPO.Rows[irow]["ID"].ToString(), out POForm1.POMatID[irow]); 
+                    */
+                }
+
+            }
+            else if (icol == 2)
+            {
+
+                //TextBox tb = gPO.Columns[icol].GetCellContent(dgr) as TextBox;
+                string tb = text;
+                double.TryParse(tb, out dtmp);
+                _objectsService.RNDFormulations.Forms.POMats[irow].MatOHNum = dtmp;
+                stmp = _objectsService.RNDFormulations.Forms.POMats[0].MatOHNum.ToString();
+                for (int j = 1; j < _objectsService.RNDFormulations.Forms.POMats.Count; j++) stmp += "," + _objectsService.RNDFormulations.Forms.POMats[j].MatOHNum.ToString();
+                _objectsService.RNDHome.drS["sPOMatsOH"] = stmp; _objectsService.RNDHome.UpdateDataSet();
+                //                MessageBox.Show(_objectsService.RNDFormulations.Forms.POMats[irow].MatName.ToString()+"\n\nOH#:  " + dtemp.ToString());
+                SetView();
 
 
-        //        ComboBox cmb = gPO.Columns[0].GetCellContent(dgr) as ComboBox;
-        //        iSel = cmb.SelectedIndex;
+            }
+            else if (icol > 3 && icol < 12)
+            {
+                dtmp0 = _objectsService.RNDFormulations.Forms.FormAr[icol - 4].POMatPbw[irow];
+                //TextBox tb = gPO.Columns[icol].GetCellContent(dgr) as TextBox;
+                string tb = text;
 
-        //        if (iSel > -1)
-        //        {
-        //            _objectsService.RNDFormulations.ModifyPOIsoLists(irow, ref _objectsService.RNDFormulations.Forms.POMats, iSel, dtPO);
-        //            string sMatIDs = _objectsService.RNDFormulations.Forms.POMats[0].ID.ToString();
-        //            for (int j = 1; j < _objectsService.RNDFormulations.Forms.POMats.Count; j++) sMatIDs += "," + _objectsService.RNDFormulations.Forms.POMats[j].ID.ToString();
-        //            _objectsService.RNDHome.drS["POMats"] = sMatIDs; _objectsService.RNDHome.UpdateDataSet();
+                if (tb == string.Empty) { _objectsService.RNDFormulations.Forms.FormAr[icol - 4].POMatPbw[irow] = 0.0; tb = string.Empty; }
+                else if (double.TryParse(tb, out dtmp)) _objectsService.RNDFormulations.Forms.FormAr[icol - 4].POMatPbw[irow] = dtmp;
+                else { 
+                   // MessageBox.Show("Improper Value. New Value is not accepted.");
+                    if (dtmp0 > 0) tb = dtmp0.ToString("0.#####");
+                    else tb = string.Empty; }
 
-        //            stmp = _objectsService.RNDFormulations.Forms.POMats[0].MatOHNum.ToString();
-        //            for (int j = 1; j < _objectsService.RNDFormulations.Forms.POMats.Count; j++) stmp += "," + _objectsService.RNDFormulations.Forms.POMats[j].MatOHNum.ToString();
-        //            _objectsService.RNDHome.drS["sPOMatsOH"] = stmp; _objectsService.RNDHome.UpdateDataSet();
-        //            //  MessageBox.Show(sMatIDs);
-        //            /*                   
-        //                               _objectsService.RNDFormulations.Forms.POMats[irow].MatType = sMatTypeListPO[iSel];
-        //                               POForm1.POMatOH[irow] = _objectsService.RNDFormulations.Forms.POMats[irow].MatOHNum = dMatOHListPO[iSel];
-        //                               POForm1.POMatFunc[irow] = _objectsService.RNDFormulations.Forms.POMats[irow].MatFunc = dMatFuncListPO[iSel];
-        //                               int.TryParse(dtPO.Rows[irow]["ID"].ToString(), out POForm1.POMatID[irow]); 
-        //            */
-        //        }
+                string js1 = System.Text.Json.JsonSerializer.Serialize(_objectsService.RNDFormulations.Forms.FormAr[icol - 4].POMatPbw);
+                _objectsService.RNDHome.dtF.Rows[icol - 4]["POPbws"] = js1; _objectsService.RNDHome.UpdateFormulatiions();
+                //                MessageBox.Show(js1);
+            }
 
-        //    }
-        //    else if (icol == 2)
-        //    {
+            if (string.IsNullOrEmpty(_objectsService.RNDFormulations.Forms.POMats[irow].MatName))
+            {
+                sMsg = "You must choose the material for the row " + (irow + 1);
+               // MessageBox.Show(sMsg, Params.sAppName, MessageBoxButton.OK, MessageBoxImage.Hand);
+            }
+            else SetView();
 
-        //        TextBox tb = gPO.Columns[icol].GetCellContent(dgr) as TextBox;
-        //        double.TryParse(tb.Text, out dtmp);
-        //        _objectsService.RNDFormulations.Forms.POMats[irow].MatOHNum = dtmp;
-        //        stmp = _objectsService.RNDFormulations.Forms.POMats[0].MatOHNum.ToString();
-        //        for (int j = 1; j < _objectsService.RNDFormulations.Forms.POMats.Count; j++) stmp += "," + _objectsService.RNDFormulations.Forms.POMats[j].MatOHNum.ToString();
-        //        _objectsService.RNDHome.drS["sPOMatsOH"] = stmp; _objectsService.RNDHome.UpdateDataSet();
-        //        //                MessageBox.Show(_objectsService.RNDFormulations.Forms.POMats[irow].MatName.ToString()+"\n\nOH#:  " + dtemp.ToString());
-        //        SetView();
+            string js = System.Text.Json.JsonSerializer.Serialize(_objectsService.RNDFormulations.Forms.POMats);
+            //e.Cancel = true;
 
-
-        //    }
-        //    else if (icol > 3 && icol < 12)
-        //    {
-        //        dtmp0 = _objectsService.RNDFormulations.Forms.FormAr[icol - 4].POMatPbw[irow];
-        //        TextBox tb = gPO.Columns[icol].GetCellContent(dgr) as TextBox;
-
-        //        if (tb.Text == string.Empty) { _objectsService.RNDFormulations.Forms.FormAr[icol - 4].POMatPbw[irow] = 0.0; tb.Text = string.Empty; }
-        //        else if (double.TryParse(tb.Text, out dtmp)) _objectsService.RNDFormulations.Forms.FormAr[icol - 4].POMatPbw[irow] = dtmp;
-        //        else { 
-        //           // MessageBox.Show("Improper Value. New Value is not accepted.");
-        //            if (dtmp0 > 0) tb.Text = dtmp0.ToString("0.#####");
-        //            else tb.Text = string.Empty; }
-
-        //        string js1 = System.Text.Json.JsonSerializer.Serialize(_objectsService.RNDFormulations.Forms.FormAr[icol - 4].POMatPbw);
-        //        _objectsService.RNDHome.dtF.Rows[icol - 4]["POPbws"] = js1; _objectsService.RNDHome.UpdateFormulatiions();
-        //        //                MessageBox.Show(js1);
-        //    }
-
-        //    if (string.IsNullOrEmpty(_objectsService.RNDFormulations.Forms.POMats[irow].MatName))
-        //    {
-        //        sMsg = "You must choose the material for the row " + (irow + 1);
-        //       // MessageBox.Show(sMsg, Params.sAppName, MessageBoxButton.OK, MessageBoxImage.Hand);
-        //    }
-        //    else SetView();
-
-        //    string js = System.Text.Json.JsonSerializer.Serialize(_objectsService.RNDFormulations.Forms.POMats);
-        //    e.Cancel = true;
-
-        //    //           MessageBox.Show(js);
-        //}
+            //           MessageBox.Show(js);
+            return new JsonResult(true);
+        }
         //private void OngIsoCellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         //{
         //    string sMsg;
@@ -432,8 +440,9 @@ namespace IntugentWebApp.Pages.RnD_Users
                 }
         */
 
-       public IActionResult OnPostOngFoamatGmLostFocus()
+       public IActionResult OnPostOngFoamatGmLostFocus(string value)
         {
+            gFoamatGm = value;
             Double.TryParse(gFoamatGm, out _objectsService.RNDFormulations.cDefualts.FoamatRunWt);
             SetView();
             _objectsService.RNDHome.drS["FoamatGm"] = _objectsService.RNDFormulations.cDefualts.FoamatRunWt; _objectsService.RNDHome.UpdateDataSet();
@@ -644,51 +653,57 @@ namespace IntugentWebApp.Pages.RnD_Users
 
         #region Lost Focus and Other Actions
 
-       //public IActionResult OnPostGenInfo_LF(string Name,string Value)
-       // {
-       //     string sFld = String.Empty;
-       //     string sName = Name;
+       public IActionResult OnPostGenInfo_LF(string Name,string Value)
+        {
+            string sFld = String.Empty;
+            string sName = Name;
 
-       //     _objectsService.RNDFormulations.bDataSetChanged = true;
+            _objectsService.RNDFormulations.bDataSetChanged = true;
 
-       //     switch (sName)
-       //     {
-       //         case "gStudyName":
-       //             if (gStudyName == null) { _objectsService.RNDHome.drS["Study Name"] = DBNull.Value; _objectsService.RNDHome.dt.Rows[_objectsService.RNDHome.indSet]["Study Name"] = string.Empty; }
-       //             else { _objectsService.RNDHome.drS["Study Name"] = _objectsService.RNDHome.dt.Rows[_objectsService.RNDHome.indSet]["Study Name"] = gStudyName; }
-       //             _objectsService.gRNDSearch.ItemsSource = _objectsService.RNDHome.dt.DefaultView;
-       //             break;
+            switch (sName)
+            {
+                case "gStudyName":
+                    gStudyName = Value;
+                    if (gStudyName == null) { _objectsService.RNDHome.drS["Study Name"] = DBNull.Value; _objectsService.RNDHome.dt.Rows[_objectsService.RNDHome.indSet]["Study Name"] = string.Empty; }
+                    else { _objectsService.RNDHome.drS["Study Name"] = _objectsService.RNDHome.dt.Rows[_objectsService.RNDHome.indSet]["Study Name"] = gStudyName; }
+                    //_objectsService.RNDHome.gRNDSearch.ItemsSource = _objectsService.RNDHome.dt.DefaultView;
+                    break;
 
-       //         case "gChemist":
-       //             if (gChemistSelectedValue == null) { _objectsService.RNDHome.drS["Chemist"] = DBNull.Value; _objectsService.RNDHome.dt.Rows[_objectsService.RNDHome.indSet]["Chemist"] = string.Empty; }
-       //             else { _objectsService.RNDHome.drS["Chemist"] = (int)gChemistSelectedValue; _objectsService.RNDHome.dt.Rows[_objectsService.RNDHome.indSet]["Chemist"] = gChemist; }
-       //             CPages.PageRndHome_1.gRNDSearch.ItemsSource = _objectsService.RNDHome.dt.DefaultView;
-       //             break;
+                case "gChemist":
+                    gChemistSelectedValue = Int32.Parse(Value);
+                    if (gChemistSelectedValue == null) { _objectsService.RNDHome.drS["Chemist"] = DBNull.Value; _objectsService.RNDHome.dt.Rows[_objectsService.RNDHome.indSet]["Chemist"] = string.Empty; }
+                    else { _objectsService.RNDHome.drS["Chemist"] = (int)gChemistSelectedValue; _objectsService.RNDHome.dt.Rows[_objectsService.RNDHome.indSet]["Chemist"] = gChemist; }
+                    //CPages.PageRndHome_1.gRNDSearch.ItemsSource = _objectsService.RNDHome.dt.DefaultView;
+                    break;
 
-       //         case "gOperator":
-       //             if (gOperatorSelectedValue == null) { _objectsService.RNDHome.drS["Operator"] = DBNull.Value; _objectsService.RNDHome.dt.Rows[_objectsService.RNDHome.indSet]["Operator"] = string.Empty; }
-       //             else { _objectsService.RNDHome.drS["Operator"] = (int)gOperatorSelectedValue; _objectsService.RNDHome.dt.Rows[_objectsService.RNDHome.indSet]["Operator"] = gOperator; }
-       //             break;
+                case "gOperator":
+                    gOperatorSelectedValue = Int32.Parse(Value);
+                    if (gOperatorSelectedValue == null) { _objectsService.RNDHome.drS["Operator"] = DBNull.Value; _objectsService.RNDHome.dt.Rows[_objectsService.RNDHome.indSet]["Operator"] = string.Empty; }
+                    else { _objectsService.RNDHome.drS["Operator"] = (int)gOperatorSelectedValue; _objectsService.RNDHome.dt.Rows[_objectsService.RNDHome.indSet]["Operator"] = gOperator; }
+                    break;
 
-       //         case "gProductID":
-       //             if (gProductIDSelectedValue == null) { _objectsService.RNDHome.drS["Product ID"] = DBNull.Value; _objectsService.RNDHome.dt.Rows[_objectsService.RNDHome.indSet]["Product ID"] = string.Empty; }
-       //             else { _objectsService.RNDHome.drS["Product ID"] = gProductIDSelectedValue; _objectsService.RNDHome.dt.Rows[_objectsService.RNDHome.indSet]["Product ID"] = gProductIDSelectedValue; }
-       //             break;
+                case "gProductID":
+                    gProductIDSelectedValue = Value;
+                    if (gProductIDSelectedValue == null) { _objectsService.RNDHome.drS["Product ID"] = DBNull.Value; _objectsService.RNDHome.dt.Rows[_objectsService.RNDHome.indSet]["Product ID"] = string.Empty; }
+                    else { _objectsService.RNDHome.drS["Product ID"] = gProductIDSelectedValue; _objectsService.RNDHome.dt.Rows[_objectsService.RNDHome.indSet]["Product ID"] = gProductIDSelectedValue; }
+                    break;
 
-       //         case "gStudyType":
-       //             if (gStudyTypeSelectedValue == null) { _objectsService.RNDHome.drS["Study Type"] = DBNull.Value; }
-       //             else { _objectsService.RNDHome.drS["Study Type"] = (int)gStudyTypeSelectedValue; }; break;
+                case "gStudyType":
+                    gStudyTypeSelectedValue = Int32.Parse(Value);
+                    if (gStudyTypeSelectedValue == null) { _objectsService.RNDHome.drS["Study Type"] = DBNull.Value; }
+                    else { _objectsService.RNDHome.drS["Study Type"] = (int)gStudyTypeSelectedValue; }; break;
 
-       //         case "gDateDSCreated":
-       //             if (gDateDSCreated == null) { _objectsService.RNDHome.drS["DateDSCreated"] = DBNull.Value; _objectsService.RNDHome.dt.Rows[_objectsService.RNDHome.indSet]["DateDSCreated"] = DBNull.Value; }
-       //             else { _objectsService.RNDHome.drS["DateDSCreated"] = gDateDSCreated; _objectsService.RNDHome.dt.Rows[_objectsService.RNDHome.indSet]["DateDSCreated"] = gDateDSCreated; }
-       //             break;
+                case "gDateDSCreated":
+                    gDateDSCreated = DateTime.Parse(Value);
+                    if (gDateDSCreated == null) { _objectsService.RNDHome.drS["DateDSCreated"] = DBNull.Value; _objectsService.RNDHome.dt.Rows[_objectsService.RNDHome.indSet]["DateDSCreated"] = DBNull.Value; }
+                    else { _objectsService.RNDHome.drS["DateDSCreated"] = gDateDSCreated; _objectsService.RNDHome.dt.Rows[_objectsService.RNDHome.indSet]["DateDSCreated"] = gDateDSCreated; }
+                    break;
 
-       //         case "gAbandoned": if (gAbandonedIsChecked == true) _objectsService.RNDHome.drS["Abandoned"] = true; else _objectsService.RNDHome.drS["Abandoned"] = false; break;
-       //     }
-       //     _objectsService.RNDHome.UpdateDataSet();
-       //     return new JsonResult(true);
-       // }
+                case "gAbandoned": gAbandonedIsChecked = (bool.Parse(Value)); if (gAbandonedIsChecked == true) _objectsService.RNDHome.drS["Abandoned"] = true; else _objectsService.RNDHome.drS["Abandoned"] = false; break;
+            }
+            _objectsService.RNDHome.UpdateDataSet();
+            return new JsonResult(true);
+        }
 
        public  IActionResult OnPostVisibility_LF()
         {

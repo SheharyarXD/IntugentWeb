@@ -1,4 +1,5 @@
 ﻿@page
+@using System.Data;
 @model IntugentWebApp.Pages.RnD_Users.FormulationsModel
 @{
     ViewData["ActivePage"] = "Formulations Page";
@@ -28,7 +29,7 @@
                         <div class="mb-2 row">
                             <label for="projectID" class="col-md-5 col-form-label">Project ID</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" id="projectID"  readonly>
+                                <input type="text" class="form-control" id="projectID" value="@Model.gID" readonly>
                             </div>
                         </div>
                     </div>
@@ -38,7 +39,7 @@
                         <div class="mb-2 row">
                             <label for="projectStudyName" class="col-md-3 col-form-label">Project/Study Name</label>
                             <div class="col-md-9">
-                                <input type="text" class="form-control" id="projectStudyName" readonly>
+                                <input type="text" class="form-control" id="projectStudyName" value="@Model.gStudyName" readonly>
                             </div>
                         </div>
                     </div>
@@ -52,6 +53,10 @@
                                 <option value="0">R&D Study</option>
                                 <option value="1">Mfg Study</option>
                                 <option value="2">Competitive Study</option>
+                                @foreach (DataRowView row in Model.gStudyType)
+                                {
+                                    <option value="@row["ID"]" selected="@(Model.gStudyTypeSelectedValue == Int32.Parse(row["ID"].ToString()))">@row["sName"]</option>
+                                }
                             </select>
                             <label for="studyType">Study Type</label>
                         </div>
@@ -61,9 +66,10 @@
                         <!-- relatedProduct -->
                         <div class="form-floating mb-2">
                             <select class="form-select" id="relatedProduct">
-                                <option value="0">Prod 1</option>
-                                <option value="1">Prod 2</option>
-                                <option value="2">Prod 3</option>
+                                @foreach (DataRowView row in Model.gProductID)
+                                {
+                                    <option value="@row["Product Code"]" selected="@(Model.gProductIDSelectedValue== (row["Product Code"].ToString()))">@row["Product"]</option>
+                                }
                             </select>
                             <label for="relatedProduct">Related Product</label>
                         </div>
@@ -73,8 +79,10 @@
                         <!-- designedBy -->
                         <div class="form-floating mb-2">
                             <select class="form-select" id="designedBy">
-                                <option value="1">Asjad</option>
-                                <option value="2">Mike</option>
+                                @foreach (DataRowView row in Model.gChemist)
+                                {
+                                    <option value="@row["ID"]" selected="@(Model.gChemistSelectedValue== Int32.Parse(row["ID"].ToString()))">@row["Employees"]</option>
+                                }
                             </select>
                             <label for="designedBy">Designed By</label>
                         </div>
@@ -84,8 +92,10 @@
                         <!-- conductedBy -->
                         <div class="form-floating mb-2">
                             <select class="form-select" id="conductedBy">
-                                <option value="1">Asjad</option>
-                                <option value="2">Mike</option>
+                                @foreach (DataRowView row in Model.gOperator)
+                                {
+                                    <option value="@row["ID"]" selected="@(Model.gOperatorSelectedValue== Int32.Parse(row["ID"].ToString()))">@row["Employees"]</option>
+                                }
                             </select>
                             <label for="conductedBy">Conducted By</label>
                         </div>
@@ -96,7 +106,7 @@
                     <div class="col-md-6">
                         <!-- experimentsDate -->
                         <div class="form-floating">
-                            <input type="date" class="form-control" id="experimentsDate" placeholder="" >
+                            <input type="date" class="form-control" id="experimentsDate" placeholder="" value="@Model.gDateDSCreated?.ToString("yyyy-MM-dd")">
                             <label for="experimentsDate">Date of Experiments</label>
                         </div>
                     </div>
@@ -104,7 +114,7 @@
                     <div class="col-md-6 d-flex justify-content-end align-items-center">
                         <!-- abandoned -->
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="abandoned" checked="checked">
+                            <input type="checkbox" class="custom-control-input" id="abandoned" checked="@Model.gAbandonedIsChecked">
                             <label class="custom-control-label" for="abandoned">Abandoned</label>
                         </div>
                     </div>
@@ -138,19 +148,25 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td scope="row">
-                            NCO Index (Equivalents of NCO per 100 Equivalents of Active-H
-                        </td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                    </tr>
+                    @{
+                        int rowIndex2 = 0;
+                    }
+                    @foreach (DataRow row in Model.gNco.Rows)
+                    {
+                        int[] colIndex = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
+                        <tr id="row-@rowIndex2">
+                            <td id="Descriptors-@rowIndex2-@colIndex[0]">@row["MatName"]</td>
+                            <td class="td" id="Descriptors-@rowIndex2-@colIndex[1]">@row["Pbw1"]</td>
+                            <td class="td" id="Descriptors-@rowIndex2-@colIndex[2]">@row["Pbw2"]</td>
+                            <td class="td" id="Descriptors-@rowIndex2-@colIndex[3]">@row["Pbw3"]</td>
+                            <td class="td" id="Descriptors-@rowIndex2-@colIndex[4]">@row["Pbw4"]</td>
+                            <td class="td" id="Descriptors-@rowIndex2-@colIndex[5]">@row["Pbw5"]</td>
+                            <td class="td" id="Descriptors-@rowIndex2-@colIndex[6]">@row["Pbw6"]</td>
+                            <td class="td" id="Descriptors-@rowIndex2-@colIndex[7]">@row["Pbw7"]</td>
+                            <td class="td" id="Descriptors-@rowIndex2-@colIndex[8]">@row["Pbw8"]</td>
+                        </tr>
+                        rowIndex2++;
+                    }
                 </tbody>
             </table>
 
@@ -345,72 +361,25 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td scope="row">
-                            TEROL 563
-                        </td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                    </tr>
-
-                    <tr>
-                        <td scope="row">
-                            Rubinate 1850 Isocyanate
-                        </td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                    </tr>
-                    <tr>
-                        <td scope="row">
-                            ExP. Catalyst 1
-                        </td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                    </tr>
-                    <tr>
-                        <td scope="row">
-                            STEPANPOL PS 2352
-                        </td>
-                        <td>2.9</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                    </tr>
-                    <tr>
-                        <td scope="row">
-                            n-pentane
-                        </td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                        <td>270</td>
-                    </tr>
+                    @{
+                        int rowIndex3 = 0;
+                    }
+                    @foreach (DataRowView row in Model.gFormProps)
+                    {
+                        int[] colIndex = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
+                        <tr id="row-@rowIndex3">
+                            <td id="Descriptors-@rowIndex3-@colIndex[0]">@row["Descriptors"]</td>
+                            <td class="td" id="Descriptors-@rowIndex3-@colIndex[1]">@row["#1"]</td>
+                            <td class="td" id="Descriptors-@rowIndex3-@colIndex[2]">@row["#2"]</td>
+                            <td class="td" id="Descriptors-@rowIndex3-@colIndex[3]">@row["#3"]</td>
+                            <td class="td" id="Descriptors-@rowIndex3-@colIndex[4]">@row["#4"]</td>
+                            <td class="td" id="Descriptors-@rowIndex3-@colIndex[5]">@row["#5"]</td>
+                            <td class="td" id="Descriptors-@rowIndex3-@colIndex[6]">@row["#6"]</td>
+                            <td class="td" id="Descriptors-@rowIndex3-@colIndex[7]">@row["#7"]</td>
+                            <td class="td" id="Descriptors-@rowIndex3-@colIndex[8]">@row["#8"]</td>
+                        </tr>
+                        rowIndex3++;
+                    }
                 </tbody>
             </table>
 

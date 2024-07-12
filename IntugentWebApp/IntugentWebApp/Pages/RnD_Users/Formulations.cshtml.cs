@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.SqlServer.Server;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -35,13 +36,14 @@ namespace IntugentWebApp.Pages.RnD_Users
               public DateTime? gDateDSCreated { get; set; }
               public DataView gFormProps {  get; set; }
               public DataTable gPO {  get; set; }
-              public DataTable gNco {  get; set; }
+              //public DataTable gNco {  get; set; }
               public DataTable gIso {  get; set; }
               public string gFoamatGm {  get; set; }
               public List<string> gPolyolList {  get; set; }
               public List<string> gIsoList { get; set; }
-      
-              public readonly ObjectsService _objectsService;
+        public ObservableCollection<CMaterial> gNco = new ObservableCollection<CMaterial>();
+
+        public readonly ObjectsService _objectsService;
               public FormulationsModel(ObjectsService objectsService) {
       
                   _objectsService = objectsService;
@@ -52,14 +54,17 @@ namespace IntugentWebApp.Pages.RnD_Users
       
               public void OnGet()
               {
+                       //gPO  =  _objectsService.RNDFormulations.Forms.POMats;
+                       gNco =  _objectsService.RNDFormulations.Forms.NCOIndexMats;
+                       //gIso =  _objectsService.RNDFormulations.Forms.IsoMats;
                        gStudyType = _objectsService.CLists.dvRunTypeRND2;
                        gStudyTypeSelectedValue = 1;
                        gProductID = _objectsService.CLists.dvComProd;
                        gProductIDSelectedValue = "Experimental";
                        gChemist = _objectsService.CLists.dvEmployeesRND;
-                      gChemistSelectedValue = 24;
-                      gOperator = _objectsService.CLists.dvEmployeesRND;
-                      gOperatorSelectedValue = 28; 
+                       gChemistSelectedValue = 24;
+                       gOperator = _objectsService.CLists.dvEmployeesRND;
+                       gOperatorSelectedValue = 28; 
 
                       //  gR2KM.Text = CPages.PageKineticModel1_1.KineticModel.AdcR2Val.ToString("0.00");
                       //  gR2RM.Text = CPages.PageRheoModel1_1.RheoModel.INR2Val.ToString("0.00");
@@ -75,10 +80,10 @@ namespace IntugentWebApp.Pages.RnD_Users
             gID = SetIntTextField("ID");
             if (_objectsService.RNDHome.drS["Study Name"] == DBNull.Value) gStudyName = String.Empty; else gStudyName = (string)_objectsService.RNDHome.drS["Study Name"];
 
-            if (_objectsService.RNDHome.drS["Chemist"] == DBNull.Value) gChemist = null; else gChemistSelectedValue = (int)_objectsService.RNDHome.drS["Chemist"];
-            if (_objectsService.RNDHome.drS["Operator"] == DBNull.Value) gOperator = null; else gOperatorSelectedValue = (int)_objectsService.RNDHome.drS["Operator"];
-            if (_objectsService.RNDHome.drS["Product ID"] == DBNull.Value) gProductID = null; else gProductIDSelectedValue = (string)_objectsService.RNDHome.drS["Product ID"];
-            if (_objectsService.RNDHome.drS["Study Type"] == DBNull.Value) gStudyType = null; else gStudyTypeSelectedValue = (int)_objectsService.RNDHome.drS["Study Type"];
+            if (_objectsService.RNDHome.drS["Chemist"] == DBNull.Value) gChemistSelectedValue = 24; else gChemistSelectedValue = (int)_objectsService.RNDHome.drS["Chemist"];
+            if (_objectsService.RNDHome.drS["Operator"] == DBNull.Value) gOperatorSelectedValue = 28; else gOperatorSelectedValue = (int)_objectsService.RNDHome.drS["Operator"];
+            if (_objectsService.RNDHome.drS["Product ID"] == DBNull.Value) gProductIDSelectedValue = "Experimental"; else gProductIDSelectedValue = (string)_objectsService.RNDHome.drS["Product ID"];
+            if (_objectsService.RNDHome.drS["Study Type"] == DBNull.Value) gStudyTypeSelectedValue = 1; else gStudyTypeSelectedValue = (int)_objectsService.RNDHome.drS["Study Type"];
             if (_objectsService.RNDHome.drS["FoamatGm"] == DBNull.Value) _objectsService.RNDFormulations.cDefualts.FoamatRunWt = 225.0; else _objectsService.RNDFormulations.cDefualts.FoamatRunWt = (double)_objectsService.RNDHome.drS["FoamatGm"];
             if (_objectsService.RNDHome.drS["DateDSCreated"] == DBNull.Value) gDateDSCreated = null; else gDateDSCreated = (DateTime)_objectsService.RNDHome.drS["DateDSCreated"];
             if (_objectsService.RNDHome.drS["Abandoned"] == DBNull.Value) gAbandonedIsChecked = false; else gAbandonedIsChecked = (bool)_objectsService.RNDHome.drS["Abandoned"];
@@ -444,7 +449,7 @@ namespace IntugentWebApp.Pages.RnD_Users
                 //                GetDataSet();
 
 
-                FormDescriptors();
+                _objectsService.RNDFormulations.FormDescriptors();
 
                 int ir = 1;
                 double dSum;
@@ -549,252 +554,6 @@ namespace IntugentWebApp.Pages.RnD_Users
 
 
             gFormProps= _objectsService.RNDFormulations.dtFormProp.DefaultView;
-        }
-        public void FormDescriptors()
-        {
-            int i, ico, ifo;
-            double dsumPbw, dsumPbwPO, dsumOH, dsumOHPO, dsumFunc, dsumFunc1, dsumNco, dsumBlowingAg, dsumBlowingAg1, dsumWater, dsumSurfac, dsumCatalyst;
-            double temp1, temp2, temp3;
-            string sMsg;
-
-            //Calculates Equivs of polyols.   
-
-            try
-            {
-                for (ifo = 0; ifo < _objectsService.RNDFormulations.Forms.nForm; ifo++)
-                {
-
-                    dsumPbw = dsumPbwPO = dsumOH = dsumOHPO = dsumFunc = dsumFunc1 = dsumBlowingAg = dsumBlowingAg1 = dsumWater = dsumSurfac = dsumCatalyst = 0.0;
-                    for (ico = 0; ico < _objectsService.RNDFormulations.Forms.POMats.Count; ico++)
-                    {
-                        if (string.IsNullOrEmpty(_objectsService.RNDFormulations.Forms.POMats[ico].MatName))
-                            if (_objectsService.RNDFormulations.Forms.FormAr[ifo].POMatPbw[ico] > 0)
-                            {
-                                sMsg = "You must choose the material for the row " + (ico + 1).ToString() + " of the Polyol Side Materials table";
-                               // MessageBox.Show(sMsg, Params.sAppName, MessageBoxButton.OK, MessageBoxImage.Hand);
-                                /*
-                                                                if (ico > _objectsService.RNDFormulations.Forms.POMats.Count - 1) _objectsService.RNDFormulations.Forms.POMats.Add(new CMaterial());
-                                                                    ModifyPOIsoLists(ico, ref _objectsService.RNDFormulations.Forms.POMats, 0, dtPO);
-                                */
-                                return;
-                            }
-                            else continue;
-
-                        else
-                        {
-                            dsumPbw = dsumPbw + _objectsService.RNDFormulations.Forms.FormAr[ifo].POMatPbw[ico];
-                            dsumOH = dsumOH + _objectsService.RNDFormulations.Forms.FormAr[ifo].POMatPbw[ico] * _objectsService.RNDFormulations.Forms.POMats[ico].MatOHNum;
-                            if (_objectsService.RNDFormulations.Forms.POMats[ico].MatType.Contains("Polyol"))
-                            {
-                                dsumPbwPO = dsumPbwPO + _objectsService.RNDFormulations.Forms.FormAr[ifo].POMatPbw[ico];
-                                dsumOHPO = dsumOHPO + _objectsService.RNDFormulations.Forms.FormAr[ifo].POMatPbw[ico] * _objectsService.RNDFormulations.Forms.POMats[ico].MatOHNum;
-                            }
-                            if (_objectsService.RNDFormulations.Forms.POMats[ico].MatFunc > 0)
-                            {
-                                dsumFunc = dsumFunc + _objectsService.RNDFormulations.Forms.FormAr[ifo].POMatPbw[ico] * _objectsService.RNDFormulations.Forms.POMats[ico].MatOHNum * _objectsService.RNDFormulations.Forms.POMats[ico].MatFunc;
-                                dsumFunc1 = dsumFunc1 + _objectsService.RNDFormulations.Forms.FormAr[ifo].POMatPbw[ico] * _objectsService.RNDFormulations.Forms.POMats[ico].MatOHNum;
-                            }
-                            if (_objectsService.RNDFormulations.Forms.POMats[ico].GassToLiqWtRatio > 0.0)
-                            {
-                                dsumBlowingAg = dsumBlowingAg + _objectsService.RNDFormulations.Forms.FormAr[ifo].POMatPbw[ico] * _objectsService.RNDFormulations.Forms.POMats[ico].GassToLiqWtRatio;
-                                dsumBlowingAg1 = dsumBlowingAg1 + _objectsService.RNDFormulations.Forms.FormAr[ifo].POMatPbw[ico];
-                            }
-                            if (_objectsService.RNDFormulations.Forms.POMats[ico].MatType.Contains("Catalyst")) dsumCatalyst = dsumCatalyst + _objectsService.RNDFormulations.Forms.FormAr[ifo].POMatPbw[ico];
-                            if (_objectsService.RNDFormulations.Forms.POMats[ico].MatType.Contains("Surfactant")) dsumSurfac = dsumSurfac + _objectsService.RNDFormulations.Forms.FormAr[ifo].POMatPbw[ico];
-                            if (_objectsService.RNDFormulations.Forms.POMats[ico].ID == 74) dsumWater = dsumWater + _objectsService.RNDFormulations.Forms.FormAr[ifo].POMatPbw[ico];
-                        }
-
-                    }
-
-                    if (dsumPbw > 0) _objectsService.RNDFormulations.Forms.FormAr[ifo].OHNumPOSide = dsumOH / dsumPbw; else _objectsService.RNDFormulations.Forms.FormAr[ifo].OHNumPOSide = 0;
-                    if (dsumPbwPO > 0) _objectsService.RNDFormulations.Forms.FormAr[ifo].OHNumPolyol = dsumOHPO / dsumPbwPO; else _objectsService.RNDFormulations.Forms.FormAr[ifo].OHNumPolyol = 0;
-                    if (dsumFunc1 > 0) _objectsService.RNDFormulations.Forms.FormAr[ifo].FuncAvPOSide = dsumFunc / dsumFunc1; else _objectsService.RNDFormulations.Forms.FormAr[ifo].FuncAvPOSide = 0;
-                    _objectsService.RNDFormulations.Forms.FormAr[ifo].TotalPbwPOSide = dsumPbw;
-                    _objectsService.RNDFormulations.Forms.FormAr[ifo].TotalPbwPolyol = dsumPbwPO;
-                    _objectsService.RNDFormulations.Forms.FormAr[ifo].TotalPbwFuncPOSide = dsumFunc1;
-                    _objectsService.RNDFormulations.Forms.FormAr[ifo].BlowingAgentWtFr = dsumBlowingAg;  //Total wt of blowing agent in PO side.  Will be normalized later
-                    _objectsService.RNDFormulations.Forms.FormAr[ifo].SurfactWtFr = dsumSurfac;    //Total wt. will be normalized later
-                    _objectsService.RNDFormulations.Forms.FormAr[ifo].CatalystWtFr = dsumCatalyst;
-                    _objectsService.RNDFormulations.Forms.FormAr[ifo].WaterWtFr = dsumWater;
-                    _objectsService.RNDFormulations.Forms.FormAr[ifo].BlowingAgentWtFr1 = dsumBlowingAg1 - dsumWater;
-
-                    /*
-                    dsumPbw = dsumNco = dsumFunc = dsumFunc1 = dsumBlowingAg = 0.0;
-                    for (ico = 0; ico < Forms.IsoMats.Count; ico++)
-                    {
-
-                        if (Forms.FormAr[ifo].IsoMatPbw[ico] > 0 && string.IsNullOrEmpty(_objectsService.RNDFormulations.Forms.IsoMats[ico].MatName))
-                        {
-                            sMsg = "You must choose the material for the row " + (ico + 1).ToString() + " of the Iso Side Material table";
-                            MessageBox.Show(sMsg, Params.sAppName, MessageBoxButton.OK, MessageBoxImage.Hand);
-                            return;
-                        }
-                        else
-                        {
-                            dsumPbw = dsumPbw + _objectsService.RNDFormulations.Forms.FormAr[ifo].IsoMatPbw[ico];
-                            dsumNco = dsumNco + _objectsService.RNDFormulations.Forms.FormAr[ifo].IsoMatPbw[ico] * _objectsService.RNDFormulations.Forms.IsoMats[ico].MatNco;
-
-                            if (_objectsService.RNDFormulations.Forms.IsoMats[ico].MatFunc > 0)
-                            {
-                                dsumFunc = dsumFunc + _objectsService.RNDFormulations.Forms.FormAr[ifo].IsoMatPbw[ico] * _objectsService.RNDFormulations.Forms.IsoMats[ico].MatNco * _objectsService.RNDFormulations.Forms.IsoMats[ico].MatFunc;
-                                dsumFunc1 = dsumFunc1 + _objectsService.RNDFormulations.Forms.FormAr[ifo].IsoMatPbw[ico] * _objectsService.RNDFormulations.Forms.IsoMats[ico].MatNco;
-
-                            }
-
-                        }
-                    }
-
-                    if (dsumPbw > 0) _objectsService.RNDFormulations.Forms.FormAr[ifo].NcoIsoSide = dsumNco / dsumPbw; else _objectsService.RNDFormulations.Forms.FormAr[ifo].NcoIsoSide = 0;
-                    if (dsumFunc1 > 0) _objectsService.RNDFormulations.Forms.FormAr[ifo].FuncAvIsoSide = dsumFunc / dsumFunc1; else _objectsService.RNDFormulations.Forms.FormAr[ifo].FuncAvIsoSide = 0;
-
-                    _objectsService.RNDFormulations.Forms.FormAr[ifo].TotalPbwIsoSide = dsumPbw;
-                    _objectsService.RNDFormulations.Forms.FormAr[ifo].TotalPbwFuncIsoSide = dsumFunc1;
-                     */
-                    _objectsService.RNDFormulations.Forms.FormAr[ifo].NcoIsoSide = _objectsService.RNDFormulations.Forms.IsoMats[0].MatNco;
-                    _objectsService.RNDFormulations.Forms.FormAr[ifo].FuncAvIsoSide = _objectsService.RNDFormulations.Forms.IsoMats[0].MatFunc;
-
-                }
-
-                // PO and Iso side weights calculations, Isocyanurate trimer and crosslink density calculations
-
-                for (ifo = 0; ifo < _objectsService.RNDFormulations.Forms.nForm; ifo++)
-                {
-                    /*
-                     * _objectsService.RNDFormulations.Forms.FormAr[ifo].BasisPbwPOSide = 100.0;
-                                       if (_objectsService.RNDFormulations.Forms.FormAr[ifo].NcoIsoSide > 0)
-                                           _objectsService.RNDFormulations.Forms.FormAr[ifo].BasisPbwIsoSide = _objectsService.RNDFormulations.Forms.FormAr[ifo].BasisPbwPOSide * _objectsService.RNDFormulations.Forms.FormAr[ifo].NcoIndex / 100.0 * _objectsService.RNDFormulations.Forms.FormAr[ifo].OHNumPOSide / 56100.0 * 4200.0 / _objectsService.RNDFormulations.Forms.FormAr[ifo].NcoIsoSide;
-                                       if (_objectsService.RNDFormulations.Forms.FormAr[ifo].BasisPbwIsoSide > 0.0)
-                                           _objectsService.RNDFormulations.Forms.FormAr[ifo].PolyolIsoRatio = _objectsService.RNDFormulations.Forms.FormAr[ifo].BasisPbwPOSide / _objectsService.RNDFormulations.Forms.FormAr[ifo].BasisPbwIsoSide * 100.0;
-                                       else _objectsService.RNDFormulations.Forms.FormAr[ifo].PolyolIsoRatio = 0.0;
-                                       if (_objectsService.RNDFormulations.Forms.FormAr[ifo].BasisPbwPOSide > 0.0)
-                                           _objectsService.RNDFormulations.Forms.FormAr[ifo].IsoPolyolRatio = _objectsService.RNDFormulations.Forms.FormAr[ifo].BasisPbwIsoSide / _objectsService.RNDFormulations.Forms.FormAr[ifo].BasisPbwPOSide * 100.0;
-                                       else _objectsService.RNDFormulations.Forms.FormAr[ifo].IsoPolyolRatio = 0.0;
-                    */
-
-                    _objectsService.RNDFormulations.Forms.FormAr[ifo].NcoIsoSide = _objectsService.RNDFormulations.Forms.IsoMats[0].MatNco;
-                    _objectsService.RNDFormulations.Forms.FormAr[ifo].FuncAvIsoSide = _objectsService.RNDFormulations.Forms.IsoMats[0].MatFunc;
-
-                    _objectsService.RNDFormulations.Forms.FormAr[ifo].TotalPbwIsoSide = _objectsService.RNDFormulations.Forms.FormAr[ifo].TotalPbwPOSide * _objectsService.RNDFormulations.Forms.FormAr[ifo].OHNumPOSide / 56100 * 4200.0 / _objectsService.RNDFormulations.Forms.FormAr[ifo].NcoIsoSide * _objectsService.RNDFormulations.Forms.FormAr[ifo].NcoIndex * 0.01;
-                    _objectsService.RNDFormulations.Forms.FormAr[ifo].IsoMatPbw[0] = _objectsService.RNDFormulations.Forms.FormAr[ifo].TotalPbwIsoSide;
-
-
-                    _objectsService.RNDFormulations.Forms.FormAr[ifo].CrosslinkDensity = 0;
-                    if (_objectsService.RNDFormulations.Forms.FormAr[ifo].NcoIndex <= 100.0)
-                    {
-                        _objectsService.RNDFormulations.Forms.FormAr[ifo].IsocyanuratePbw = 0;
-
-                        temp1 = 0.01 * _objectsService.RNDFormulations.Forms.FormAr[ifo].NcoIndex * (_objectsService.RNDFormulations.Forms.FormAr[ifo].FuncAvPOSide - 2.0);
-                        if (temp1 > 0.0)
-                            _objectsService.RNDFormulations.Forms.FormAr[ifo].CrosslinkDensity = 0.5 * _objectsService.RNDFormulations.Forms.FormAr[ifo].TotalPbwPOSide * _objectsService.RNDFormulations.Forms.FormAr[ifo].OHNumPOSide / 56100.0 / _objectsService.RNDFormulations.Forms.FormAr[ifo].FuncAvPOSide * temp1;
-                        temp2 = _objectsService.RNDFormulations.Forms.FormAr[ifo].FuncAvIsoSide - 2.0;
-                        if (temp2 > 0)
-                            _objectsService.RNDFormulations.Forms.FormAr[ifo].CrosslinkDensity += 0.5 * _objectsService.RNDFormulations.Forms.FormAr[ifo].TotalPbwIsoSide * _objectsService.RNDFormulations.Forms.FormAr[ifo].NcoIsoSide / 4200.0 / _objectsService.RNDFormulations.Forms.FormAr[ifo].FuncAvIsoSide * temp2;
-
-                        temp1 = _objectsService.RNDFormulations.Forms.FormAr[ifo].TotalPbwPOSide + _objectsService.RNDFormulations.Forms.FormAr[ifo].TotalPbwIsoSide;
-                        _objectsService.RNDFormulations.Forms.FormAr[ifo].CrosslinkDensity = _objectsService.RNDFormulations.Forms.FormAr[ifo].CrosslinkDensity / temp1 * 1000.0;
-                    }
-
-                    else
-                    {
-                        _objectsService.RNDFormulations.Forms.FormAr[ifo].CrosslinkDensity = 0;
-                        dsumPbw = (_objectsService.RNDFormulations.Forms.FormAr[ifo].TotalPbwPOSide + _objectsService.RNDFormulations.Forms.FormAr[ifo].TotalPbwIsoSide);
-                        if (dsumPbw > 0) _objectsService.RNDFormulations.Forms.FormAr[ifo].IsocyanuratePbw = 100.0 * (1.0 - 100.0 / _objectsService.RNDFormulations.Forms.FormAr[ifo].NcoIndex) * _objectsService.RNDFormulations.Forms.FormAr[ifo].TotalPbwIsoSide / dsumPbw;
-                        else _objectsService.RNDFormulations.Forms.FormAr[ifo].IsocyanuratePbw = 0;
-
-                        temp1 = _objectsService.RNDFormulations.Forms.FormAr[ifo].FuncAvPOSide - 2.0;
-                        if (temp1 > 0.0)
-                            _objectsService.RNDFormulations.Forms.FormAr[ifo].CrosslinkDensity += 0.5 * _objectsService.RNDFormulations.Forms.FormAr[ifo].TotalPbwPOSide * _objectsService.RNDFormulations.Forms.FormAr[ifo].OHNumPOSide / 56100.0 / _objectsService.RNDFormulations.Forms.FormAr[ifo].FuncAvPOSide * temp1;
-                        temp2 = (_objectsService.RNDFormulations.Forms.FormAr[ifo].FuncAvIsoSide - 2.0) * 100 / _objectsService.RNDFormulations.Forms.FormAr[ifo].NcoIndex;
-                        if (temp2 > 0)
-                            _objectsService.RNDFormulations.Forms.FormAr[ifo].CrosslinkDensity += 0.5 * _objectsService.RNDFormulations.Forms.FormAr[ifo].TotalPbwIsoSide * _objectsService.RNDFormulations.Forms.FormAr[ifo].NcoIsoSide / 4200.0 / _objectsService.RNDFormulations.Forms.FormAr[ifo].FuncAvIsoSide * temp2;
-                        temp3 = 3 * (_objectsService.RNDFormulations.Forms.FormAr[ifo].FuncAvIsoSide - 1.0) * (1 - 100 / _objectsService.RNDFormulations.Forms.FormAr[ifo].NcoIndex) * _objectsService.RNDFormulations.Forms.FormAr[ifo].TotalPbwIsoSide;
-                        if (temp3 > 0.0)
-                            _objectsService.RNDFormulations.Forms.FormAr[ifo].CrosslinkDensity += 0.5 * temp3 * _objectsService.RNDFormulations.Forms.FormAr[ifo].NcoIsoSide / 4200.0 / _objectsService.RNDFormulations.Forms.FormAr[ifo].FuncAvIsoSide / 3.0;
-
-                        _objectsService.RNDFormulations.Forms.FormAr[ifo].CrosslinkDensity = _objectsService.RNDFormulations.Forms.FormAr[ifo].CrosslinkDensity / dsumPbw * 1000.0;
-
-                    }
-
-                    /*
-
-                                        if (_objectsService.RNDFormulations.Forms.FormAr[ifo].NcoIndex <= 100.0)
-                                        {
-                                            _objectsService.RNDFormulations.Forms.FormAr[ifo].IsocyanuratePbw100 = 0;
-
-                                            temp1 = 0.01 * _objectsService.RNDFormulations.Forms.FormAr[ifo].NcoIndex * _objectsService.RNDFormulations.Forms.FormAr[ifo].FuncAvPOSide - 2.0;
-                                            if (temp1 > 0.0)
-                                                _objectsService.RNDFormulations.Forms.FormAr[ifo].CrosslinkDensity = 0.5 * _objectsService.RNDFormulations.Forms.FormAr[ifo].BasisPbwPOSide * _objectsService.RNDFormulations.Forms.FormAr[ifo].OHNumPOSide / 56100.0 / _objectsService.RNDFormulations.Forms.FormAr[ifo].FuncAvPOSide * temp1;
-                                            temp2 = _objectsService.RNDFormulations.Forms.FormAr[ifo].FuncAvIsoSide - 2.0;
-                                            if (temp2 > 0)
-                                                _objectsService.RNDFormulations.Forms.FormAr[ifo].CrosslinkDensity = 0.5 * _objectsService.RNDFormulations.Forms.FormAr[ifo].BasisPbwIsoSide * _objectsService.RNDFormulations.Forms.FormAr[ifo].NcoIsoSide / 4200.0 / _objectsService.RNDFormulations.Forms.FormAr[ifo].FuncAvIsoSide * temp2;
-
-                                            temp1 = _objectsService.RNDFormulations.Forms.FormAr[ifo].BasisPbwPOSide + _objectsService.RNDFormulations.Forms.FormAr[ifo].BasisPbwIsoSide;
-                                            _objectsService.RNDFormulations.Forms.FormAr[ifo].CrosslinkDensity = _objectsService.RNDFormulations.Forms.FormAr[ifo].CrosslinkDensity / temp1 * 1000.0;
-                                        }
-
-                                        else
-                                        {
-                                            dsumPbw = (_objectsService.RNDFormulations.Forms.FormAr[ifo].BasisPbwPOSide + _objectsService.RNDFormulations.Forms.FormAr[ifo].BasisPbwIsoSide);
-                                            if (dsumPbw > 0) _objectsService.RNDFormulations.Forms.FormAr[ifo].IsocyanuratePbw100 = 100.0 * (1.0 - 100.0 / _objectsService.RNDFormulations.Forms.FormAr[ifo].NcoIndex) * _objectsService.RNDFormulations.Forms.FormAr[ifo].BasisPbwIsoSide / dsumPbw;
-                                            else _objectsService.RNDFormulations.Forms.FormAr[ifo].IsocyanuratePbw100 = 0;
-
-                                            temp1 = _objectsService.RNDFormulations.Forms.FormAr[ifo].FuncAvPOSide - 2.0;
-                                            if (temp1 > 0.0)
-                                                _objectsService.RNDFormulations.Forms.FormAr[ifo].CrosslinkDensity = 0.5 * _objectsService.RNDFormulations.Forms.FormAr[ifo].BasisPbwPOSide * _objectsService.RNDFormulations.Forms.FormAr[ifo].OHNumPOSide / 56100.0 / _objectsService.RNDFormulations.Forms.FormAr[ifo].FuncAvPOSide * temp1;
-                                            temp2 = (_objectsService.RNDFormulations.Forms.FormAr[ifo].FuncAvIsoSide - 2.0) * 100 / _objectsService.RNDFormulations.Forms.FormAr[ifo].NcoIndex;
-                                            if (temp2 > 0)
-                                                _objectsService.RNDFormulations.Forms.FormAr[ifo].CrosslinkDensity = 0.5 * _objectsService.RNDFormulations.Forms.FormAr[ifo].BasisPbwIsoSide * _objectsService.RNDFormulations.Forms.FormAr[ifo].NcoIsoSide / 4200.0 / _objectsService.RNDFormulations.Forms.FormAr[ifo].FuncAvIsoSide * temp2;
-                                            temp3 = 3 * (_objectsService.RNDFormulations.Forms.FormAr[ifo].FuncAvIsoSide - 1.0) * (1 - 100 / _objectsService.RNDFormulations.Forms.FormAr[ifo].NcoIndex) * _objectsService.RNDFormulations.Forms.FormAr[ifo].BasisPbwIsoSide;
-                                            if (temp3 > 0.0)
-                                                _objectsService.RNDFormulations.Forms.FormAr[ifo].CrosslinkDensity = 0.5 * temp3 * _objectsService.RNDFormulations.Forms.FormAr[ifo].NcoIsoSide / 4200.0 / _objectsService.RNDFormulations.Forms.FormAr[ifo].FuncAvIsoSide / 3.0;
-
-                                            temp1 = _objectsService.RNDFormulations.Forms.FormAr[ifo].BasisPbwPOSide + _objectsService.RNDFormulations.Forms.FormAr[ifo].BasisPbwIsoSide;
-                                            _objectsService.RNDFormulations.Forms.FormAr[ifo].CrosslinkDensity = _objectsService.RNDFormulations.Forms.FormAr[ifo].CrosslinkDensity / temp1 * 1000.0;
-
-                                        }
-                    */
-
-
-                }
-
-                //Calculate the density
-
-                for (ifo = 0; ifo < _objectsService.RNDFormulations.Forms.nForm; ifo++)
-                {
-                    temp1 = temp2 = temp3 = 0;
-                    for (ico = 0; ico < _objectsService.RNDFormulations.Forms.POMats.Count; ico++)
-                    {
-                        if (_objectsService.RNDFormulations.Forms.POMats[ico].GassToLiqWtRatio > 0)
-                        {
-                            temp2 = temp2 + _objectsService.RNDFormulations.Forms.FormAr[ifo].POMatPbw[ico] * _objectsService.RNDFormulations.Forms.POMats[ico].GassToLiqWtRatio; // gas weight
-                            temp3 = temp3 + 413.0 / 273.0 * 22.41 * _objectsService.RNDFormulations.Forms.FormAr[ifo].POMatPbw[ico] * _objectsService.RNDFormulations.Forms.POMats[ico].GassToLiqWtRatio / _objectsService.RNDFormulations.Forms.POMats[ico].GassMolWt; //STP Gas vol = 22.41 m3/kg-mole
-                        }
-
-                    }
-
-
-                    _objectsService.RNDFormulations.Forms.FormAr[ifo].FoamDensity = Params.PolymerDensity;
-                    temp1 = _objectsService.RNDFormulations.Forms.FormAr[ifo].TotalPbwPOSide + _objectsService.RNDFormulations.Forms.FormAr[ifo].TotalPbwIsoSide;    //Total wt
-                    temp3 = temp3 + (temp1 - temp2) / Params.PolymerDensity;   //gas volume + polymer volume
-                    if (temp3 > 0.0) _objectsService.RNDFormulations.Forms.FormAr[ifo].FoamDensity = temp1 / temp3;
-
-                    if (temp1 * _objectsService.RNDFormulations.Forms.FormAr[ifo].TotalPbwPOSide > 0.0)
-                    {
-                        _objectsService.RNDFormulations.Forms.FormAr[ifo].BlowingAgentWtFr = _objectsService.RNDFormulations.Forms.FormAr[ifo].BlowingAgentWtFr / temp1 * 100.0;  //Convert Blowing Agent wt to fraction
-                        _objectsService.RNDFormulations.Forms.FormAr[ifo].CatalystWtFr = _objectsService.RNDFormulations.Forms.FormAr[ifo].CatalystWtFr / temp1 * 100.0;  //Convert Blowing Agent wt to fraction
-                        _objectsService.RNDFormulations.Forms.FormAr[ifo].SurfactWtFr = _objectsService.RNDFormulations.Forms.FormAr[ifo].SurfactWtFr / temp1 * 100.0;  //Convert Blowing Agent wt to fraction
-                        _objectsService.RNDFormulations.Forms.FormAr[ifo].WaterWtFr = _objectsService.RNDFormulations.Forms.FormAr[ifo].WaterWtFr / temp1 * 100.0;  //Convert Blowing Agent wt to fraction
-                        _objectsService.RNDFormulations.Forms.FormAr[ifo].BlowingAgentWtFr1 = _objectsService.RNDFormulations.Forms.FormAr[ifo].BlowingAgentWtFr1 / temp1 * 100.0;  //Convert Blowing Agent wt to fraction
-
-                    }
-
-                }
-
-
-            }
-            catch (Exception ex) { sMsg = "Error in calculating formulation descriptors";
-                //MessageBox.Show(sMsg, Cbfile.sAppName); CTelClient.TelException(ex, sMsg); 
-            }
         }
 
         #region Set Fields

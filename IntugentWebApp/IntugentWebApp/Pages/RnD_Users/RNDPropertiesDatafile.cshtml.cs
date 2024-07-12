@@ -17,6 +17,7 @@ namespace IntugentWebApp.Pages.RnD_Users
         public DataView gPropsC{get;set;}
         public DataView gDataFiles{get;set;}
         public DataView gProd{get;set;}
+        public int gProdSelectedValue{get;set; }
         public DataView gNotes{get;set;}
         private ObjectsService _objectsService { get; set; }
         public bool gPropTestingCompIsChecked {  get; set; }

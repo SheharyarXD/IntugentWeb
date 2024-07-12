@@ -23,26 +23,26 @@
             <div class="card-body">
                 <!-- gMeasureTemp -->
                 <div class="form-floating mb-2">
-                    <input type="number" class="form-control text-center" id="gMeasureTemp" placeholder="" value="@Model.gMeasureTemp" onblur="">
+                    <input type="number" class="form-control text-center" id="gMeasureTemp" placeholder="" value="@Model.gMeasureTemp" onblur="LostFocus('gMeasureTemp',this.value)">
                     <label for="gMeasureTemp">Measuring Temperature (°F)</label>
                 </div>
                 <!-- Average Cell Size (microns) -->
                 <div class="form-floating mb-2">
-                    <input type="number" class="form-control text-center" id="gCellSize" placeholder="" value="@Model.gCellSize" onblur="">
+                    <input type="number" class="form-control text-center" id="gCellSize" placeholder="" value="@Model.gCellSize" onblur="LostFocus('gCellSize',this.value)">
                     <label for="gCellSize">Average Cell Size (microns)</label>
                 </div>
                 <!-- gCellPress -->
                 <div class="form-floating mb-2">
-                    <input type="number" class="form-control text-center" id="gCellPress" placeholder="" value="@Model.gCellPress" onblur="">
+                    <input type="number" class="form-control text-center" id="gCellPress" placeholder="" value="@Model.gCellPress" onblur="LostFocus('gCellPress',this.value)">
                     <label for="gCellPress">Initial Cell Pressure (atm)</label>
                 </div>
                 <!-- Polymer Density (lb/ft3³) -->
                 <div class="form-floating mb-2">
-                    <input type="number" class="form-control text-center" id="gPolDen" placeholder="" value="@Model.gPolDen" onblur="">
+                    <input type="number" class="form-control text-center" id="gPolDen" placeholder="" value="@Model.gPolDen" onblur="LostFocus('gPolDen',this.value)">
                     <label for="gPolDen">Polymer Density (lb/ft3³)</label>
                 </div>
                 <div class="form-floating col-12 ">
-                <button type="button" onclick="" class="btn btn-primary btn-sm">Set Default Values</button>
+                    <button type="button" onclick="Click_ExportData()" class="btn btn-primary btn-sm">Set Default Values</button>
                 </div>
             </div>
         </div>
@@ -57,7 +57,7 @@
                 <table class="table table-sm table-bordered table-hover table-striped table-responsive-md">
                     <thead class="thead-light">
                         <tr>
-                            <th scope="col">Bind Gas Name Here</th>
+                            <th scope="col">Property</th>
                             <th scope="col">#1</th>
                             <th scope="col">#2</th>
                             <th scope="col">#3</th>
@@ -69,15 +69,20 @@
                         </tr>
                     </thead>
                     <tbody>
-                   @*      @foreach (DataRow row in Model.gChemDel.Rows)
+                        @foreach (DataRowView row in Model.gGasComp)
                         {
-
                             <tr>
-                                <td>@row["sName"]</td>
-                                <td>@row["sValue"]</td>
+                                <td>@row["GasName"]</td>
+                                <td>@row["#1"]</td>
+                                <td>@row["#2"]</td>
+                                <td>@row["#3"]</td>
+                                <td>@row["#4"]</td>
+                                <td>@row["#5"]</td>
+                                <td>@row["#6"]</td>
+                                <td>@row["#7"]</td>
+                                <td>@row["#8"]</td>
                             </tr>
-
-                        } *@
+                        } 
                     </tbody>
                 </table>
             </div>
@@ -99,6 +104,9 @@
                         {
                         <option value="@row["Product"]" selected="@(Model.gProd1SelectedValue == (row["Product Code"].ToString()))">@row["Product"]</option>
                         }   *@
+                        <option id="gCell" value="CS" selected="@(Model.gXAxisSelectedValue)">Cell Size (Microns)</option>
+                        <option id="gDesn" value="DE" selected="@(Model.gXAxisSelectedValue)">Density (kg/m&#x00B3;)</option>
+                        <option id="gTemp" value="TE" selected="@(Model.gXAxisSelectedValue)">Temperature (°F)</option>
                     </select>
                     <label for="XAxis">X Axis</label>
                 </div>
@@ -109,6 +117,8 @@
                         {
                         <option value="@row["Product"]" selected="@(Model.gProd1SelectedValue == (row["Product Code"].ToString()))">@row["Product"]</option>
                         }   *@
+                        <option id="gKValue" value="KV" selected="@(Model.gYAxisSelectedValue)">K-Value, Conductivty (mW/m-K)</option>
+                        <option id="gRValue" value="RV" selected="@(Model.gYAxisSelectedValue)">R-Value, Resistance (ft&#x00B2;-°F-hr/Btu)</option>
                     </select>
                     <label for="YAxis">Y Axis</label>
                 </div>
@@ -124,7 +134,7 @@
           </div>
     </div>
    <div class="col-8">
-       <canvas id="charts" ></canvas>
+       <canvas id="charts"></canvas>
    </div>
 </div>
 @section Scripts{
@@ -135,7 +145,7 @@
             const data1 = {
                 datasets: [{
                     label: 'Dataset 1',
-                    // data:,
+                     data: @Html.Raw(Json.Serialize(Model.dArX.Zip(Model.dAr0, (x, y) => new { x, y }))),
                     backgroundColor: 'rgba(255, 0, 0, 0.6)',
                     borderColor: 'rgba(255, 0, 0, 1)',
                     borderWidth: 1,
@@ -147,7 +157,7 @@
             const data2 = {
                 datasets: [{
                     label: 'Dataset 2',
-                    // data:,
+                    data: @Html.Raw(Json.Serialize(Model.dArX.Zip(Model.dAr1, (x, y) => new { x, y }))),
                     backgroundColor: 'rgba(0, 0, 255, 0.6)',
                     borderColor: 'rgba(0, 0, 255, 1)',
                     borderWidth: 1,
@@ -158,7 +168,7 @@
             const data3 = {
                 datasets: [{
                     label: 'Dataset 3',
-                    // data:,
+                    data: @Html.Raw(Json.Serialize(Model.dArX.Zip(Model.dAr2, (x, y) => new { x, y }))),
                     backgroundColor: 'rgba(0, 255, 0, 0.6)',
                     borderColor: 'rgba(0, 255, 0, 1)',
                     borderWidth: 1,
@@ -169,7 +179,7 @@
             const data4 = {
                 datasets: [{
                     label: 'Dataset 3',
-                    // data:,
+                    data: @Html.Raw(Json.Serialize(Model.dArX.Zip(Model.dAr3, (x, y) => new { x, y }))),
                     backgroundColor: 'rgba(255, 255, 0, 0.6)',
                     borderColor: 'rgba(255, 255, 0, 1)',
                     borderWidth: 1,
@@ -179,7 +189,7 @@
             const data5 = {
                 datasets: [{
                     label: 'Dataset 1',
-                    // data:,
+                    data: @Html.Raw(Json.Serialize(Model.dArX.Zip(Model.dAr4, (x, y) => new { x, y }))),
                     backgroundColor: 'rgba(255, 0, 0, 0.6)',
                     borderColor: 'rgba(255, 0, 0, 1)',
                     borderWidth: 1,
@@ -265,5 +275,41 @@
             };
             new Chart(ctx, config);
         });
+
+        function LostFocus(Name, Value) {
+            //  console.log('Input values - Name:', Name, 'Value:', Value);
+            // var form = $('#SearchParamsForm');
+
+            $.ajax({
+                type: "POST",
+                url: "/RnD_Users/RNDRValues?handler=LostFocus_Fields",
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                data: { Name: Name, Value: Value },
+                success: function (response) {
+                    //console.log('Server response:', response);
+                      location.reload();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+        function Click_ExportData() {
+            //  console.log('Input values - Name:', Name, 'Value:', Value);
+            // var form = $('#SearchParamsForm');
+
+            $.ajax({
+                type: "POST",
+                url: "/RnD_Users/RNDRValues?handler=ExportData",
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                success: function (response) {
+                   console.log('Server response:', response);
+                   // location.reload();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
     </script>
 }

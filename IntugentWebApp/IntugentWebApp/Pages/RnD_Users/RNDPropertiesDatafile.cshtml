@@ -293,21 +293,21 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (DataRowView row in Model.gProd)
+                          @*   @foreach (DataRowView row in Model.gProd)
                             {
 
                             <tr>
                             <td>@row["Form#"]</td>
                              <td>
                              <select class="form-select" id="testingStatus">
-                                <option class="td" value="@row["sProdName"]" selected="@(Model.gProdSelectedValue ==              Int32.Parse(row["ID"].ToString()))">@row["Product Code"]</option>
+                                            <option class="td" value="@row["sProdName"]" selected="@(Model.gProdSelectedValue == Int32.Parse(row["sProdName"].ToString()))">@row["sProdName"]</option>
                                     </select>
                                     <label for="testingStatus">Testing Status</label>
                                  
                                  </td>
                             </tr>
 
-                            } 
+                            }  *@
                         </tbody>
                     </table>
                 </div>

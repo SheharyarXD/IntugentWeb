@@ -225,7 +225,7 @@ namespace IntugentWebApp.Pages.RnD_Users
             if (icol == 0)
             {
 
-                int cmbSelectedIndex = 0;
+                int cmbSelectedIndex = Int32.Parse(text);
                 //ComboBox cmb = gPO.Columns[0].GetCellContent(dgr) as ComboBox;
                 iSel = cmbSelectedIndex;
 
@@ -293,72 +293,74 @@ namespace IntugentWebApp.Pages.RnD_Users
             //e.Cancel = true;
 
             //           MessageBox.Show(js);
-            return new JsonResult(true);
+            return new JsonResult(new  { colId, rowId, text });
         }
-        //private void OngIsoCellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
-        //{
-        //    string sMsg;
-        //    int irow = e.Row.GetIndex();
-        //    int icol = e.Column.DisplayIndex;
-        //    double dtemp;
+        public IActionResult OnPostGIsoCellEditEnding(string rowId, string colId, string text)
+        {
+            string sMsg;
+            int irow = Int32.Parse(rowId);
+            int icol = Int32.Parse(colId);
+            double dtemp;
 
-        //    int iSel;
+            int iSel;
 
-        //    DataRow dgr = e.Row;
+            //DataRow dgr = e.Row;
 
-        //    if (irow > _objectsService.RNDFormulations.Forms.nComps - 2)
-        //    {
-        //        sMsg = "Number of comIsonents (rows) must be less than " + _objectsService.RNDFormulations.Forms.nComps.ToString();
-        //       // MessageBox.Show(sMsg, Cbfile.sAppName, MessageBoxButton.OK, MessageBoxImage.Stop);
-        //        return;
-        //    }
-        //    if (icol == 0)
-        //    {
-        //        if (irow > _objectsService.RNDFormulations.Forms.IsoMats.Count - 1) _objectsService.RNDFormulations.Forms.IsoMats.Add(new CMaterial());
+            if (irow > _objectsService.RNDFormulations.Forms.nComps - 2)
+            {
+                sMsg = "Number of comIsonents (rows) must be less than " + _objectsService.RNDFormulations.Forms.nComps.ToString();
+               // MessageBox.Show(sMsg, Cbfile.sAppName, MessageBoxButton.OK, MessageBoxImage.Stop);
+                return new JsonResult(false);
+            }
+            if (icol == 0)
+            {
+                if (irow > _objectsService.RNDFormulations.Forms.IsoMats.Count - 1) _objectsService.RNDFormulations.Forms.IsoMats.Add(new CMaterial());
 
+                int cmbSelectedIndex = Int32.Parse(text);
+                //ComboBox cmb = gIso.Columns[0].GetCellContent(dgr) as ComboBox;
+                iSel = cmbSelectedIndex;
 
-        //        ComboBox cmb = gIso.Columns[0].GetCellContent(dgr) as ComboBox;
-        //        iSel = cmb.SelectedIndex;
+                if (iSel > -1 && irow == 0)
+                {
+                    _objectsService.RNDFormulations.ModifyPOIsoLists(irow, ref _objectsService.RNDFormulations.Forms.IsoMats, iSel, _objectsService.RNDFormulations.dtIso);
+                    _objectsService.RNDHome.drS["IsoMats"] = _objectsService.RNDFormulations.Forms.IsoMats[0].ID; _objectsService.RNDHome.UpdateDataSet();
+                    //  MessageBox.Show(sMatIDs);
+                    /*
+                                        Forms.IsoMats[irow].MatType = sMatTypeListIso[iSel];
+                                        IsoForm1.IsoMatOH[irow] = Forms.IsoMats[irow].MatOHNum = dMatOHListIso[iSel];
+                                        IsoForm1.IsoMatFunc[irow] = Forms.IsoMats[irow].MatFunc = dMatFuncListIso[iSel];
+                                        int.TryParse(dtIso.Rows[irow]["ID"].ToString(), out IsoForm1.IsoMatID[irow]);
+                    */
+                }
 
-        //        if (iSel > -1 && irow == 0)
-        //        {
-        //            _objectsService.RNDFormulations.ModifyPOIsoLists(irow, ref _objectsService.RNDFormulations.Forms.IsoMats, iSel, _objectsService.RNDFormulations.dtIso);
-        //            _objectsService.RNDHome.drS["IsoMats"] = _objectsService.RNDFormulations.Forms.IsoMats[0].ID; _objectsService.RNDHome.UpdateDataSet();
-        //            //  MessageBox.Show(sMatIDs);
-        //            /*
-        //                                Forms.IsoMats[irow].MatType = sMatTypeListIso[iSel];
-        //                                IsoForm1.IsoMatOH[irow] = Forms.IsoMats[irow].MatOHNum = dMatOHListIso[iSel];
-        //                                IsoForm1.IsoMatFunc[irow] = Forms.IsoMats[irow].MatFunc = dMatFuncListIso[iSel];
-        //                                int.TryParse(dtIso.Rows[irow]["ID"].ToString(), out IsoForm1.IsoMatID[irow]);
-        //            */
-        //        }
+            }
+            else if (icol == 2)
+            {
 
-        //    }
-        //    else if (icol == 2)
-        //    {
+                double dtmp; string stmp = string.Empty;
+                //TextBox tb = gPO.Columns[icol].GetCellContent(dgr) as TextBox;
+                string tb = text;
+                double.TryParse(tb, out dtemp);
+                _objectsService.RNDFormulations.Forms.IsoMats[irow].MatNco = dtemp;
+                _objectsService.RNDHome.drS["sIsoMatsNCO"] = _objectsService.RNDFormulations.Forms.IsoMats[0].MatNco.ToString(); _objectsService.RNDHome.UpdateDataSet();
+                //                MessageBox.Show(Forms.IsoMats[irow].MatName.ToString() + "\n\nNCO%:  " + dtemp.ToString());
+                SetView();
+            }
+            else if (icol > 3 && icol < 11)
+            {
+                //TextBox tb = gIso.Columns[icol].GetCellContent(dgr) as TextBox;
+                string tb = text;
+                double.TryParse(tb, out _objectsService.RNDFormulations.Forms.FormAr[icol - 4].IsoMatPbw[irow]);
+            }
 
-        //        double dtmp; string stmp = string.Empty;
-        //        TextBox tb = gPO.Columns[icol].GetCellContent(dgr) as TextBox;
-        //        double.TryParse(tb.Text, out dtemp);
-        //        _objectsService.RNDFormulations.Forms.IsoMats[irow].MatNco = dtemp;
-        //        _objectsService.RNDHome.drS["sIsoMatsNCO"] = _objectsService.RNDFormulations.Forms.IsoMats[0].MatNco.ToString(); _objectsService.RNDHome.UpdateDataSet();
-        //        //                MessageBox.Show(Forms.IsoMats[irow].MatName.ToString() + "\n\nNCO%:  " + dtemp.ToString());
-        //        SetView();
-        //    }
-        //    else if (icol > 3 && icol < 11)
-        //    {
-        //        TextBox tb = gIso.Columns[icol].GetCellContent(dgr) as TextBox;
-        //        double.TryParse(tb.Text, out _objectsService.RNDFormulations.Forms.FormAr[icol - 4].IsoMatPbw[irow]);
-        //    }
-
-        //    if (string.IsNullOrEmpty(_objectsService.RNDFormulations.Forms.IsoMats[irow].MatName))
-        //    {
-        //        sMsg = "You must choose the material for the row " + (irow + 1);
-        //       // MessageBox.Show(sMsg, Params.sAppName, MessageBoxButton.OK, MessageBoxImage.Hand);
-        //    }
-        //    else SetView();
-
-        //}
+            if (string.IsNullOrEmpty(_objectsService.RNDFormulations.Forms.IsoMats[irow].MatName))
+            {
+                sMsg = "You must choose the material for the row " + (irow + 1);
+               // MessageBox.Show(sMsg, Params.sAppName, MessageBoxButton.OK, MessageBoxImage.Hand);
+            }
+            else SetView();
+            return new JsonResult(new { colId, rowId, text });
+        }
 
 
         /*

@@ -192,20 +192,31 @@
                     }
                     @foreach (var row in Model.gIso)
                     {
-                        int[] colIndex = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
+                        int[] colIndex = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
                         <tr id="row-@rowIndex4">
-                            <td id="Descriptors-@rowIndex4-@colIndex[0]">@row.MatName</td>
-                            <td id="Descriptors-@rowIndex4-@colIndex[0]">@row.MatType</td>
-                            <td id="Descriptors-@rowIndex4-@colIndex[0]">@row.MatNco</td>
-                            <td id="Descriptors-@rowIndex4-@colIndex[0]">@row.MatFunc</td>
-                            <td class="td" id="Descriptors-@rowIndex4-@colIndex[1]">@row.Pbw1</td>
-                            <td class="td" id="Descriptors-@rowIndex4-@colIndex[2]">@row.Pbw2</td>
-                            <td class="td" id="Descriptors-@rowIndex4-@colIndex[3]">@row.Pbw3</td>
-                            <td class="td" id="Descriptors-@rowIndex4-@colIndex[4]">@row.Pbw4</td>
-                            <td class="td" id="Descriptors-@rowIndex4-@colIndex[5]">@row.Pbw5</td>
-                            <td class="td" id="Descriptors-@rowIndex4-@colIndex[6]">@row.Pbw6</td>
-                            <td class="td" id="Descriptors-@rowIndex4-@colIndex[7]">@row.Pbw7</td>
-                            <td class="td" id="Descriptors-@rowIndex4-@colIndex[8]">@row.Pbw8</td>
+                            <td id="PO-@rowIndex4-@colIndex[0]">
+                                @{
+                                    int ids = 0;
+                                }
+                                <select class="form-select" id="IsoMatName" onblur="GIsoCellEditEnding(@rowIndex4,@colIndex[0], this.options[this.selectedIndex].id)">
+                                    @foreach (string box in Model.gIsoList)
+                                    {
+                                        <option id="@ids" value="@box" selected="@(row.MatName==box)">@box</option>
+                                        ids++;
+                                    }
+                                </select>
+                            </td>
+                            <td id="Iso-@rowIndex4-@colIndex[1]">@row.MatType</td>
+                            <td class="td" id="Iso-@rowIndex4-@colIndex[2]">@row.MatNco</td>
+                            <td id="Iso-@rowIndex4-@colIndex[3]">@row.MatFunc</td>
+                            <td  id="Iso-@rowIndex4-@colIndex[4]">@row.Pbw1</td>
+                            <td id="Iso-@rowIndex4-@colIndex[5]">@row.Pbw2</td>
+                            <td id="Iso-@rowIndex4-@colIndex[6]">@row.Pbw3</td>
+                            <td id="Iso-@rowIndex4-@colIndex[7]">@row.Pbw4</td>
+                            <td id="Iso-@rowIndex4-@colIndex[8]">@row.Pbw5</td>
+                            <td id="Iso-@rowIndex4-@colIndex[9]">@row.Pbw6</td>
+                            <td id="Iso-@rowIndex4-@colIndex[10]">@row.Pbw7</td>
+                            <td id="Iso-@rowIndex4-@colIndex[11]">@row.Pbw8</td>
                         </tr>
                         rowIndex4++;
                     }
@@ -237,20 +248,29 @@
                     }
                     @foreach (var row in Model.gPO)
                     {
-                        int[] colIndex = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
+                        int[] colIndex = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
                         <tr id="row-@rowIndex5">
-                            <td id="Descriptors-@rowIndex5-@colIndex[0]">@row.MatName</td>
-                            <td id="Descriptors-@rowIndex5-@colIndex[0]">@row.MatType</td>
-                            <td id="Descriptors-@rowIndex5-@colIndex[0]">@row.MatNco</td>
-                            <td id="Descriptors-@rowIndex5-@colIndex[0]">@row.MatFunc</td>
-                            <td class="td" id="Descriptors-@rowIndex5-@colIndex[1]">@row.Pbw1</td>
-                            <td class="td" id="Descriptors-@rowIndex5-@colIndex[2]">@row.Pbw2</td>
-                            <td class="td" id="Descriptors-@rowIndex5-@colIndex[3]">@row.Pbw3</td>
-                            <td class="td" id="Descriptors-@rowIndex5-@colIndex[4]">@row.Pbw4</td>
-                            <td class="td" id="Descriptors-@rowIndex5-@colIndex[5]">@row.Pbw5</td>
-                            <td class="td" id="Descriptors-@rowIndex5-@colIndex[6]">@row.Pbw6</td>
-                            <td class="td" id="Descriptors-@rowIndex5-@colIndex[7]">@row.Pbw7</td>
-                            <td class="td" id="Descriptors-@rowIndex5-@colIndex[8]">@row.Pbw8</td>
+                            <td id="PO-@rowIndex5-@colIndex[0]" >
+                                        @{int ids = 0;}
+                                <select class="form-select" id="PolyolMatName" onblur="GPOCellEditEnding(@rowIndex5,@colIndex[0], this.options[this.selectedIndex].id)">
+                                        @foreach (string box in Model.gPolyolList)
+                                        {
+                                        <option id="@ids" value="@box" selected="@(row.MatName==box)">@box</option>
+                                        ids++;
+                                    }
+                                    </select>
+                                </td>
+                            <td id="PO-@rowIndex5-@colIndex[1]">@row.MatType</td>
+                            <td class="td" id="PO-@rowIndex5-@colIndex[2]">@row.MatNco</td>
+                            <td id="PO-@rowIndex5-@colIndex[3]">@row.MatFunc</td>
+                            <td class="td" id="PO-@rowIndex5-@colIndex[4]">@row.Pbw1</td>
+                            <td class="td" id="PO-@rowIndex5-@colIndex[5]">@row.Pbw2</td>
+                            <td class="td" id="PO-@rowIndex5-@colIndex[6]">@row.Pbw3</td>
+                            <td class="td" id="PO-@rowIndex5-@colIndex[7]">@row.Pbw4</td>
+                            <td class="td" id="PO-@rowIndex5-@colIndex[8]">@row.Pbw5</td>
+                            <td class="td" id="PO-@rowIndex5-@colIndex[9]">@row.Pbw6</td>
+                            <td class="td" id="PO-@rowIndex5-@colIndex[10]">@row.Pbw7</td>
+                            <td class="td" id="PO-@rowIndex5-@colIndex[11]">@row.Pbw8</td>
                         </tr>
                         rowIndex5++;
                     }
@@ -376,6 +396,12 @@
                         if (table == "Nco") {
                             OnGNcoCell(rowId, colId, text);
                         }
+                        else if (table == "PO") {
+                            GPOCellEditEnding(rowId, colId, text);
+                        }
+                        else if (table == "Iso") {
+                            GIsoCellEditEnding(rowId, colId, text);
+                        }
                     });
                 });
             });
@@ -386,6 +412,36 @@
             $.ajax({
                 type: "POST",
                 url: "/RnD_Users/Formulations?handler=GNcoCellEditEnding",
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                data: { rowId: rowId, colId: colId, text: text },
+                success: function (response) {
+                    console.log('Server response:', response);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+        function GPOCellEditEnding(rowId, colId, text) {
+            // console.log("Row ID: " + rowId + ", Column ID: " + colId + ", New Value: " + text);
+            $.ajax({
+                type: "POST",
+                url: "/RnD_Users/Formulations?handler=GPOCellEditEnding",
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                data: { rowId: rowId, colId: colId, text: text },
+                success: function (response) {
+                    console.log('Server response:', response);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+        function GIsoCellEditEnding(rowId, colId, text) {
+            // console.log("Row ID: " + rowId + ", Column ID: " + colId + ", New Value: " + text);
+            $.ajax({
+                type: "POST",
+                url: "/RnD_Users/Formulations?handler=GIsoCellEditEnding",
                 headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
                 data: { rowId: rowId, colId: colId, text: text },
                 success: function (response) {

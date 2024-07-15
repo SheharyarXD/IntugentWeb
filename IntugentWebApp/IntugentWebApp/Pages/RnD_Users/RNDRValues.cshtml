@@ -97,31 +97,24 @@
                 <h2 class=""> Initial R Value Analyses</h2>
             </div>
             <div class="card-body">
-                <!-- X Axis -->
-                <div class="form-floating mb-2">
-                    <select class="form-select" id="XAxis">
-                        @*      @foreach (DataRowView row in Model.gProd1)
-                        {
-                        <option value="@row["Product"]" selected="@(Model.gProd1SelectedValue == (row["Product Code"].ToString()))">@row["Product"]</option>
-                        }   *@
-                        <option id="gCell" value="CS" selected="@(Model.gXAxisSelectedValue)">Cell Size (Microns)</option>
-                        <option id="gDesn" value="DE" selected="@(Model.gXAxisSelectedValue)">Density (kg/m&#x00B3;)</option>
-                        <option id="gTemp" value="TE" selected="@(Model.gXAxisSelectedValue)">Temperature (°F)</option>
-                    </select>
-                    <label for="XAxis">X Axis</label>
-                </div>
-                <!-- Y Axis -->
-                <div class="form-floating mb-2">
-                    <select class="form-select" id="YAxis">
-                        @*       @foreach (DataRowView row in Model.gProd1)
-                        {
-                        <option value="@row["Product"]" selected="@(Model.gProd1SelectedValue == (row["Product Code"].ToString()))">@row["Product"]</option>
-                        }   *@
-                        <option id="gKValue" value="KV" selected="@(Model.gYAxisSelectedValue)">K-Value, Conductivty (mW/m-K)</option>
-                        <option id="gRValue" value="RV" selected="@(Model.gYAxisSelectedValue)">R-Value, Resistance (ft&#x00B2;-°F-hr/Btu)</option>
-                    </select>
-                    <label for="YAxis">Y Axis</label>
-                </div>
+           <!-- X Axis -->
+<div class="form-floating mb-2">
+                    <select class="form-select" id="XAxis" onchange="gAxisSelectionChanged(this,'gXAxis')">
+        <!option id="gCell" value="CS" @(Model.gXAxisSelectedValue == "CS" ? "selected" : "")>Cell Size (Microns)</!option>
+        <!option id="gDesn" value="DE" @(Model.gXAxisSelectedValue == "DE" ? "selected" : "")>Density (kg/m&#x00B3;)</!option>
+        <!option id="gTemp" value="TE" @(Model.gXAxisSelectedValue == "TE" ? "selected" : "")>Temperature (°F)</!option>
+    </select>
+    <label for="XAxis">X Axis</label>
+</div>
+
+<!-- Y Axis -->
+<div class="form-floating mb-2">
+                    <select class="form-select" id="YAxis" onchange="gAxisSelectionChanged(this,'gYAxis')">
+        <!option id="gKValue" value="KV" @(Model.gYAxisSelectedValue == "KV" ? "selected='selected'" : "")>K-Value, Conductivity (mW/m-K)</!option>
+        <!option id="gRValue" value="RV" @(Model.gYAxisSelectedValue == "RV" ? "selected='selected'" : "")>R-Value, Resistance (ft&#x00B2;-°F-hr/Btu)</!option>
+    </select>
+    <label for="YAxis">Y Axis</label>
+</div>
                </div>
            </div>
                 @* Chart Navigation *@
@@ -141,148 +134,120 @@
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const ctx = document.getElementById('charts').getContext('2d');
-            // Data and options for the first chart
+
             const data1 = {
-                datasets: [{
-                    label: 'Dataset 1',
-                     data: @Html.Raw(Json.Serialize(Model.dArX.Zip(Model.dAr0, (x, y) => new { x, y }))),
-                    backgroundColor: 'rgba(255, 0, 0, 0.6)',
-                    borderColor: 'rgba(255, 0, 0, 1)',
-                    borderWidth: 1,
-                    pointRadius: 5
-                }]
+                label: 'Dataset 1',
+                data: @Html.Raw(Json.Serialize(Model.dArX.Zip(Model.dAr0, (x, y) => new { x, y }))),
+                backgroundColor: 'rgba(255, 0, 0, 0.6)',
+                borderColor: 'rgba(255, 0, 0, 1)',
+                borderWidth: 3,
+                pointRadius: 0
             };
 
-            // Data and options for the second chart
             const data2 = {
-                datasets: [{
-                    label: 'Dataset 2',
-                    data: @Html.Raw(Json.Serialize(Model.dArX.Zip(Model.dAr1, (x, y) => new { x, y }))),
-                    backgroundColor: 'rgba(0, 0, 255, 0.6)',
-                    borderColor: 'rgba(0, 0, 255, 1)',
-                    borderWidth: 1,
-                    pointRadius: 5
-                }]
+                label: 'Dataset 2',
+                data: @Html.Raw(Json.Serialize(Model.dArX.Zip(Model.dAr1, (x, y) => new { x, y }))),
+                backgroundColor: 'rgba(0, 0, 255, 0.6)',
+                borderColor: 'rgba(0, 0, 255, 1)',
+                borderWidth: 3,
+                pointRadius: 0
             };
 
             const data3 = {
-                datasets: [{
-                    label: 'Dataset 3',
-                    data: @Html.Raw(Json.Serialize(Model.dArX.Zip(Model.dAr2, (x, y) => new { x, y }))),
-                    backgroundColor: 'rgba(0, 255, 0, 0.6)',
-                    borderColor: 'rgba(0, 255, 0, 1)',
-                    borderWidth: 1,
-                    pointRadius: 5
-                }]
+                label: 'Dataset 3',
+                data: @Html.Raw(Json.Serialize(Model.dArX.Zip(Model.dAr2, (x, y) => new { x, y }))),
+                backgroundColor: 'rgba(0, 255, 0, 0.6)',
+                borderColor: 'rgba(0, 255, 0, 1)',
+                borderWidth: 3,
+                pointRadius: 0
             };
 
             const data4 = {
-                datasets: [{
-                    label: 'Dataset 3',
-                    data: @Html.Raw(Json.Serialize(Model.dArX.Zip(Model.dAr3, (x, y) => new { x, y }))),
-                    backgroundColor: 'rgba(255, 255, 0, 0.6)',
-                    borderColor: 'rgba(255, 255, 0, 1)',
-                    borderWidth: 1,
-                    pointRadius: 5
-                }]
+                label: 'Dataset 4',
+                data: @Html.Raw(Json.Serialize(Model.dArX.Zip(Model.dAr3, (x, y) => new { x, y }))),
+                backgroundColor: 'rgba(255, 255, 0, 0.6)',
+                borderColor: 'rgba(255, 255, 0, 1)',
+                borderWidth: 3,
+                pointRadius: 0
             };
+
             const data5 = {
-                datasets: [{
-                    label: 'Dataset 1',
-                    data: @Html.Raw(Json.Serialize(Model.dArX.Zip(Model.dAr4, (x, y) => new { x, y }))),
-                    backgroundColor: 'rgba(255, 0, 0, 0.6)',
-                    borderColor: 'rgba(255, 0, 0, 1)',
-                    borderWidth: 1,
-                    pointRadius: 5
-                }]
+                label: 'Dataset 5',
+                data: @Html.Raw(Json.Serialize(Model.dArX.Zip(Model.dAr4, (x, y) => new { x, y }))),
+                backgroundColor: 'rgba(255, 0, 0, 0.6)',
+                borderColor: 'rgba(255, 0, 0, 1)',
+                borderWidth: 3,
+                pointRadius: 0
             };
 
-            // Data and options for the second chart
-            const data6 = {
-                datasets: [{
-                    label: 'Dataset 2',
-                    // data:,
-                    backgroundColor: 'rgba(0, 0, 255, 0.6)',
-                    borderColor: 'rgba(0, 0, 255, 1)',
-                    borderWidth: 1,
-                    pointRadius: 5
-                }]
-            };
-
-            const data7 = {
-                datasets: [{
-                    label: 'Dataset 3',
-                    // data:,
-                    backgroundColor: 'rgba(0, 255, 0, 0.6)',
-                    borderColor: 'rgba(0, 255, 0, 1)',
-                    borderWidth: 1,
-                    pointRadius: 5
-                }]
-            };
-
-            const data8 = {
-                datasets: [{
-                    label: 'Dataset 3',
-                    // data:,
-                    backgroundColor: 'rgba(255, 255, 0, 0.6)',
-                    borderColor: 'rgba(255, 255, 0, 1)',
-                    borderWidth: 1,
-                    pointRadius: 5
-                }]
-            };
-            // Common options for both charts
-            const options = {
-                scales: {
-                    x: {
-                        type: 'linear',
-                        position: 'bottom',
-                        title: {
-                            display: true,
-                            text: `Temperature (F)`,
-                        }
-                    },
-                    y: {
-                        title: {
-                            display: true,
-                            text: `R / n value`,
-                        }
-                    }
-                },
-                plugins: {
-                    legend: {
-                        display: true
-                    }
-                }
-            };
-            console.log('Data for Chart 1:', data1);
-            console.log('Data for Chart 2:', data2);
-            console.log('Data for Chart 3:', data3);
-            console.log('Data for Chart 4:', data4);
-            console.log('Data for Chart 5:', data5);
-            console.log('Data for Chart 6:', data6);
-            console.log('Data for Chart 7:', data7);
-            console.log('Data for Chart 8:', data8);
-            // Create the first chart
-            // Chart configuration
             const config = {
                 type: 'line',
                 data: {
                     datasets: [data1, data2, data3, data4, data5]
                 },
                 options: {
-                    pointRadius: 0,
                     responsive: true,
                     scales: {
                         x: {
                             type: 'linear',
-                            position: 'bottom'
+                            position: 'bottom',
+                            title: {
+                                display: true,
+                                text: 'Temperature (F)',
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'R / n value',
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true
+                        },
+                        zoom: {
+                            pan: {
+                                enabled: true,
+                                mode: 'xy',
+                            },
+                            zoom: {
+                                enabled: true,
+                                mode: 'xy',
+                                wheel: {
+                                    enabled: true,
+                                },
+                                pinch: {
+                                    enabled: true
+                                }
+                            }
                         }
                     }
                 }
             };
-            new Chart(ctx, config);
-        });
 
+            const myChart = new Chart(ctx, config);
+
+            // Add double-click event listener to reset zoom
+            document.getElementById('charts').addEventListener('dblclick', () => {
+                myChart.resetZoom();
+            });
+        });
+        function gAxisSelectionChanged(selectElement, name) {
+            const axisValue = selectElement.value;
+            const axisName = name;
+            const selectedItem = selectElement.options[selectElement.selectedIndex];
+
+            const selectedId = selectedItem.id; // Assign the id of the selected option to a variable
+
+            // Now you can use selectedId in your logic
+            // console.log("Selected id:", selectedId);
+
+            // Call AxisChanged with selected values
+            AxisChanged(axisName, axisValue, selectedId);
+        }
+        
         function LostFocus(Name, Value) {
             //  console.log('Input values - Name:', Name, 'Value:', Value);
             // var form = $('#SearchParamsForm');
@@ -295,6 +260,24 @@
                 success: function (response) {
                     //console.log('Server response:', response);
                       location.reload();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+        function AxisChanged(Name, value,item) {
+             console.log('Input values - Name:', Name, 'Value:', value, 'Item', item);
+            // var form = $('#SearchParamsForm');
+
+            $.ajax({
+                type: "POST",
+                url: "/RnD_Users/RNDRValues?handler=GAxis_SelectionChanged",
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                data: { Name: Name, value: value, item: item },
+                success: function (response) {
+                    //console.log('Server response:', response);
+                    location.reload();
                 },
                 error: function (xhr, status, error) {
                     console.error('Error:', error);
@@ -319,4 +302,19 @@
             });
         }
     </script>
+}
+@{
+    // Define options and their respective values
+    var xAxisOptions = new List<SelectListItem>
+    {
+        new SelectListItem { Value = "CS", Text = "Cell Size (Microns)" },
+        new SelectListItem { Value = "DE", Text = "Density (kg/m³)" },
+        new SelectListItem { Value = "TE", Text = "Temperature (°F)" }
+    };
+
+    var yAxisOptions = new List<SelectListItem>
+    {
+        new SelectListItem { Value = "KV", Text = "K-Value, Conductivity (mW/m-K)" },
+        new SelectListItem { Value = "RV", Text = "R-Value, Resistance (ft²-°F-hr/Btu)" }
+    };
 }

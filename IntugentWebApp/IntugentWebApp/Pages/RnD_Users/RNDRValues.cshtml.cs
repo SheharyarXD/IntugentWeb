@@ -33,9 +33,9 @@ namespace IntugentWebApp.Pages.RnD_Users
         public double[] dAr2 = new double[Params.nDataPts];
         public double[] dAr3 = new double[Params.nDataPts];
         public double[] dAr4 = new double[Params.nDataPts];
+        public readonly ObjectsService _objectsService; 
         public double[] dArX = new double[Params.nDataPts];
 
-        public readonly ObjectsService _objectsService;
                 
             public RNDRValuesModel(ObjectsService objectsService)
             {
@@ -47,7 +47,6 @@ namespace IntugentWebApp.Pages.RnD_Users
             {
            // CPages.PageRecipe_1.ReadDataset();
            _objectsService.RNDFormulations.FormDescriptors();
-
 
 
             for (int ifo = 0; ifo < Params.nFormMax; ifo++)
@@ -504,7 +503,8 @@ namespace IntugentWebApp.Pages.RnD_Users
                         SetView();
                     }
             */
-            public IActionResult OnPostgAxis_SelectionChanged(string Name,string value,string item)
+
+            public IActionResult OnPostGAxis_SelectionChanged(string Name,string value,string item)
             {
                 string sFld = null, sMsg;
                 //ComboBoxItem cmi;
@@ -518,22 +518,23 @@ namespace IntugentWebApp.Pages.RnD_Users
                     gXAxisSelectedValue = value;
 
 
-                       _objectsService.RNDRValues.RData.sXaxisTag =   gXAxisSelectedItem.ToString();
-                       _objectsService.RNDRValues.RCalc.sXAxisTitle = gXAxisSelectedValue.ToString(); break;
+                       _objectsService.RNDRValues.RData.sXaxisTag = gXAxisSelectedValue.ToString();
+                       _objectsService.RNDRValues.RCalc.sXAxisTitle = gXAxisSelectedItem.ToString(); break;
 
                    case "gYAxis":
                     // cmi = (ComboBoxItem)(gYAxis.SelectedItem);
                     gYAxisSelectedItem = item;
                     gYAxisSelectedValue = value;
 
-                    _objectsService.RNDRValues.RData.sYaxisTag = gYAxisSelectedItem.ToString();
-                       _objectsService.RNDRValues.RCalc.sYAxisTitle = gYAxisSelectedValue.ToString(); break;
-               }
+                    _objectsService.RNDRValues.RData.sYaxisTag = gYAxisSelectedValue.ToString();
+                       _objectsService.RNDRValues.RCalc.sYAxisTitle = gYAxisSelectedItem.ToString();
+                    break;
+            }
 
                 SetView();
 
                 UpdateDataset();
-            return null;
+            return new JsonResult(true);
             }
 
 
@@ -626,14 +627,17 @@ namespace IntugentWebApp.Pages.RnD_Users
                 gPolDen  = (_objectsService.RNDRValues.RData.dPolDensity / _objectsService.RNDRValues.CUConv.ToSi_Dens).ToString("0.00");
                 gPolCond  = (1000.0 * _objectsService.RNDRValues.RData.dPolCond).ToString("0.00");
                 gFracStruts  = (100.0 * _objectsService.RNDRValues.RData.dFracStrut).ToString("0.00");
-
-                //for (int i=0;i<2;i++)
-                //    if (gYAxisSelectedItem.ToString() == _objectsService.RNDRValues.RData.sYaxisTag)
-                //    {  _objectsService.RNDRValues.RCalc.sYAxisTitle = gYAxisSelectedValue.ToString(); }
-                //foreach (DataRowView cmi in gXAxis)
-                //    if (gXAxisSelectedItem.ToString() == _objectsService.RNDRValues.RData.sXaxisTag)
-                //    {  _objectsService.RNDRValues.RCalc.sXAxisTitle = gXAxisSelectedValue.ToString(); }
-            }
+            gXAxisSelectedValue = _objectsService.RNDRValues.RData.sXaxisTag;
+            //gXAxisSelectedItem = _objectsService.RNDRValues.RCalc.sXAxisTitle;
+            gYAxisSelectedValue = _objectsService.RNDRValues.RData.sYaxisTag;
+                 //gYAxisSelectedValue = _objectsService.RNDRValues.RCalc.sYAxisTitle;
+            //for (int i=0;i<2;i++)
+            //    if (gYAxisSelectedItem.ToString() == _objectsService.RNDRValues.RData.sYaxisTag)
+            //    {  _objectsService.RNDRValues.RCalc.sYAxisTitle = gYAxisSelectedValue.ToString(); }
+            //for(int i = 0; i < 3; i++)
+            //    if (gXAxisSelectedItem.ToString() == _objectsService.RNDRValues.RData.sXaxisTag)
+            //    {  _objectsService.RNDRValues.RCalc.sXAxisTitle = gXAxisSelectedValue.ToString(); }
+        }
     }
 
 }

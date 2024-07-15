@@ -293,21 +293,29 @@
                             </tr>
                         </thead>
                         <tbody>
-                          @*   @foreach (DataRowView row in Model.gProd)
+                            @{
+                                int rowIndex = 0;
+                            }
+                            @foreach (DataRowView row in Model.gProd)
                             {
-
-                            <tr>
-                            <td>@row["Form#"]</td>
-                             <td>
-                             <select class="form-select" id="testingStatus">
-                                            <option class="td" value="@row["sProdName"]" selected="@(Model.gProdSelectedValue == Int32.Parse(row["sProdName"].ToString()))">@row["sProdName"]</option>
-                                    </select>
-                                    <label for="testingStatus">Testing Status</label>
-                                 
-                                 </td>
-                            </tr>
-
-                            }  *@
+                                int colIndex = 1;
+                                <tr>
+                                    <td>@row["Form#"]</td>
+                                    @{
+                                        int ids = 0;
+                                    }
+                                    <td id="Products-@rowIndex-@colIndex">
+                                        <select class="form-select" id="Product" onblur="OnGProd(@rowIndex,@colIndex, this.options[this.selectedIndex].value)">
+                                            @foreach (string box in Model.gProdList)
+                                            {
+                                                <option id="@ids" value="@box" selected="@(row["sProdName"].ToString()==box)">@box</option>
+                                                ids++;
+                                            }
+                                        </select>
+                                    </td>
+                                </tr>
+                                rowIndex++;
+                            }
                         </tbody>
                     </table>
                 </div>
@@ -466,6 +474,21 @@
             $.ajax({
                 type: "POST",
                 url: "/RnD_Users/RNDPropertiesDatafile?handler=GReacE",
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                data: { rowId: rowId, colId: colId, text: text },
+                success: function (response) {
+                    console.log('Server response:', response);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+        function OnGProd(rowId, colId, text) {
+            // console.log("Row ID: " + rowId + ", Column ID: " + colId + ", New Value: " + text);
+            $.ajax({
+                type: "POST",
+                url: "/RnD_Users/RNDPropertiesDatafile?handler=GProd",
                 headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
                 data: { rowId: rowId, colId: colId, text: text },
                 success: function (response) {

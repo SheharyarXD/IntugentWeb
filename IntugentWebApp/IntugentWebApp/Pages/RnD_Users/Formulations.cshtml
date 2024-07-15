@@ -279,10 +279,10 @@
 
             <div class="row">
                 <div class="col-md-6">
-                    <button type="button" class="btn btn-primary m-1">
+                    <button type="button" onclick="OnGPO_AddARow()" class="btn btn-primary m-1">
                         Add A Row
                     </button>
-                    <button type="button" class="btn btn-primary m-1">
+                    <button type="button" class="btn btn-primary m-1" onclick="sendClipboardData()">
                         Paste Formulations pbw
                     </button>
                 </div>
@@ -482,6 +482,21 @@
                 }
             });
         }
+
+        function OnGPO_AddARow() {
+            // console.log("Row ID: " + rowId + ", Column ID: " + colId + ", New Value: " + text);
+            $.ajax({
+                type: "POST",
+                url: "/RnD_Users/Formulations?handler=GPO_AddARow",
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                success: function (response) {
+                    console.log('Server response:', response);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
         function GCheckBox(Name, element) {
             let value;
 
@@ -492,6 +507,44 @@
             }
             //console.log(Name,value)
             OnGenInfo_LF(Name, value)
+        }
+        function getClipboardData() {
+            // Check if the navigator.clipboard API is supported
+            if (!navigator.clipboard) {
+                console.error('Clipboard API not supported.');
+                return null;
+            }
+
+            // Attempt to read text data from clipboard
+            return navigator.clipboard.readText()
+                .then(text => {
+                    console.log('Clipboard text:', text);
+                    // Parse text data if needed (e.g., split into rows/columns)
+                    // Example: Split text by new lines and then by tabs for tabular data
+                    const rows = text.split('\n').map(row => row.split(','));
+                    return rows;
+                })
+                .catch(err => {
+                    console.error('Failed to read clipboard text:', err);
+                    return null;
+                });
+        }
+        // Function to handle fetching clipboard data and sending it to the backend
+        function sendClipboardData() {
+            var rows = getClipboardData();
+            console.log(rows)
+            $.ajax({
+                type: "POST",
+                url: "/RnD_Users/Formulations?handler=GPO_Paste",
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                data: { rows: rows },
+                success: function (response) {
+                    console.log('Server response:', response);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
         }
 
     </script>

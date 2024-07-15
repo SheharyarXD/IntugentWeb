@@ -100,7 +100,7 @@ namespace IntugentWebApp.Pages.RnD_Users
 
         }
 
-        public IActionResult OnPostGSearchDataSets_Click()
+        public IActionResult OnPostGSearchDataSets_Click(DateTime gRndDate1, DateTime gRndDate2,string gProd1SelectedValue,string gTestStat1SelectedValue,string gStudyTypeSelectedValue,string gRNDNameSearch)
         {
 
             if (gRndDate1 == null) _objectsService.CLists.drEmployee["RndDate1"] = DBNull.Value; else _objectsService.CLists.drEmployee["RndDate1"] = gRndDate1;
@@ -180,9 +180,9 @@ namespace IntugentWebApp.Pages.RnD_Users
                 _objectsService.RNDHome.dt.Rows.InsertAt(_objectsService.RNDHome.dr, 0);
                 gRNDSearch = _objectsService.RNDHome.dt.DefaultView;
                 gRNDSearchSelectedIndex = 0;
-              //  gRNDSearch.ScrollIntoView(gRNDSearch.Items[gRNDSearchSelectedIndex]);
+               //gRNDSearch.ScrollIntoView(gRNDSearch.Items[gRNDSearchSelectedIndex]);
             }
-            return new JsonResult(true);
+            return new JsonResult(gRNDSearch.ToString());
         }
 
         public IActionResult OnPostGSearchLF(string Name)
@@ -398,6 +398,7 @@ namespace IntugentWebApp.Pages.RnD_Users
 
         public IActionResult  OnPostGCopy_Click()
         {
+                var sData = new StringBuilder();
             DataTable dt2 = new DataTable(); string sMsg, sFile;
             int icol, irow;
           //  Mouse.OverrideCursor = Cursors.Wait;
@@ -430,12 +431,11 @@ namespace IntugentWebApp.Pages.RnD_Users
                 System.Diagnostics.Trace.TraceError(sMsg + "\n\n" + ex.Message);
               //  Mouse.OverrideCursor = null;
                // CTelClient.TelException(ex, sMsg);
-                return null;
+                return new JsonResult(false);
             }
 
             try
             {
-                var sData = new StringBuilder();
                 sData.Append(dt2.Columns[0].ColumnName.ToString());
                 for (icol = 1; icol < dt2.Columns.Count; icol++) sData.Append("\t" + dt2.Columns[icol].ColumnName.ToString());
                 for (irow = 0; irow < dt2.Rows.Count; irow++)
@@ -519,7 +519,7 @@ namespace IntugentWebApp.Pages.RnD_Users
 
             */
           //  Mouse.OverrideCursor = null;
-            return new JsonResult(new {Message= true});
+            return new JsonResult(sData.ToString());
         }
 
         public string GetSearchCriteria()

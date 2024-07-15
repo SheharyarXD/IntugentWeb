@@ -133,77 +133,77 @@ namespace IntugentWebApp.Pages.RnD_Users
             return new JsonResult(returns);
         }
 
-        //private void gPO_Paste(object sender, RoutedEventArgs e)
+        public IActionResult OnPostGPO_Paste(List<string[]> rows)
 
-        //{
+        {
 
-        //    int iColStart = 4, iColEnd = 4;
-        //    double dtmp; string stmp;
+            int iColStart = 4, iColEnd = 4;
+            double dtmp; string stmp;
 
-        //    List<string[]> clipboardData = ClipboardHelper.ParseClipboardData();
-        //    if (clipboardData == null) return;
+            List<string[]> clipboardData = rows;
+            if (clipboardData == null) return new JsonResult(false);
 
-        //    for (int ir = 0; ir < clipboardData.Count; ir++)
-        //    {
-        //        if (ir >= _objectsService.RNDFormulations.Forms.POMats.Count) break;
-        //        for (int ic = 0; ic < clipboardData[ir].Length; ic++)
-        //        {
-        //            if (ic + iColStart >= gPO.Columns.Count) break;
-        //            if (ic == 0)
-        //            {
-        //                stmp = clipboardData[ir][ic];
-        //                if (double.TryParse(stmp, out dtmp)) { _objectsService.RNDFormulations.Forms.FormAr[ic].POMatPbw[ir] = dtmp; _objectsService.RNDFormulations.Forms.POMats[ir].Pbw1 = stmp; } else { _objectsService.RNDFormulations.Forms.FormAr[ic].POMatPbw[ir] = 0; _objectsService.RNDFormulations.Forms.POMats[ir].Pbw1 = string.Empty; }
-        //            }
-        //            if (ic == 1)
-        //            {
-        //                stmp = clipboardData[ir][ic];
-        //                if (double.TryParse(stmp, out dtmp)) { _objectsService.RNDFormulations.Forms.FormAr[ic].POMatPbw[ir] = dtmp; _objectsService.RNDFormulations.Forms.POMats[ir].Pbw2 = stmp; } else { _objectsService.RNDFormulations.Forms.FormAr[ic].POMatPbw[ir] = 0; _objectsService.RNDFormulations.Forms.POMats[ir].Pbw2 = string.Empty; }
-        //            }
-        //            if (ic == 2)
-        //            {
-        //                stmp = clipboardData[ir][ic];
-        //                if (double.TryParse(stmp, out dtmp)) { _objectsService.RNDFormulations.Forms.FormAr[ic].POMatPbw[ir] = dtmp; _objectsService.RNDFormulations.Forms.POMats[ir].Pbw3 = stmp; } else { _objectsService.RNDFormulations.Forms.FormAr[ic].POMatPbw[ir] = 0; _objectsService.RNDFormulations.Forms.POMats[ir].Pbw3 = string.Empty; }
-        //            }
-        //            if (ic == 3)
-        //            {
-        //                stmp = clipboardData[ir][ic];
-        //                if (double.TryParse(stmp, out dtmp)) { _objectsService.RNDFormulations.Forms.FormAr[ic].POMatPbw[ir] = dtmp; _objectsService.RNDFormulations.Forms.POMats[ir].Pbw4 = stmp; } else { _objectsService.RNDFormulations.Forms.FormAr[ic].POMatPbw[ir] = 0; _objectsService.RNDFormulations.Forms.POMats[ir].Pbw4 = string.Empty; }
-        //            }
-        //            if (ic == 4)
-        //            {
-        //                stmp = clipboardData[ir][ic];
-        //                if (double.TryParse(stmp, out dtmp)) { _objectsService.RNDFormulations.Forms.FormAr[ic].POMatPbw[ir] = dtmp; _objectsService.RNDFormulations.Forms.POMats[ir].Pbw5 = stmp; } else { _objectsService.RNDFormulations.Forms.FormAr[ic].POMatPbw[ir] = 0; _objectsService.RNDFormulations.Forms.POMats[ir].Pbw5 = string.Empty; }
-        //            }
-        //            if (ic == 5)
-        //            {
-        //                stmp = clipboardData[ir][ic];
-        //                if (double.TryParse(stmp, out dtmp)) { _objectsService.RNDFormulations.Forms.FormAr[ic].POMatPbw[ir] = dtmp; _objectsService.RNDFormulations.Forms.POMats[ir].Pbw6 = stmp; } else { _objectsService.RNDFormulations.Forms.FormAr[ic].POMatPbw[ir] = 0; _objectsService.RNDFormulations.Forms.POMats[ir].Pbw6 = string.Empty; }
-        //            }
-        //            if (ic == 6)
-        //            {
-        //                stmp = clipboardData[ir][ic];
-        //                if (double.TryParse(stmp, out dtmp)) { _objectsService.RNDFormulations.Forms.FormAr[ic].POMatPbw[ir] = dtmp; _objectsService.RNDFormulations.Forms.POMats[ir].Pbw7 = stmp; } else { _objectsService.RNDFormulations.Forms.FormAr[ic].POMatPbw[ir] = 0; _objectsService.RNDFormulations.Forms.POMats[ir].Pbw7 = string.Empty; }
-        //            }
-        //            if (ic == 7)
-        //            {
-        //                stmp = clipboardData[ir][ic];
-        //                if (double.TryParse(stmp, out dtmp)) { _objectsService.RNDFormulations.Forms.FormAr[ic].POMatPbw[ir] = dtmp; _objectsService.RNDFormulations.Forms.POMats[ir].Pbw8 = stmp; } else { _objectsService.RNDFormulations.Forms.FormAr[ic].POMatPbw[ir] = 0; _objectsService.RNDFormulations.Forms.POMats[ir].Pbw8 = string.Empty; }
-        //            }
-        //        }
-        //    }
-        //    gPO = _objectsService.RNDFormulations.Forms.POMats;
-        //    SetView();
-        //    string js1;
-        //    for (int ic = 0; ic < 8; ic++)
-        //    {
-        //        js1 = System.Text.Json.JsonSerializer.Serialize(_objectsService.RNDFormulations.Forms.FormAr[ic].POMatPbw);
-        //        _objectsService.RNDHome.dtF.Rows[ic]["POPbws"] = js1;
-        //    }
-        //    _objectsService.RNDHome.UpdateFormulatiions();
+            for (int ir = 0; ir < clipboardData.Count; ir++)
+            {
+                if (ir >= _objectsService.RNDFormulations.Forms.POMats.Count) break;
+                for (int ic = 0; ic < clipboardData[ir].Length; ic++)
+                {
+                    if (ic + iColStart >= gPO.Count) break;
+                    if (ic == 0)
+                    {
+                        stmp = clipboardData[ir][ic];
+                        if (double.TryParse(stmp, out dtmp)) { _objectsService.RNDFormulations.Forms.FormAr[ic].POMatPbw[ir] = dtmp; _objectsService.RNDFormulations.Forms.POMats[ir].Pbw1 = stmp; } else { _objectsService.RNDFormulations.Forms.FormAr[ic].POMatPbw[ir] = 0; _objectsService.RNDFormulations.Forms.POMats[ir].Pbw1 = string.Empty; }
+                    }
+                    if (ic == 1)
+                    {
+                        stmp = clipboardData[ir][ic];
+                        if (double.TryParse(stmp, out dtmp)) { _objectsService.RNDFormulations.Forms.FormAr[ic].POMatPbw[ir] = dtmp; _objectsService.RNDFormulations.Forms.POMats[ir].Pbw2 = stmp; } else { _objectsService.RNDFormulations.Forms.FormAr[ic].POMatPbw[ir] = 0; _objectsService.RNDFormulations.Forms.POMats[ir].Pbw2 = string.Empty; }
+                    }
+                    if (ic == 2)
+                    {
+                        stmp = clipboardData[ir][ic];
+                        if (double.TryParse(stmp, out dtmp)) { _objectsService.RNDFormulations.Forms.FormAr[ic].POMatPbw[ir] = dtmp; _objectsService.RNDFormulations.Forms.POMats[ir].Pbw3 = stmp; } else { _objectsService.RNDFormulations.Forms.FormAr[ic].POMatPbw[ir] = 0; _objectsService.RNDFormulations.Forms.POMats[ir].Pbw3 = string.Empty; }
+                    }
+                    if (ic == 3)
+                    {
+                        stmp = clipboardData[ir][ic];
+                        if (double.TryParse(stmp, out dtmp)) { _objectsService.RNDFormulations.Forms.FormAr[ic].POMatPbw[ir] = dtmp; _objectsService.RNDFormulations.Forms.POMats[ir].Pbw4 = stmp; } else { _objectsService.RNDFormulations.Forms.FormAr[ic].POMatPbw[ir] = 0; _objectsService.RNDFormulations.Forms.POMats[ir].Pbw4 = string.Empty; }
+                    }
+                    if (ic == 4)
+                    {
+                        stmp = clipboardData[ir][ic];
+                        if (double.TryParse(stmp, out dtmp)) { _objectsService.RNDFormulations.Forms.FormAr[ic].POMatPbw[ir] = dtmp; _objectsService.RNDFormulations.Forms.POMats[ir].Pbw5 = stmp; } else { _objectsService.RNDFormulations.Forms.FormAr[ic].POMatPbw[ir] = 0; _objectsService.RNDFormulations.Forms.POMats[ir].Pbw5 = string.Empty; }
+                    }
+                    if (ic == 5)
+                    {
+                        stmp = clipboardData[ir][ic];
+                        if (double.TryParse(stmp, out dtmp)) { _objectsService.RNDFormulations.Forms.FormAr[ic].POMatPbw[ir] = dtmp; _objectsService.RNDFormulations.Forms.POMats[ir].Pbw6 = stmp; } else { _objectsService.RNDFormulations.Forms.FormAr[ic].POMatPbw[ir] = 0; _objectsService.RNDFormulations.Forms.POMats[ir].Pbw6 = string.Empty; }
+                    }
+                    if (ic == 6)
+                    {
+                        stmp = clipboardData[ir][ic];
+                        if (double.TryParse(stmp, out dtmp)) { _objectsService.RNDFormulations.Forms.FormAr[ic].POMatPbw[ir] = dtmp; _objectsService.RNDFormulations.Forms.POMats[ir].Pbw7 = stmp; } else { _objectsService.RNDFormulations.Forms.FormAr[ic].POMatPbw[ir] = 0; _objectsService.RNDFormulations.Forms.POMats[ir].Pbw7 = string.Empty; }
+                    }
+                    if (ic == 7)
+                    {
+                        stmp = clipboardData[ir][ic];
+                        if (double.TryParse(stmp, out dtmp)) { _objectsService.RNDFormulations.Forms.FormAr[ic].POMatPbw[ir] = dtmp; _objectsService.RNDFormulations.Forms.POMats[ir].Pbw8 = stmp; } else { _objectsService.RNDFormulations.Forms.FormAr[ic].POMatPbw[ir] = 0; _objectsService.RNDFormulations.Forms.POMats[ir].Pbw8 = string.Empty; }
+                    }
+                }
+            }
+            gPO = _objectsService.RNDFormulations.Forms.POMats;
+            SetView();
+            string js1;
+            for (int ic = 0; ic < 8; ic++)
+            {
+                js1 = System.Text.Json.JsonSerializer.Serialize(_objectsService.RNDFormulations.Forms.FormAr[ic].POMatPbw);
+                _objectsService.RNDHome.dtF.Rows[ic]["POPbws"] = js1;
+            }
+            _objectsService.RNDHome.UpdateFormulatiions();
 
 
-
-        //}
+            return new JsonResult(rows);
+        }
         public IActionResult OnPostGPOCellEditEnding(string rowId, string colId, string text)
         {
             string sMsg;
@@ -631,18 +631,18 @@ namespace IntugentWebApp.Pages.RnD_Users
             return dt;
         }
 
-       //public IActionResult OnPostGPO_AddARow()
-       // {
-       //     if (this.gPO.Items.Count > 28)
-       //     {
-       //       //  MessageBox.Show("Cannot add another row", Cbfile.sAppName, MessageBoxButton.OK, MessageBoxImage.Warning); return;
-       //     }
+       public IActionResult OnPostGPO_AddARow()
+        {
+            if (this.gPO.Count > 28)
+            {
+              //  MessageBox.Show("Cannot add another row", Cbfile.sAppName, MessageBoxButton.OK, MessageBoxImage.Warning); return;
+            }
 
-       //     _objectsService.RNDFormulations.Forms.POMats.Add(new CMaterial());
-       //     _objectsService.RNDHome.drS["PORows"] = this.gPO.Items.Count;
-       //     _objectsService.RNDHome.UpdateDataSet();
-       //     return new JsonResult(true);
-       // }
+            _objectsService.RNDFormulations.Forms.POMats.Add(new CMaterial());
+            _objectsService.RNDHome.drS["PORows"] = this.gPO.Count;
+            _objectsService.RNDHome.UpdateDataSet();
+            return new JsonResult(true);
+        }
 
         public string SetTimeField(string sField)
         {

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Data;
 using IntugentWebApp.Utilities;
 using IntugentClassLbrary.Classes;
+using Google.Api.Gax;
 
 namespace IntugentWebApp.Pages.RnD_Users
 {
@@ -19,6 +20,7 @@ namespace IntugentWebApp.Pages.RnD_Users
         public DataView gProd{get;set;}
         public int gProdSelectedValue{get;set; }
         public DataView gNotes{get;set;}
+        public List<string> gProdList{get;set; }
         private ObjectsService _objectsService { get; set; }
         public bool gPropTestingCompIsChecked {  get; set; }
         public RNDPropertiesDatafileModel(ObjectsService objectsService)
@@ -27,8 +29,8 @@ namespace IntugentWebApp.Pages.RnD_Users
         }
         public void OnGet()
         {
-
-                for (int i = 0; i < 8; i++)
+            gProdList = PopulateListFromDataView(_objectsService.CLists.dvComProd);
+            for (int i = 0; i < 8; i++)
                 {
                     if (_objectsService.RNDHome.dtF.Rows[i]["ReactMixingTime"] == DBNull.Value) _objectsService.RNDProperties.dtReacE.Rows[0][i + 1] = string.Empty; else _objectsService.RNDProperties.dtReacE.Rows[0][i + 1] = _objectsService.RNDHome.dtF.Rows[i]["ReactMixingTime"].ToString();
                     if (_objectsService.RNDHome.dtF.Rows[i]["React15PTime"] == DBNull.Value) _objectsService.RNDProperties.dtReacE.Rows[1][i + 1] = string.Empty; else _objectsService.RNDProperties.dtReacE.Rows[1][i + 1] = _objectsService.RNDHome.dtF.Rows[i]["React15PTime"].ToString();
@@ -67,7 +69,21 @@ namespace IntugentWebApp.Pages.RnD_Users
                 SetView();
     
         }
+        public List<string> PopulateListFromDataView(DataView dvComProd)
+        {
+            List<string> gProdList = new List<string>();
 
+            foreach (DataRowView rowView in dvComProd)
+            {
+                // Extract "Product Code" from DataRowView and add to the list
+                // Replace "Product Code" with your actual column name
+                string productCode = rowView["Product Code"].ToString();
+
+                gProdList.Add(productCode);
+            }
+
+            return gProdList;
+        }
         public void SetView()
         {
             PropPredictions();
@@ -281,7 +297,7 @@ namespace IntugentWebApp.Pages.RnD_Users
             return new JsonResult(true);
         }
 
-        public IActionResult OnPostgProd(string rowId, string colId, string text)
+        public IActionResult OnPostGProd(string rowId, string colId, string text)
         {
             string sMsg;
             int irow = Int32.Parse(rowId);

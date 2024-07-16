@@ -182,7 +182,10 @@ namespace IntugentWebApp.Pages.RnD_Users
                 gRNDSearchSelectedIndex = 0;
                //gRNDSearch.ScrollIntoView(gRNDSearch.Items[gRNDSearchSelectedIndex]);
             }
-            return new JsonResult(gRNDSearch.ToString());
+            var data = _objectsService.RNDHome.dt.AsEnumerable()
+      .Select(row => row.ItemArray.Select(item => item.ToString()).ToArray())
+      .ToList();
+            return new JsonResult(data);
         }
 
         public IActionResult OnPostGSearchLF(string Name)

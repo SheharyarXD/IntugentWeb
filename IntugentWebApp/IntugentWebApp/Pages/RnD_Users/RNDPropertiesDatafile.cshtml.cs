@@ -75,8 +75,6 @@ namespace IntugentWebApp.Pages.RnD_Users
 
             foreach (DataRowView rowView in dvComProd)
             {
-                // Extract "Product Code" from DataRowView and add to the list
-                // Replace "Product Code" with your actual column name
                 string productCode = rowView["Product Code"].ToString();
 
                 gProdList.Add(productCode);

@@ -159,7 +159,7 @@
                             }
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="DataTable">
                         @if (Model.gRNDSearch != null && Model.gRNDSearch.Count > 0)
                         {
                             int rowIndex = 0;
@@ -317,8 +317,8 @@
                 headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
                 success: function (response) {
                     console.log('Server response:', response);
-                    
-                    location.reload();
+                    updateTable(response);
+                   // location.reload();
                 },
                 error: function (xhr, status, error) {
                     console.error('Error:', error);
@@ -326,6 +326,20 @@
             });
 
 
+        }
+        function updateTable(data) {
+            var tableBody = $('#DataTable');
+            tableBody.empty(); // Clear existing rows
+            $.each(data, function (index, row) {
+                var rowHtml = '<tr>';
+                for (var i = 0; i < row.length; i++) {
+                    rowHtml += '<td>' + row[i] + '</td>';
+                }
+                rowHtml += '<td><label class="switch switch-primary switch-pill form-control-label ">' +
+                    '<input type="checkbox" class="switch-input form-check-input" id="' + row[0] + '" data-index="' + row[0] + '">' +
+                    '<span class="switch-label"></span><span class="switch-handle"></span></label></td></tr>';
+                tableBody.append(rowHtml);
+            });
         }
         function gCopy_Click() {
 

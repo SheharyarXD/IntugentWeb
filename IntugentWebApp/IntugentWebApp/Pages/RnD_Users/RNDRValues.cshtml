@@ -229,7 +229,6 @@
 
             const myChart = new Chart(ctx, config);
 
-            // Add double-click event listener to reset zoom
             document.getElementById('charts').addEventListener('dblclick', () => {
                 myChart.resetZoom();
             });
@@ -239,19 +238,12 @@
             const axisName = name;
             const selectedItem = selectElement.options[selectElement.selectedIndex];
 
-            const selectedId = selectedItem.id; // Assign the id of the selected option to a variable
+            const selectedId = selectedItem.id; 
 
-            // Now you can use selectedId in your logic
-            // console.log("Selected id:", selectedId);
-
-            // Call AxisChanged with selected values
             AxisChanged(axisName, axisValue, selectedId);
         }
         
         function LostFocus(Name, Value) {
-            //  console.log('Input values - Name:', Name, 'Value:', Value);
-            // var form = $('#SearchParamsForm');
-
             $.ajax({
                 type: "POST",
                 url: "/RnD_Users/RNDRValues?handler=LostFocus_Fields",
@@ -302,19 +294,4 @@
             });
         }
     </script>
-}
-@{
-    // Define options and their respective values
-    var xAxisOptions = new List<SelectListItem>
-    {
-        new SelectListItem { Value = "CS", Text = "Cell Size (Microns)" },
-        new SelectListItem { Value = "DE", Text = "Density (kg/m³)" },
-        new SelectListItem { Value = "TE", Text = "Temperature (°F)" }
-    };
-
-    var yAxisOptions = new List<SelectListItem>
-    {
-        new SelectListItem { Value = "KV", Text = "K-Value, Conductivity (mW/m-K)" },
-        new SelectListItem { Value = "RV", Text = "R-Value, Resistance (ft²-°F-hr/Btu)" }
-    };
 }

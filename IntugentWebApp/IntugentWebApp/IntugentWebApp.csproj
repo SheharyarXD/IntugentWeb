@@ -31,12 +31,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="IntugentClassLibrary">
-      <HintPath>..\..\Library\IntugentClassLbrary\IntugentClassLbrary\bin\Release\net8.0\IntugentClassLibrary.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
     <UpToDateCheckInput Remove="Pages\Mfg_Group\DimensionStability.cshtml" />
   </ItemGroup>
 
@@ -47,6 +41,12 @@
 
   <ItemGroup>
     <UpToDateCheckInput Remove="Pages\RnD_Users\RNDRawPropData.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="IntugentClassLibrary">
+      <HintPath>..\..\Library\IntugentClassLbrary\IntugentClassLbrary\bin\Release\net8.0\IntugentClassLibrary.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

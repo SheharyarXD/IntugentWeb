@@ -105,7 +105,7 @@
                           sidebar - RND GROUP
                         ===================================== -->
 
-                        <li class="section-title">
+               @*          <li class="section-title">
                             R&D Pages
                         </li>
                         <li class="@(activePage == "R&D Home Page" ? "active" : "")">
@@ -148,10 +148,49 @@
                                 <i class="mdi mdi-camera-timer"></i>
                                 <span class="nav-text">TDRV</span>
                             </a>
-                        </li> 
+                        </li>  *@
 
                         <!-- ====================================
                           sidebar - RND Users GROUP - END
+                        ===================================== -->
+
+                        <!-- ====================================
+                          sidebar - Admins GROUP
+                        ===================================== -->
+                           <li class="section-title">
+                        Admin Pages
+                        </li>
+
+                        <li class="@(activePage == "Mfg Admin" ? "active" : "")">
+                            <a class="sidenav-item-link" href="/Admin_Group/AdminMfg">
+                                <i class="mdi mdi-account"></i>
+                                <span class="nav-text">Mfg Admin</span>
+                            </a>
+                        </li>
+
+                        <li class="@(activePage == "Admin Home Page" ? "active" : "")">
+                            <a class="sidenav-item-link" href="/Admin_Group/AIHome">
+                        <i class="mdi mdi-home"></i>
+                        <span class="nav-text">AI Home Page</span>
+                        </a>
+                        </li>
+
+                        <li class="@(activePage == "AI Data Analysis" ? "active" : "")">
+                            <a class="sidenav-item-link" href="/Admin_Group/AIAnalysis">
+                        <i class="mdi mdi-remote"></i>
+                                <span class="nav-text">AI Data Analysis</span>
+                        </a>
+                        </li>
+
+                        <li class="@(activePage == "AI Model" ? "active" : "")">
+                            <a class="sidenav-item-link" href="/Admin_Group/AIModel">
+                        <i class="mdi mdi-kodi"></i>
+                                <span class="nav-text">AI Model</span>
+                        </a>
+                        </li>
+
+                        <!-- ====================================
+                          sidebar - Admins GROUP - END
                         ===================================== -->
 
                         <li class="section-title">

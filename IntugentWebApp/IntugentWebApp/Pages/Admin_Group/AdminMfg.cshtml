@@ -1,0 +1,105 @@
+﻿@page
+@using System.Data;
+@model IntugentWebApp.Pages.Admin_Group.AdminMfgModel
+@{
+    ViewData["ActivePage"] = "Mfg Admin";
+}
+@* Error Message *@
+@if (TempData["ErrorOnServer"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        Error: @TempData["ErrorOnServer"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+<div class="row">
+    <button type="button" onclick="GIPTargetUpload()" class="btn btn-primary m-1 col-6">
+        Paste Green Product Targets from the IP Product Target file
+    </button>
+</div>
+ <div class="row">           
+        <table id="searchResultsTable" class="table table-hover table-product dataTable" style="width:100%">
+        <thead>
+            <tr>
+                        @if (Model.gIPT != null && Model.gIPT.Table != null)
+                {
+                    foreach (DataColumn column in Model.gIPT.Table.Columns)
+                    {
+                        <th>@column.ColumnName</th>
+                    }
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.gIPT != null && Model.gIPT.Count > 0)
+            {
+                int rowIndex = 0;
+                foreach (DataRowView rowView in Model.gIPT)
+                {
+
+                    <tr>
+                        @{
+                            var itemArray = rowView.Row.ItemArray;
+                            var id = itemArray[0]; 
+                            for (int i = 0; i < itemArray.Length; i++)
+                            {
+                                <td>@itemArray[i]</td>
+                            }
+                        }
+                    </tr>
+                    rowIndex++;
+                }
+
+            }
+        </tbody>
+    </table>
+
+</div>
+@section Scripts{
+    <script>
+
+        async function GIPTargetUpload() {
+            try {
+                var clipboard = await getClipboardData(); 
+                console.log(clipboard);
+
+                var form = $('#SearchParamsForm');
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Admin_Group/AdminMfg?handler=GIPTargetUpload_Click",
+                    headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                    data: { clipboard: clipboard },
+                    success: function (response) {
+                        console.log('Server response:', response);
+                        //location.reload();
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error:', error);
+                    }
+                });
+            } catch (err) {
+                console.error('Failed to get clipboard data:', err);
+            }
+        }
+
+        function getClipboardData() {
+            if (!navigator.clipboard) {
+                console.error('Clipboard API not supported.');
+                return null;
+            }
+            return navigator.clipboard.readText()
+                .then(text => {
+                    console.log('Clipboard text:', text);
+                    const rows = text.split(/\r?\n/).map(row => row.split('\t'));
+                    return rows;
+                })
+                .catch(err => {
+                    console.error('Failed to read clipboard text:', err);
+                    return null;
+                });
+        }
+
+
+    </script>
+}

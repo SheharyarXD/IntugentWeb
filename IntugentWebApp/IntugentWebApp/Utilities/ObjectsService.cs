@@ -1,5 +1,6 @@
 ﻿using IntugentClassLbrary.Classes;
 using IntugentClassLibrary.Classes;
+using IntugentClassLibrary.Pages.Admins;
 using IntugentClassLibrary.Pages.Mfg;
 using IntugentClassLibrary.Pages.Rnd;
 using IntugentWebApp.Pages.Mfg_Group;
@@ -35,6 +36,9 @@ namespace IntugentWebApp.Utilities
         public RNDRawProps RNDRawProps { get; set; }
         public RNDProperties RNDProperties { get; set; }
         public RNDTDRV RNDTDRV {  get; set; }
+
+        //              Admin Variables
+        public MfgAdmin MfgAdmin { get; set; }
 
 
         //              local variables

@@ -1,6 +1,7 @@
 using IntugentClassLbrary.Classes;
 using IntugentClassLbrary.Pages;
 using IntugentClassLibrary.Classes;
+using IntugentClassLibrary.Pages.Admins;
 using IntugentClassLibrary.Pages.Mfg;
 using IntugentClassLibrary.Pages.Rnd;
 using IntugentClassLibrary.Utilities;
@@ -80,6 +81,9 @@ namespace IntugentWebApp.Pages
                 
                 RNDTDRV rNDTDRV = new RNDTDRV();
                 _objectsService.RNDTDRV = rNDTDRV;
+
+                MfgAdmin mfgAdmin = new MfgAdmin(_objectsService.Cbfile);
+                _objectsService.MfgAdmin= mfgAdmin;
             }
 
 

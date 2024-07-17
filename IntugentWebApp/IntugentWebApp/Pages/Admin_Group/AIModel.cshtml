@@ -1,0 +1,13 @@
+﻿@page
+@model IntugentWebApp.Pages.Admin_Group.AIModelModel
+@{
+    ViewData["ActivePage"] = "AI Model";
+}
+@* Error Message *@
+@if (TempData["ErrorOnServer"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        Error: @TempData["ErrorOnServer"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}

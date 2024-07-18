@@ -39,6 +39,10 @@ namespace IntugentWebApp.Utilities
 
         //              Admin Variables
         public MfgAdmin MfgAdmin { get; set; }
+        public CNNData CNNData { get; set; }
+        public CDBase CDBase { get; set; }
+        public CNNModel CNNModel { get; set; }
+        public cMatrix cMatrix { get; set; }
 
 
         //              local variables

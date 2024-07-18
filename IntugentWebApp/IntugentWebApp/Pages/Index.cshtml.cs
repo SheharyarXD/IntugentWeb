@@ -36,6 +36,20 @@ namespace IntugentWebApp.Pages
             if (_objectsService.CDefualts != null && _objectsService.CLists != null && _objectsService.Cbfile != null)
             {
                 SetOptionBoxes(_objectsService.CDefualts, _objectsService.CLists);
+                cMatrix cMatrix = new cMatrix();
+                _objectsService.cMatrix = cMatrix;
+                
+                CDBase cDBase = new CDBase(_objectsService.Cbfile);
+               _objectsService.CDBase = cDBase;
+
+                CNNModel cNNModel = new CNNModel(_objectsService.CNNData);
+                _objectsService.CNNModel = cNNModel;
+              
+                CNNData cNNData=new CNNData(_objectsService.Cbfile,_objectsService.CDBase);
+                _objectsService.CNNData=cNNData;
+
+             
+
 
                 CAnalysisData cAnalysis = new CAnalysisData(_objectsService.Cbfile, _objectsService.CDefualts);
                 _objectsService.CAnalysisData1 = cAnalysis;

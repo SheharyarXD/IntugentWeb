@@ -11,3 +11,289 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 }
+<div class="row">
+
+<div class="col-6">
+
+    <!-- General Info -->
+    <div class="card card-default">
+        <div class="card-header align-items-center">
+                <h2 class="">General Info</h2>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                <div class="row">
+                    <div class="col-12">
+                        <!-- Project Study Name -->
+                        <div class="form-floating mb-2">
+                            <input type="text" disabled id="" class="form-control" value="" id="projectStudyName" placeholder="">
+                            <label for="projectStudyName">Data/Model Name</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4">
+                        <!-- Dataset -->
+                        <div class="form-floating mb-2">
+                            <input type="text" disabled id="" class="form-control" value="" id="DatabaseID" placeholder="">
+                            <label for="DatabaseID">Database ID:</label>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <!-- Group-->
+                        <div class="form-floating mb-2">
+                            <select class="form-select" id="Group" disabled>
+                                @*    @foreach (DataRowView row in Model.gProd1)
+                                {
+                                <option value="@row["Product"]" selected="@(Model.gProd1SelectedValue == (row["Product Code"].ToString()))">@row["Product"]</option>
+                                } *@
+                            </select>
+                            <label for="Group">Group</label>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <!--Predicted Property -->
+                        <div class="form-floating mb-2">
+                            <select class="form-select" id="PredictedProperty" disabled>
+                                @*            @foreach (DataRowView row in Model.gStudyType)
+                                {
+                                <option value="@row["ID"]" selected="@(Model.gStudyTypeSelectedValue == Int32.Parse(row["ID"].ToString()))">@row["sName"]</option>
+                                } *@
+                            </select>
+                            <label for="PredictedProperty">Predicted Property</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+
+                    <button type="button" class="btn btn-primary m-auto col-8" onclick="">
+                                Upload Data
+                            </button>
+                    <div class="col-lg-4">
+                        <!-- Data Source -->
+                        <div class="form-floating mb-2">
+                            <select class="form-select" id="DataSource" disabled>
+                                @*            @foreach (DataRowView row in Model.gStudyType)
+                                {
+                                <option value="@row["ID"]" selected="@(Model.gStudyTypeSelectedValue == Int32.Parse(row["ID"].ToString()))">@row["sName"]</option>
+                                } *@
+                            </select>
+                            <label for="DataSource">Data Source</label>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+<div class="col-6">
+
+        <!--Data Source -->
+        <div class="card card-default">
+            <div class="card-header align-items-center">
+                <h2 class="">Data Source</h2>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    <div class="row">
+                        <div class="col-12">
+                            <!-- Project Study Name -->
+                            <div class="form-floating mb-2">
+                                <input type="file"  id="" class="form-control" value="" id="projectStudyName" placeholder="">
+                                <label for="projectStudyName">Browse for Data file</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <!-- query -->
+                            <div class="form-floating mb-2 col-12">
+                            <textarea class="col-12 form-control" id="query" style="min-height:100px;">
+
+                                </textarea>
+                            <label for="query">SQL Query</label>
+                            </div>
+                    </div>
+                   
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-7">
+
+    <canvas id="charts"></canvas>
+        <div class="col-lg-12">
+            <!-- Group-->
+            <div class="form-floating mb-2">
+                <select class="form-select" id="Group" disabled>
+                    @*    @foreach (DataRowView row in Model.gProd1)
+                    {
+                    <option value="@row["Product"]" selected="@(Model.gProd1SelectedValue == (row["Product Code"].ToString()))">@row["Product"]</option>
+                    } *@
+                </select>
+                <label for="Group">Group</label>
+            </div>
+        </div>
+    </div>
+     <div class="col-5">
+         <div class="col-12 card-body">
+            <table id="searchResultsTable" class="table table-sm table-bordered table-hover table-striped table-responsive-md" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Date Last Trained</th>
+                        <th>Model Description</th>
+                        <th>Model Property</th>
+                        <th>Data Source</th>
+                        <th>RMS Error</th>
+                    </tr>
+                </thead>
+                <tbody id="DataTable">
+                  @*   @if (Model.gModels != null && Model.gModels.Count > 0)
+                    {
+                        int rowIndex = 0;
+                        foreach (DataRowView rowView in Model.gModels)
+                        {
+                            <tr>
+                                <td>@rowView["ID"]</td>
+                                <td>@rowView["DateModel"]</td>
+                                <td>@rowView["sNote"]</td>
+                                <td>@rowView["sProperty"]</td>
+                                <td>@rowView["sDataSource"]</td>
+                                <td></td>
+                                <td>
+                                    <label class="switch switch-primary switch-pill form-control-label ">
+                                        <input type="checkbox" class="switch-input form-check-input" id="@rowView["ID"]" data-index="@rowView["ID"]">
+                                        <span class="switch-label"></span>
+                                        <span class="switch-handle"></span>
+                                    </label>
+                                </td>
+                            </tr>
+                            rowIndex++;
+                        }
+                    } *@
+                </tbody>
+            </table>
+         </div>
+        <div class="col-12 card-body">
+            <table id="searchResultsTable" class="table table-sm table-bordered table-hover table-striped table-responsive-md" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Date Last Trained</th>
+                        <th>Model Description</th>
+                        <th>Model Property</th>
+                        <th>Data Source</th>
+                        <th>RMS Error</th>
+                    </tr>
+                </thead>
+                <tbody id="DataTable">
+                    @*   @if (Model.gModels != null && Model.gModels.Count > 0)
+                    {
+                    int rowIndex = 0;
+                    foreach (DataRowView rowView in Model.gModels)
+                    {
+                    <tr>
+                    <td>@rowView["ID"]</td>
+                    <td>@rowView["DateModel"]</td>
+                    <td>@rowView["sNote"]</td>
+                    <td>@rowView["sProperty"]</td>
+                    <td>@rowView["sDataSource"]</td>
+                    <td></td>
+                    <td>
+                    <label class="switch switch-primary switch-pill form-control-label ">
+                    <input type="checkbox" class="switch-input form-check-input" id="@rowView["ID"]" data-index="@rowView["ID"]">
+                    <span class="switch-label"></span>
+                    <span class="switch-handle"></span>
+                    </label>
+                    </td>
+                    </tr>
+                    rowIndex++;
+                    }
+                    } *@
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+@section Scripts{
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const ctx = document.getElementById('charts').getContext('2d');
+
+            const data1 = {
+                label: 'Dataset 1',
+
+                backgroundColor: 'rgba(255, 0, 0, 0.6)',
+                borderColor: 'rgba(255, 0, 0, 1)',
+                borderWidth: 3,
+                pointRadius: 0
+            };
+
+
+            const config = {
+                type: 'line',
+                data: {
+                    datasets: [data1]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            type: 'linear',
+                            position: 'bottom',
+                            title: {
+                                display: true,
+                                text: 'Temperature (F)',
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'R / n value',
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true
+                        },
+                        zoom: {
+                            pan: {
+                                enabled: true,
+                                mode: 'xy',
+                            },
+                            zoom: {
+                                enabled: true,
+                                mode: 'xy',
+                                wheel: {
+                                    enabled: true,
+                                },
+                                pinch: {
+                                    enabled: true
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+
+            const myChart = new Chart(ctx, config);
+
+            document.getElementById('charts').addEventListener('dblclick', () => {
+                myChart.resetZoom();
+            });
+        });
+    </script>
+}

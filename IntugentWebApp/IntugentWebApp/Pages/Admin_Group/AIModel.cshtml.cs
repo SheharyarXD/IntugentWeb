@@ -28,6 +28,11 @@ namespace IntugentWebApp.Pages.Admin_Group
         public int gLayerSelectedIndex {  get; set; }
         public List<string> gLayer = new List<string>();
 
+       public double[] yy { get; set; }
+       public double[] yyp { get; set; }
+        public double[] yth { get; set; }
+        public string gChartBottomTitle {  get; set; }
+        public string gChartLeftTitle {  get; set; }
         public CNNModel nnModel;
         public AIModelModel(ObjectsService objectsService) { 
         
@@ -61,7 +66,6 @@ namespace IntugentWebApp.Pages.Admin_Group
             }
             else
             {
-                // Handle the case where nnModel is null
                 throw new InvalidOperationException("nnModel is not initialized.");
             }
             SetView();
@@ -72,10 +76,11 @@ namespace IntugentWebApp.Pages.Admin_Group
             //           if(CNNData.OutputPred !=null || CNNData.Output !=null)
 
             int n = _objectsService.CNNData.Output.Length;
-            double[] yy = new double[n]; double[] yyp = new double[n];
-            double dmin = nnModel.YMin;
-            double dtmp = nnModel.YMax - dmin;
-            double[] yth = new double[2];
+            yy  = new double[n]; 
+            yyp = new double[n];
+            yth = new double[2];
+            double dmin  = nnModel.YMin;
+            double dtmp  = nnModel.YMax - dmin;
             yth[0] = nnModel.YMin; yth[1] = nnModel.YMax;
 
             if (dtmp == 0) dtmp = dmin;
@@ -87,8 +92,8 @@ namespace IntugentWebApp.Pages.Admin_Group
             }
             //gComp.Plot(yy, yyp);
             //g_Line.Plot(yth, yth);
-            //gChart.BottomTitle = _objectsService.CNNData.sOutputName + "_Exp.";
-            //gChart.LeftTitle = _objectsService.CNNData.sOutputName + "_Pred.";
+            gChartBottomTitle = _objectsService.CNNData.sOutputName + "_Exp.";
+            gChartLeftTitle   = _objectsService.CNNData.sOutputName + "_Pred.";
             if (nnModel.ErrorRMSBase > 0) gRMS  = (100.0 * (1.0 - nnModel.ErrorRMS / nnModel.ErrorRMSBase)).ToString("0.00"); else gRMS  = string.Empty;
 
         }
@@ -163,41 +168,50 @@ namespace IntugentWebApp.Pages.Admin_Group
             gHNeurons= _objectsService.AIModel.dtNeurons.DefaultView;
 
         }
+
         public void SetWeights(int iLayer)
         {
-            //int nCols = 0; ;
-            //string stmp; string sForm = "0.00";
+            int nCols = 0;
+            string stmp;
+            string sForm = "0.00";
 
-            //for (int i = 0; i < nnModel.nNeuronsInLayers.Length; i++) if (nCols < nnModel.nNeuronsInLayers[i]) nCols = nnModel.nNeuronsInLayers[i];
-            //nCols += 2;  // for the first column of node # in the hidden layer and for the offset column
-            //for (int i = gWeights.Columns.Count; i < nCols; i++)
-            //{
-            //    DataColumn dtc = new DataColumn();
-            //    //dtc.Width = 50;
-            //    dtc = "#" + (i - 1).ToString();
-            //    //                dtc.Visibility = Visibility.Visible;
-            //    stmp = (i - 1).ToString();
-            //    dtc.Binding = new Binding(stmp);
-            //    _objectsService.AIModel.dtWeigts.Columns.Add(stmp, typeof(string));
-            //    gWeights.Add(dtc);
+            for (int i = 0; i < nnModel.nNeuronsInLayers.Length; i++)
+                if (nCols < nnModel.nNeuronsInLayers[i]) nCols = nnModel.nNeuronsInLayers[i];
 
-            //}
+            nCols += 2;
 
-            //if (nnModel.Weights == null) {
-            //    //MessageBox.Show("Weigt functions not initialized", Cbfile.sAppName);
-            //    return; }
+            if (gWeights == null)
+            {
+                gWeights = new DataTable();
+            }
+            gWeights.Columns.Add("#", typeof(string));
+            gWeights.Columns.Add("Offset", typeof(string));
+            for (int i = gWeights.Columns.Count; i < nCols; i++)
+            {
+                stmp = "#" + (i - 1).ToString();
+                gWeights.Columns.Add(stmp, typeof(string));
+            }
 
-            //_objectsService.AIModel.dtWeigts.Clear();
+            if (nnModel.Weights == null)
+            {
+ 
+                return;
+            }
 
-            //for (int iN = 1; iN < nnModel.nNeuronsInLayers[iLayer] + 1; iN++)
-            //{
-            //    _objectsService.AIModel.dtWeigts.Rows.Add();
-            //    _objectsService.AIModel.dtWeigts.Rows[iN - 1][0] = "#" + iN.ToString();
-            //    for (int iN1 = 0; iN1 < nnModel.nNeuronsInLayers[iLayer - 1] + 1; iN1++) _objectsService.AIModel.dtWeigts.Rows[iN - 1][iN1 + 1] = nnModel.Weights[iLayer][iN][iN1].ToString(sForm);
+            gWeights.Clear();
 
-            //}
-            gWeights = _objectsService.AIModel.dtWeigts;
+            for (int iN = 1; iN < nnModel.nNeuronsInLayers[iLayer] + 1; iN++)
+            {
+                DataRow row = gWeights.NewRow();
+                row[0] = "#" + iN.ToString();
+                for (int iN1 = 0; iN1 < nnModel.nNeuronsInLayers[iLayer - 1] + 1; iN1++)
+                {
+                    row[iN1 + 1] = nnModel.Weights[iLayer][iN][iN1].ToString(sForm);
+                }
+                gWeights.Rows.Add(row);
+            }
         }
+    
 
         public void SetgLayer()
         {
@@ -208,6 +222,7 @@ namespace IntugentWebApp.Pages.Admin_Group
             for (int i = 0; i < nnModel.nHLayers; i++) gLayer.Add("#" + (i + 1));
             gLayer.Add("Output"); gLayerSelectedIndex = 0;
         }
+      
         //private void OnNodeNoEditing(object sender, DataGridCellEditEndingEventArgs e)
         //{
         //    string sMsg;
@@ -288,25 +303,26 @@ namespace IntugentWebApp.Pages.Admin_Group
 
         #endregion
 
-        //private void gLayer_Changed(object sender, SelectionChangedEventArgs e)
-        //{
-        //    if (gLayerSelectedIndex >= 0) SetWeights(gLayerSelectedIndex + 1);
-        //    nnModel.Predict();
-        //    SetView();
+        public IActionResult OnPostGLayer_Changed(string Index)
+        {
+            gLayerSelectedIndex = Int32.Parse(Index);
+            if (gLayerSelectedIndex >= 0) SetWeights(gLayerSelectedIndex + 1);
+            nnModel.Predict();
+            SetView();
+            return new JsonResult(true);
+        }
 
-        //}
-
-        //public IActionResult OnPostTrainTheModel()
-        //{
-        //    //Mouse.OverrideCursor = Cursors.Wait;
-        //    nnModel.TrainModel();
-        //    nnModel.Predict();
-        //    SetView();
-        //    SaveModel();
-        //    SetWeights(gLayerSelectedIndex + 1);
-        //    //Mouse.OverrideCursor = null;
-        //    return new JsonResult(true);
-        //}
+        public IActionResult OnPostTrainTheModel()
+        {
+            //Mouse.OverrideCursor = Cursors.Wait;
+            nnModel.TrainModel();
+            nnModel.Predict();
+            SetView();
+            SaveModel();
+            SetWeights(gLayerSelectedIndex + 1);
+            //Mouse.OverrideCursor = null;
+            return new JsonResult(true);
+        }
 
         //private void OnDoubleClick(object sender, MouseButtonEventArgs e)
         //{
@@ -325,14 +341,15 @@ namespace IntugentWebApp.Pages.Admin_Group
 
         //}
 
-        //private void gHLayerType_Changed(object sender, SelectionChangedEventArgs e)
-        //{
-        //    nnModel.HLayerType = ((ComboBoxItem)(gHLayerType.SelectedItem)).Content.ToString();
-        //    SaveModel();
-        //    //           MessageBox.Show(nnModel.HLayerType);
-        //    nnModel.Predict();
+        public IActionResult OnPostGHLayerType_Changed(string gHLayerTypeSelectedItem)
+        {
+            nnModel.HLayerType = gHLayerTypeSelectedItem;
+            SaveModel();
+            //           MessageBox.Show(nnModel.HLayerType);
+            nnModel.Predict();
 
-        //    SetView();
-        //}
+            SetView();
+            return new JsonResult(true);
+        }
     }
 }

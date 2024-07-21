@@ -25,32 +25,32 @@
                         <div class="col-12">
                             <!-- Maximum # of Iterations -->
                             <div class="form-floating mb-2">
-                                <input type="text" id="" class="form-control" value="@Model.gMaxIter" id="gMaxIter" placeholder="">
+                                <input type="text" id="" class="form-control" value="@Model.gMaxIter" id="gMaxIter" placeholder="" onblur="GenInfo_LF('gMaxIter', this.value)">
                                 <label for="gMaxIter">Maximum # of Iterations</label>
                             </div>
                             <!-- Convergence Tolerance -->
                             <div class="form-floating mb-2">
-                                <input type="text" id="" class="form-control" value="@Model.gConvTol" id="gConvTol" placeholder="">
+                                <input type="text" id="" class="form-control" value="@Model.gConvTol" id="gConvTol" placeholder="" onblur="GenInfo_LF('gConvTol', this.value)">
                                 <label for="gConvTol">Convergence Tolerance</label>
                             </div>
                             <!-- Learning Rate -->
                             <div class="form-floating mb-2">
-                                <input type="text" id="" class="form-control" value="@Model.gLearnRate" id="gLearnRate" placeholder="">
+                                <input type="text" id="" class="form-control" value="@Model.gLearnRate" id="gLearnRate" placeholder="" onblur="GenInfo_LF('gLearnRate', this.value)">
                                 <label for="gLearnRate">Learning Rate</label>
                             </div>
                             <!-- Min Step Size -->
                             <div class="form-floating mb-2">
-                                <input type="text" id="" class="form-control" value="@Model.gStepSizeMin" id="gStepSizeMin" placeholder="">
+                                <input type="text" id="" class="form-control" value="@Model.gStepSizeMin" id="gStepSizeMin" placeholder="" onblur="GenInfo_LF('gStepSizeMin', this.value)">
                                 <label for="gStepSizeMin">Min Step Size</label>
                             </div>
                             <!-- # of Hidden Layers -->
                             <div class="form-floating mb-2">
-                                <input type="text" id="" class="form-control" value="@Model.gnHiddenLayers" id="gnHiddenLayers" placeholder="">
+                                <input type="text" id="" class="form-control" value="@Model.gnHiddenLayers" id="gnHiddenLayers" placeholder="" onblur="GenInfo_LF('gnHiddenLayers', this.value)">
                                 <label for="gnHiddenLayers"># of Hidden Layers</label>
                             </div>
                             <!-- Activation Function-->
                             <div class="form-floating mb-2">
-                                <select class="form-select" id="gHLayerType" >
+                                <select class="form-select" id="gHLayerType" onblur="GHLayerType(this.options[this.selectedIndex].id)">
                                     <!option id="Tanh"  @(Model.gHLayerType == "Tanh" ? "selected" : "")>Tanh</!option>
                                     <!option id="ReLu"  @(Model.gHLayerType == "ReLu" ? "selected" : "")>ReLu</!option>
                                 </select>
@@ -58,12 +58,12 @@
                             </div>
                             <!-- # of Neurons in Input Layer -->
                             <div class="form-floating mb-2">
-                                <input type="text" id="" class="form-control" value="@Model.gInputNeurons" id="gInputNeurons" placeholder="">
+                                <input type="text" id="" class="form-control" disabled value="@Model.gInputNeurons" id="gInputNeurons" placeholder="">
                                 <label for="gInputNeurons"># of Neurons in Input Layer</label>
                             </div>
                             <!--# of Neurons in Output Layer-->
                             <div class="form-floating mb-2">
-                                <input type="text" id="" class="form-control" value="@Model.gOutputNeurons" id="gOutputNeurons" placeholder="">
+                                <input type="text" id="" class="form-control" disabled value="@Model.gOutputNeurons" id="gOutputNeurons" placeholder="">
                                 <label for="gOutputNeurons"># of Neurons in Output Layer</label>
                             </div>
 
@@ -95,12 +95,12 @@
                             </div>
                             <!-- Coefficient of Determination (%) -->
                             <div class="form-floating mb-2">
-                                <input type="text"  id="" class="form-control" value="" id="gRMS" placeholder="">
+                                <input type="text"  id="" class="form-control" readonly value="@Model.gRMS" id="gRMS" placeholder="">
                                 <label for="gRMS">Coefficient of Determination (%)</label>
                             </div>
                         </div>
 
-                        <button type="button" class="btn btn-primary m-auto col-12" onclick="">
+                        <button type="button" class="btn btn-primary m-auto col-12" onclick="GTrainModel()">
                             Train Model
                         </button>
                     </div>      
@@ -110,10 +110,8 @@
         </div>
 
     </div>
-    <div class="col-6">
-        <canvas id="charts"></canvas>
-    </div>
-    <div class="col-4">
+
+    <div class="col-10">
         <!-- Model Details -->
         <div class="card card-default">
             <div class="card-header align-items-center">
@@ -122,7 +120,7 @@
             <div class="card-body">
                 <!-- Weight Functions for the Hidden Layer -->
                 <div class="form-floating mb-2">
-                    <select class="form-select" id="gLayer" onblur="GInputVar_Change(this.options[this.selectedIndex].id)">
+                    <select class="form-select" id="gLayer" onblur="GLayer(this.options[this.selectedIndex].id)">
                         @{
                             int rowIndex = 0;
                         }
@@ -170,6 +168,7 @@
         </div>
     </div>
 
+            <canvas id="charts" style="height:500px;width:100%;"></canvas>
 
 </div>
 @section Scripts {
@@ -178,19 +177,28 @@
             const ctx = document.getElementById('charts').getContext('2d');
 
             const data1 = {
-                label: 'Dataset 1',
-
-                backgroundColor: 'rgba(255, 0, 0, 0.6)',
-                borderColor: 'rgba(255, 0, 0, 1)',
+                label: 'Line Graph',
+                data: @Html.Raw(Json.Serialize(Model.yth.Zip(Model.yth, (x, y) => new { x, y }))),
+                    backgroundColor: 'DarkBlue',
+                    borderColor: 'DarkBlue',
                 borderWidth: 3,
-                pointRadius: 0
+                pointRadius: 0,
+                type: 'line'
             };
 
-
+                const data2 = {
+                    label: 'Circle Graph',
+                    data: @Html.Raw(Json.Serialize(Model.yy.Zip(Model.yyp, (x, y) => new { x, y }))),
+                    backgroundColor: 'DarkBlue',
+                    borderColor: 'DarkBlue',
+                    borderWidth: 3,
+                    pointRadius: 2,
+                    type: 'scatter'
+                };
             const config = {
-                type: 'line',
+         
                 data: {
-                    datasets: [data1]
+                    datasets: [data1,data2]
                 },
                 options: {
                     responsive: true,
@@ -200,13 +208,13 @@
                             position: 'bottom',
                             title: {
                                 display: true,
-                                text: 'Experimental Output',
+                                text: `@Model.gChartBottomTitle`,
                             }
                         },
                         y: {
                             title: {
                                 display: true,
-                                text: 'Predicted Output',
+                                    text:`@Model.gChartLeftTitle`,
                             }
                         }
                     },
@@ -240,5 +248,62 @@
                 myChart.resetZoom();
             });
         });
+            function GTrainModel() {
+                $.ajax({
+                    type: "POST",
+                    url: "/Admin_Group/AIModel?handler=TrainTheModel",
+                    headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                    success: function (response) {
+                        console.log('Server response:', response);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error:', error);
+                    }
+                });
+            }
+            function GHLayerType(Value) {
+                $.ajax({
+                    type: "POST",
+                    url: "/Admin_Group/AIModel?handler=GHLayerType",
+                    headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                    data: {  Value: Value },
+                    success: function (response) {
+                        console.log('Server response:', response);
+                        location.reload();
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error:', error);
+                    }
+                });
+            }
+            function GLayer(Index) {
+                $.ajax({
+                    type: "POST",
+                    url: "/Admin_Group/AIModel?handler=GLayer_Changed",
+                    headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                    data: { Index: Index },
+                    success: function (response) {
+                        console.log('Server response:', response);
+                        location.reload();
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error:', error);
+                    }
+                });
+            }
+            function GenInfo_LF(Name, Value) {
+                $.ajax({
+                    type: "POST",
+                    url: "/Admin_Group/AIModel?handler=GenInfo_LF",
+                    headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                    data: { Name: Name, Value: Value },
+                    success: function (response) {
+                        console.log('Server response:', response);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error:', error);
+                    }
+                });
+            }
     </script>
 }

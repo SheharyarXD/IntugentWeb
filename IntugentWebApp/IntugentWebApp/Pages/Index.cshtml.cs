@@ -42,12 +42,12 @@ namespace IntugentWebApp.Pages
                 CDBase cDBase = new CDBase(_objectsService.Cbfile);
                _objectsService.CDBase = cDBase;
 
-                CNNModel cNNModel = new CNNModel(_objectsService.CNNData);
-                _objectsService.CNNModel = cNNModel;
               
-                CNNData cNNData=new CNNData(_objectsService.Cbfile,_objectsService.CDBase);
+                CNNData cNNData=new CNNData(_objectsService.Cbfile);
                 _objectsService.CNNData=cNNData;
 
+                CNNModel cNNModel = new CNNModel(_objectsService.CNNData);
+                _objectsService.CNNModel = cNNModel;
              
 
 
@@ -98,6 +98,9 @@ namespace IntugentWebApp.Pages
 
                 MfgAdmin mfgAdmin = new MfgAdmin(_objectsService.Cbfile);
                 _objectsService.MfgAdmin= mfgAdmin;
+
+                AIModel aIModel = new AIModel();
+                _objectsService.AIModel= aIModel;
             }
 
 

@@ -43,6 +43,7 @@ namespace IntugentWebApp.Utilities
         public CDBase CDBase { get; set; }
         public CNNModel CNNModel { get; set; }
         public cMatrix cMatrix { get; set; }
+        public AIModel AIModel { get; set; }
 
 
         //              local variables

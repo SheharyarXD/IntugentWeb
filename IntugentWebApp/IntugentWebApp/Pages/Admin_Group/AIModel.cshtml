@@ -1,4 +1,5 @@
 ﻿@page
+@using System.Data;
 @model IntugentWebApp.Pages.Admin_Group.AIModelModel
 @{
     ViewData["ActivePage"] = "AI Model";
@@ -13,62 +14,60 @@
 }
 <div class="row">
     <div class="col-2">
-        <!-- General Info -->
+        <!-- Model Setup -->
         <div class="card card-default">
             <div class="card-header align-items-center">
-                <h2 class="">General Info</h2>
+                <h2 class="">Model Setup</h2>
             </div>
             <div class="card-body">
                 <form method="post">
                     <div class="row">
                         <div class="col-12">
-                            <!-- Project Study Name -->
+                            <!-- Maximum # of Iterations -->
                             <div class="form-floating mb-2">
-                                <input type="text" disabled id="" class="form-control" value="" id="projectStudyName" placeholder="">
-                                <label for="projectStudyName">Data/Model Name</label>
+                                <input type="text" id="" class="form-control" value="@Model.gMaxIter" id="gMaxIter" placeholder="">
+                                <label for="gMaxIter">Maximum # of Iterations</label>
                             </div>
-                            <!-- Project Study Name -->
+                            <!-- Convergence Tolerance -->
                             <div class="form-floating mb-2">
-                                <input type="text" disabled id="" class="form-control" value="" id="projectStudyName" placeholder="">
-                                <label for="projectStudyName">Data/Model Name</label>
+                                <input type="text" id="" class="form-control" value="@Model.gConvTol" id="gConvTol" placeholder="">
+                                <label for="gConvTol">Convergence Tolerance</label>
                             </div>
-                            <!-- Project Study Name -->
+                            <!-- Learning Rate -->
                             <div class="form-floating mb-2">
-                                <input type="text" disabled id="" class="form-control" value="" id="projectStudyName" placeholder="">
-                                <label for="projectStudyName">Data/Model Name</label>
+                                <input type="text" id="" class="form-control" value="@Model.gLearnRate" id="gLearnRate" placeholder="">
+                                <label for="gLearnRate">Learning Rate</label>
                             </div>
-                            <!-- Project Study Name -->
+                            <!-- Min Step Size -->
                             <div class="form-floating mb-2">
-                                <input type="text" disabled id="" class="form-control" value="" id="projectStudyName" placeholder="">
-                                <label for="projectStudyName">Data/Model Name</label>
+                                <input type="text" id="" class="form-control" value="@Model.gStepSizeMin" id="gStepSizeMin" placeholder="">
+                                <label for="gStepSizeMin">Min Step Size</label>
                             </div>
-                            <!-- Project Study Name -->
+                            <!-- # of Hidden Layers -->
                             <div class="form-floating mb-2">
-                                <input type="text" disabled id="" class="form-control" value="" id="projectStudyName" placeholder="">
-                                <label for="projectStudyName">Data/Model Name</label>
+                                <input type="text" id="" class="form-control" value="@Model.gnHiddenLayers" id="gnHiddenLayers" placeholder="">
+                                <label for="gnHiddenLayers"># of Hidden Layers</label>
                             </div>
-                            <!-- Group-->
+                            <!-- Activation Function-->
                             <div class="form-floating mb-2">
-                                <select class="form-select" id="Group" disabled>
-                                    @*    @foreach (DataRowView row in Model.gProd1)
-                                    {
-                                    <option value="@row["Product"]" selected="@(Model.gProd1SelectedValue == (row["Product Code"].ToString()))">@row["Product"]</option>
-                                    } *@
+                                <select class="form-select" id="gHLayerType" >
+                                    <!option id="Tanh"  @(Model.gHLayerType == "Tanh" ? "selected" : "")>Tanh</!option>
+                                    <!option id="ReLu"  @(Model.gHLayerType == "ReLu" ? "selected" : "")>ReLu</!option>
                                 </select>
-                                <label for="Group">Group</label>
+                                <label for="gHLayerType">Activation Function</label>
                             </div>
-                            <!-- Project Study Name -->
+                            <!-- # of Neurons in Input Layer -->
                             <div class="form-floating mb-2">
-                                <input type="text" disabled id="" class="form-control" value="" id="projectStudyName" placeholder="">
-                                <label for="projectStudyName">Data/Model Name</label>
+                                <input type="text" id="" class="form-control" value="@Model.gInputNeurons" id="gInputNeurons" placeholder="">
+                                <label for="gInputNeurons"># of Neurons in Input Layer</label>
                             </div>
-                            <!-- Project Study Name -->
+                            <!--# of Neurons in Output Layer-->
                             <div class="form-floating mb-2">
-                                <input type="text" disabled id="" class="form-control" value="" id="projectStudyName" placeholder="">
-                                <label for="projectStudyName">Data/Model Name</label>
+                                <input type="text" id="" class="form-control" value="@Model.gOutputNeurons" id="gOutputNeurons" placeholder="">
+                                <label for="gOutputNeurons"># of Neurons in Output Layer</label>
                             </div>
 
-
+                            @* # of Neurons in Layers *@
 
                             <div class="col-12 card-body text-center pb-5">
                                 <h2 class=" py-3"># of Neurons in Layers</h2>
@@ -81,41 +80,28 @@
                                         </tr>
                                     </thead>
                                     <tbody id="DataTable">
-                                        @*   @if (Model.gModels != null && Model.gModels.Count > 0)
-                                        {
-                                        int rowIndex = 0;
-                                        foreach (DataRowView rowView in Model.gModels)
+
+                                        @foreach (DataRowView rowView in Model.gHNeurons)
                                         {
                                         <tr>
-                                        <td>@rowView["ID"]</td>
-                                        <td>@rowView["DateModel"]</td>
-                                        <td>@rowView["sNote"]</td>
-                                        <td>@rowView["sProperty"]</td>
-                                        <td>@rowView["sDataSource"]</td>
-                                        <td></td>
-                                        <td>
-                                        <label class="switch switch-primary switch-pill form-control-label ">
-                                        <input type="checkbox" class="switch-input form-check-input" id="@rowView["ID"]" data-index="@rowView["ID"]">
-                                        <span class="switch-label"></span>
-                                        <span class="switch-handle"></span>
-                                        </label>
-                                        </td>
+                                                <td>@rowView["Layer #"]</td>
+                                                <td>@rowView["Description"]</td>
+                                                <td>@rowView["# of Neurons"]</td>
                                         </tr>
-                                        rowIndex++;
                                         }
-                                        } *@
+
                                     </tbody>
                                 </table>
                             </div>
-                            <!-- Project Study Name -->
+                            <!-- Coefficient of Determination (%) -->
                             <div class="form-floating mb-2">
-                                <input type="text" disabled id="" class="form-control" value="" id="projectStudyName" placeholder="">
-                                <label for="projectStudyName">Data/Model Name</label>
+                                <input type="text"  id="" class="form-control" value="" id="gRMS" placeholder="">
+                                <label for="gRMS">Coefficient of Determination (%)</label>
                             </div>
                         </div>
 
                         <button type="button" class="btn btn-primary m-auto col-12" onclick="">
-                            Upload Data
+                            Train Model
                         </button>
                     </div>      
                 </form>
@@ -128,71 +114,63 @@
         <canvas id="charts"></canvas>
     </div>
     <div class="col-4">
-        <!-- General Info -->
+        <!-- Model Details -->
         <div class="card card-default">
             <div class="card-header align-items-center">
-                <h2 class="">General Info</h2>
+                <h2 class="">Model Details</h2>
             </div>
             <div class="card-body">
-                <form method="post">
-                    <div class="row">
-                        <div class="col-12"
-                            <!-- Group-->
-                            <div class="form-floating mb-2">
-                                <select class="form-select" id="Group" disabled>
-                                    @*    @foreach (DataRowView row in Model.gProd1)
-                                    {
-                                    <option value="@row["Product"]" selected="@(Model.gProd1SelectedValue == (row["Product Code"].ToString()))">@row["Product"]</option>
-                                    } *@
-                                </select>
-                                <label for="Group">Group</label>
-                            </div>
+                <!-- Weight Functions for the Hidden Layer -->
+                <div class="form-floating mb-2">
+                    <select class="form-select" id="gLayer" onblur="GInputVar_Change(this.options[this.selectedIndex].id)">
+                        @{
+                            int rowIndex = 0;
+                        }
+                        @foreach (var row in Model.gLayer)
+                        {
+                            <option id="@rowIndex" value="@row" selected="@(Model.gLayerSelectedIndex==rowIndex)">@row</option>
+                            rowIndex++;
+                        }
+                    </select>
+                    <label for="gLayer">Weight Functions for the Hidden Layer </label>
+                </div>
+                   
 
                             <div class="col-12 card-body text-center pb-5">
                                 <h2 class=" py-3">Neurons in Layer feeding to the hidden Layer</h2>
-                                <table id="searchResultsTable" class="table table-sm table-bordered table-hover table-striped table-responsive-md" style="width:100%">
+                                 <table id="searchResultsTable" class="table table-sm table-bordered table-hover            table-striped table-responsive-md" style="width:100%">
                                     <thead>
                                         <tr>
-                                            <th>#</th>
-                                            <th>Offset</th>
+                                @if (Model.gWeights != null)
+                                {
+                                    foreach (DataColumn column in Model.gWeights.Columns)
+                                    {
+                                        <th>@column.ColumnName</th>
+                                    }
+                                }
                                         </tr>
                                     </thead>
                                     <tbody id="DataTable">
-                                        @*   @if (Model.gModels != null && Model.gModels.Count > 0)
+                            @if (Model.gWeights != null)
+                            {
+                                foreach (DataRow row in Model.gWeights.Rows)
+                                {
+                                    <tr>
+                                        @foreach (var cell in row.ItemArray)
                                         {
-                                        int rowIndex = 0;
-                                        foreach (DataRowView rowView in Model.gModels)
-                                        {
-                                        <tr>
-                                        <td>@rowView["ID"]</td>
-                                        <td>@rowView["DateModel"]</td>
-                                        <td>@rowView["sNote"]</td>
-                                        <td>@rowView["sProperty"]</td>
-                                        <td>@rowView["sDataSource"]</td>
-                                        <td></td>
-                                        <td>
-                                        <label class="switch switch-primary switch-pill form-control-label ">
-                                        <input type="checkbox" class="switch-input form-check-input" id="@rowView["ID"]" data-index="@rowView["ID"]">
-                                        <span class="switch-label"></span>
-                                        <span class="switch-handle"></span>
-                                        </label>
-                                        </td>
-                                        </tr>
-                                        rowIndex++;
+                                            <td>@cell</td>
                                         }
-                                        } *@
+                                    </tr>
+                                }
+                            }
                                     </tbody>
                                 </table>
                                 <h2 class=" py-3">Neurons in hidden Layer</h2>
-                            </div>
-                    </div>
-                </form>
-
             </div>
         </div>
-
-
     </div>
+
+
 </div>
 @section Scripts {
     <script>

@@ -45,6 +45,9 @@ namespace IntugentClassLibrary.Classes
         {
             this.CNNDatas = data;
         }
+        public CNNModel()
+        {
+        }
         public bool Reset()
         {
             bool bNew = false;

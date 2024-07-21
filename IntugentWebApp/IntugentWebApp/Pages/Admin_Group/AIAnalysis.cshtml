@@ -1,4 +1,5 @@
 ﻿@page
+@using System.Data;
 @model IntugentWebApp.Pages.Admin_Group.AIAnalysisModel
 @{
     ViewData["ActivePage"] = "AI Data Analysis";
@@ -26,7 +27,7 @@
                     <div class="col-12">
                         <!-- Project Study Name -->
                         <div class="form-floating mb-2">
-                            <input type="text" disabled id="" class="form-control" value="" id="projectStudyName" placeholder="">
+                                <input type="text" id="" class="form-control" value="@Model.gStudyName" id="projectStudyName" onblur="GenInfo_LF('gStudyName',this.value)" placeholder="">
                             <label for="projectStudyName">Data/Model Name</label>
                         </div>
                     </div>
@@ -35,18 +36,17 @@
                     <div class="col-4">
                         <!-- Dataset -->
                         <div class="form-floating mb-2">
-                            <input type="text" disabled id="" class="form-control" value="" id="DatabaseID" placeholder="">
+                                <input type="text" disabled id="" class="form-control" value="@Model.gID" id="DatabaseID" placeholder="">
                             <label for="DatabaseID">Database ID:</label>
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <!-- Group-->
                         <div class="form-floating mb-2">
-                            <select class="form-select" id="Group" disabled>
-                                @*    @foreach (DataRowView row in Model.gProd1)
-                                {
-                                <option value="@row["Product"]" selected="@(Model.gProd1SelectedValue == (row["Product Code"].ToString()))">@row["Product"]</option>
-                                } *@
+                                <select class="form-select" id="Group" onblur="GenInfo_LF('gGroup',this.options[this.selectedIndex].id)">
+                                    <!option id="RND"  @(Model.gGroup == "RND" ? "selected" : "")>RND</!option>
+                                    <!option id="MFG"  @(Model.gGroup == "MFG" ? "selected" : "")>MFG</!option>
+                             
                             </select>
                             <label for="Group">Group</label>
                         </div>
@@ -55,11 +55,8 @@
                     <div class="col-lg-4">
                         <!--Predicted Property -->
                         <div class="form-floating mb-2">
-                            <select class="form-select" id="PredictedProperty" disabled>
-                                @*            @foreach (DataRowView row in Model.gStudyType)
-                                {
-                                <option value="@row["ID"]" selected="@(Model.gStudyTypeSelectedValue == Int32.Parse(row["ID"].ToString()))">@row["sName"]</option>
-                                } *@
+                                <select class="form-select" id="PredictedProperty" onblur="GenInfo_LF('gProperty',this.options[this.selectedIndex].id)">
+                                    <!option id="SQL"  @(Model.gProperty == "SQL" ? "selected" : "")>SQL Query</!option>
                             </select>
                             <label for="PredictedProperty">Predicted Property</label>
                         </div>
@@ -68,17 +65,15 @@
 
                 <div class="row">
 
-                    <button type="button" class="btn btn-primary m-auto col-8" onclick="">
+                        <button type="button" class="btn btn-primary m-auto col-8" onclick="GUploadData()">
                                 Upload Data
                             </button>
                     <div class="col-lg-4">
                         <!-- Data Source -->
                         <div class="form-floating mb-2">
-                            <select class="form-select" id="DataSource" disabled>
-                                @*            @foreach (DataRowView row in Model.gStudyType)
-                                {
-                                <option value="@row["ID"]" selected="@(Model.gStudyTypeSelectedValue == Int32.Parse(row["ID"].ToString()))">@row["sName"]</option>
-                                } *@
+                                <select class="form-select" id="DataSource" onblur="GenInfo_LF('gSource',this.options[this.selectedIndex].id)">
+                                    <!option id="SQL"  @(Model.gSource == "SQL" ? "selected" : "")>SQL Query</!option>
+                                    <!option id="FILE"  @(Model.gSource == "FILE" ? "selected" : "")>Text file (Tab limited)</!option>
                             </select>
                             <label for="DataSource">Data Source</label>
                         </div>
@@ -104,8 +99,9 @@
                         <div class="col-12">
                             <!-- Project Study Name -->
                             <div class="form-floating mb-2">
-                                <input type="file"  id="" class="form-control" value="" id="projectStudyName" placeholder="">
-                                <label for="projectStudyName">Browse for Data file</label>
+                                <input type="file" id="" class="form-control col-12" value="" id="gDataFile" placeholder="">
+                                <p class="col-11">@Model.gDataFile</p>
+                                <label for="gDataFile">Browse for Data file</label>
                             </div>
                         </div>
                     </div>
@@ -113,8 +109,8 @@
                     <div class="row">
                         <!-- query -->
                             <div class="form-floating mb-2 col-12">
-                            <textarea class="col-12 form-control" id="query" style="min-height:100px;">
-
+                            <textarea class="col-12 form-control" onblur="GenInfo_LF('gSQL',this.value)" id="query" style="min-height:100px;">
+                                @Model.gSQL
                                 </textarea>
                             <label for="query">SQL Query</label>
                             </div>
@@ -135,11 +131,13 @@
         <div class="col-lg-12">
             <!-- Group-->
             <div class="form-floating mb-2">
-                <select class="form-select" id="Group" disabled>
-                    @*    @foreach (DataRowView row in Model.gProd1)
+                <select class="form-select" id="Group" onblur="GInputVar_Change(this.options[this.selectedIndex].id)">
+                    @{int rowIndex=0;}
+                    @foreach (var row in Model.gInputVar)
                     {
-                    <option value="@row["Product"]" selected="@(Model.gProd1SelectedValue == (row["Product Code"].ToString()))">@row["Product"]</option>
-                    } *@
+                        <option id="@rowIndex" value="@row" selected="@(Model.gInputVarSelectedIndex==rowIndex)">@row</option>
+                        rowIndex++;
+                    } 
                 </select>
                 <label for="Group">Group</label>
             </div>
@@ -150,34 +148,29 @@
             <table id="searchResultsTable" class="table table-sm table-bordered table-hover table-striped table-responsive-md" style="width:100%">
                 <thead>
                     <tr>
-                        <th>Title</th>
+                        @if (Model.gData != null)
+                        {
+                            foreach (DataColumn column in Model.gData.Columns)
+                            {
+                                <th>@column.ColumnName</th>
+                            }
+                        }
 
                     </tr>
                 </thead>
                 <tbody id="DataTable">
-                  @*   @if (Model.gModels != null && Model.gModels.Count > 0)
+                    @if (Model.gData != null)
                     {
-                        int rowIndex = 0;
-                        foreach (DataRowView rowView in Model.gModels)
+                        foreach (DataRow row in Model.gData.Rows)
                         {
                             <tr>
-                                <td>@rowView["ID"]</td>
-                                <td>@rowView["DateModel"]</td>
-                                <td>@rowView["sNote"]</td>
-                                <td>@rowView["sProperty"]</td>
-                                <td>@rowView["sDataSource"]</td>
-                                <td></td>
-                                <td>
-                                    <label class="switch switch-primary switch-pill form-control-label ">
-                                        <input type="checkbox" class="switch-input form-check-input" id="@rowView["ID"]" data-index="@rowView["ID"]">
-                                        <span class="switch-label"></span>
-                                        <span class="switch-handle"></span>
-                                    </label>
-                                </td>
+                                @foreach (var cell in row.ItemArray)
+                                {
+                                    <td>@cell</td>
+                                }
                             </tr>
-                            rowIndex++;
                         }
-                    } *@
+                    }
                 </tbody>
             </table>
          </div>
@@ -192,29 +185,18 @@
                     </tr>
                 </thead>
                 <tbody id="DataTable">
-                    @*   @if (Model.gModels != null && Model.gModels.Count > 0)
+                    @if (Model.gStat != null)
                     {
-                    int rowIndex = 0;
-                    foreach (DataRowView rowView in Model.gModels)
-                    {
-                    <tr>
-                    <td>@rowView["ID"]</td>
-                    <td>@rowView["DateModel"]</td>
-                    <td>@rowView["sNote"]</td>
-                    <td>@rowView["sProperty"]</td>
-                    <td>@rowView["sDataSource"]</td>
-                    <td></td>
-                    <td>
-                    <label class="switch switch-primary switch-pill form-control-label ">
-                    <input type="checkbox" class="switch-input form-check-input" id="@rowView["ID"]" data-index="@rowView["ID"]">
-                    <span class="switch-label"></span>
-                    <span class="switch-handle"></span>
-                    </label>
-                    </td>
-                    </tr>
-                    rowIndex++;
+                        foreach (DataRow row in Model.gStat.Rows)
+                        {
+                            <tr>
+                                @foreach (var cell in row.ItemArray)
+                                {
+                                    <td>@cell</td>
+                                }
+                            </tr>
+                        }
                     }
-                    } *@
                 </tbody>
             </table>
         </div>
@@ -224,70 +206,114 @@
 @section Scripts{
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            const ctx = document.getElementById('charts').getContext('2d');
+            const xx = @Html.Raw(Json.Serialize(Model.xx));
+            const yy = @Html.Raw(Json.Serialize(Model.yy));
+            console.log(xx);
+            console.log(yy);
 
             const data1 = {
-                label: 'Dataset 1',
-
-                backgroundColor: 'rgba(255, 0, 0, 0.6)',
-                borderColor: 'rgba(255, 0, 0, 1)',
-                borderWidth: 3,
-                pointRadius: 0
+                datasets: [{
+                    label: 'Dataset 1',
+                    data: @Html.Raw(Json.Serialize(Model.xx.Zip(Model.yy, (x, y) => new { x, y }))),
+                    backgroundColor: 'rgba(255, 0, 0, 0.6)',
+                    borderColor: 'rgba(255, 0, 0, 1)',
+                    borderWidth: 1,
+                    pointRadius: 2
+                }]
             };
+;
 
-
-            const config = {
-                type: 'line',
-                data: {
-                    datasets: [data1]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        x: {
-                            type: 'linear',
-                            position: 'bottom',
-                            title: {
-                                display: true,
-                                text: 'Temperature (F)',
-                            }
-                        },
-                        y: {
-                            title: {
-                                display: true,
-                                text: 'R / n value',
-                            }
+            // Common options for both charts
+            const options = {
+                scales: {
+                    x: {
+                        type: 'linear',
+                        position: 'bottom',
+                        title: {
+                            display: true,
+                            text: ``,
                         }
                     },
-                    plugins: {
-                        legend: {
-                            display: true
+                    y: {
+                        title: {
+                            display: true,
+                            text: `@Model.gChartLeftTitle `,
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: true
+                    },
+                    zoom: {
+                        pan: {
+                            enabled: true,
+                            mode: 'xy',
                         },
                         zoom: {
-                            pan: {
+                            enabled: true,
+                            mode: 'xy',
+                            wheel: {
                                 enabled: true,
-                                mode: 'xy',
                             },
-                            zoom: {
-                                enabled: true,
-                                mode: 'xy',
-                                wheel: {
-                                    enabled: true,
-                                },
-                                pinch: {
-                                    enabled: true
-                                }
+                            pinch: {
+                                enabled: true
                             }
                         }
                     }
                 }
             };
 
-            const myChart = new Chart(ctx, config);
 
-            document.getElementById('charts').addEventListener('dblclick', () => {
-                myChart.resetZoom();
+            // Create the first chart
+            const ctx1 = document.getElementById('charts').getContext('2d');
+            const myScatterChart1 = new Chart(ctx1, {
+                type: 'scatter',
+                data: data1,
+                options: options
             });
-        });
-    </script>
+    });
+        function GenInfo_LF(Name,Value) {
+            $.ajax({
+                type: "POST",
+                url: "/Admin_Group/AIAnalysis?handler=GenInfo_LF",
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                data: { Name: Name, Value: Value },
+                success: function (response) {
+                    console.log('Server response:', response);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+        function GInputVar_Change(Value) {
+            $.ajax({
+                type: "POST",
+                url: "/Admin_Group/AIAnalysis?handler=GInputVar_Change",
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                data: { Value: Value },
+                success: function (response) {
+                    console.log('Server response:', response);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+
+        function GUploadData() {
+            $.ajax({
+                type: "POST",
+                url: "/Admin_Group/AIAnalysis?handler=GUploadData",
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                success: function (response) {
+                    console.log('Server response:', response);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+</script>
 }

@@ -12,7 +12,7 @@ namespace IntugentWebApp.Pages.Admin_Group
 {
     public class AIHomeModel : PageModel
     {
-        private ObjectsService _objectsService;
+        public ObjectsService _objectsService;
         public DataView gModels {  get; set; }
         public int gModelsSelectedIndex {  get; set; }
         public AIHomeModel(ObjectsService objectsService)
@@ -96,17 +96,27 @@ namespace IntugentWebApp.Pages.Admin_Group
             if (gModels.Count > 0 && gModelsSelectedIndex > -1)
             {
                 _objectsService.CDBase.IndexModel = gModelsSelectedIndex;
-                _objectsService.CDBase.dr = _objectsService.CDBase.dt.Rows[_objectsService.CDBase.IndexModel];
+                for(int i=0;i< _objectsService.CDBase.dt.Rows.Count;i++)
+                {
+                    if(gModelsSelectedIndex== Int32.Parse(_objectsService.CDBase.dt.Rows[i]["ID"].ToString()))
+                    {
+                  _objectsService.CDBase.dr = _objectsService.CDBase.dt.Rows[i];
+
+
+                    }
+                }
                 _objectsService.CDBase.IDModel = (int)_objectsService.CDBase.dr["ID"];
                 //Mouse.OverrideCursor = Cursors.Wait;
 
                // CStatusBar.SetText("Reading data file.");
-                _objectsService.CNNData.ReadData();
-              //  CStatusBar.SetText("Finished Reading data file.");
-               // Mouse.OverrideCursor = null;
+               _objectsService.CNNData.ReadData(_objectsService.CDBase);
+
+                //  CStatusBar.SetText("Finished Reading data file.");
+                // Mouse.OverrideCursor = null;
 
             }
-            return new JsonResult(gModelsSelectedIndex);
+            return new JsonResult(_objectsService.CDBase.IndexModel);
+
         }
         public static void EnablesAIPages(bool bEn)
         {

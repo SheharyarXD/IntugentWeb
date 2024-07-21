@@ -27,10 +27,9 @@ namespace IntugentClassLibrary.Classes
         public DataTable? dtXCorr;
         public Cbfile Cbfile;
         public CDBase CDBase;
-        public CNNData(Cbfile cbfile, CDBase cDBase)
+        public CNNData(Cbfile cbfile)
         {
             Cbfile = cbfile;
-            CDBase = cDBase;
         }
         public void Reset()
         {
@@ -49,7 +48,7 @@ namespace IntugentClassLibrary.Classes
             dt = new DataTable();
             dtXCorr = new DataTable();
         }
-        public bool ReadData()
+        public bool ReadData(CDBase CDBase)
         {
             string sMsg, sFile = string.Empty;
             int nDataPt, ntmp;

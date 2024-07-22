@@ -74,7 +74,7 @@
     <div class="col-8">
         @* gProp1 *@
         <div class="form-floating mb-2 mx-2" onblur="">
-            <select class="form-select" id="gProp1" onblur="gProp1(this.options[this.selectedIndex].value)">
+            <select class="form-select" id="gProp1" onchange="gProp1(this.options[this.selectedIndex].value)">
                 @foreach (DataRowView row in Model.gProp1)
                 {
                     <option value="@row["PropName"]" selected="@(Model.gProp1SelectedValue == row["PropName"].ToString())">@row["PropName"]</option>
@@ -197,21 +197,17 @@
         }
 
         function updateUI(response) {
-            console.log('gCorr:', response.gCorr);
-            console.log('Selected Index:', response.gMfgSiteSelectedIndex);
-            // Update the chart data
+
             window.chart.data.datasets[0].data = response.xa.map((x, i) => ({ x, y: response.ya[i] }));
             window.chart.data.datasets[1].data = response.xa.map((x, i) => ({ x, y: response.ya[i] }));
             window.chart.data.datasets[2].data = response.xAvg1.map((x, i) => ({ x, y: response.yAvg1[i] }));
             window.chart.data.datasets[3].data = response.xAvg1.map((x, i) => ({ x, y: response.yucL1[i] }));
             window.chart.data.datasets[4].data = response.xAvg1.map((x, i) => ({ x, y: response.ylcL1[i] }));
 
-            // Update the chart
-            window.chart.update();
 
-            // Update the correlation table
+            window.chart.update();
             const correlationTableBody = document.getElementById('CorrTable');
-            correlationTableBody.innerHTML = ''; // Clear the existing rows
+            correlationTableBody.innerHTML = '';
 
             response.gCorr.forEach(row => {
                 const newRow = correlationTableBody.insertRow();

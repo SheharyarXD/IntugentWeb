@@ -99,7 +99,6 @@ namespace IntugentWebApp.Pages.Mfg_Group
         public bool gCommentIsEnabled {  get; set; }
         public bool gCupReactivityIsEnabled {  get; set; }
         public bool gBoardDeviationIsEnabled {  get; set; }
-
         public readonly ObjectsService _objectsService;
 
         public MfgProcessCheckModel(ObjectsService objectsService)
@@ -129,8 +128,10 @@ namespace IntugentWebApp.Pages.Mfg_Group
                     return;
 
                 }
+
                 _objectsService.MfgProcesscheck.drIndex = 0;
                 _objectsService.MfgProcesscheck.dr = _objectsService.MfgProcesscheck.dt.Rows[0];
+                
             }
             catch (Exception ex)
             {
@@ -705,6 +706,7 @@ namespace IntugentWebApp.Pages.Mfg_Group
                 case "prev": _objectsService.MfgProcesscheck.drIndex += 1; break;
                 case "next": _objectsService.MfgProcesscheck.drIndex -= 1; break;
             }
+
 
             if (_objectsService.MfgProcesscheck.drIndex < 0) 
                 _objectsService.MfgProcesscheck.drIndex = 0;

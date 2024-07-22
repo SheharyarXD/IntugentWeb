@@ -22,8 +22,8 @@
                 <div class="row align-items-center">
                     <div>
                         <!-- Choose X1 -->
-                        <div class="form-floating mb-4" onblur="">
-                            <select class="form-select" id="X1" onblur="">
+                        <div class="form-floating mb-4" onchange="">
+                            <select class="form-select" id="X1" onchange="UpdateCharts()">
                             @foreach (DataRowView row in Model.gX1)
                                 {
                                     <option value="@row["PropName"]" selected="@(Model.gX1SelectedValue == row["PropName"].ToString())">@row["PropName"]</option>
@@ -32,8 +32,8 @@
                             <label for="X1">Choose X1</label>
                         </div>
                         <!-- Choose X2 -->
-                        <div class="form-floating mb-4" onblur="">
-                            <select class="form-select" id="X2" onblur="">
+                        <div class="form-floating mb-4" onchange="">
+                            <select class="form-select" id="X2" onchange="UpdateCharts()">
                                 @foreach (DataRowView row in Model.gX2)
                                 {
                                     <option value="@row["PropName"]" selected="@(Model.gX2SelectedValue == row["PropName"].ToString())">@row["PropName"]</option>
@@ -42,8 +42,8 @@
                             <label for="X2">Choose X2</label>
                         </div>
                         <!-- Choose Y1 -->
-                        <div class="form-floating mb-4" onblur="">
-                            <select class="form-select" id="Y1" onblur="">
+                        <div class="form-floating mb-4" onchange="">
+                            <select class="form-select" id="Y1" onchange="UpdateCharts()">
                                 @foreach (DataRowView row in Model.gY1)
                                 {
                                     <option value="@row["PropName"]" selected="@(Model.gY1SelectedValue == row["PropName"].ToString())">@row["PropName"]</option>
@@ -52,8 +52,8 @@
                             <label for="Y1">Choose Y1</label>
                         </div>
                         <!-- Choose Y2 -->
-                        <div class="form-floating mb-4" onblur="">
-                            <select class="form-select" id="Y2" onblur="">
+                        <div class="form-floating mb-4" onchange="">
+                            <select class="form-select" id="Y2" onchange="UpdateCharts()">
                                 @foreach (DataRowView row in Model.gY2)
                                 {
                                     <option value="@row["PropName"]" selected="@(Model.gY2SelectedValue == row["PropName"].ToString())">@row["PropName"]</option>
@@ -87,7 +87,16 @@
 
     </div>
 </div>
+@section Scripts{
 <script>
+        let myScatterChart1;
+        let myScatterChart2;
+        let myScatterChart3;
+        let myScatterChart4;
+        let options = {}
+        let options1 = {}
+        let options2 = {}
+        let options3 = {}
     document.addEventListener("DOMContentLoaded", function () {
         console.log('gX1Y1_X:', @Html.Raw(Json.Serialize(Model.gX1Y1_X)));
         console.log('gX1Y1_Y:', @Html.Raw(Json.Serialize(Model.gX1Y1_Y)));
@@ -140,7 +149,7 @@
         };
 
         // Common options for both charts
-        const options = {
+         options = {
             scales: {
                 x: {
                     type: 'linear',
@@ -160,10 +169,26 @@
             plugins: {
                 legend: {
                     display: false
+                },
+                zoom: {
+                    pan: {
+                        enabled: true,
+                        mode: 'xy',
+                    },
+                    zoom: {
+                        enabled: true,
+                        mode: 'xy',
+                        wheel: {
+                            enabled: true,
+                        },
+                        pinch: {
+                            enabled: true
+                        }
+                    }
                 }
             }
         };
-        const options1 = {
+         options1 = {
             scales: {
                 x: {
                     type: 'linear',
@@ -183,10 +208,26 @@
             plugins: {
                 legend: {
                     display: false
+                },
+                zoom: {
+                    pan: {
+                        enabled: true,
+                        mode: 'xy',
+                    },
+                    zoom: {
+                        enabled: true,
+                        mode: 'xy',
+                        wheel: {
+                            enabled: true,
+                        },
+                        pinch: {
+                            enabled: true
+                        }
+                    }
                 }
             }
         };
-        const options2 = {
+         options2 = {
             scales: {
                 x: {
                     type: 'linear',
@@ -206,10 +247,26 @@
             plugins: {
                 legend: {
                     display: false
+                },
+                zoom: {
+                    pan: {
+                        enabled: true,
+                        mode: 'xy',
+                    },
+                    zoom: {
+                        enabled: true,
+                        mode: 'xy',
+                        wheel: {
+                            enabled: true,
+                        },
+                        pinch: {
+                            enabled: true
+                        }
+                    }
                 }
             }
         };
-        const options3 = {
+         options3 = {
             scales: {
                 x: {
                     type: 'linear',
@@ -229,13 +286,29 @@
             plugins: {
                 legend: {
                     display: false
+                },
+                zoom: {
+                    pan: {
+                        enabled: true,
+                        mode: 'xy',
+                    },
+                    zoom: {
+                        enabled: true,
+                        mode: 'xy',
+                        wheel: {
+                            enabled: true,
+                        },
+                        pinch: {
+                            enabled: true
+                        }
+                    }
                 }
             }
         };
 
         // Create the first chart
         const ctx1 = document.getElementById('gCircles11').getContext('2d');
-        const myScatterChart1 = new Chart(ctx1, {
+         myScatterChart1 = new Chart(ctx1, {
             type: 'scatter',
             data: data1,
             options: options
@@ -243,7 +316,7 @@
 
         // Create the second chart
         const ctx2 = document.getElementById('gCircles22').getContext('2d');
-        const myScatterChart2 = new Chart(ctx2, {
+        myScatterChart2 = new Chart(ctx2, {
             type: 'scatter',
             data: data2,
             options: options1
@@ -251,7 +324,7 @@
 
         // Create the second chart
         const ctx3 = document.getElementById('gCircles12').getContext('2d');
-        const myScatterChart3 = new Chart(ctx3, {
+        myScatterChart3 = new Chart(ctx3, {
             type: 'scatter',
             data: data3,
             options: options2
@@ -259,11 +332,69 @@
 
         // Create the second chart
         const ctx4 = document.getElementById('gCircles21').getContext('2d');
-        const myScatterChart4 = new Chart(ctx4, {
+       myScatterChart4 = new Chart(ctx4, {
             type: 'scatter',
             data: data4,
             options: options3
         });
 
     });
+    function UpdateCharts() {
+        var gX1SelectedValue = $('#X1').val();
+        var gX2SelectedValue = $('#X2').val();
+        var gY1SelectedValue = $('#Y1').val();
+        var gY2SelectedValue = $('#Y2').val();
+        console.log(gX1SelectedValue, gX2SelectedValue, gY1SelectedValue, gY2SelectedValue);
+        var form = $('#SearchParamsForm');
+
+        $.ajax({
+            type: "POST",
+            url: "/Analysis/Analysis2?handler=UpdateCharts",
+            headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+            data: {
+                gX1SelectedValue: gX1SelectedValue,
+                gX2SelectedValue: gX2SelectedValue,
+                gY1SelectedValue: gY1SelectedValue,
+                gY2SelectedValue: gY2SelectedValue
+            },
+            success: function (response) {
+                console.log('Server response:', response);
+
+                myScatterChart1.data.datasets[0].data = [];
+                myScatterChart2.data.datasets[0].data = [];
+                myScatterChart3.data.datasets[0].data = [];
+                myScatterChart4.data.datasets[0].data = [];
+
+                // Update chart data sets
+                myScatterChart1.data.datasets[0].data = response.gX1Y1_X.map((x, i) => ({ x, y: response.gX1Y1_Y[i] }));
+                myScatterChart2.data.datasets[0].data = response.gX2Y2_X.map((x, i) => ({ x, y: response.gX2Y2_Y[i] }));
+                myScatterChart3.data.datasets[0].data = response.gX1Y2_X.map((x, i) => ({ x, y: response.gX1Y2_Y[i] }));
+                myScatterChart4.data.datasets[0].data = response.gX2Y1_X.map((x, i) => ({ x, y: response.gX2Y1_Y[i] }));
+                    options.scales.x.title.text = gX1SelectedValue;
+                    options.scales.y.title.text = gY1SelectedValue;
+             options1.scales.x.title.text = gX2SelectedValue;
+                    options1.scales.y.title.text = gY2SelectedValue;
+  options2.scales.x.title.text = gX1SelectedValue;
+                    options2.scales.y.title.text = gY2SelectedValue;
+                    options3.scales.x.title.text = gX2SelectedValue;
+                    options3.scales.y.title.text = gY1SelectedValue;
+
+                    // Update the chart
+                    myScatterChart1.options = options;
+                    myScatterChart2.options = options1;
+                    myScatterChart3.options = options2;
+                    myScatterChart4.options = options3;
+                // Update charts
+                myScatterChart1.update();
+                myScatterChart2.update();
+                myScatterChart3.update();
+                myScatterChart4.update();
+                // location.reload();
+            },
+            error: function (xhr, status, error) {
+                console.error('Error:', error);
+            }
+        });
+    }
 </script>
+}

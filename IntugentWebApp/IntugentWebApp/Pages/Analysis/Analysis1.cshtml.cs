@@ -20,6 +20,7 @@ namespace IntugentWebApp.Pages.Analysis
         public DataView gProp1;
         public DataView gCorr;
         public string gProp1SelectedValue;
+        public string test;
         public DateTime? gMfgDate1;
         public DateTime? gMfgDate2;
         public List<double> XA;
@@ -78,7 +79,8 @@ namespace IntugentWebApp.Pages.Analysis
                 {
                     PropName = row["PropName"].ToString(),
                     CorrValue = Convert.ToDouble(row["CorrValue"])
-                }).ToList()
+                }).ToList(),
+                test
             };
             return new JsonResult(responseData);
         }
@@ -191,11 +193,11 @@ namespace IntugentWebApp.Pages.Analysis
             //Location
 
             sql = sql1 = string.Empty;
-            if (gMfgSiteSelectedIndex > 0) sql = "sLocation = '" + gMfgSiteSelectedValue.ToString() + "'";
+            if (gMfgSiteSelectedValue!=null) sql = "sLocation = '" + gMfgSiteSelectedValue.ToString() + "'";
 
 
             sql1 = string.Empty;
-            if (gProd1SelectedIndex > 0)
+            if (gProd1SelectedValue!=null)
             {
                 sql1 = "[Product Code Global] = '" + gProd1SelectedValue.ToString() + "'";
                 if (sql == string.Empty) sql = sql1; else sql = sql + " And " + sql1;
@@ -215,7 +217,7 @@ namespace IntugentWebApp.Pages.Analysis
                 sql1 = "[Test Date] >= '" + dateTime1.ToString() + "'";
                 if (sql == string.Empty) sql = sql1; else sql = sql + " And " + sql1;
             }
-
+            test = sql;
             return sql;
         }
 

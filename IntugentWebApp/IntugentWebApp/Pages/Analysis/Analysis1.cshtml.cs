@@ -52,14 +52,35 @@ namespace IntugentWebApp.Pages.Analysis
             _objectsService.CAnalysisData1.GetData(GetSearchCriteria());
             SetView();
         }
-        public IActionResult OnPostGSearchDB_Click()
+        public IActionResult OnPostGSearchDB_Click(string gProp1SelectedValue, string gProd1SelectedValue, string gMfgSiteSelectedValue, DateTime? gMfgDate1, DateTime? gMfgDate2)
         {
+            this.gProp1SelectedValue = gProp1SelectedValue;
+            this.gProd1SelectedValue = gProd1SelectedValue;
+            this.gMfgSiteSelectedValue = gMfgSiteSelectedValue;
+            this.gMfgDate1 = gMfgDate1;
+            this.gMfgDate2 = gMfgDate2;
+            this.gMfgSiteSelectedIndex = gMfgSiteSelectedIndex;
             if (gProp1SelectedValue == null) gProp1SelectedValue = "FG-Compressive Str Avg6";
             if (gProd1SelectedValue == null) gProd1SelectedIndex = 0;
             if (gMfgSiteSelectedValue == null) gMfgSiteSelectedIndex = 0;
             _objectsService.CAnalysisData1.GetData(GetSearchCriteria());
             SetView();
-            return new JsonResult(true);
+            var responseData = new
+            {
+                gProp1SelectedValue,
+                XA,
+                YA,
+                XAvg1,
+                YAvg1,
+                YUCL1,
+                YLCL1,
+                gCorr = gCorr.Table.AsEnumerable().Select(row => new
+                {
+                    PropName = row["PropName"].ToString(),
+                    CorrValue = Convert.ToDouble(row["CorrValue"])
+                }).ToList()
+            };
+            return new JsonResult(responseData);
         }
         public void SetView()
         {
@@ -69,10 +90,28 @@ namespace IntugentWebApp.Pages.Analysis
             gCorr = _objectsService.CAnalysisData1.dtCorr.DefaultView;
             PlotSPC();
         }
-        public IActionResult OnPostGProp1_Changed()
+        public IActionResult OnPostGProp1_Changed(string value)
         {
+            gProp1SelectedValue = value;
             SetView();
-            return new JsonResult(gProp1SelectedValue);
+            var responseData = new
+            {
+                gProp1SelectedValue,
+                XA,
+                YA,
+                XAvg1,
+                YAvg1,
+                YUCL1,
+                YLCL1,
+                gCorr = gCorr.Table.AsEnumerable().Select(row => new
+                {
+                    PropName = row["PropName"].ToString(),
+                    CorrValue = Convert.ToDouble(row["CorrValue"])
+                }).ToList(),
+                
+            };
+
+            return new JsonResult(responseData);
 
         }
 

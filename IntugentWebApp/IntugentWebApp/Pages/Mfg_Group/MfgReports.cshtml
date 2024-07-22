@@ -56,7 +56,7 @@
                 <th></th>
                     </tr>
                 </thead>
-        <tbody>
+        <tbody id="dataTable">
             @if (Model.gReport != null && Model.gReport.Count > 0)
             {
                 foreach (DataRowView row in Model.gReport)
@@ -98,6 +98,41 @@
 </div>
 @section Scripts{
         <script>
+        function updateTable(data) {
+            var tableBody = $('#dataTable');
+            tableBody.empty(); // Clear existing rows
+
+            data.forEach(function (row) {
+                var rowHtml = '<tr>' +
+                    '<td style="width: 40px; color: Maroon;">' + row.ID + '</td>' +
+                    '<td style="width: 170px; color: Maroon;">' + row.Mfg_Time + '</td>' +
+                    '<td style="width: 170px;">' + row.QC_Test_Date + '</td>' +
+                    '<td style="width: 180px;">' + row.Product_Type + '</td>' +
+                    '<td style="width: 260px;">' + row.Product + '</td>' +
+                    '<td style="width: 80px; background-color: ' + (row.PassFail === "Fail" ? "HotPink" : "transparent") + ';">' + row.PassFail + '</td>' +
+                    '<td style="width: 200px;">' + row.Note + '</td>' +
+                    '<td style="width: 80px;">' + formatNumber(row.Thickness) + '</td>' +
+                    '<td style="width: 10px; background-color: ' + (row.Thickness_P === "F" ? "#FFFF00" : "transparent") + ';">' + row.Thickness_P + '</td>' +
+                    '<td style="width: 80px;">' + formatNumber(row.R_Value) + '</td>' +
+                    '<td style="width: 10px; background-color: ' + (row.R_Value_P === "F" ? "#FFFF00" : "transparent") + ';">' + row.R_Value_P + '</td>' +
+                    '<td style="width: 80px;">' + formatNumber(row.Comp_Strength) + '</td>' +
+                    '<td style="width: 10px; background-color: ' + (row.CS_P === "F" ? "#FFFF00" : "transparent") + ';">' + row.CS_P + '</td>' +
+                    '<td style="width: 80px;">' + formatNumber(row.Core_Dens) + '</td>' +
+                    '<td style="width: 10px; background-color: ' + (row.Core_Dens_P === "F" ? "#FFFF00" : "transparent") + ';">' + row.Core_Dens_P + '</td>' +
+                    '<td style="width: 80px;">' + formatNumber(row.Squareness) + '</td>' +
+                    '<td style="width: 10px; background-color: ' + (row.Squareness_P === "F" ? "#FFFF00" : "transparent") + ';">' + row.Squareness_P + '</td>' +
+                    '<td style="width: 80px;">' + formatNumber(row.Length) + '</td>' +
+                    '<td style="width: 10px; background-color: ' + (row.Length_P === "F" ? "#FFFF00" : "transparent") + ';">' + row.Length_P + '</td>' +
+                    '<td style="width: 80px;">' + formatNumber(row.Width) + '</td>' +
+                    '<td style="width: 10px; background-color: ' + (row.Width_P === "F" ? "#FFFF00" : "transparent") + ';">' + row.Width_P + '</td>' +
+                    '</tr>';
+                tableBody.append(rowHtml);
+            });
+        }
+
+        function formatNumber(value) {
+            return value != null ? parseFloat(value).toFixed(3) : '';
+        }
 
         function ReportDate(value) {
             //console.log('Input values - Name:', Name, Model.gRValueKnitPresent3.ToString());
@@ -111,6 +146,7 @@
                 success: function (response) {
                    console.log('Server response:', response);
                    // location.reload();
+                    updateTable(response);
                 },
                 error: function (xhr, status, error) {
                     console.error('Error:', error);

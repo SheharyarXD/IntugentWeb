@@ -24,13 +24,17 @@
             <div class="col-2">
                 <!-- Mfg Site -->
                 <div class="form-floating mb-2" onblur="">
-                    <select class="form-select" id="MfgSite" onblur="GComboBox_LF('gProdID', this.value)">
-                         @foreach (DataRowView row in Model.gMfgSite)
+                    <select id="gMfgSiteSelectedValue" class="form-select" id="MfgSite" onblur="">
+                        @{
+                            int rows = 0;
+                        }
+                        @foreach (DataRowView row in Model.gMfgSite)
                         {
                             <option value="@row["sLocation"]" selected="@(Model.gMfgSiteSelectedValue == row["sLocation"].ToString())">@row["sLocation"]</option>
+                            rows++;
                         } 
                     </select>
-                    <label for="MfgSite">Mfg Site</label>
+                    <label for="gMfgSiteSelectedValue">Mfg Site</label>
                 </div>
             </div>
             <div class="col-2">
@@ -51,14 +55,14 @@
             <div class="col-2">
                 <!-- AfterDate -->
                 <div class="form-floating mb-2">
-                    <input type="datetime-local" class="form-control" id="AfterorAt" value="@Model.gMfgDate1?.ToString("yyyy-MM-ddThh:mm")" onblur="">
+                    <input id="gMfgDate1" type="datetime-local" class="form-control" id="AfterorAt" value="@Model.gMfgDate1?.ToString("yyyy-MM-ddThh:mm")" onblur="">
                     <label for="AfterorAt">After or At</label>
                 </div>
             </div>
             <div class="col-2">
                 <!-- BeforeDate -->
                 <div class="form-floating mb-2">
-                    <input type="datetime-local" class="form-control" id="BeforeorAt" value="@Model.gMfgDate2?.ToString("yyyy-MM-ddThh:mm")" onblur="">
+                    <input id="gMfgDate2" type="datetime-local" class="form-control" id="BeforeorAt" value="@Model.gMfgDate2?.ToString("yyyy-MM-ddThh:mm")" onblur="">
                     <label for="BeforeorAt">Before or At</label>
                 </div>
             </div>
@@ -70,7 +74,7 @@
     <div class="col-8">
         @* gProp1 *@
         <div class="form-floating mb-2 mx-2" onblur="">
-            <select class="form-select" id="gProp1" onblur="gProp1()">
+            <select class="form-select" id="gProp1" onblur="gProp1(this.options[this.selectedIndex].value)">
                 @foreach (DataRowView row in Model.gProp1)
                 {
                     <option value="@row["PropName"]" selected="@(Model.gProp1SelectedValue == row["PropName"].ToString())">@row["PropName"]</option>
@@ -90,7 +94,7 @@
                                 <th scope="col">Correllation</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="CorrTable">
                             @foreach (DataRowView row in Model.gCorr)
                             {
 
@@ -108,60 +112,61 @@
 @section Scripts{
     <script>
         document.addEventListener("DOMContentLoaded", function () {
+            initializeChart(@Html.Raw(Json.Serialize(Model.XA)), @Html.Raw(Json.Serialize(Model.YA)), @Html.Raw(Json.Serialize(Model.XAvg1)), @Html.Raw(Json.Serialize(Model.YAvg1)), @Html.Raw(Json.Serialize(Model.YUCL1)), @Html.Raw(Json.Serialize(Model.YLCL1)));
+        });
+
+        function initializeChart(XA, YA, XAvg1, YAvg1, YUCL1, YLCL1) {
             const ctx = document.getElementById('line-chart').getContext('2d');
 
-            // Data for G Line A
             const gLineA = {
                 label: 'G Line A',
-                data: @Html.Raw(Json.Serialize(Model.XA.Zip(Model.YA, (x, y) => new { x, y }))),
+                data: XA.map((x, i) => ({ x, y: YA[i] })),
                 backgroundColor: 'rgba(255, 99, 132, 0.2)',
                 borderColor: 'rgba(255, 99, 132, 1)',
                 borderWidth: 2,
                 fill: false
             };
 
-            // Data for gPts1
             const gPts1 = {
                 label: 'gPts1',
-                data: @Html.Raw(Json.Serialize(Model.XA.Zip(Model.YA, (x, y) => new { x, y }))),
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                borderColor: 'rgba(54, 162, 235, 1)',
-                borderWidth: 2,
-                fill: false
-            };
-               // Data for gAvg
-            const gAvg = {
-                label: 'gPts1',
-                data: @Html.Raw(Json.Serialize(Model.XAvg1.Zip(Model.YAvg1, (x, y) => new { x, y }))),
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                borderColor: 'rgba(54, 162, 235, 1)',
-                borderWidth: 2,
-                fill: false
-            };
-            // Data for gUCL
-            const gUCL = {
-                label: 'gUCL',
-                data: @Html.Raw(Json.Serialize(Model.XAvg1.Zip(Model.YUCL1, (x, y) => new { x, y }))),
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                borderColor: 'rgba(54, 162, 235, 1)',
-                borderWidth: 2,
-                fill: false
-            };
-            // Data for gLCL
-            const gLCL = {
-                label: 'gLCL',
-                data: @Html.Raw(Json.Serialize(Model.XAvg1.Zip(Model.YLCL1, (x, y) => new { x, y }))),
+                data: XA.map((x, i) => ({ x, y: YA[i] })),
                 backgroundColor: 'rgba(54, 162, 235, 0.2)',
                 borderColor: 'rgba(54, 162, 235, 1)',
                 borderWidth: 2,
                 fill: false
             };
 
-            // Chart configuration
+            const gAvg = {
+                label: 'gAvg',
+                data: XAvg1.map((x, i) => ({ x, y: YAvg1[i] })),
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 2,
+                fill: false
+            };
+
+            const gUCL = {
+                label: 'gUCL',
+                data: XAvg1.map((x, i) => ({ x, y: YUCL1[i] })),
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 2,
+                fill: false
+            };
+
+            const gLCL = {
+                label: 'gLCL',
+                data: XAvg1.map((x, i) => ({ x, y: YLCL1[i] })),
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 2,
+                fill: false
+            };
+
             const config = {
                 type: 'line',
                 data: {
-                    datasets: [gLineA,gPts1,gAvg,gUCL,gLCL]
+                    datasets: [gLineA, gPts1, gAvg, gUCL, gLCL]
                 },
                 options: {
                     pointRadius: 0,
@@ -175,39 +180,72 @@
                 }
             };
 
-            // Create the chart
-            new Chart(ctx, config);
-        });
-         function gSearchDB() {
+            window.chart = new Chart(ctx, config);
+        }
 
+        function gProp1(value) {
+            $.ajax({
+                type: "POST",
+                url: "/Analysis/Analysis1?handler=GProp1_Changed",
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                data: { value: value },
+                success: function (response) {
+                    console.log('Server response:', response);
+                    updateUI(response);
+                }
+            });
+        }
+
+        function updateUI(response) {
+            console.log('gCorr:', response.gCorr);
+            console.log('Selected Index:', response.gMfgSiteSelectedIndex);
+            // Update the chart data
+            window.chart.data.datasets[0].data = response.xa.map((x, i) => ({ x, y: response.ya[i] }));
+            window.chart.data.datasets[1].data = response.xa.map((x, i) => ({ x, y: response.ya[i] }));
+            window.chart.data.datasets[2].data = response.xAvg1.map((x, i) => ({ x, y: response.yAvg1[i] }));
+            window.chart.data.datasets[3].data = response.xAvg1.map((x, i) => ({ x, y: response.yucL1[i] }));
+            window.chart.data.datasets[4].data = response.xAvg1.map((x, i) => ({ x, y: response.ylcL1[i] }));
+
+            // Update the chart
+            window.chart.update();
+
+            // Update the correlation table
+            const correlationTableBody = document.getElementById('CorrTable');
+            correlationTableBody.innerHTML = ''; // Clear the existing rows
+
+            response.gCorr.forEach(row => {
+                const newRow = correlationTableBody.insertRow();
+                const propCell = newRow.insertCell(0);
+                const corrCell = newRow.insertCell(1);
+
+                propCell.textContent = row.propName;
+                corrCell.textContent = row.corrValue;
+            });
+        }
+         function gSearchDB() {
+            var gProp1SelectedValue = $('#gProp1').val();
+            var gProd1SelectedValue = $('#ProdID').val();
+            var gMfgSiteSelectedValue = $('#gMfgSiteSelectedValue').val();
+            var gMfgDate1 = $('#gMfgDate1').val(); 
+            var gMfgDate2 = $('#gMfgDate2').val();
+            console.log(gProp1SelectedValue, gProd1SelectedValue, gMfgSiteSelectedValue, gMfgDate1, gMfgDate2);
             var form = $('#SearchParamsForm');
 
             $.ajax({
                 type: "POST",
                 url: "/Analysis/Analysis1?handler=GSearchDB_Click",
                 headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
-                // data: { direction: direction },
-                success: function (response) {
-                    console.log('Server response:', response);
-                   // location.reload();
+                data: {
+                    gProp1SelectedValue: gProp1SelectedValue,
+                    gProd1SelectedValue: gProd1SelectedValue,
+                    gMfgSiteSelectedValue: gMfgSiteSelectedValue,
+                    gMfgDate1: gMfgDate1,
+                    gMfgDate2: gMfgDate2,
                 },
-                error: function (xhr, status, error) {
-                    console.error('Error:', error);
-                }
-            });
-        }
-        function gProp1() {
-
-            var form = $('#SearchParamsForm');
-
-            $.ajax({
-                type: "POST",
-                url: "/Analysis/Analysis1?handler=GProp1_Changed",
-                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
-                // data: { direction: direction },
                 success: function (response) {
                     console.log('Server response:', response);
-                    // location.reload();
+                    updateUI(response);
+                   // location.reload();
                 },
                 error: function (xhr, status, error) {
                     console.error('Error:', error);

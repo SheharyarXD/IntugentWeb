@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Data;
 using IntugentWebApp.Utilities;
 using IntugentClassLbrary.Classes;
+using Google.Api.Gax;
 
 namespace IntugentWebApp.Pages.RnD_Users
 {
@@ -17,7 +18,9 @@ namespace IntugentWebApp.Pages.RnD_Users
         public DataView gPropsC{get;set;}
         public DataView gDataFiles{get;set;}
         public DataView gProd{get;set;}
+        public int gProdSelectedValue{get;set; }
         public DataView gNotes{get;set;}
+        public List<string> gProdList{get;set; }
         private ObjectsService _objectsService { get; set; }
         public bool gPropTestingCompIsChecked {  get; set; }
         public RNDPropertiesDatafileModel(ObjectsService objectsService)
@@ -26,8 +29,8 @@ namespace IntugentWebApp.Pages.RnD_Users
         }
         public void OnGet()
         {
-
-                for (int i = 0; i < 8; i++)
+            gProdList = PopulateListFromDataView(_objectsService.CLists.dvComProd);
+            for (int i = 0; i < 8; i++)
                 {
                     if (_objectsService.RNDHome.dtF.Rows[i]["ReactMixingTime"] == DBNull.Value) _objectsService.RNDProperties.dtReacE.Rows[0][i + 1] = string.Empty; else _objectsService.RNDProperties.dtReacE.Rows[0][i + 1] = _objectsService.RNDHome.dtF.Rows[i]["ReactMixingTime"].ToString();
                     if (_objectsService.RNDHome.dtF.Rows[i]["React15PTime"] == DBNull.Value) _objectsService.RNDProperties.dtReacE.Rows[1][i + 1] = string.Empty; else _objectsService.RNDProperties.dtReacE.Rows[1][i + 1] = _objectsService.RNDHome.dtF.Rows[i]["React15PTime"].ToString();
@@ -66,7 +69,19 @@ namespace IntugentWebApp.Pages.RnD_Users
                 SetView();
     
         }
+        public List<string> PopulateListFromDataView(DataView dvComProd)
+        {
+            List<string> gProdList = new List<string>();
 
+            foreach (DataRowView rowView in dvComProd)
+            {
+                string productCode = rowView["Product Code"].ToString();
+
+                gProdList.Add(productCode);
+            }
+
+            return gProdList;
+        }
         public void SetView()
         {
             PropPredictions();
@@ -100,73 +115,75 @@ namespace IntugentWebApp.Pages.RnD_Users
         //    gDataFiles.Col = e.Column.DisplayIndex;
         //}
 
-        //private void OngReacE(object sender, DataGridCellEditEndingEventArgs e)
-        //{
-        //    string sMsg;
-        //    int irow = e.Row.GetIndex();
-        //    int icol = e.Column.DisplayIndex;
-        //    bool bd = false;
-        //    int icol1 = icol - 1;
-        //    string[] sFields = { "ReactMixingTime", "React15PTime", "React50PTime", "React80PTime", "ReactCupEdgeTime", "React98PTime", "ReactMaxTempTime", "ReactMaxTemp", "ReactMaxHeight", "ReactSampleMass" };
-        //    string sField, stmp0;
+        public IActionResult OnPostGReacE(string rowId, string colId, string text)
+        {
+            string sMsg;
+            int irow = Int32.Parse(rowId);
+            int icol = Int32.Parse(colId);
+            bool bd = false;
+            int icol1 = icol - 1;
+            string[] sFields = { "ReactMixingTime", "React15PTime", "React50PTime", "React80PTime", "ReactCupEdgeTime", "React98PTime", "ReactMaxTempTime", "ReactMaxTemp", "ReactMaxHeight", "ReactSampleMass" };
+            string sField, stmp0;
 
-        //    double dtmp, dtmp0;
+            double dtmp, dtmp0;
 
-        //    DataGridRow dgr = e.Row;
+            //DataGridRow dgr = e.Row;
 
-        //    if (icol == 0) return;
-        //    if (irow > 9) return;
+            if (icol == 0) return null;
+            if (irow > 9) return null;
 
-        //    sField = sFields[irow];
-        //    if (_objectsService.RNDHome.dtF.Rows[icol1][sField] == DBNull.Value) stmp0 = string.Empty;
-        //    else if ((double)_objectsService.RNDHome.dtF.Rows[icol1][sField] > 0) stmp0 = ((double)_objectsService.RNDHome.dtF.Rows[icol1][sField]).ToString("0.####");
-        //    else stmp0 = string.Empty;
+            sField = sFields[irow];
+            if (_objectsService.RNDHome.dtF.Rows[icol1][sField] == DBNull.Value) stmp0 = string.Empty;
+            else if ((double)_objectsService.RNDHome.dtF.Rows[icol1][sField] > 0) stmp0 = ((double)_objectsService.RNDHome.dtF.Rows[icol1][sField]).ToString("0.####");
+            else stmp0 = string.Empty;
 
-        //    TextBox tb = gReacE.Columns[icol].GetCellContent(dgr) as TextBox;
-        //    if (tb.Text == string.Empty) _objectsService.RNDHome.dtF.Rows[icol1][sField] = DBNull.Value;
-        //    else if (double.TryParse(tb.Text, out dtmp)) _objectsService.RNDHome.dtF.Rows[icol1][sField] = dtmp;
-        //    else {
-        //        //MessageBox.Show("Improper Value. New Value is not accepted.");
-        //        tb.Text = stmp0; }
-        //    //                dtDensityE.Rows[irow][icol] = dtemp;
+            //TextBox tb = gReacE.Columns[icol].GetCellContent(dgr) as TextBox;
+            string tb = text;
+            if (tb == string.Empty) _objectsService.RNDHome.dtF.Rows[icol1][sField] = DBNull.Value;
+            else if (double.TryParse(tb, out dtmp)) _objectsService.RNDHome.dtF.Rows[icol1][sField] = dtmp;
+            else {
+                //MessageBox.Show("Improper Value. New Value is not accepted.");
+                tb = stmp0; }
+            //                dtDensityE.Rows[irow][icol] = dtemp;
 
-        //    _objectsService.RNDHome.UpdateFormulatiions();
+            _objectsService.RNDHome.UpdateFormulatiions();
+            return new JsonResult(true);
+        }
 
-        //}
+        public IActionResult OnPostOngPhotoE(string rowId, string colId, string text)
+        {
+            string sMsg;
+            int irow = Int32.Parse(rowId);
+            int icol = Int32.Parse(colId);
+            bool bd = false;
+            int icol1 = icol - 1;
+            string[] sFields = { "PhotoPirPur", "PhotoIso", "PhotoCarbo", "PhotoTrimer" };
+            string sField, stmp0;
+            double dtmp, dtmp0;
 
-        //private void OngPhotoE(object sender, DataGridCellEditEndingEventArgs e)
-        //{
-        //    string sMsg;
-        //    int irow = e.Row.GetIndex();
-        //    int icol = e.Column.DisplayIndex;
-        //    bool bd = false;
-        //    int icol1 = icol - 1;
-        //    string[] sFields = { "PhotoPirPur", "PhotoIso", "PhotoCarbo", "PhotoTrimer" };
-        //    string sField, stmp0;
-        //    double dtmp, dtmp0;
+            //DataGridRow dgr = e.Row;
 
-        //    DataGridRow dgr = e.Row;
+            if (icol == 0) return new JsonResult(true);
+            if (irow > 3) return new JsonResult(true);
 
-        //    if (icol == 0) return;
-        //    if (irow > 3) return;
+            sField = sFields[irow];
+            if (_objectsService.RNDHome.dtF.Rows[icol1][sField] == DBNull.Value) stmp0 = string.Empty;
+            else if ((double)_objectsService.RNDHome.dtF.Rows[icol1][sField] > 0) stmp0 = ((double)_objectsService.RNDHome.dtF.Rows[icol1][sField]).ToString("0.####");
+            else stmp0 = string.Empty;
 
-        //    sField = sFields[irow];
-        //    if (_objectsService.RNDHome.dtF.Rows[icol1][sField] == DBNull.Value) stmp0 = string.Empty;
-        //    else if ((double)_objectsService.RNDHome.dtF.Rows[icol1][sField] > 0) stmp0 = ((double)_objectsService.RNDHome.dtF.Rows[icol1][sField]).ToString("0.####");
-        //    else stmp0 = string.Empty;
+            //TextBox tb = gPhotoE.Columns[icol].GetCellContent(dgr) as TextBox;
+            string tb = text;
+            if (tb == string.Empty) _objectsService.RNDHome.dtF.Rows[icol1][sField] = DBNull.Value;
+            else if (double.TryParse(tb, out dtmp)) _objectsService.RNDHome.dtF.Rows[icol1][sField] = dtmp;
+            else { 
+              //  MessageBox.Show("Improper Value. New Value is not accepted.");
+                tb = stmp0; }
 
-        //    TextBox tb = gPhotoE.Columns[icol].GetCellContent(dgr) as TextBox;
-        //    if (tb.Text == string.Empty) _objectsService.RNDHome.dtF.Rows[icol1][sField] = DBNull.Value;
-        //    else if (double.TryParse(tb.Text, out dtmp)) _objectsService.RNDHome.dtF.Rows[icol1][sField] = dtmp;
-        //    else { 
-        //      //  MessageBox.Show("Improper Value. New Value is not accepted.");
-        //        tb.Text = stmp0; }
+            _objectsService.RNDHome.UpdateFormulatiions();
+            return new JsonResult(true);
+        }
 
-        //    _objectsService.RNDHome.UpdateFormulatiions();
-
-        //}
-
-        //private void gDataFile_DblClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        //public IActionResult OnPostgDataFile_DblClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         //{
 
         //    string sdum, strMsg, sFile;
@@ -176,8 +193,8 @@ namespace IntugentWebApp.Pages.RnD_Users
 
         //    //            MessageBox.Show(irow.ToString() + "    " + icol.ToString());
 
-        //    if (gDataFileCol == 0) return;
-        //    if (gDataFileRow < 0 || gDataFileRow > 2) return;
+        //    if (gDataFileCol == 0) return new JsonResult(true);
+        //    if (gDataFileRow < 0 || gDataFileRow > 2) return new JsonResult(true);
 
         //    sFile = _objectsService.RNDProperties.dtDataFiles.Rows[gDataFileRow][gDataFileCol].ToString();
 
@@ -190,15 +207,15 @@ namespace IntugentWebApp.Pages.RnD_Users
 
         //    openFileDialog1.InitialDirectory = Path.GetDirectoryName(sFile);
 
-        //    if (openFileDialog1.ShowDialog() == false) return;
+        //    if (openFileDialog1.ShowDialog() == false) return new JsonResult(true);
 
         //    sFile = openFileDialog1.FileName;
 
 
         //    if (!File.Exists(sFile))
         //    {
-        //      //  MessageBox.Show("Could not find the data file " + sFile, Cbfile.sAppName, MessageBoxButton.OK, MessageBoxImage.Error);
-        //        return;
+        //        //  MessageBox.Show("Could not find the data file " + sFile, Cbfile.sAppName, MessageBoxButton.OK, MessageBoxImage.Error);
+        //        return new JsonResult(true);
         //    }
 
         //    _objectsService.RNDProperties.dtDataFiles.Rows[gDataFileRow]["sFile" + (gDataFileCol).ToString()] = sFile;
@@ -211,90 +228,93 @@ namespace IntugentWebApp.Pages.RnD_Users
         //        case 2: _objectsService.RNDHome.dtF.Rows[gDataFileCol - 1]["sFileFoamat"] = sFile; break;
         //    }
         //    _objectsService.RNDHome.UpdateFormulatiions();
+        //    return new JsonResult(true);
         //}
 
-        //private void OngDataFiles(object sender, DataGridCellEditEndingEventArgs e)
-        //{
-        //    string sMsg;
-        //    int irow = e.Row.GetIndex();
-        //    int icol = e.Column.DisplayIndex;
-        //    bool bd = false;
-        //    int icol1 = icol - 1;
+        public IActionResult OnPostOngDataFiles(string rowId, string colId, string text)
+        {
+            string sMsg;
+            int irow = Int32.Parse(rowId);
+            int icol = Int32.Parse(colId);
+            bool bd = false;
+            int icol1 = icol - 1;
 
-        //    double dtemp;
+            double dtemp;
 
-        //    DataGridRow dgr = e.Row;
+            //DataGridRow dgr = e.Row;
 
-        //    if (icol == 0) return;
-        //    if (irow > 9) return;
+            if (icol == 0) return new JsonResult(true);
+            if (irow > 9) return new JsonResult(true);
 
-        //    TextBox tb = gPhotoE.Columns[icol].GetCellContent(dgr) as TextBox;
+            //TextBox tb = gPhotoE.Columns[icol].GetCellContent(dgr) as TextBox;
+            string tb = text;
+            //                dtDensityE.Rows[irow][icol] = dtemp;
 
-        //    //                dtDensityE.Rows[irow][icol] = dtemp;
+            switch (irow)
+            {
+                case 0: if (tb == string.Empty) _objectsService.RNDHome.dtF.Rows[icol1]["sFileFTIR"] = DBNull.Value; else _objectsService.RNDHome.dtF.Rows[icol1]["sFileFTIR"] = tb; break;
+                case 1: if (tb == string.Empty) _objectsService.RNDHome.dtF.Rows[icol1]["sFileTGA"] = DBNull.Value; else _objectsService.RNDHome.dtF.Rows[icol1]["sFileTGA"] = tb; break;
+                case 2: if (tb == string.Empty) _objectsService.RNDHome.dtF.Rows[icol1]["sFileFoamat"] = DBNull.Value; else _objectsService.RNDHome.dtF.Rows[icol1]["sFileFoamat"] = tb; break;
 
-        //    switch (irow)
-        //    {
-        //        case 0: if (tb.Text == string.Empty) _objectsService.RNDHome.dtF.Rows[icol1]["sFileFTIR"] = DBNull.Value; else _objectsService.RNDHome.dtF.Rows[icol1]["sFileFTIR"] = tb.Text; break;
-        //        case 1: if (tb.Text == string.Empty) _objectsService.RNDHome.dtF.Rows[icol1]["sFileTGA"] = DBNull.Value; else _objectsService.RNDHome.dtF.Rows[icol1]["sFileTGA"] = tb.Text; break;
-        //        case 2: if (tb.Text == string.Empty) _objectsService.RNDHome.dtF.Rows[icol1]["sFileFoamat"] = DBNull.Value; else _objectsService.RNDHome.dtF.Rows[icol1]["sFileFoamat"] = tb.Text; break;
+            }
 
-        //    }
+            _objectsService.RNDHome.UpdateFormulatiions();
+            return new JsonResult(true);
+        }
 
-        //    _objectsService.RNDHome.UpdateFormulatiions();
+        public IActionResult OnPostOngNotes(string rowId, string colId, string text)
+        {
+            string sMsg;
+            int irow = Int32.Parse(rowId);
+            int icol = Int32.Parse(colId);
 
-        //}
+            int iSel;
+            double dtemp;
 
-        //private void OngNotes(object sender, DataGridCellEditEndingEventArgs e)
-        //{
-        //    string sMsg;
-        //    int irow = e.Row.GetIndex();
-        //    int icol = e.Column.DisplayIndex;
+            //DataGridRow dgr = e.Row;
 
-        //    int iSel;
-        //    double dtemp;
+            if (irow > 9) return new JsonResult(true);
+            if (icol == 0) return new JsonResult(true);
+            if (icol == 1)
+            {
+                //TextBox tb = gPhotoE.Columns[icol].GetCellContent(dgr) as TextBox;
+                string tb = text;
+                if (tb == null) _objectsService.RNDHome.dtF.Rows[irow]["sNote"] = DBNull.Value;
+                else if (tb.Length > 255) _objectsService.RNDHome.dtF.Rows[irow]["sNote"] = tb.Substring(0, 255);
+                else _objectsService.RNDHome.dtF.Rows[irow]["sNote"] = tb;
+            }
+            _objectsService.RNDHome.UpdateFormulatiions();
+            return new JsonResult(true);
+        }
 
-        //    DataGridRow dgr = e.Row;
+        public IActionResult OnPostGPropTestingCompLF(bool value)
+        {
+            //if (gPropTestingCompIsChecked == null) _objectsService.RNDHome.drS["PropTestingComplete"] = DBNull.Value;
+             if (value == true) _objectsService.RNDHome.drS["PropTestingComplete"] = true; else _objectsService.RNDHome.drS["PropTestingComplete"] = false;
+            _objectsService.RNDHome.UpdateDataSet();
+            return new JsonResult(true);
+        }
 
-        //    if (irow > 9) return;
-        //    if (icol == 0) return;
-        //    if (icol == 1)
-        //    {
-        //        TextBox tb = gPhotoE.Columns[icol].GetCellContent(dgr) as TextBox;
-        //        if (tb.Text == null) _objectsService.RNDHome.dtF.Rows[irow]["sNote"] = DBNull.Value;
-        //        else if (tb.Text.Length > 255) _objectsService.RNDHome.dtF.Rows[irow]["sNote"] = tb.Text.Substring(0, 255);
-        //        else _objectsService.RNDHome.dtF.Rows[irow]["sNote"] = tb.Text;
-        //    }
-        //    _objectsService.RNDHome.UpdateFormulatiions();
+        public IActionResult OnPostGProd(string rowId, string colId, string text)
+        {
+            string sMsg;
+            int irow = Int32.Parse(rowId);
+            int icol = Int32.Parse(colId);
 
-        //}
+            int iSel;
+            double dtemp;
 
-        //private void gPropTestingCompLF(object sender, RoutedEventArgs e)
-        //{
-        //    if (gPropTestingCompIsChecked == null) _objectsService.RNDHome.drS["PropTestingComplete"] = DBNull.Value;
-        //    else if (gPropTestingCompIsChecked == true) _objectsService.RNDHome.drS["PropTestingComplete"] = true; else _objectsService.RNDHome.drS["PropTestingComplete"] = false;
-        //    _objectsService.RNDHome.UpdateDataSet();
-        //}
+            //DataGridRow dgr = e.Row;
 
-        //private void OngProd(object sender, DataGridCellEditEndingEventArgs e)
-        //{
-        //    string sMsg;
-        //    int irow = e.Row.GetIndex();
-        //    int icol = e.Column.DisplayIndex;
-
-        //    int iSel;
-        //    double dtemp;
-
-        //    DataGridRow dgr = e.Row;
-
-        //    if (icol == 0) return;
-        //    if (icol == 1)
-        //    {
-        //        ComboBox cmb = gProd.Columns[1].GetCellContent(dgr) as ComboBox;
-        //        if (cmb.SelectedValue == null) _objectsService.RNDHome.dtF.Rows[irow]["Product Code"] = DBNull.Value; else _objectsService.RNDHome.dtF.Rows[irow]["Product Code"] = cmb.SelectedValue.ToString();
-        //    }
-        //    _objectsService.RNDHome.UpdateFormulatiions();
-
-        //}
+            if (icol == 0) return new JsonResult(true);
+            if (icol == 1)
+            {
+                //ComboBox cmb = gProd.Columns[1].GetCellContent(dgr) as ComboBox;
+                if (text == null) _objectsService.RNDHome.dtF.Rows[irow]["Product Code"] = DBNull.Value; else _objectsService.RNDHome.dtF.Rows[irow]["Product Code"] = text.ToString();
+            }
+            _objectsService.RNDHome.UpdateFormulatiions();
+            return new JsonResult(true);
+        }
 
     }
 }

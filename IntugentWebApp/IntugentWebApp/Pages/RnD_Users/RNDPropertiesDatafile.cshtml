@@ -15,7 +15,7 @@
 <div class="row">
     <div class="col-8 row" >
         <!-- Reactivity Data -->
-        <div class="row " style="height:300px;">
+        <div class="row " style="min-min-height:300px;">
         <div class="card card-default col-8">
             <div class="card-header align-items-center">
                 <h2 class="">Reactivity Data</h2>
@@ -26,7 +26,7 @@
                 <table class="table table-sm table-bordered table-hover table-striped table-responsive-md">
                     <thead class="thead-light">
                         <tr>
-                            <th scope="col">Bind Gas Name Here</th>
+                            <th scope="col">Property</th>
                             <th scope="col">#1</th>
                             <th scope="col">#2</th>
                             <th scope="col">#3</th>
@@ -38,19 +38,22 @@
                         </tr>
                     </thead>
                     <tbody>
-                            @foreach (DataRow row in Model.gReacE)
+                        @{int rowIndex3=0;}
+                            @foreach (DataRowView row in Model.gReacE)
                             {
-                                <tr>
-                                    <td>@row["PropName"]</td>
-                                    <td>@row["PropE1"]</td>
-                                    <td>@row["PropE2"]</td>
-                                    <td>@row["PropE3"]</td>
-                                    <td>@row["PropE4"]</td>
-                                    <td>@row["PropE5"]</td>
-                                    <td>@row["PropE6"]</td>
-                                    <td>@row["PropE7"]</td>
-                                    <td>@row["PropE8"]</td>
+                                int[] colIndex = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
+                                <tr id="row-@rowIndex3">
+                                    <td id="CloseCellE-@rowIndex3-@colIndex[0]">@row["PropName"]</td>
+                                    <td class="td" id="gReacE-@rowIndex3-@colIndex[1]">@row["PropE1"]</td>
+                                    <td class="td" id="gReacE-@rowIndex3-@colIndex[2]">@row["PropE2"]</td>
+                                    <td class="td" id="gReacE-@rowIndex3-@colIndex[3]">@row["PropE3"]</td>
+                                    <td class="td" id="gReacE-@rowIndex3-@colIndex[4]">@row["PropE4"]</td>
+                                    <td class="td" id="gReacE-@rowIndex3-@colIndex[5]">@row["PropE5"]</td>
+                                    <td class="td" id="gReacE-@rowIndex3-@colIndex[6]">@row["PropE6"]</td>
+                                    <td class="td" id="gReacE-@rowIndex3-@colIndex[7]">@row["PropE7"]</td>
+                                    <td class="td" id="gReacE-@rowIndex3-@colIndex[8]">@row["PropE8"]</td>
                                 </tr>
+                                rowIndex3++;
                             }
                     </tbody>
                 </table>
@@ -76,7 +79,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                            @foreach (DataRow row in Model.gReacC)
+                            @foreach (DataRowView row in Model.gReacC)
                             {
                                 <tr>
                                     <td>@row["PropC1"]</td>
@@ -97,7 +100,7 @@
 
 
         <!-- FTIR, and Photoacoustic Data -->
-        <div class="row" style="height:200px;">
+        <div class="row" style="min-min-height:200px;">
             <div class="card card-default col-8">
                 <div class="card-header align-items-center">
                     <h2 class="">FTIR, and Photoacoustic Data</h2>
@@ -108,7 +111,7 @@
                     <table class="table table-sm table-bordered table-hover table-striped table-responsive-md">
                         <thead class="thead-light">
                             <tr>
-                                <th scope="col">Bind Gas Name Here</th>
+                                <th scope="col">Property</th>
                                 <th scope="col">#1</th>
                                 <th scope="col">#2</th>
                                 <th scope="col">#3</th>
@@ -120,19 +123,24 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (DataRow row in Model.gPhotoE)
+                            @{
+                                int rowIndex1 = 0;
+                            }
+                            @foreach (DataRowView row in Model.gPhotoE)
                             {
-                                <tr>
-                                    <td>@row["PropName"]</td>
-                                    <td>@row["PropE1"]</td>
-                                    <td>@row["PropE2"]</td>
-                                    <td>@row["PropE3"]</td>
-                                    <td>@row["PropE4"]</td>
-                                    <td>@row["PropE5"]</td>
-                                    <td>@row["PropE6"]</td>
-                                    <td>@row["PropE7"]</td>
-                                    <td>@row["PropE8"]</td>
+                                int[] colIndex = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
+                                <tr id="row-@rowIndex1">
+                                    <td id="Photo-@rowIndex1-@colIndex[0]">@row["PropName"]</td>
+                                    <td class="td" id="Photo-@rowIndex1-@colIndex[1]">@row["PropE1"]</td>
+                                    <td class="td" id="Photo-@rowIndex1-@colIndex[2]">@row["PropE2"]</td>
+                                    <td class="td" id="Photo-@rowIndex1-@colIndex[3]">@row["PropE3"]</td>
+                                    <td class="td" id="Photo-@rowIndex1-@colIndex[4]">@row["PropE4"]</td>
+                                    <td class="td" id="Photo-@rowIndex1-@colIndex[5]">@row["PropE5"]</td>
+                                    <td class="td" id="Photo-@rowIndex1-@colIndex[6]">@row["PropE6"]</td>
+                                    <td class="td" id="Photo-@rowIndex1-@colIndex[7]">@row["PropE7"]</td>
+                                    <td class="td" id="Photo-@rowIndex1-@colIndex[8]">@row["PropE8"]</td>
                                 </tr>
+                                rowIndex1++;
                             }
                         </tbody>
                     </table>
@@ -158,7 +166,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (DataRow row in Model.gPhotoC)
+                            @foreach (DataRowView row in Model.gPhotoC)
                             {
                                 <tr>
                                     <td>@row["PropC1"]</td>
@@ -179,7 +187,7 @@
 
 
         <!-- Calculated Physical & Hot Plate Propertes -->
-        <div class="row" style="height:300px;">
+        <div class="row" style="min-height:300px;">
             <div class="card card-default col-8">
                 <div class="card-header align-items-center">
                     <h2 class="">Calculated Physical & Hot Plate Propertes</h2>
@@ -190,7 +198,7 @@
                     <table class="table table-sm table-bordered table-hover table-striped table-responsive-md">
                         <thead class="thead-light">
                             <tr>
-                                <th scope="col">Bind Gas Name Here</th>
+                                <th scope="col">Property</th>
                                 <th scope="col">#1</th>
                                 <th scope="col">#2</th>
                                 <th scope="col">#3</th>
@@ -202,7 +210,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (DataRow row in Model.gPropsE)
+                            @foreach (DataRowView row in Model.gPropsE)
                             {
                                 <tr>
                                     <td>@row["PropName"]</td>
@@ -240,7 +248,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (DataRow row in Model.gPropsC)
+                            @foreach (DataRowView row in Model.gPropsC)
                             {
                                 <tr>
                                     <td>@row["PropC1"]</td>
@@ -265,12 +273,12 @@
     <div class="col-4 row">
         <!-- Properties Testing Complete -->
         <div class="custom-control custom-checkbox px-8 py-8">
-            <input type="checkbox" class="custom-control-input" id="PropertiesTestingComplete" checked="@Model.gPropTestingCompIsChecked" onchange="">
+            <input type="checkbox" class="custom-control-input" id="PropertiesTestingComplete" checked="@Model.gPropTestingCompIsChecked" onchange="GCheckBox('PropTestingComplete',this)">
             <label class="custom-control-label" for="PropertiesTestingComplete">Properties Testing Complete</label>
         </div>
      
         <!-- Commercial / Experimental Designation -->
-        <div class="row" style="height:300px;">
+        <div class="row" style="min-height:300px;">
             <div class="card card-default col-12">
                 <div class="card-header align-items-center">
                     <h2 class="">Commercial / Experimental Designation</h2>
@@ -285,15 +293,29 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (DataRow row in Model.gProd)
+                            @{
+                                int rowIndex = 0;
+                            }
+                            @foreach (DataRowView row in Model.gProd)
                             {
-
-                            <tr>
-                            <td>@row["Form#"]</td>
-                             <td>@row["sProdName"]</td>
-                            </tr>
-
-                            } 
+                                int colIndex = 1;
+                                <tr>
+                                    <td>@row["Form#"]</td>
+                                    @{
+                                        int ids = 0;
+                                    }
+                                    <td id="Products-@rowIndex-@colIndex">
+                                        <select class="form-select" id="Product" onblur="OnGProd(@rowIndex,@colIndex, this.options[this.selectedIndex].value)">
+                                            @foreach (string box in Model.gProdList)
+                                            {
+                                                <option id="@ids" value="@box" selected="@(row["sProdName"].ToString()==box)">@box</option>
+                                                ids++;
+                                            }
+                                        </select>
+                                    </td>
+                                </tr>
+                                rowIndex++;
+                            }
                         </tbody>
                     </table>
                 </div>
@@ -302,7 +324,7 @@
         </div>
      
         <!--Formulation Specific Notes (255 characters max) -->
-        <div class="row" style="height:300px;">
+        <div class="row" style="min-height:300px;">
             <div class="card card-default col-12">
                 <div class="card-header align-items-center">
                     <h2 class="">Formulation Specific Notes (255 characters max)</h2>
@@ -317,14 +339,16 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (DataRow row in Model.gNotes)
+                            @{int rowIndex4=0;}
+                            @foreach (DataRowView row in Model.gNotes)
                             {
+                                int colIndex = 1;
 
                             <tr>
                             <td>@row["Form#"]</td>
-                            <td>@row["sNote"]</td>
+                             <td class="td" id="Notes-@rowIndex4-@colIndex">@row["sNote"]</td>
                             </tr>
-
+                             rowIndex4++;
                             } 
                         </tbody>
                     </table>
@@ -336,7 +360,7 @@
     </div>
    
     <!-- Foamat & Other Data Files  (*** Enter or paste the file path in the cell ***) -->
-    <div class="row" style="height:150px;">
+    <div class="row" style="min-height:150px;">
         <div class="card card-default col-12">
             <div class="card-header align-items-center">
                 <h2 class="">Foamat & Other Data Files  (*** Enter or paste the file path in the cell ***)</h2>
@@ -358,21 +382,24 @@
                         </tr>
                     </thead>
                     <tbody>
-                             @foreach (DataRow row in Model.gDataFiles)
+                        @{
+                            int rowIndex5 = 0;
+                        }
+                        @foreach (DataRowView row in Model.gDataFiles)
                         {
-
+                            int[] colIndex = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
                         <tr>
-                                <td>@row["sDataFileType"]</td>
-                                <td>@row["sFile1"]</td>
-                                <td>@row["sFile2"]</td>
-                                <td>@row["sFile3"]</td>
-                                <td>@row["sFile4"]</td>
-                                <td>@row["sFile5"]</td>
-                                <td>@row["sFile6"]</td>
-                                <td>@row["sFile7"]</td>
-                                <td>@row["sFile8"]</td>
-                        </tr>
-
+                                <td id="DataFiles--@rowIndex5--@colIndex[0]">@row["sDataFileType"]</td>
+                                <td class="td" id="DataFiles-@rowIndex5-@colIndex[1]">@row["sFile1"]</td>
+                                <td class="td" id="DataFiles-@rowIndex5-@colIndex[2]">@row["sFile2"]</td>
+                                <td class="td" id="DataFiles-@rowIndex5-@colIndex[3]">@row["sFile3"]</td>
+                                <td class="td" id="DataFiles-@rowIndex5-@colIndex[4]">@row["sFile4"]</td>
+                                <td class="td" id="DataFiles-@rowIndex5-@colIndex[5]">@row["sFile5"]</td>
+                                <td class="td" id="DataFiles-@rowIndex5-@colIndex[6]">@row["sFile6"]</td>
+                                <td class="td" id="DataFiles-@rowIndex5-@colIndex[7]">@row["sFile7"]</td>
+                                <td class="td" id="DataFiles-@rowIndex5-@colIndex[8]">@row["sFile8"]</td>
+                            </tr>
+                            rowIndex5++;
                         } 
                     </tbody>
                 </table>
@@ -382,3 +409,168 @@
     </div>
 
 </div>
+@section Scripts{
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            $(function () {
+                $(".td").click(function (event) {
+                    if ($(this).children("input").length > 0)
+                        return false;
+
+                    var tdObj = $(this);
+                    var preText = tdObj.html();
+                    var inputObj = $("<input type='text' />");
+                    tdObj.html("");
+
+                    inputObj.width(tdObj.width())
+                        .height(tdObj.height())
+                        .css({ border: "0px", fontSize: "13px" })
+                        .val(preText)
+                        .appendTo(tdObj)
+                        .trigger("focus")
+                        .trigger("select");
+
+                    inputObj.keyup(function (event) {
+                        if (13 == event.which) { // press ENTER-key
+                            var text = $(this).val();
+                            tdObj.html(text);
+                        }
+                        else if (27 == event.which) {  // press ESC-key
+                            tdObj.html(preText);
+                        }
+                    });
+
+                    inputObj.click(function () {
+                        return false;
+                    });
+                    inputObj.blur(function () {
+                        var text = $(this).val();
+                        tdObj.html(text);
+
+                        var cellId = tdObj.attr("id");
+                        var ids = cellId.split("-");
+                        var table = ids[0];
+                        var rowId = ids[1];
+                        var colId = ids[2];
+                        if (table == "gReacE") {
+                        OnGReacE(rowId, colId, text);
+                        }
+                        else if (table == "Photo") {
+                            OngPhotoE(rowId, colId, text);
+                        }
+                        else if (table == "Notes") {
+                            OngNotes(rowId, colId, text);
+                        }
+                        else if (table == "DataFiles") {
+                            OngFiles(rowId, colId, text);
+                        }
+                    });
+                });
+            });
+        });
+
+        function OnGReacE(rowId, colId, text) {
+            // console.log("Row ID: " + rowId + ", Column ID: " + colId + ", New Value: " + text);
+            $.ajax({
+                type: "POST",
+                url: "/RnD_Users/RNDPropertiesDatafile?handler=GReacE",
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                data: { rowId: rowId, colId: colId, text: text },
+                success: function (response) {
+                    console.log('Server response:', response);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+        function OnGProd(rowId, colId, text) {
+            // console.log("Row ID: " + rowId + ", Column ID: " + colId + ", New Value: " + text);
+            $.ajax({
+                type: "POST",
+                url: "/RnD_Users/RNDPropertiesDatafile?handler=GProd",
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                data: { rowId: rowId, colId: colId, text: text },
+                success: function (response) {
+                    console.log('Server response:', response);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+        function OngPhotoE(rowId, colId, text) {
+            // console.log("Row ID: " + rowId + ", Column ID: " + colId + ", New Value: " + text);
+            $.ajax({
+                type: "POST",
+                url: "/RnD_Users/RNDPropertiesDatafile?handler=OngPhotoE",
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                data: { rowId: rowId, colId: colId, text: text },
+                success: function (response) {
+                    console.log('Server response:', response);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+
+        function OngNotes(rowId, colId, text) {
+            // console.log("Row ID: " + rowId + ", Column ID: " + colId + ", New Value: " + text);
+            $.ajax({
+                type: "POST",
+                url: "/RnD_Users/RNDPropertiesDatafile?handler=OngNotes",
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                data: { rowId: rowId, colId: colId, text: text },
+                success: function (response) {
+                    console.log('Server response:', response);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+        
+        function OngFiles(rowId, colId, text) {
+            // console.log("Row ID: " + rowId + ", Column ID: " + colId + ", New Value: " + text);
+            $.ajax({
+                type: "POST",
+                url: "/RnD_Users/RNDPropertiesDatafile?handler=OngDataFiles",
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                data: { rowId: rowId, colId: colId, text: text },
+                success: function (response) {
+                    console.log('Server response:', response);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+
+        function GCheckBox(Name, element) {
+            let value;
+
+            if (element.type === "checkbox") {
+                value = element.checked ? "true" : "false";
+            } else {
+                value = element.value;
+            }
+            GPropTestingCompLF(value);
+        }
+        function GPropTestingCompLF(value) {
+            $.ajax({
+                type: "POST",
+                url: "/RnD_Users/RNDPropertiesDatafile?handler=GPropTestingCompLF",
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                data: { value: value },
+                success: function (response) {
+                    console.log('Server response:', response);
+                    // location.reload();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+    </script>
+}

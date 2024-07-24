@@ -17,7 +17,7 @@ namespace IntugentWebApp.Pages.Mfg_Group
         }
         public void OnGet()
         {
-            gReportDate = new DateTime(2023, 5, 10);
+            gReportDate = DateTime.Now;
             //gReportDate= DateTime.Now;
             _objectsService.MfgReport.MfgReport(gReportDate);
             gReport = _objectsService.MfgReport.dt.DefaultView;
@@ -28,7 +28,20 @@ namespace IntugentWebApp.Pages.Mfg_Group
             if (!_objectsService.MfgReport.binit) _objectsService.MfgReport.MfgReport(value);
             _objectsService.MfgReport.binit = false;
             gReport = _objectsService.MfgReport.dt.DefaultView;
-            return new JsonResult(new { message = value});
+            var dataTable = _objectsService.MfgReport.dt;
+            var rows = new List<Dictionary<string, object>>();
+
+            foreach (DataRow row in dataTable.Rows)
+            {
+                var rowDict = new Dictionary<string, object>();
+                foreach (DataColumn column in dataTable.Columns)
+                {
+                    rowDict[column.ColumnName] = row[column];
+                }
+                rows.Add(rowDict);
+            }
+
+            return new JsonResult(rows);
         }
     }
 }

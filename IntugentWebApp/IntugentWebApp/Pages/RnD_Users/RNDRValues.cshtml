@@ -23,33 +23,33 @@
             <div class="card-body">
                 <!-- gMeasureTemp -->
                 <div class="form-floating mb-2">
-                    <input type="number" class="form-control text-center" id="gMeasureTemp" placeholder="" value="@Model.gMeasureTemp" onblur="">
+                    <input type="number" class="form-control text-center" id="gMeasureTemp" placeholder="" value="@Model.gMeasureTemp" onblur="LostFocus('gMeasureTemp',this.value)">
                     <label for="gMeasureTemp">Measuring Temperature (°F)</label>
                 </div>
                 <!-- Average Cell Size (microns) -->
                 <div class="form-floating mb-2">
-                    <input type="number" class="form-control text-center" id="gCellSize" placeholder="" value="@Model.gCellSize" onblur="">
+                    <input type="number" class="form-control text-center" id="gCellSize" placeholder="" value="@Model.gCellSize" onblur="LostFocus('gCellSize',this.value)">
                     <label for="gCellSize">Average Cell Size (microns)</label>
                 </div>
                 <!-- gCellPress -->
                 <div class="form-floating mb-2">
-                    <input type="number" class="form-control text-center" id="gCellPress" placeholder="" value="@Model.gCellPress" onblur="">
+                    <input type="number" class="form-control text-center" id="gCellPress" placeholder="" value="@Model.gCellPress" onblur="LostFocus('gCellPress',this.value)">
                     <label for="gCellPress">Initial Cell Pressure (atm)</label>
                 </div>
                 <!-- Polymer Density (lb/ft3³) -->
                 <div class="form-floating mb-2">
-                    <input type="number" class="form-control text-center" id="gPolDen" placeholder="" value="@Model.gPolDen" onblur="">
+                    <input type="number" class="form-control text-center" id="gPolDen" placeholder="" value="@Model.gPolDen" onblur="LostFocus('gPolDen',this.value)">
                     <label for="gPolDen">Polymer Density (lb/ft3³)</label>
                 </div>
                 <div class="form-floating col-12 ">
-                <button type="button" onclick="" class="btn btn-primary btn-sm">Set Default Values</button>
+                    <button type="button" onclick="Click_ExportData()" class="btn btn-primary btn-sm">Set Default Values</button>
                 </div>
             </div>
         </div>
     </div>
     <div class="col-8">
         <!-- R  Values and Cell Gas Composition -->
-        <div class="card card-default" style="height:300px;">
+        <div class="card card-default" style="min-height:300px;">
             <div class="card-header align-items-center">
                 <h2 class="">R  Values and Cell Gas Composition</h2>
             </div>
@@ -57,7 +57,7 @@
                 <table class="table table-sm table-bordered table-hover table-striped table-responsive-md">
                     <thead class="thead-light">
                         <tr>
-                            <th scope="col">Bind Gas Name Here</th>
+                            <th scope="col">Property</th>
                             <th scope="col">#1</th>
                             <th scope="col">#2</th>
                             <th scope="col">#3</th>
@@ -69,15 +69,20 @@
                         </tr>
                     </thead>
                     <tbody>
-                   @*      @foreach (DataRow row in Model.gChemDel.Rows)
+                        @foreach (DataRowView row in Model.gGasComp)
                         {
-
                             <tr>
-                                <td>@row["sName"]</td>
-                                <td>@row["sValue"]</td>
+                                <td>@row["GasName"]</td>
+                                <td>@row["#1"]</td>
+                                <td>@row["#2"]</td>
+                                <td>@row["#3"]</td>
+                                <td>@row["#4"]</td>
+                                <td>@row["#5"]</td>
+                                <td>@row["#6"]</td>
+                                <td>@row["#7"]</td>
+                                <td>@row["#8"]</td>
                             </tr>
-
-                        } *@
+                        } 
                     </tbody>
                 </table>
             </div>
@@ -92,26 +97,24 @@
                 <h2 class=""> Initial R Value Analyses</h2>
             </div>
             <div class="card-body">
-                <!-- X Axis -->
-                <div class="form-floating mb-2">
-                    <select class="form-select" id="XAxis">
-                        @*       @foreach (DataRowView row in Model.gProd1)
-                        {
-                        <option value="@row["Product"]" selected="@(Model.gProd1SelectedValue == (row["Product Code"].ToString()))">@row["Product"]</option>
-                        }   *@
-                    </select>
-                    <label for="XAxis">X Axis</label>
-                </div>
-                <!-- Y Axis -->
-                <div class="form-floating mb-2">
-                    <select class="form-select" id="YAxis">
-                        @*       @foreach (DataRowView row in Model.gProd1)
-                        {
-                        <option value="@row["Product"]" selected="@(Model.gProd1SelectedValue == (row["Product Code"].ToString()))">@row["Product"]</option>
-                        }   *@
-                    </select>
-                    <label for="YAxis">Y Axis</label>
-                </div>
+           <!-- X Axis -->
+<div class="form-floating mb-2">
+                    <select class="form-select" id="XAxis" onchange="gAxisSelectionChanged(this,'gXAxis')">
+        <!option id="gCell" value="CS" @(Model.gXAxisSelectedValue == "CS" ? "selected" : "")>Cell Size (Microns)</!option>
+        <!option id="gDesn" value="DE" @(Model.gXAxisSelectedValue == "DE" ? "selected" : "")>Density (kg/m&#x00B3;)</!option>
+        <!option id="gTemp" value="TE" @(Model.gXAxisSelectedValue == "TE" ? "selected" : "")>Temperature (°F)</!option>
+    </select>
+    <label for="XAxis">X Axis</label>
+</div>
+
+<!-- Y Axis -->
+<div class="form-floating mb-2">
+                    <select class="form-select" id="YAxis" onchange="gAxisSelectionChanged(this,'gYAxis')">
+        <!option id="gKValue" value="KV" @(Model.gYAxisSelectedValue == "KV" ? "selected='selected'" : "")>K-Value, Conductivity (mW/m-K)</!option>
+        <!option id="gRValue" value="RV" @(Model.gYAxisSelectedValue == "RV" ? "selected='selected'" : "")>R-Value, Resistance (ft&#x00B2;-°F-hr/Btu)</!option>
+    </select>
+    <label for="YAxis">Y Axis</label>
+</div>
                </div>
            </div>
                 @* Chart Navigation *@
@@ -124,146 +127,171 @@
           </div>
     </div>
    <div class="col-8">
-       <canvas id="charts" ></canvas>
+       <canvas id="charts"></canvas>
    </div>
 </div>
 @section Scripts{
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const ctx = document.getElementById('charts').getContext('2d');
-            // Data and options for the first chart
+
             const data1 = {
-                datasets: [{
-                    label: 'Dataset 1',
-                    // data:,
-                    backgroundColor: 'rgba(255, 0, 0, 0.6)',
-                    borderColor: 'rgba(255, 0, 0, 1)',
-                    borderWidth: 1,
-                    pointRadius: 5
-                }]
+                label: 'Dataset 1',
+                data: @Html.Raw(Json.Serialize(Model.dArX.Zip(Model.dAr0, (x, y) => new { x, y }))),
+                backgroundColor: 'rgba(255, 0, 0, 0.6)',
+                borderColor: 'rgba(255, 0, 0, 1)',
+                borderWidth: 3,
+                pointRadius: 0
             };
 
-            // Data and options for the second chart
             const data2 = {
-                datasets: [{
-                    label: 'Dataset 2',
-                    // data:,
-                    backgroundColor: 'rgba(0, 0, 255, 0.6)',
-                    borderColor: 'rgba(0, 0, 255, 1)',
-                    borderWidth: 1,
-                    pointRadius: 5
-                }]
+                label: 'Dataset 2',
+                data: @Html.Raw(Json.Serialize(Model.dArX.Zip(Model.dAr1, (x, y) => new { x, y }))),
+                backgroundColor: 'rgba(0, 0, 255, 0.6)',
+                borderColor: 'rgba(0, 0, 255, 1)',
+                borderWidth: 3,
+                pointRadius: 0
             };
 
             const data3 = {
-                datasets: [{
-                    label: 'Dataset 3',
-                    // data:,
-                    backgroundColor: 'rgba(0, 255, 0, 0.6)',
-                    borderColor: 'rgba(0, 255, 0, 1)',
-                    borderWidth: 1,
-                    pointRadius: 5
-                }]
+                label: 'Dataset 3',
+                data: @Html.Raw(Json.Serialize(Model.dArX.Zip(Model.dAr2, (x, y) => new { x, y }))),
+                backgroundColor: 'rgba(0, 255, 0, 0.6)',
+                borderColor: 'rgba(0, 255, 0, 1)',
+                borderWidth: 3,
+                pointRadius: 0
             };
 
             const data4 = {
-                datasets: [{
-                    label: 'Dataset 3',
-                    // data:,
-                    backgroundColor: 'rgba(255, 255, 0, 0.6)',
-                    borderColor: 'rgba(255, 255, 0, 1)',
-                    borderWidth: 1,
-                    pointRadius: 5
-                }]
+                label: 'Dataset 4',
+                data: @Html.Raw(Json.Serialize(Model.dArX.Zip(Model.dAr3, (x, y) => new { x, y }))),
+                backgroundColor: 'rgba(255, 255, 0, 0.6)',
+                borderColor: 'rgba(255, 255, 0, 1)',
+                borderWidth: 3,
+                pointRadius: 0
             };
+
             const data5 = {
-                datasets: [{
-                    label: 'Dataset 1',
-                    // data:,
-                    backgroundColor: 'rgba(255, 0, 0, 0.6)',
-                    borderColor: 'rgba(255, 0, 0, 1)',
-                    borderWidth: 1,
-                    pointRadius: 5
-                }]
+                label: 'Dataset 5',
+                data: @Html.Raw(Json.Serialize(Model.dArX.Zip(Model.dAr4, (x, y) => new { x, y }))),
+                backgroundColor: 'rgba(255, 0, 0, 0.6)',
+                borderColor: 'rgba(255, 0, 0, 1)',
+                borderWidth: 3,
+                pointRadius: 0
             };
 
-            // Data and options for the second chart
-            const data6 = {
-                datasets: [{
-                    label: 'Dataset 2',
-                    // data:,
-                    backgroundColor: 'rgba(0, 0, 255, 0.6)',
-                    borderColor: 'rgba(0, 0, 255, 1)',
-                    borderWidth: 1,
-                    pointRadius: 5
-                }]
-            };
-
-            const data7 = {
-                datasets: [{
-                    label: 'Dataset 3',
-                    // data:,
-                    backgroundColor: 'rgba(0, 255, 0, 0.6)',
-                    borderColor: 'rgba(0, 255, 0, 1)',
-                    borderWidth: 1,
-                    pointRadius: 5
-                }]
-            };
-
-            const data8 = {
-                datasets: [{
-                    label: 'Dataset 3',
-                    // data:,
-                    backgroundColor: 'rgba(255, 255, 0, 0.6)',
-                    borderColor: 'rgba(255, 255, 0, 1)',
-                    borderWidth: 1,
-                    pointRadius: 5
-                }]
-            };
-            // Common options for both charts
-            const options = {
-                scales: {
-                    x: {
-                        type: 'linear',
-                        position: 'bottom',
-                        title: {
-                            display: true,
-                            text: `Temperature (F)`,
-                        }
-                    },
-                    y: {
-                        title: {
-                            display: true,
-                            text: `R / n value`,
-                        }
-                    }
-                },
-                plugins: {
-                    legend: {
-                        display: true
-                    }
-                }
-            };
-           
-            // Create the first chart
-            // Chart configuration
             const config = {
                 type: 'line',
                 data: {
-                    datasets: [data1, data2, data3, data4, data5, data6, data7, data8]
+                    datasets: [data1, data2, data3, data4, data5]
                 },
                 options: {
-                    pointRadius: 0,
                     responsive: true,
                     scales: {
                         x: {
                             type: 'linear',
-                            position: 'bottom'
+                            position: 'bottom',
+                            title: {
+                                display: true,
+                                text: 'Temperature (F)',
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'R / n value',
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true
+                        },
+                        zoom: {
+                            pan: {
+                                enabled: true,
+                                mode: 'xy',
+                            },
+                            zoom: {
+                                enabled: true,
+                                mode: 'xy',
+                                wheel: {
+                                    enabled: true,
+                                },
+                                pinch: {
+                                    enabled: true
+                                }
+                            }
                         }
                     }
                 }
             };
-            new Chart(ctx, config);
+
+            const myChart = new Chart(ctx, config);
+
+            document.getElementById('charts').addEventListener('dblclick', () => {
+                myChart.resetZoom();
+            });
         });
+        function gAxisSelectionChanged(selectElement, name) {
+            const axisValue = selectElement.value;
+            const axisName = name;
+            const selectedItem = selectElement.options[selectElement.selectedIndex];
+
+            const selectedId = selectedItem.id; 
+
+            AxisChanged(axisName, axisValue, selectedId);
+        }
+        
+        function LostFocus(Name, Value) {
+            $.ajax({
+                type: "POST",
+                url: "/RnD_Users/RNDRValues?handler=LostFocus_Fields",
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                data: { Name: Name, Value: Value },
+                success: function (response) {
+                    //console.log('Server response:', response);
+                      location.reload();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+        function AxisChanged(Name, value,item) {
+             console.log('Input values - Name:', Name, 'Value:', value, 'Item', item);
+            // var form = $('#SearchParamsForm');
+
+            $.ajax({
+                type: "POST",
+                url: "/RnD_Users/RNDRValues?handler=GAxis_SelectionChanged",
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                data: { Name: Name, value: value, item: item },
+                success: function (response) {
+                    //console.log('Server response:', response);
+                    location.reload();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+        function Click_ExportData() {
+            //  console.log('Input values - Name:', Name, 'Value:', Value);
+            // var form = $('#SearchParamsForm');
+
+            $.ajax({
+                type: "POST",
+                url: "/RnD_Users/RNDRValues?handler=ExportData",
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                success: function (response) {
+                   console.log('Server response:', response);
+                   // location.reload();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
     </script>
 }

@@ -1,6 +1,7 @@
 using IntugentClassLbrary.Classes;
 using IntugentClassLbrary.Pages;
 using IntugentClassLibrary.Classes;
+using IntugentClassLibrary.Pages.Admins;
 using IntugentClassLibrary.Pages.Mfg;
 using IntugentClassLibrary.Pages.Rnd;
 using IntugentClassLibrary.Utilities;
@@ -35,6 +36,20 @@ namespace IntugentWebApp.Pages
             if (_objectsService.CDefualts != null && _objectsService.CLists != null && _objectsService.Cbfile != null)
             {
                 SetOptionBoxes(_objectsService.CDefualts, _objectsService.CLists);
+                cMatrix cMatrix = new cMatrix();
+                _objectsService.cMatrix = cMatrix;
+                
+                CDBase cDBase = new CDBase(_objectsService.Cbfile);
+               _objectsService.CDBase = cDBase;
+
+              
+                CNNData cNNData=new CNNData(_objectsService.Cbfile);
+                _objectsService.CNNData=cNNData;
+
+                CNNModel cNNModel = new CNNModel(_objectsService.CNNData);
+                _objectsService.CNNModel = cNNModel;
+             
+
 
                 CAnalysisData cAnalysis = new CAnalysisData(_objectsService.Cbfile, _objectsService.CDefualts);
                 _objectsService.CAnalysisData1 = cAnalysis;
@@ -80,6 +95,12 @@ namespace IntugentWebApp.Pages
                 
                 RNDTDRV rNDTDRV = new RNDTDRV();
                 _objectsService.RNDTDRV = rNDTDRV;
+
+                MfgAdmin mfgAdmin = new MfgAdmin(_objectsService.Cbfile);
+                _objectsService.MfgAdmin= mfgAdmin;
+
+                AIModel aIModel = new AIModel();
+                _objectsService.AIModel= aIModel;
             }
 
 

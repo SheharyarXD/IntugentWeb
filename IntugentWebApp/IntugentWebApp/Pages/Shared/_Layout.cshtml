@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>IntugetnPI - IntugentWebApp</title>
+    <title>IntugentPI - IntugentWebApp</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/IntugentWebApp.styles.css" asp-append-version="true" />
@@ -45,7 +45,7 @@
                           sidebar - MFG GROUP
                         ===================================== -->
 
-                     @*    <li class="section-title">
+                        <li class="section-title">
                             MFG Pages
                         </li>
                         <li class="@(activePage == "Mfg. Home" ? "active" : "")">
@@ -97,7 +97,7 @@
                                 <i class="mdi mdi-book-open-page-variant"></i>
                                 <span class="nav-text">Mfg Reports</span>
                             </a>
-                        </li> *@
+                        </li>  
                         <!-- ====================================
                           sidebar - MFG GROUP - END
                         ===================================== -->
@@ -105,7 +105,7 @@
                           sidebar - RND GROUP
                         ===================================== -->
 
-                        <li class="section-title">
+               @*          <li class="section-title">
                             R&D Pages
                         </li>
                         <li class="@(activePage == "R&D Home Page" ? "active" : "")">
@@ -148,10 +148,49 @@
                                 <i class="mdi mdi-camera-timer"></i>
                                 <span class="nav-text">TDRV</span>
                             </a>
-                        </li>
+                        </li>  *@
 
                         <!-- ====================================
                           sidebar - RND Users GROUP - END
+                        ===================================== -->
+
+                        <!-- ====================================
+                          sidebar - Admins GROUP
+                        ===================================== -->
+@*                            <li class="section-title">
+                        Admin Pages
+                        </li>
+
+                        <li class="@(activePage == "Mfg Admin" ? "active" : "")">
+                            <a class="sidenav-item-link" href="/Admin_Group/AdminMfg">
+                                <i class="mdi mdi-account"></i>
+                                <span class="nav-text">Mfg Admin</span>
+                            </a>
+                        </li>
+
+                        <li class="@(activePage == "Admin Home Page" ? "active" : "")">
+                            <a class="sidenav-item-link" href="/Admin_Group/AIHome">
+                        <i class="mdi mdi-home"></i>
+                        <span class="nav-text">AI Home Page</span>
+                        </a>
+                        </li>
+
+                        <li class="@(activePage == "AI Data Analysis" ? "active" : "")">
+                            <a class="sidenav-item-link" href="/Admin_Group/AIAnalysis">
+                        <i class="mdi mdi-remote"></i>
+                                <span class="nav-text">AI Data Analysis</span>
+                        </a>
+                        </li>
+
+                        <li class="@(activePage == "AI Model" ? "active" : "")">
+                            <a class="sidenav-item-link" href="/Admin_Group/AIModel">
+                        <i class="mdi mdi-kodi"></i>
+                                <span class="nav-text">AI Model</span>
+                        </a>
+                        </li> *@
+
+                        <!-- ====================================
+                          sidebar - Admins GROUP - END
                         ===================================== -->
 
                         <li class="section-title">
@@ -166,7 +205,7 @@
                         </li>
                         <li class="@(activePage == "Mfg Analysis-2 Page" ? "active" : "")">
                             <a class="sidenav-item-link" href="/Analysis/Analysis2">
-                                <i class="mdi mdi-chart-line"></i>
+                                <i class="mdi mdi-chart-bell-curve"></i>
                                 <span class="nav-text">Mfg. Analysis - 2</span>
                             </a>
                         </li>
@@ -251,7 +290,7 @@
     <script src="~/js/mono.js"></script>
     <script src="~/js/custom.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@latest"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

@@ -78,9 +78,10 @@ namespace IntugentWebApp.Pages.RnD_Users
             //gChemistSelectedValue = 24;
             //gOperator = _objectsService.CLists.dvEmployeesRND;
             //gOperatorSelectedValue = 28; 
-            //_objectsService.RNDHome.GetNewDataset();
+            _objectsService.RNDHome.GetDataSet();
           
-            gRNDSearchSelectedIndex = _objectsService.RNDHome.indSet;
+            //gRNDSearchSelectedIndex = _objectsService.RNDHome.indSet;
+            gRNDSearchSelectedIndex = _objectsService.RNDHome.IdSet;
             if (gRNDSearchSelectedIndex >= 0)
                 //   gRNDSearch.ScrollIntoView(gRNDSearch.Items[gRNDSearchSelectedIndex]);
 
@@ -99,7 +100,7 @@ namespace IntugentWebApp.Pages.RnD_Users
 
         }
 
-        public IActionResult OnPostGSearchDataSets_Click()
+        public IActionResult OnPostGSearchDataSets_Click(DateTime gRndDate1, DateTime gRndDate2,string gProd1SelectedValue,string gTestStat1SelectedValue,string gStudyTypeSelectedValue,string gRNDNameSearch)
         {
 
             if (gRndDate1 == null) _objectsService.CLists.drEmployee["RndDate1"] = DBNull.Value; else _objectsService.CLists.drEmployee["RndDate1"] = gRndDate1;
@@ -179,9 +180,12 @@ namespace IntugentWebApp.Pages.RnD_Users
                 _objectsService.RNDHome.dt.Rows.InsertAt(_objectsService.RNDHome.dr, 0);
                 gRNDSearch = _objectsService.RNDHome.dt.DefaultView;
                 gRNDSearchSelectedIndex = 0;
-              //  gRNDSearch.ScrollIntoView(gRNDSearch.Items[gRNDSearchSelectedIndex]);
+               //gRNDSearch.ScrollIntoView(gRNDSearch.Items[gRNDSearchSelectedIndex]);
             }
-            return new JsonResult(true);
+            var data = _objectsService.RNDHome.dt.AsEnumerable()
+      .Select(row => row.ItemArray.Select(item => item.ToString()).ToArray())
+      .ToList();
+            return new JsonResult(data);
         }
 
         public IActionResult OnPostGSearchLF(string Name)
@@ -397,6 +401,7 @@ namespace IntugentWebApp.Pages.RnD_Users
 
         public IActionResult  OnPostGCopy_Click()
         {
+                var sData = new StringBuilder();
             DataTable dt2 = new DataTable(); string sMsg, sFile;
             int icol, irow;
           //  Mouse.OverrideCursor = Cursors.Wait;
@@ -429,12 +434,11 @@ namespace IntugentWebApp.Pages.RnD_Users
                 System.Diagnostics.Trace.TraceError(sMsg + "\n\n" + ex.Message);
               //  Mouse.OverrideCursor = null;
                // CTelClient.TelException(ex, sMsg);
-                return null;
+                return new JsonResult(false);
             }
 
             try
             {
-                var sData = new StringBuilder();
                 sData.Append(dt2.Columns[0].ColumnName.ToString());
                 for (icol = 1; icol < dt2.Columns.Count; icol++) sData.Append("\t" + dt2.Columns[icol].ColumnName.ToString());
                 for (irow = 0; irow < dt2.Rows.Count; irow++)
@@ -518,7 +522,7 @@ namespace IntugentWebApp.Pages.RnD_Users
 
             */
           //  Mouse.OverrideCursor = null;
-            return new JsonResult(new {Message= true});
+            return new JsonResult(sData.ToString());
         }
 
         public string GetSearchCriteria()
@@ -607,7 +611,8 @@ namespace IntugentWebApp.Pages.RnD_Users
             if (_objectsService.CLists.drEmployee["RndSql"] != DBNull.Value) _objectsService.RNDHome.sqlSearchDS = (string)_objectsService.CLists.drEmployee["RndSql"];
             if (SearchRNDDB() && _objectsService.RNDHome.dt.Rows.Count > 0)
             {
-                _objectsService.RNDHome.indSet = 0; _objectsService.RNDHome.IdSet = (int)_objectsService.RNDHome.dt.Rows[0]["ID"];
+                _objectsService.RNDHome.indSet = 0;
+                _objectsService.RNDHome.IdSet = (int)_objectsService.RNDHome.dt.Rows[0]["ID"];
                 if (_objectsService.CLists.drEmployee["RndIDSelected"] != DBNull.Value)
                 {
                     idTemp = (int)_objectsService.CLists.drEmployee["RndIDSelected"];
@@ -623,34 +628,59 @@ namespace IntugentWebApp.Pages.RnD_Users
 
         public IActionResult OnPostGSelectDataSet(int gRNDSearchSelectedIndex, int gRNDSearchRowsCount, int gRNDSelectedDatasetID)
         {
-            /*_objectsService.CLists.drEmployee["MfgIDSelected"] = id;
-            CLists_UpdateEmployee.UpdateEmployee(_objectsService.CLists);*/
+            ///*_objectsService.CLists.drEmployee["MfgIDSelected"] = id;
+            //CLists_UpdateEmployee.UpdateEmployee(_objectsService.CLists);*/
 
-            if (!_objectsService.Cbfile.bCanSwitchRecord)
+            //if (!_objectsService.Cbfile.bCanSwitchRecord)
+            //{
+            //    gRNDSearchSelectedIndex = _objectsService.RNDHome.indSet;
+            //    //MessageBox.Show(Cbfile.sNoRecSwitchMsg, Cbfile.sAppName);
+            //    return new JsonResult(new { message = "canswitch: " });
+            //}
+
+            //if (gRNDSearchSelectedIndex < 0 || gRNDSearchSelectedIndex > gRNDSearchRowsCount - 1) return new JsonResult(new { message = "idx < 0: " + gRNDSearchSelectedIndex + " -- " + gRNDSearchRowsCount });
+            //if (_objectsService.RNDHome.dt.Rows[gRNDSearchSelectedIndex]["ID"] == DBNull.Value)
+            //{
+            //    // sMsg = "The selected dataset does not have a valid ID and can not be selected.";
+            //    // MessageBox.Show(sMsg, Cbfile.sAppName, MessageBoxButton.OK, MessageBoxImage.Stop);
+            //    // EnableMfgPages(false);
+            //    return Page();
+            //}
+
+
+            /////////////////// this is index of gMFGSearch dataview not dataset ID
+            //_objectsService.Cbfile.iIndexRND = gRNDSelectedDatasetID;
+            //_objectsService.RNDHome.indSet = gRNDSearchSelectedIndex;
+            //_objectsService.RNDHome.IdSet= gRNDSelectedDatasetID;
+            ////try
+            ////{
+
+            ////_objectsService.RNDHome.GetDataSet();
+            ////    return new JsonResult(_objectsService.RNDHome.GetDataSet());
+            ////    //_objectsService.Cbfile.iIndexRND = gRNDSelectedDatasetID;
+            ////}
+            ////catch
+            ////{
+            ////    return new JsonResult("bruh");
+
+            ////}
+            ////EnableMfgPages(true);
+            ////(_objectsService.MfgInProcess, _objectsService.MfgFinishedGoods, _objectsService.MfgDimensionsStability, _objectsService.MfgPlantsData, _objectsService.MfgJetMixing) = _objectsService.MfgHome.GetAllMfgData(_objectsService.MfgInProcess, _objectsService.MfgFinishedGoods, _objectsService.MfgDimensionsStability, _objectsService.MfgPlantsData, _objectsService.MfgJetMixing);
+            int iOldSet = _objectsService.RNDHome.IdSet;
+            if (gRNDSearchSelectedIndex >= 0)
             {
-                gRNDSearchSelectedIndex = _objectsService.Cbfile.iIDMfgIndex;
-                //MessageBox.Show(Cbfile.sNoRecSwitchMsg, Cbfile.sAppName);
-                return new JsonResult(new { message = "canswitch: " });
+                //_objectsService.RNDHome.IdSet = (int)_objectsService.RNDHome.dt.Rows[gRNDSearchSelectedIndex]["ID"];
+                _objectsService.RNDHome.IdSet = gRNDSelectedDatasetID;
+                if (_objectsService.RNDHome.GetDataSet())
+                {
+                    _objectsService.RNDHome.indSet = gRNDSearchSelectedIndex;
+                    SetView();
+                    _objectsService.CLists.drEmployee["RndIDSelected"] = _objectsService.RNDHome.IdSet;
+                    _objectsService.CLists.UpdateEmployee();
+                }
+                else _objectsService.RNDHome.IdSet = iOldSet;
             }
-
-            if (gRNDSearchSelectedIndex < 0 || gRNDSearchSelectedIndex > gRNDSearchRowsCount - 1) return new JsonResult(new { message = "idx < 0: " + gRNDSearchSelectedIndex + " -- " + gRNDSearchRowsCount });
-            if (_objectsService.RNDHome.dt.Rows[gRNDSearchSelectedIndex]["ID"] == DBNull.Value)
-            {
-                // sMsg = "The selected dataset does not have a valid ID and can not be selected.";
-                // MessageBox.Show(sMsg, Cbfile.sAppName, MessageBoxButton.OK, MessageBoxImage.Stop);
-                // EnableMfgPages(false);
-                return Page();
-            }
-
-
-            ///////////////// this is index of gMFGSearch dataview not dataset ID
-            _objectsService.Cbfile.iIDMfgIndex = gRNDSearchSelectedIndex;
-
-            _objectsService.Cbfile.iIDMfg = gRNDSelectedDatasetID;
-            //EnableMfgPages(true);
-            //(_objectsService.MfgInProcess, _objectsService.MfgFinishedGoods, _objectsService.MfgDimensionsStability, _objectsService.MfgPlantsData, _objectsService.MfgJetMixing) = _objectsService.MfgHome.GetAllMfgData(_objectsService.MfgInProcess, _objectsService.MfgFinishedGoods, _objectsService.MfgDimensionsStability, _objectsService.MfgPlantsData, _objectsService.MfgJetMixing);
-
-            return new JsonResult(new { message = "Dataset selected: " + gRNDSearchSelectedIndex + " -- " + gRNDSelectedDatasetID });
+            return new JsonResult(new { message = "Dataset selected: " + gRNDSearchSelectedIndex + " -- " + gRNDSelectedDatasetID +"--"+ _objectsService.RNDHome.IdSet + "--"+ (int)_objectsService.RNDHome.dt.Rows[gRNDSearchSelectedIndex]["ID"] });
         }
 
     }

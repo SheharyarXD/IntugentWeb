@@ -42,10 +42,35 @@ namespace IntugentWebApp.Pages.Analysis
             dt = _objectsService.CAnalysisData1.dtPropValues;
             DrawCharts();
         }
-        private void UpdateCharts()
+        public IActionResult OnPostUpdateCharts(string gX1SelectedValue, string gX2SelectedValue, string gY1SelectedValue, string gY2SelectedValue)
         {
+            this.gX1SelectedValue = gX1SelectedValue;
+            this.gX2SelectedValue = gX2SelectedValue;
+            this.gY1SelectedValue = gY1SelectedValue;
+            this.gY2SelectedValue = gY2SelectedValue;
+
+            // Ensure the data is fetched and processed
+            _objectsService.CAnalysisData1.GetData(null);
+            dt = _objectsService.CAnalysisData1.dtPropValues;
+
+            // Redraw charts with the new data
             DrawCharts();
+
+            var chartData = new
+            {
+                gX1Y1_X = this.gX1Y1_X,
+                gX1Y1_Y = this.gX1Y1_Y,
+                gX2Y1_X = this.gX2Y1_X,
+                gX2Y1_Y = this.gX2Y1_Y,
+                gX1Y2_X = this.gX1Y2_X,
+                gX1Y2_Y = this.gX1Y2_Y,
+                gX2Y2_X = this.gX2Y2_X,
+                gX2Y2_Y = this.gX2Y2_Y
+            };
+
+            return new JsonResult(chartData);
         }
+
         public void DrawCharts()
         {
             int ncount = 0;

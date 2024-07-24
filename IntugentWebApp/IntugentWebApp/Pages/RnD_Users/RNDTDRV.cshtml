@@ -15,7 +15,7 @@
 <div class="row">
     <!-- Aged Properties (TDRV) Testing Complete -->
         <div class="custom-control custom-checkbox px-8 py-4">
-        <input type="checkbox" class="custom-control-input" id="AgedProperties(TDRV)TestingComplete" checked="@Model.gAgedTestingCompIsChecked" onchange="">
+        <input type="checkbox" class="custom-control-input" id="AgedProperties(TDRV)TestingComplete" checked="@Model.gAgedTestingCompIsChecked" onchange="GCheckBox('gAgedTestingCompleted', this)">
         <label class="custom-control-label" for="AgedProperties(TDRV)TestingComplete">Aged Properties (TDRV) Testing Complete</label>
         </div>
 </div>
@@ -43,20 +43,24 @@
                         </tr>
                     </thead>
                     <tbody>
-                             @foreach (DataRow row in Model.gExpPropsE)
+                        @{
+                            int rowIndex3 = 0;
+                        }
+                        @foreach (DataRowView row in Model.gExpPropsE)
                         {
-                         <tr>
-                        <td>@row["PropName"]</td>
-                        <td>@row["PropE1"]</td>
-                        <td>@row["PropE2"]</td>
-                        <td>@row["PropE3"]</td>
-                        <td>@row["PropE4"]</td>
-                        <td>@row["PropE5"]</td>
-                        <td>@row["PropE6"]</td>
-                        <td>@row["PropE7"]</td>
-                        <td>@row["PropE8"]</td>
-                        </tr>
-
+                            int[] colIndex = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
+                            <tr id="row-@rowIndex3">
+                                <td id="CloseCellE-@rowIndex3-@colIndex[0]">@row["PropName"]</td>
+                                <td class="td" id="ExpPropsE-@rowIndex3-@colIndex[1]">@row["PropE1"]</td>
+                                <td class="td" id="ExpPropsE-@rowIndex3-@colIndex[2]">@row["PropE2"]</td>
+                                <td class="td" id="ExpPropsE-@rowIndex3-@colIndex[3]">@row["PropE3"]</td>
+                                <td class="td" id="ExpPropsE-@rowIndex3-@colIndex[4]">@row["PropE4"]</td>
+                                <td class="td" id="ExpPropsE-@rowIndex3-@colIndex[5]">@row["PropE5"]</td>
+                                <td class="td" id="ExpPropsE-@rowIndex3-@colIndex[6]">@row["PropE6"]</td>
+                                <td class="td" id="ExpPropsE-@rowIndex3-@colIndex[7]">@row["PropE7"]</td>
+                                <td class="td" id="ExpPropsE-@rowIndex3-@colIndex[8]">@row["PropE8"]</td>
+                            </tr>
+                            rowIndex3++;
                         } 
                     </tbody>
                 </table>
@@ -82,7 +86,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (DataRow row in Model.gExpPropsC)
+                        @foreach (DataRowView row in Model.gExpPropsC)
                         {
                             <tr>
                                 <td>@row["PropC1"]</td>
@@ -120,7 +124,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (DataRow row in Model.gExpPropsP)
+                        @foreach (DataRowView row in Model.gExpPropsP)
                         {
                             <tr>
                                 <td>@row["PropP1"]</td>
@@ -141,3 +145,95 @@
     </div>
 
 </div>
+@section Scripts{
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            $(function () {
+                $(".td").click(function (event) {
+                    if ($(this).children("input").length > 0)
+                        return false;
+
+                    var tdObj = $(this);
+                    var preText = tdObj.html();
+                    var inputObj = $("<input type='text' />");
+                    tdObj.html("");
+
+                    inputObj.width(tdObj.width())
+                        .height(tdObj.height())
+                        .css({ border: "0px", fontSize: "13px" })
+                        .val(preText)
+                        .appendTo(tdObj)
+                        .trigger("focus")
+                        .trigger("select");
+
+                    inputObj.keyup(function (event) {
+                        if (13 == event.which) { // press ENTER-key
+                            var text = $(this).val();
+                            tdObj.html(text);
+                        }
+                        else if (27 == event.which) {  // press ESC-key
+                            tdObj.html(preText);
+                        }
+                    });
+
+                    inputObj.click(function () {
+                        return false;
+                    });
+                    inputObj.blur(function () {
+                        var text = $(this).val();
+                        tdObj.html(text);
+
+                        var cellId = tdObj.attr("id");
+                        var ids = cellId.split("-");
+                        var table = ids[0];
+                        var rowId = ids[1];
+                        var colId = ids[2];
+                        OngExpPropsE(rowId, colId, text);
+                    });
+                });
+            });
+        });
+
+        function OngExpPropsE(rowId, colId, text) {
+           // console.log("Row ID: " + rowId + ", Column ID: " + colId + ", New Value: " + text);
+            $.ajax({
+                type: "POST",
+                url: "/RnD_Users/RNDTDRV?handler=OngExpPropsE",
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                data: { rowId : rowId ,colId : colId , text :text },
+                success: function (response) {
+                    console.log('Server response:', response);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+
+        function GCheckBox(Name, element) {
+            let value;
+
+            if (element.type === "checkbox") {
+                value = element.checked ? "true" : "false";
+            } else {
+                value = element.value;
+            }
+            GAgedTestingCompL(value);
+        }
+        function GAgedTestingCompL(value) {
+            $.ajax({
+                type: "POST",
+                url: "/RnD_Users/RNDTDRV?handler=GAgedTestingCompLF",
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                data: {  value: value },
+                success: function (response) {
+                     console.log('Server response:', response);
+                   // location.reload();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+    </script>
+}

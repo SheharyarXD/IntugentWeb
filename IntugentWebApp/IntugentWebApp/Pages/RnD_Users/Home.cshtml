@@ -80,7 +80,7 @@
                         <div class="col-lg-4">
                             <!-- After Date -->
                             <div class="form-floating mb-2">
-                                <input type="date" class="form-control" value="@Model.gRndDate2?.ToString("yyyy-MM-dd")" id="afterDate" placeholder="">
+                                <input type="date" id="gRndDate2" class="form-control" value="@Model.gRndDate2?.ToString("yyyy-MM-dd")" id="afterDate" placeholder="">
                                 <label for="afterDate">Experiment Date - After or At</label>
                             </div>
                         </div>
@@ -89,7 +89,7 @@
 
                             <!-- Before Date -->
                             <div class="form-floating mb-2">
-                                <input type="date" class="form-control" value="@Model.gRndDate1?.ToString("yyyy-MM-dd")" id="beforeDate">
+                                <input type="date" id="gRndDate1" class="form-control" value="@Model.gRndDate1?.ToString("yyyy-MM-dd")" id="beforeDate">
                                 <label for="beforeDate">Experiment Date - Before or At</label>
                             </div>
                         </div>
@@ -100,7 +100,7 @@
                         <div class="col-lg-8">
                             <!-- Project Study Name -->
                             <div class="form-floating mb-2">
-                                <input type="text" class="form-control" value="@Model.gRNDNameSearch" id="projectStudyName" placeholder="">
+                                <input type="text" id="gRNDNameSearch" class="form-control" value="@Model.gRNDNameSearch" id="projectStudyName" placeholder="">
                                 <label for="projectStudyName">Project/Study Name - Contains</label>
                             </div>
                         </div>
@@ -159,7 +159,7 @@
                             }
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="DataTable">
                         @if (Model.gRNDSearch != null && Model.gRNDSearch.Count > 0)
                         {
                             int rowIndex = 0;
@@ -172,13 +172,13 @@
                                         var id = itemArray[0]; // first item is the ID
                                         for (int i = 0; i < itemArray.Length; i++)
                                         {
-                                            <td>@itemArray[i]</td>
+                                                    <td>@itemArray[i]</td>
                                         }
                                     }
 
                                     <td>
                                         <label class="switch switch-primary switch-pill form-control-label ">
-                                            <input type="checkbox" class="switch-input form-check-input" id="select_@rowIndex" data-index="@id">
+                                            <input type="checkbox" class="switch-input form-check-input" id="@rowView["ID"]" data-index="@rowView["ID"]">
                                             <span class="switch-label"></span>
                                             <span class="switch-handle"></span>
                                         </label>
@@ -203,14 +203,12 @@
 </div>
 
 
-@{
+@* @{
     // if some dataset is already selected.. set its checkbox to checked..
-    if (Model.gRNDSearchSelectedIndex != null)
-    {
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 var currentId = @Html.Raw(Model.gRNDSearchSelectedIndex);
-                console.log(@Model.gRNDSearchSelectedIndex)
+                console.log(@Model.gRNDSearchSelectedIndex "+" @Model.selectedDatasetID)
                 if (currentId) {
 
                     var checkbox = document.getElementById('select_' + currentId);
@@ -221,11 +219,22 @@
                 }
             });
         </script>
-    }
-}
+} *@
 @section Scripts {
 
     <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var currentId = @Html.Raw(Model.gRNDSearchSelectedIndex);
+            console.log(@Model.gRNDSearchSelectedIndex , currentId)
+            if (currentId) {
+
+                var checkbox = document.getElementById(currentId);
+
+                if (checkbox) {
+                    checkbox.checked = true;
+                }
+            }
+        });
 
         // handle checkbox change event
         $('input[type="checkbox"]').change(function () {
@@ -264,13 +273,32 @@
 
 
         function gSearchDataSets() {
+            const gRndDate1 = document.getElementById('gRndDate1').value;
+            const gRndDate2 = document.getElementById('gRndDate2').value;
+            const gRNDNameSearch = document.getElementById('gRNDNameSearch').value;
+            const gProd1SelectedValueElement = document.getElementById('productCode');
+            const gProd1SelectedValue = gProd1SelectedValueElement.options[gProd1SelectedValueElement.selectedIndex].value;
 
+            const gTestStat1SelectedValueElement = document.getElementById('testingStatus');
+            const gTestStat1SelectedValue = gTestStat1SelectedValueElement.options[gTestStat1SelectedValueElement.selectedIndex].value;
+
+            const gStudyTypeSelectedValueElement = document.getElementById('studyType');
+            const gStudyTypeSelectedValue = gStudyTypeSelectedValueElement.options[gStudyTypeSelectedValueElement.selectedIndex].value;
+            // // Log all data to console
+            // console.log('Data to be sent:');
+            // console.log('gRndDate1:', gRndDate1);
+            // console.log('gRndDate2:', gRndDate2);
+            // console.log('gRNDNameSearch:', gRNDNameSearch);
+            // console.log('gProd1SelectedValue:', gProd1SelectedValue);
+            // console.log('gTestStat1SelectedValue:', gTestStat1SelectedValue);
+            // console.log('gStudyTypeSelectedValue:', gStudyTypeSelectedValue);
             $.ajax({
                 type: "POST",
                 url: "/RnD_Users/Home?handler=GSearchDataSets_Click",
                 headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                data: { gRndDate1: gRndDate1, gRndDate2: gRndDate2, gProd1SelectedValue: gProd1SelectedValue, gTestStat1SelectedValue: gTestStat1SelectedValue, gStudyTypeSelectedValue: gStudyTypeSelectedValue, gRNDNameSearch: gRNDNameSearch},
                 success: function (response) {
-                    console.log('Server response:', response);
+                   // console.log('Server response:', response);
                     location.reload();
                 },
                 error: function (xhr, status, error) {
@@ -289,7 +317,8 @@
                 headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
                 success: function (response) {
                     console.log('Server response:', response);
-                    location.reload();
+                    updateTable(response);
+                   // location.reload();
                 },
                 error: function (xhr, status, error) {
                     console.error('Error:', error);
@@ -297,6 +326,20 @@
             });
 
 
+        }
+        function updateTable(data) {
+            var tableBody = $('#DataTable');
+            tableBody.empty(); // Clear existing rows
+            $.each(data, function (index, row) {
+                var rowHtml = '<tr>';
+                for (var i = 0; i < row.length; i++) {
+                    rowHtml += '<td>' + row[i] + '</td>';
+                }
+                rowHtml += '<td><label class="switch switch-primary switch-pill form-control-label ">' +
+                    '<input type="checkbox" class="switch-input form-check-input" id="' + row[0] + '" data-index="' + row[0] + '">' +
+                    '<span class="switch-label"></span><span class="switch-handle"></span></label></td></tr>';
+                tableBody.append(rowHtml);
+            });
         }
         function gCopy_Click() {
 
@@ -306,7 +349,22 @@
                 headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
                 success: function (response) {
                     console.log('Server response:', response);
-                    location.reload();
+                    if (navigator.clipboard) {
+                        navigator.clipboard.writeText(response)
+                            .then(function () {
+                                console.log('Text copied to clipboard');
+                               // location.reload();
+                            })
+                            .catch(function (err) {
+                                console.error('Failed to copy text:', err);
+                                // Handle error
+                            });
+                    } else {
+                        console.warn('Clipboard API not supported');
+                        // Fallback for browsers that do not support Clipboard API
+                        // You can use other methods here to copy text to clipboard
+                    }
+                  //  location.reload();
                 },
                 error: function (xhr, status, error) {
                     console.error('Error:', error);

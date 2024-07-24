@@ -1,0 +1,234 @@
+﻿@page
+@using System.Data;
+@model IntugentWebApp.Pages.Admin_Group.AIHomeModel
+@{
+    ViewData["ActivePage"] = "Admin Home Page";
+}
+@* Error Message *@
+@if (TempData["ErrorOnServer"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        Error: @TempData["ErrorOnServer"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+<div class="row">
+    <div class="col">
+
+        <!-- Search Card -->
+        <div class="card card-default">
+            <div class="card-header align-items-center">
+                <h2 class="">Search Historical Data</h2>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    <div class="row">
+
+                        <div class="col-lg-4">
+                            <!-- Product Code -->
+                            <div class="form-floating mb-2">
+                                <select class="form-select" id="productCode" disabled>
+                                 @*    @foreach (DataRowView row in Model.gProd1)
+                                    {
+                                        <option value="@row["Product"]" selected="@(Model.gProd1SelectedValue == (row["Product Code"].ToString()))">@row["Product"]</option>
+                                    } *@
+                                </select> 
+                                <label for="productCode">Functional Group</label>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <!-- Study Type -->
+                            <div class="form-floating mb-2">
+                                <select class="form-select" id="studyType" disabled>
+                         @*            @foreach (DataRowView row in Model.gStudyType)
+                                    {
+                                        <option value="@row["ID"]" selected="@(Model.gStudyTypeSelectedValue == Int32.Parse(row["ID"].ToString()))">@row["sName"]</option>
+                                    } *@
+                                </select> 
+                                <label for="studyType">Property</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <!-- After Date -->
+                            <div class="form-floating mb-2">
+                                <input type="date" disabled id="gRndDate2" class="form-control" value="" id="afterDate" placeholder="">
+                                <label for="afterDate">Last Trained - After or At</label>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+
+                            <!-- Before Date -->
+                            <div class="form-floating mb-2">
+                                <input type="date" disabled id="gRndDate1" class="form-control" value="" id="beforeDate">
+                                <label for="beforeDate">Last Trained - Before or At</label>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row my-2">
+                       <h1>Search is Not Implemented Yet</h1>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <!-- Project Study Name -->
+                            <div class="form-floating mb-2">
+                                <input type="text" disabled id="" class="form-control" value="" id="projectStudyName" placeholder="">
+                                <label for="projectStudyName">Model Description Contains</label>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 d-flex justify-content-end">
+                            <div class="row" style="margin: 0;">
+                                <button disabled type="button" class="btn btn-primary m-auto" onclick="">
+                                    Retreive Top 20 Models meeting the search criteria for editing
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="text-end" >
+    <button type="button" disabled class="btn btn-primary mb-5" onclick="gCopy_Click()">
+        Export all Models meeting the search criteria
+    </button>
+</div>
+
+<div class="row">
+    <div class="col">
+
+        <!-- Search Results -->
+       <div class="card card-default">
+            <div class="card-header align-items-center">
+                <h2 class="">Select any Model in the List Below to see Detailed Data and Train it</h2>
+            </div>
+            <div class="card-body">
+                <table id="searchResultsTable" class="table table-hover table-product dataTable" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Date Last Trained</th>
+                            <th>Model Description</th>
+                            <th>Model Property</th>
+                            <th>Data Source</th>
+                            <th>RMS Error</th> 
+                            <th>Select</th>
+                        </tr>
+                    </thead>
+                    <tbody id="DataTable">
+                        @if (Model.gModels != null && Model.gModels.Count > 0)
+                        {
+                            int rowIndex = 0;
+                            foreach (DataRowView rowView in Model.gModels)
+                            {
+                           <tr>
+                            <td>@rowView["ID"]</td>
+                            <td>@rowView["DateModel"]</td>
+                            <td>@rowView["sNote"]</td>
+                            <td>@rowView["sProperty"]</td>
+                            <td>@rowView["sDataSource"]</td>
+                            <td></td>
+                             <td>
+                                  <label class="switch switch-primary switch-pill form-control-label ">
+                                            <input type="checkbox" class="switch-input form-check-input" id="@rowIndex" data-index="@rowView["ID"]">
+                                            <span class="switch-label"></span>
+                                            <span class="switch-handle"></span>
+                                        </label>
+                                    </td>
+                                </tr>
+                                rowIndex++;
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+ 
+    </div>
+</div>
+
+<div class="text-end">
+    <button type="button" class="btn btn-primary mb-2" onclick="gNewDataSet()">
+        Create A New Dataset
+    </button>
+</div>
+
+@section Scripts {
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var currentId = @Html.Raw(Model.gModelsSelectedIndex);
+
+                var checkbox = document.getElementById(currentId);
+
+            console.log(@Model.gModelsSelectedIndex, currentId, @Model._objectsService.CDBase.IndexModel)
+                if (checkbox) {
+                    checkbox.checked = true;
+                }
+         
+        });
+
+        // handle checkbox change event
+        $('input[type="checkbox"]').change(function () {
+            if ($(this).is(':checked')) {
+                var selectedID = $(this).attr('id'); // remove "select_" prefix
+                unselectAllRows($(this).attr('id'));
+                var selectedDatasetID = $(this).data('index');
+                sendIdToServer(selectedID);
+            }
+        });
+
+        // unselect all other rows
+        function unselectAllRows(selectedID) {
+            $('input[type="checkbox"]').each(function () {
+                if ($(this).attr('id') !== selectedID) {
+                    $(this).prop('checked', false);
+                }
+            });
+        }
+
+        // send id to server-side
+        function sendIdToServer(gModelsSelectedIndex) {
+            $.ajax({
+                type: "POST",
+                url: "/Admin_Group/AIHome?handler=GModelsSC",
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                data: { gModelsSelectedIndex: gModelsSelectedIndex },
+                success: function (response) {
+                    console.log('Server response:', response);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+
+        function gNewDataSet() {
+
+            $.ajax({
+                type: "POST",
+                url: "/Admin_Group/AIHome?handler=GNewAIModel_Click",
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                success: function (response) {
+                    location.reload();
+                   // console.log('Server response:', response);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+
+
+        }
+    </script>
+}

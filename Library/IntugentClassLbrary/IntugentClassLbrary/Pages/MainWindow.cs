@@ -145,7 +145,7 @@ namespace IntugentClassLbrary.Pages
                                 CPages.PageOktaAuth_1.gwbs.Visibility = System.Windows.Visibility.Hidden;*/
 
                 // MANUALLY ADDING GROUP
-                cDefualts.sGroup = "OKTA_GAF_Intugent_RnD_Users";
+                cDefualts.sGroup = "OKTA_GAF_Intugent_Mfg_Users_Gainesville";
                 ActivatePI();
 
                 return;

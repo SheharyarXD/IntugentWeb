@@ -1,0 +1,309 @@
+﻿@page
+@using System.Data;
+@model IntugentWebApp.Pages.Admin_Group.AIModelModel
+@{
+    ViewData["ActivePage"] = "AI Model";
+}
+@* Error Message *@
+@if (TempData["ErrorOnServer"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        Error: @TempData["ErrorOnServer"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+<div class="row">
+    <div class="col-2">
+        <!-- Model Setup -->
+        <div class="card card-default">
+            <div class="card-header align-items-center">
+                <h2 class="">Model Setup</h2>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    <div class="row">
+                        <div class="col-12">
+                            <!-- Maximum # of Iterations -->
+                            <div class="form-floating mb-2">
+                                <input type="text" id="" class="form-control" value="@Model.gMaxIter" id="gMaxIter" placeholder="" onblur="GenInfo_LF('gMaxIter', this.value)">
+                                <label for="gMaxIter">Maximum # of Iterations</label>
+                            </div>
+                            <!-- Convergence Tolerance -->
+                            <div class="form-floating mb-2">
+                                <input type="text" id="" class="form-control" value="@Model.gConvTol" id="gConvTol" placeholder="" onblur="GenInfo_LF('gConvTol', this.value)">
+                                <label for="gConvTol">Convergence Tolerance</label>
+                            </div>
+                            <!-- Learning Rate -->
+                            <div class="form-floating mb-2">
+                                <input type="text" id="" class="form-control" value="@Model.gLearnRate" id="gLearnRate" placeholder="" onblur="GenInfo_LF('gLearnRate', this.value)">
+                                <label for="gLearnRate">Learning Rate</label>
+                            </div>
+                            <!-- Min Step Size -->
+                            <div class="form-floating mb-2">
+                                <input type="text" id="" class="form-control" value="@Model.gStepSizeMin" id="gStepSizeMin" placeholder="" onblur="GenInfo_LF('gStepSizeMin', this.value)">
+                                <label for="gStepSizeMin">Min Step Size</label>
+                            </div>
+                            <!-- # of Hidden Layers -->
+                            <div class="form-floating mb-2">
+                                <input type="text" id="" class="form-control" value="@Model.gnHiddenLayers" id="gnHiddenLayers" placeholder="" onblur="GenInfo_LF('gnHiddenLayers', this.value)">
+                                <label for="gnHiddenLayers"># of Hidden Layers</label>
+                            </div>
+                            <!-- Activation Function-->
+                            <div class="form-floating mb-2">
+                                <select class="form-select" id="gHLayerType" onblur="GHLayerType(this.options[this.selectedIndex].id)">
+                                    <!option id="Tanh"  @(Model.gHLayerType == "Tanh" ? "selected" : "")>Tanh</!option>
+                                    <!option id="ReLu"  @(Model.gHLayerType == "ReLu" ? "selected" : "")>ReLu</!option>
+                                </select>
+                                <label for="gHLayerType">Activation Function</label>
+                            </div>
+                            <!-- # of Neurons in Input Layer -->
+                            <div class="form-floating mb-2">
+                                <input type="text" id="" class="form-control" disabled value="@Model.gInputNeurons" id="gInputNeurons" placeholder="">
+                                <label for="gInputNeurons"># of Neurons in Input Layer</label>
+                            </div>
+                            <!--# of Neurons in Output Layer-->
+                            <div class="form-floating mb-2">
+                                <input type="text" id="" class="form-control" disabled value="@Model.gOutputNeurons" id="gOutputNeurons" placeholder="">
+                                <label for="gOutputNeurons"># of Neurons in Output Layer</label>
+                            </div>
+
+                            @* # of Neurons in Layers *@
+
+                            <div class="col-12 card-body text-center pb-5">
+                                <h2 class=" py-3"># of Neurons in Layers</h2>
+                                <table id="searchResultsTable" class="table table-sm table-bordered table-hover table-striped table-responsive-md" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Layer #</th>
+                                            <th>Description</th>
+                                            <th># of Neurons</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="DataTable">
+
+                                        @foreach (DataRowView rowView in Model.gHNeurons)
+                                        {
+                                        <tr>
+                                                <td>@rowView["Layer #"]</td>
+                                                <td>@rowView["Description"]</td>
+                                                <td>@rowView["# of Neurons"]</td>
+                                        </tr>
+                                        }
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- Coefficient of Determination (%) -->
+                            <div class="form-floating mb-2">
+                                <input type="text"  id="" class="form-control" readonly value="@Model.gRMS" id="gRMS" placeholder="">
+                                <label for="gRMS">Coefficient of Determination (%)</label>
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn btn-primary m-auto col-12" onclick="GTrainModel()">
+                            Train Model
+                        </button>
+                    </div>      
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-10">
+        <!-- Model Details -->
+        <div class="card card-default">
+            <div class="card-header align-items-center">
+                <h2 class="">Model Details</h2>
+            </div>
+            <div class="card-body">
+                <!-- Weight Functions for the Hidden Layer -->
+                <div class="form-floating mb-2">
+                    <select class="form-select" id="gLayer" onblur="GLayer(this.options[this.selectedIndex].id)">
+                        @{
+                            int rowIndex = 0;
+                        }
+                        @foreach (var row in Model.gLayer)
+                        {
+                            <option id="@rowIndex" value="@row" selected="@(Model.gLayerSelectedIndex==rowIndex)">@row</option>
+                            rowIndex++;
+                        }
+                    </select>
+                    <label for="gLayer">Weight Functions for the Hidden Layer </label>
+                </div>
+                   
+
+                            <div class="col-12 card-body text-center pb-5">
+                                <h2 class=" py-3">Neurons in Layer feeding to the hidden Layer</h2>
+                                 <table id="searchResultsTable" class="table table-sm table-bordered table-hover            table-striped table-responsive-md" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                @if (Model.gWeights != null)
+                                {
+                                    foreach (DataColumn column in Model.gWeights.Columns)
+                                    {
+                                        <th>@column.ColumnName</th>
+                                    }
+                                }
+                                        </tr>
+                                    </thead>
+                                    <tbody id="DataTable">
+                            @if (Model.gWeights != null)
+                            {
+                                foreach (DataRow row in Model.gWeights.Rows)
+                                {
+                                    <tr>
+                                        @foreach (var cell in row.ItemArray)
+                                        {
+                                            <td>@cell</td>
+                                        }
+                                    </tr>
+                                }
+                            }
+                                    </tbody>
+                                </table>
+                                <h2 class=" py-3">Neurons in hidden Layer</h2>
+            </div>
+        </div>
+    </div>
+
+            <canvas id="charts" style="height:500px;width:100%;"></canvas>
+
+</div>
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const ctx = document.getElementById('charts').getContext('2d');
+
+            const data1 = {
+                label: 'Line Graph',
+                data: @Html.Raw(Json.Serialize(Model.yth.Zip(Model.yth, (x, y) => new { x, y }))),
+                    backgroundColor: 'DarkBlue',
+                    borderColor: 'DarkBlue',
+                borderWidth: 3,
+                pointRadius: 0,
+                type: 'line'
+            };
+
+                const data2 = {
+                    label: 'Circle Graph',
+                    data: @Html.Raw(Json.Serialize(Model.yy.Zip(Model.yyp, (x, y) => new { x, y }))),
+                    backgroundColor: 'DarkBlue',
+                    borderColor: 'DarkBlue',
+                    borderWidth: 3,
+                    pointRadius: 2,
+                    type: 'scatter'
+                };
+            const config = {
+         
+                data: {
+                    datasets: [data1,data2]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            type: 'linear',
+                            position: 'bottom',
+                            title: {
+                                display: true,
+                                text: `@Model.gChartBottomTitle`,
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                    text:`@Model.gChartLeftTitle`,
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true
+                        },
+                        zoom: {
+                            pan: {
+                                enabled: true,
+                                mode: 'xy',
+                            },
+                            zoom: {
+                                enabled: true,
+                                mode: 'xy',
+                                wheel: {
+                                    enabled: true,
+                                },
+                                pinch: {
+                                    enabled: true
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+
+            const myChart = new Chart(ctx, config);
+
+            document.getElementById('charts').addEventListener('dblclick', () => {
+                myChart.resetZoom();
+            });
+        });
+            function GTrainModel() {
+                $.ajax({
+                    type: "POST",
+                    url: "/Admin_Group/AIModel?handler=TrainTheModel",
+                    headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                    success: function (response) {
+                        console.log('Server response:', response);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error:', error);
+                    }
+                });
+            }
+            function GHLayerType(Value) {
+                $.ajax({
+                    type: "POST",
+                    url: "/Admin_Group/AIModel?handler=GHLayerType",
+                    headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                    data: {  Value: Value },
+                    success: function (response) {
+                        console.log('Server response:', response);
+                        location.reload();
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error:', error);
+                    }
+                });
+            }
+            function GLayer(Index) {
+                $.ajax({
+                    type: "POST",
+                    url: "/Admin_Group/AIModel?handler=GLayer_Changed",
+                    headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                    data: { Index: Index },
+                    success: function (response) {
+                        console.log('Server response:', response);
+                        location.reload();
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error:', error);
+                    }
+                });
+            }
+            function GenInfo_LF(Name, Value) {
+                $.ajax({
+                    type: "POST",
+                    url: "/Admin_Group/AIModel?handler=GenInfo_LF",
+                    headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                    data: { Name: Name, Value: Value },
+                    success: function (response) {
+                        console.log('Server response:', response);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error:', error);
+                    }
+                });
+            }
+    </script>
+}

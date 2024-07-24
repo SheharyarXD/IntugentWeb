@@ -24,20 +24,29 @@ namespace IntugentWebApp.Pages.RnD_Users
         public DataView gXAxis {  get; set; }
         public DataView gYAxis {  get; set; }
         public DataView gGasComp {  get; set; }
+        public string gXAxisSelectedItem {  get; set; }
+        public string gXAxisSelectedValue {  get; set; }
+        public string gYAxisSelectedItem { get; set; }
+        public string gYAxisSelectedValue { get; set; }
+        public double[] dAr0 = new double[Params.nDataPts];
+        public double[] dAr1 = new double[Params.nDataPts];
+        public double[] dAr2 = new double[Params.nDataPts];
+        public double[] dAr3 = new double[Params.nDataPts];
+        public double[] dAr4 = new double[Params.nDataPts];
+        public readonly ObjectsService _objectsService; 
+        public double[] dArX = new double[Params.nDataPts];
 
-        public readonly ObjectsService _objectsService;
                 
             public RNDRValuesModel(ObjectsService objectsService)
             {
             _objectsService = objectsService;
-                Startup();
+               
             }
 
             public void OnGet()
             {
            // CPages.PageRecipe_1.ReadDataset();
-           // CPages.PageRecipe_1.FormDescriptors();
-
+           _objectsService.RNDFormulations.FormDescriptors();
 
 
             for (int ifo = 0; ifo < Params.nFormMax; ifo++)
@@ -48,6 +57,7 @@ namespace IntugentWebApp.Pages.RnD_Users
             _objectsService.RNDRValues.RCalc.dTempKTT = _objectsService.RNDRValues.RData.dTestTempC + 273.0;  // Calculation are done using _objectsService.RNDRValues.RCalc.dTempKTT
             CollectBlowGases();
             _objectsService.RNDRValues.RCalc.CalBlowGasesProps(_objectsService.RNDRValues.RData.dTestTempC);
+            gGasComp = _objectsService.RNDRValues.dtGasComp.DefaultView;
 
             SetFields();
             SetView();
@@ -246,43 +256,41 @@ namespace IntugentWebApp.Pages.RnD_Users
                 #endregion
 
             }
-            /*
-                    public void KValuesFn(C_objectsService.RNDRValues.RCalc _objectsService.RNDRValues.RCalc)
-                    {
-                        double dSum1, dSum2;
-                        int iba, ifo, jba;
+        
+        //public void KValuesFn(CRCalc RCalc)
+        //            {
+        //                double dSum1, dSum2;
+        //                int iba, ifo, jba;
 
-                        for (ifo = 0; ifo < _objectsService.RNDRValues._objectsService.RNDRValues.nForms; ifo++)
-                        {
-                            dSum1 = 0.0;
-                            for (iba = 0; iba < _objectsService.RNDRValues.RCalc.nBlowAg; iba++)
-                            {
-                                dSum2 = 0.0;
-                                for (jba = 0; jba < _objectsService.RNDRValues.RCalc.nBlowAg; jba++)
-                                    dSum2 += _objectsService.RNDRValues.RCalc.AijTT[iba, jba] * _objectsService.RNDRValues.RCalc.MoleFracsTT[ifo, jba];
-                                dSum1 += _objectsService.RNDRValues.RCalc.LambdaTT[iba] * _objectsService.RNDRValues.RCalc.MoleFracsTT[ifo, iba] / dSum2;
-                            }
-                            _objectsService.RNDRValues.RCalc.KOutTT[ifo] = dSum1;
-                        }
-                    }
-            */
-
-            /*
-                    public void RKValuesBase(C_objectsService.RNDRValues.RCalc _objectsService.RNDRValues.RCalc)
-                    {
-                        int ifo;
+        //                for (ifo = 0; ifo <_objectsService.RNDRValues.nForms; ifo++)
+        //                {
+        //                    dSum1 = 0.0;
+        //                    for (iba = 0; iba < _objectsService.RNDRValues.RCalc.nBlowAg; iba++)
+        //                    {
+        //                        dSum2 = 0.0;
+        //                        for (jba = 0; jba < _objectsService.RNDRValues.RCalc.nBlowAg; jba++)
+        //                            dSum2 += _objectsService.RNDRValues.RCalc.AijTT[iba, jba] * _objectsService.RNDRValues.RCalc.MoleFracsTT[ifo, jba];
+        //                        dSum1 += _objectsService.RNDRValues.RCalc.LambdaTT[iba] * _objectsService.RNDRValues.RCalc.MoleFracsTT[ifo, iba] / dSum2;
+        //                    }
+        //                    _objectsService.RNDRValues.RCalc.KOutTT[ifo] = dSum1;
+        //                }
+        //            }
+                
+        //public void RKValuesBase(CRCalc RCalc)
+        //            {
+        //                int ifo;
 
 
-                        KValuesFn(_objectsService.RNDRValues.RCalc);
+        //                KValuesFn(_objectsService.RNDRValues.RCalc);
 
-                        for (ifo = 0; ifo < _objectsService.RNDRValues._objectsService.RNDRValues.nForms; ifo++) 
-                        {
-                            _objectsService.RNDRValues.RCalc.KValuesBase[ifo] = _objectsService.RNDRValues.RCalc.KOutTT[ifo];
-                            _objectsService.RNDRValues.RCalc.RValuesBase[ifo] = Params.RKConFactor/ _objectsService.RNDRValues.RCalc.KOutTT[ifo];
-                        }
-                    }
-            */
-            public IActionResult Click_ExportData()
+        //                for (ifo = 0; ifo <_objectsService.RNDRValues.nForms; ifo++) 
+        //                {
+        //                    _objectsService.RNDRValues.RCalc.KValuesBase[ifo] = _objectsService.RNDRValues.RCalc.KOutTT[ifo];
+        //                    _objectsService.RNDRValues.RCalc.RValuesBase[ifo] = Params.RKConFactor/ _objectsService.RNDRValues.RCalc.KOutTT[ifo];
+        //                }
+        //            }
+            
+        public IActionResult OnPostExportData()
             {
                 SetDefaultValues();
                 SetFields();
@@ -291,17 +299,12 @@ namespace IntugentWebApp.Pages.RnD_Users
                 return new JsonResult(true);
             }
 
-            private void SetView()
+        private void SetView()
             {
                 #region // Declaration and initialization
                 int idpt, ncount, iba, ifo;
                 double AvFoamDen, dsum1, dtemp;
-                double[] dAr0 = new double[Params.nDataPts];
-                double[] dAr1 = new double[Params.nDataPts];
-                double[] dAr2 = new double[Params.nDataPts];
-                double[] dAr3 = new double[Params.nDataPts];
-                double[] dAr4 = new double[Params.nDataPts];
-                double[] dArX = new double[Params.nDataPts];
+
 
                 _objectsService.RNDRValues.RCalc.dTempKTT = _objectsService.RNDRValues.RData.dTestTempC + 273.0;//Reset Lambdas and vap press to base values
                 _objectsService.RNDRValues.RCalc.dCellPressTT = _objectsService.RNDRValues.RData.dInitCellPress;
@@ -500,29 +503,38 @@ namespace IntugentWebApp.Pages.RnD_Users
                         SetView();
                     }
             */
-            public IActionResult OnPostgAxis_SelectionChanged(string Name,string value)
+
+            public IActionResult OnPostGAxis_SelectionChanged(string Name,string value,string item)
             {
                 string sFld = null, sMsg;
                 //ComboBoxItem cmi;
                 string sName = Name;
 
-                //switch (sName)
-                //{
-                //    case "gXAxis":
-                //        cmi = (ComboBoxItem)(gXAxis.SelectedItem);
-                //        _objectsService.RNDRValues.RData.sXaxisTag = cmi.Tag.ToString();
-                //        _objectsService.RNDRValues.RCalc.sXAxisTitle = cmi.Content.ToString(); break;
+               switch (sName)
+               {
+                   case "gXAxis":
+                    // cmi = (ComboBoxItem)(gXAxis.SelectedItem);
+                    gXAxisSelectedItem = item;
+                    gXAxisSelectedValue = value;
 
-                //    case "gYAxis":
-                //        cmi = (ComboBoxItem)(gYAxis.SelectedItem);
-                //        _objectsService.RNDRValues.RData.sYaxisTag = cmi.Tag.ToString();
-                //        _objectsService.RNDRValues.RCalc.sYAxisTitle = cmi.Content.ToString(); break;
-                //}
+
+                       _objectsService.RNDRValues.RData.sXaxisTag = gXAxisSelectedValue.ToString();
+                       _objectsService.RNDRValues.RCalc.sXAxisTitle = gXAxisSelectedItem.ToString(); break;
+
+                   case "gYAxis":
+                    // cmi = (ComboBoxItem)(gYAxis.SelectedItem);
+                    gYAxisSelectedItem = item;
+                    gYAxisSelectedValue = value;
+
+                    _objectsService.RNDRValues.RData.sYaxisTag = gYAxisSelectedValue.ToString();
+                       _objectsService.RNDRValues.RCalc.sYAxisTitle = gYAxisSelectedItem.ToString();
+                    break;
+            }
 
                 SetView();
 
                 UpdateDataset();
-            return null;
+            return new JsonResult(true);
             }
 
 
@@ -534,42 +546,42 @@ namespace IntugentWebApp.Pages.RnD_Users
                 switch (sName)
                 {
                     case "gMeasureTemp":
-                        if (Double.TryParse(gMeasureTemp , out dtemp)) { _objectsService.RNDRValues.RData.dTestTempC = (dtemp - 32.0) / 1.8; _objectsService.RNDRValues.RCalc.CalBlowGasesProps(_objectsService.RNDRValues.RData.dTestTempC); }
+                        if (Double.TryParse(value , out dtemp)) { _objectsService.RNDRValues.RData.dTestTempC = (dtemp - 32.0) / 1.8; _objectsService.RNDRValues.RCalc.CalBlowGasesProps(_objectsService.RNDRValues.RData.dTestTempC); }
                         else {
                         //MessageBox.Show("Improper Value. New Value is not accepted.");
                         if (_objectsService.RNDRValues.RData.dTestTempC > -459) gMeasureTemp  = (_objectsService.RNDRValues.RData.dTestTempC * 1.8 + 32.0).ToString("0.000"); else gMeasureTemp  = string.Empty; }
                         break;
 
                     case "gCellSize":
-                        if (Double.TryParse(gCellSize , out dtemp)) _objectsService.RNDRValues.RData.dCellSize = 1.0E-6 * dtemp;
+                        if (Double.TryParse(value, out dtemp)) _objectsService.RNDRValues.RData.dCellSize = 1.0E-6 * dtemp;
                         else {
                       //  MessageBox.Show("Improper Value. New Value is not accepted.");
                         if (_objectsService.RNDRValues.RData.dCellSize > 0) gCellSize  = (_objectsService.RNDRValues.RData.dCellSize * 1.0E+6).ToString("0.000"); else gCellSize  = string.Empty; }
                         break;
 
                     case "gCellPress":
-                        if (Double.TryParse(gCellPress , out dtemp)) _objectsService.RNDRValues.RData.dInitCellPress = dtemp;
+                        if (Double.TryParse(value, out dtemp)) _objectsService.RNDRValues.RData.dInitCellPress = dtemp;
                         else {
                        // MessageBox.Show("Improper Value. New Value is not accepted.");
                         if (_objectsService.RNDRValues.RData.dInitCellPress > 0) gCellPress  = (_objectsService.RNDRValues.RData.dInitCellPress).ToString("0.000"); else gCellPress  = string.Empty; }
                         break;
 
                     case "gPolDen":
-                        if (Double.TryParse(gPolDen , out dtemp)) _objectsService.RNDRValues.RData.dPolDensity = dtemp * _objectsService.CUconv.ToSi_Dens;
+                        if (Double.TryParse(value, out dtemp)) _objectsService.RNDRValues.RData.dPolDensity = dtemp * _objectsService.RNDRValues.CUConv.ToSi_Dens;
                         else {
                             //MessageBox.Show("Improper Value. New Value is not accepted.");
-                            if (_objectsService.RNDRValues.RData.dPolDensity > 0) gPolDen  = (_objectsService.RNDRValues.RData.dPolDensity / _objectsService.CUconv.ToSi_Dens).ToString("0.000"); else gPolDen  = string.Empty; }
+                            if (_objectsService.RNDRValues.RData.dPolDensity > 0) gPolDen  = (_objectsService.RNDRValues.RData.dPolDensity / _objectsService.RNDRValues.CUConv.ToSi_Dens).ToString("0.000"); else gPolDen  = string.Empty; }
                         break;
 
                     case "gPolCond":
-                        if (Double.TryParse(gPolCond , out dtemp)) _objectsService.RNDRValues.RData.dPolCond = 0.001 * dtemp;
+                        if (Double.TryParse(value, out dtemp)) _objectsService.RNDRValues.RData.dPolCond = 0.001 * dtemp;
                         else { 
                         //MessageBox.Show("Improper Value. New Value is not accepted.");
                         if (_objectsService.RNDRValues.RData.dPolCond > 0) gPolCond  = (_objectsService.RNDRValues.RData.dPolCond * 1000.0).ToString("0.000"); else gPolCond  = string.Empty; }
                         break;
 
                     case "gFracStruts":
-                        if (Double.TryParse(gFracStruts , out dtemp)) _objectsService.RNDRValues.RData.dFracStrut = 0.01 * dtemp;
+                        if (Double.TryParse(value, out dtemp)) _objectsService.RNDRValues.RData.dFracStrut = 0.01 * dtemp;
                         else {
                        // MessageBox.Show("Improper Value. New Value is not accepted."); 
                         if (_objectsService.RNDRValues.RData.dFracStrut > 0) gFracStruts  = (_objectsService.RNDRValues.RData.dFracStrut * 100.0).ToString("0.000"); else gFracStruts  = string.Empty; }
@@ -578,7 +590,7 @@ namespace IntugentWebApp.Pages.RnD_Users
 
                 SetView();
                 UpdateDataset();
-            return null;
+            return new JsonResult(true);
             }
 
 
@@ -592,32 +604,7 @@ namespace IntugentWebApp.Pages.RnD_Users
                 _objectsService.RNDRValues.CLists.UpdateEmployee();
             }
 
-            public void Startup()
-            {
-                int idpt;
-
-                SetDefaultValues();
-                _objectsService.RNDRValues.nForm = Params.nFormMax;
-
-                _objectsService.RNDRValues.dtGasComp.Columns.Add("GasName", typeof(string));
-                for (int i = 1; i < _objectsService.RNDRValues.nForm + 1; i++)
-                {
-                    _objectsService.RNDRValues.dtGasComp.Columns.Add("#" + i, typeof(double));
-                }
-                for (int i = 0; i < Params.nComps; i++) _objectsService.RNDRValues.dtGasComp.Rows.Add();
-                gGasComp = _objectsService.RNDRValues.dtGasComp.DefaultView;
-                try
-                {
-                    if (_objectsService.RNDRValues.CLists.drEmployee["sRValueParams"] == DBNull.Value) SetDefaultValues();
-                    else
-                    {
-                        string js1 = (string)_objectsService.RNDRValues.CLists.drEmployee["sRValueParams"];
-                        _objectsService.RNDRValues.RData = (CRData)System.Text.Json.JsonSerializer.Deserialize(js1, typeof(CRData));
-                    }
-                }
-                catch { SetDefaultValues(); }
-
-            }
+       
 
             public void SetDefaultValues()
             {
@@ -637,17 +624,20 @@ namespace IntugentWebApp.Pages.RnD_Users
                 gMeasureTemp  = (_objectsService.RNDRValues.RData.dTestTempC * 1.8 + 32.0).ToString("0.0");
                 gCellSize  = (1.0E6 * _objectsService.RNDRValues.RData.dCellSize).ToString("0.0");
                 gCellPress  = _objectsService.RNDRValues.RData.dInitCellPress.ToString("0.00");
-                gPolDen  = (_objectsService.RNDRValues.RData.dPolDensity / _objectsService.CUconv.ToSi_Dens).ToString("0.00");
+                gPolDen  = (_objectsService.RNDRValues.RData.dPolDensity / _objectsService.RNDRValues.CUConv.ToSi_Dens).ToString("0.00");
                 gPolCond  = (1000.0 * _objectsService.RNDRValues.RData.dPolCond).ToString("0.00");
                 gFracStruts  = (100.0 * _objectsService.RNDRValues.RData.dFracStrut).ToString("0.00");
-
-                //foreach (ComboBoxItem cmi in gYAxis)
-                //    if (cmi.Tag.ToString() == _objectsService.RNDRValues.RData.sYaxisTag)
-                //    { cmi.IsSelected = true; _objectsService.RNDRValues.RCalc.sYAxisTitle = cmi.Content.ToString(); }
-                //foreach (ComboBoxItem cmi in gXAxis)
-                //    if (cmi.Tag.ToString() == _objectsService.RNDRValues.RData.sXaxisTag)
-                //    { cmi.IsSelected = true; _objectsService.RNDRValues.RCalc.sXAxisTitle = cmi.Content.ToString(); }
-            }
+            gXAxisSelectedValue = _objectsService.RNDRValues.RData.sXaxisTag;
+            //gXAxisSelectedItem = _objectsService.RNDRValues.RCalc.sXAxisTitle;
+            gYAxisSelectedValue = _objectsService.RNDRValues.RData.sYaxisTag;
+                 //gYAxisSelectedValue = _objectsService.RNDRValues.RCalc.sYAxisTitle;
+            //for (int i=0;i<2;i++)
+            //    if (gYAxisSelectedItem.ToString() == _objectsService.RNDRValues.RData.sYaxisTag)
+            //    {  _objectsService.RNDRValues.RCalc.sYAxisTitle = gYAxisSelectedValue.ToString(); }
+            //for(int i = 0; i < 3; i++)
+            //    if (gXAxisSelectedItem.ToString() == _objectsService.RNDRValues.RData.sXaxisTag)
+            //    {  _objectsService.RNDRValues.RCalc.sXAxisTitle = gXAxisSelectedValue.ToString(); }
+        }
     }
 
 }

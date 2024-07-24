@@ -26,6 +26,7 @@ namespace IntugentWebApp.Pages.RnD_Users
         }
         public void OnGet()
         {
+            ViewData["Index"] = HttpContext.Session.GetInt32("UserId");
             int i2p1, i2p2;
             for (int i = 0; i < 8; i++)
             {

@@ -12,6 +12,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Configuration;
+using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 
 namespace IntugentClassLbrary.Pages
 {
@@ -23,7 +24,7 @@ namespace IntugentClassLbrary.Pages
         public CLists cLists;
         public CDefualts cDefualts;
 
-        public (CDefualts, CLists, Cbfile) MainWindowConstructor()
+        public (CDefualts, CLists, Cbfile) MainWindowConstructor(int IDLocation)
         {
             string sMsg;
 
@@ -92,7 +93,7 @@ namespace IntugentClassLbrary.Pages
                     //   MessageBox.Show("Welcome " + CDefualts.sEmployee + "\n\n Intugent PI will be connecting to Local Database", cbfile.sAppName);
                     cbfile.conAZ = new SqlConnection(@"Data Source=XD-1510\SQLEXPRESS01; Initial Catalog=IntugentPI;Integrated Security=SSPI;");
 
-                    MainWindow_Rendered();
+                    MainWindow_Rendered(IDLocation);
 
 
                 }
@@ -116,7 +117,7 @@ namespace IntugentClassLbrary.Pages
 
 
         //      private void MainWindow_Loaded(object sender, RoutedEventArgs e)
-        public void MainWindow_Rendered()
+        public void MainWindow_Rendered(int IDLocation)
         {
 
             string sMsg, stmp;
@@ -126,14 +127,31 @@ namespace IntugentClassLbrary.Pages
                 }
             if (cDefualts.sEmployee == "AShafi" || cDefualts.sEmployee == "Asjad")
             {
-                //               CDefualts.sEmployee = "Asjad.Shafi@gaf.com";
-                // CDefualts.sGroup = "OKTA_GAF_Intugent_Mfg_Users_Gainesville"; CDefualts.sLocation = "Gainsville TX"; CDefualts.IDLocation = 1;
-                //                CDefualts.sGroup = "OKTA_GAF_Intugent_Mfg_Users_CedarCity"; CDefualts.sLocation = "Cedar City"; CDefualts.IDLocation = 2;
-                //                CDefualts.sGroup = "OKTA_GAF_Intugent_RnD_Users"; CDefualts.sLocation = "Global R&D"; CDefualts.IDLocation = 3;
-                //                CDefualts.sGroup = "OKTA_GAF_Intugent_Admins"; CDefualts.sLocation = "Admin"; CDefualts.IDLocation = 4;
-                //               CDefualts.sGroup = "OKTA_GAF_Intugent_Mfg_Users_Statesboro"; CDefualts.sLocation = "Statesboro, GA"; CDefualts.IDLocation = 5;
-                //               CDefualts.sGroup = "OKTA_GAF_Intugent_Mfg_Users_NewColumbia"; CDefualts.sLocation = "New COlumbia, PA"; CDefualts.IDLocation = 6;
-
+                              cDefualts.sEmployee = "Asjad.Shafi@gaf.com";
+                if (IDLocation == 1)
+                {
+                              cDefualts.sGroup = "OKTA_GAF_Intugent_Mfg_Users_Gainesville"; cDefualts.sLocation = "Gainsville TX"; cDefualts.IDLocation = 1;
+                }
+                else if(IDLocation == 2)
+                {
+                              cDefualts.sGroup = "OKTA_GAF_Intugent_Mfg_Users_CedarCity"; cDefualts.sLocation = "Cedar City"; cDefualts.IDLocation = 2;
+                }
+                else if (IDLocation == 3)
+                {
+                              cDefualts.sGroup = "OKTA_GAF_Intugent_RnD_Users"; cDefualts.sLocation = "Global R&D"; cDefualts.IDLocation = 3;
+                }
+                else if (IDLocation == 4)
+                {
+                              cDefualts.sGroup = "OKTA_GAF_Intugent_Admins"; cDefualts.sLocation = "Admin"; cDefualts.IDLocation = 4;
+                }
+                else if (IDLocation == 5)
+                {
+                              cDefualts.sGroup = "OKTA_GAF_Intugent_Mfg_Users_Statesboro"; cDefualts.sLocation = "Statesboro, GA"; cDefualts.IDLocation = 5;
+                }
+                else if (IDLocation == 6)
+                {
+                            cDefualts.sGroup = "OKTA_GAF_Intugent_Mfg_Users_NewColumbia"; cDefualts.sLocation = "New COlumbia, PA"; cDefualts.IDLocation = 6;
+                }
                 /*                CPages.PageOktaAuth_1.gGroup.Items.Add("OKTA_GAF_Intugent_RnD_Users");
                                 CPages.PageOktaAuth_1.gGroup.Items.Add("OKTA_GAF_Intugent_Mfg_Users_Gainesville");
                                 CPages.PageOktaAuth_1.gGroup.Items.Add("OKTA_GAF_Intugent_Mfg_Users_Statesboro");
@@ -145,7 +163,7 @@ namespace IntugentClassLbrary.Pages
                                 CPages.PageOktaAuth_1.gwbs.Visibility = System.Windows.Visibility.Hidden;*/
 
                 // MANUALLY ADDING GROUP
-                cDefualts.sGroup = "OKTA_GAF_Intugent_Mfg_Users_Gainesville";
+                //cDefualts.sGroup = "OKTA_GAF_Intugent_Mfg_Users_Gainesville";
                 ActivatePI();
 
                 return;

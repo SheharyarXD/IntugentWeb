@@ -53,7 +53,8 @@ namespace IntugentWebApp.Pages.RnD_Users
       
               public void OnGet()
               {
-                       gPO  =  _objectsService.RNDFormulations.Forms.POMats;
+            ViewData["Index"] = HttpContext.Session.GetInt32("UserId");
+            gPO  =  _objectsService.RNDFormulations.Forms.POMats;
                        gNco =  _objectsService.RNDFormulations.Forms.NCOIndexMats;
                        gIso =  _objectsService.RNDFormulations.Forms.IsoMats;
                        gStudyType = _objectsService.CLists.dvRunTypeRND2;

@@ -1,4 +1,5 @@
 ﻿<!DOCTYPE html>
+@using Microsoft.AspNetCore.Mvc;
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -25,7 +26,7 @@
     @{
         var activePage = ViewData["ActivePage"] as string;
     }
-
+    
     <div class="wrapper">
         <!-- ====================================
           sidebar menu
@@ -44,8 +45,16 @@
                         <!-- ====================================
                           sidebar - MFG GROUP
                         ===================================== -->
+                        @{
+                            int index = ViewData["Index"] != null ? int.Parse(ViewData["Index"].ToString()) : 0;
 
-                        <li class="section-title">
+
+                            if (index >= 2 && index <= 5)
+                            {
+
+
+
+                                <li class="section-title">
                             MFG Pages
                         </li>
                         <li class="@(activePage == "Mfg. Home" ? "active" : "")">
@@ -97,15 +106,17 @@
                                 <i class="mdi mdi-book-open-page-variant"></i>
                                 <span class="nav-text">Mfg Reports</span>
                             </a>
-                        </li>  
-                        <!-- ====================================
-                          sidebar - MFG GROUP - END
-                        ===================================== -->
-                        <!-- ====================================
-                          sidebar - RND GROUP
-                        ===================================== -->
+                                </li>
+                            }
+                            <!-- ====================================
+                            sidebar - MFG GROUP - END
+                            ===================================== -->
+                            <!-- ====================================
+                            sidebar - RND GROUP
+                            ===================================== -->
+                            if (index == 1){
 
-               @*          <li class="section-title">
+                            <li class="section-title">
                             R&D Pages
                         </li>
                         <li class="@(activePage == "R&D Home Page" ? "active" : "")">
@@ -148,16 +159,18 @@
                                 <i class="mdi mdi-camera-timer"></i>
                                 <span class="nav-text">TDRV</span>
                             </a>
-                        </li>  *@
-
+                        </li>  
+                        }
+                            
                         <!-- ====================================
                           sidebar - RND Users GROUP - END
                         ===================================== -->
 
                         <!-- ====================================
                           sidebar - Admins GROUP
-                        ===================================== -->
-@*                            <li class="section-title">
+                            ===================================== -->
+                            if(index==6){
+                                <li class="section-title">
                         Admin Pages
                         </li>
 
@@ -187,13 +200,16 @@
                         <i class="mdi mdi-kodi"></i>
                                 <span class="nav-text">AI Model</span>
                         </a>
-                        </li> *@
+                        </li> 
 
+                        }
                         <!-- ====================================
                           sidebar - Admins GROUP - END
-                        ===================================== -->
-
-                        <li class="section-title">
+                            ===================================== -->
+                            if(index>=1 && index <= 5)
+                            {
+                                
+                            <li class="section-title">
                             Shared Mfg. Pages
                         </li>
 
@@ -208,15 +224,10 @@
                                 <i class="mdi mdi-chart-bell-curve"></i>
                                 <span class="nav-text">Mfg. Analysis - 2</span>
                             </a>
-                        </li>
-                   @*      <li>
-                            <a class="sidenav-item-link" href="analytics.html">
-                                <i class="mdi mdi-chart-bell-curve"></i>
-                                <span class="nav-text">Mfg. Analysis - 2</span>
-                            </a>
-                        </li> *@
+                        </li> 
 
-
+                            }
+                        }
                        
                     </ul>
                 </div>

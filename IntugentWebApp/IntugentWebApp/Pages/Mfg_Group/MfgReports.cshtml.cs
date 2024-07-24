@@ -17,6 +17,7 @@ namespace IntugentWebApp.Pages.Mfg_Group
         }
         public void OnGet()
         {
+            ViewData["Index"] = HttpContext.Session.GetInt32("UserId");
             gReportDate = DateTime.Now;
             //gReportDate= DateTime.Now;
             _objectsService.MfgReport.MfgReport(gReportDate);

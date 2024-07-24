@@ -196,6 +196,7 @@ namespace IntugentWebApp.Pages.Mfg_Group
         }
         public void OnGet()
         {
+            ViewData["Index"] = HttpContext.Session.GetInt32("UserId");
             _objectsService.MfgFinishedGoods.GetDataSet();
             SetData();
         }

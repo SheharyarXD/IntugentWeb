@@ -31,6 +31,7 @@ namespace IntugentWebApp.Pages.Analysis
 
         public void OnGet()
         {
+            ViewData["Index"] = HttpContext.Session.GetInt32("UserId");
             _objectsService.CAnalysisData1.GetLists();
             gY2 = gY1 = gX2 = gX1 = _objectsService.CAnalysisData1.dtProps.DefaultView;
             gX1SelectedValue = scnX1;

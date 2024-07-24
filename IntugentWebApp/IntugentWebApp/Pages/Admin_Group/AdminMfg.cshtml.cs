@@ -17,6 +17,7 @@ namespace IntugentWebApp.Pages.Admin_Group
         }
         public void OnGet()
         {
+            ViewData["Index"] = HttpContext.Session.GetInt32("UserId");
         }
         public IActionResult OnPostGIPTargetUpload_Click(List<string[]> clipboard)
         {

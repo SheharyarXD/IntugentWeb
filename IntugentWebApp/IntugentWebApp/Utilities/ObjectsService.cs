@@ -1,4 +1,5 @@
 ﻿using IntugentClassLbrary.Classes;
+using IntugentClassLbrary.Pages;
 using IntugentClassLibrary.Classes;
 using IntugentClassLibrary.Pages.Admins;
 using IntugentClassLibrary.Pages.Mfg;
@@ -9,6 +10,8 @@ namespace IntugentWebApp.Utilities
 {
     public class ObjectsService
     {
+        public int UserIndex  { get;set;}
+
         //             Global Variables
         public CDefualts CDefualts { get; set; }
         public CLists CLists { get; set; }

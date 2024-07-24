@@ -47,6 +47,7 @@ namespace IntugentWebApp.Pages.Analysis
 
         public void OnGet()
         {
+            ViewData["Index"] = HttpContext.Session.GetInt32("UserId");
             if (gProp1SelectedValue == null) gProp1SelectedValue = "FG-Compressive Str Avg6";
             if (gProd1SelectedValue == null) gProd1SelectedIndex = 0;
             if (gMfgSiteSelectedValue == null) gMfgSiteSelectedIndex = 0;

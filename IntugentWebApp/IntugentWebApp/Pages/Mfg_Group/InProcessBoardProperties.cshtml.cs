@@ -171,6 +171,7 @@ namespace IntugentWebApp.Pages.Mfg_Group
         }
         public void OnGet()
         {
+            ViewData["Index"] = HttpContext.Session.GetInt32("UserId");
             SetData();
 
             MfgInProcess? mfgInProcess = new MfgInProcess(_objectsService.Cbfile);

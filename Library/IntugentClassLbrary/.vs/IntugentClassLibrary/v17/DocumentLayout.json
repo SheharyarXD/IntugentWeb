@@ -3,8 +3,8 @@
   "WorkspaceRootPath": "C:\\Users\\XD GAMING\\Desktop\\Intugent\\Intugent\\Intugent\\Library\\IntugentClassLbrary\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{3B846FCC-A353-4DAC-BDE0-C9DA9C4DFC58}|IntugentClassLbrary\\IntugentClassLibrary.csproj|c:\\users\\xd gaming\\desktop\\intugent\\intugent\\intugent\\library\\intugentclasslbrary\\intugentclasslbrary\\pages\\mfg\\mfgprocesscheck.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3B846FCC-A353-4DAC-BDE0-C9DA9C4DFC58}|IntugentClassLbrary\\IntugentClassLibrary.csproj|solutionrelative:intugentclasslbrary\\pages\\mfg\\mfgprocesscheck.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{3B846FCC-A353-4DAC-BDE0-C9DA9C4DFC58}|IntugentClassLbrary\\IntugentClassLibrary.csproj|c:\\users\\xd gaming\\desktop\\intugent\\intugent\\intugent\\library\\intugentclasslbrary\\intugentclasslbrary\\pages\\mainwindow.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3B846FCC-A353-4DAC-BDE0-C9DA9C4DFC58}|IntugentClassLbrary\\IntugentClassLibrary.csproj|solutionrelative:intugentclasslbrary\\pages\\mainwindow.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -19,14 +19,14 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "MfgProcessCheck.cs",
-              "DocumentMoniker": "C:\\Users\\XD GAMING\\Desktop\\Intugent\\Intugent\\Intugent\\Library\\IntugentClassLbrary\\IntugentClassLbrary\\Pages\\Mfg\\MfgProcessCheck.cs",
-              "RelativeDocumentMoniker": "IntugentClassLbrary\\Pages\\Mfg\\MfgProcessCheck.cs",
-              "ToolTip": "C:\\Users\\XD GAMING\\Desktop\\Intugent\\Intugent\\Intugent\\Library\\IntugentClassLbrary\\IntugentClassLbrary\\Pages\\Mfg\\MfgProcessCheck.cs",
-              "RelativeToolTip": "IntugentClassLbrary\\Pages\\Mfg\\MfgProcessCheck.cs",
-              "ViewState": "AQIAAAkAAAAAAAAAAAAAACQAAAAkAAAA",
+              "Title": "MainWindow.cs",
+              "DocumentMoniker": "C:\\Users\\XD GAMING\\Desktop\\Intugent\\Intugent\\Intugent\\Library\\IntugentClassLbrary\\IntugentClassLbrary\\Pages\\MainWindow.cs",
+              "RelativeDocumentMoniker": "IntugentClassLbrary\\Pages\\MainWindow.cs",
+              "ToolTip": "C:\\Users\\XD GAMING\\Desktop\\Intugent\\Intugent\\Intugent\\Library\\IntugentClassLbrary\\IntugentClassLbrary\\Pages\\MainWindow.cs",
+              "RelativeToolTip": "IntugentClassLbrary\\Pages\\MainWindow.cs",
+              "ViewState": "AQIAAIMAAAAAAAAAAAAgwBoAAABPAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-22T18:36:56.501Z",
+              "WhenOpened": "2024-07-24T11:00:33.785Z",
               "EditorCaption": ""
             }
           ]

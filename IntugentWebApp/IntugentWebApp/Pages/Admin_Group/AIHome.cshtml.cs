@@ -21,6 +21,7 @@ namespace IntugentWebApp.Pages.Admin_Group
         }
         public void OnGet()
         {
+            ViewData["Index"] = HttpContext.Session.GetInt32("UserId");
             PerformInitialSearch();
         }
         public bool bInitialSearchDone = false;

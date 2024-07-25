@@ -41,7 +41,7 @@ namespace IntugentWebApp.Pages.Mfg_Group
         }
         public void OnGet()
         {
-
+            ViewData["Index"] = HttpContext.Session.GetInt32("UserId");
             string s, sn; double dtemp;
             _objectsService.MfgPlantsData.GetDataSet();
 

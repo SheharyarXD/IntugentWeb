@@ -45,8 +45,9 @@ namespace IntugentWebApp.Pages.RnD_Users
 
             public void OnGet()
             {
-           // CPages.PageRecipe_1.ReadDataset();
-           _objectsService.RNDFormulations.FormDescriptors();
+            ViewData["Index"] = HttpContext.Session.GetInt32("UserId");
+            // CPages.PageRecipe_1.ReadDataset();
+            _objectsService.RNDFormulations.FormDescriptors();
 
 
             for (int ifo = 0; ifo < Params.nFormMax; ifo++)

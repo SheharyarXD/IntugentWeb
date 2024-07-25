@@ -39,6 +39,7 @@ namespace IntugentWebApp.Pages.RnD_Users
         }
         public async void OnGet()
         {
+            ViewData["Index"] = HttpContext.Session.GetInt32("UserId");
             Startup();
             _objectsService.RNDHome.bInit = false;
             gLoc1 = _objectsService.CDefualts.sLocation;

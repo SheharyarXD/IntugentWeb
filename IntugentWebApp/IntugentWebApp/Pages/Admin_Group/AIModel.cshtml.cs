@@ -41,6 +41,7 @@ namespace IntugentWebApp.Pages.Admin_Group
         }
         public void OnGet()
         {
+            ViewData["Index"] = HttpContext.Session.GetInt32("UserId");
             if (_objectsService.CDBase.dr["snnModel"] == DBNull.Value) nnModel = _objectsService.CNNModel;
             else { 
                 nnModel = (CNNModel)System.Text.Json.JsonSerializer.Deserialize((string)_objectsService.CDBase.dr["snnModel"], typeof(CNNModel));

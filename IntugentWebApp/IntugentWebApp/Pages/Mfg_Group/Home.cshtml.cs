@@ -57,6 +57,7 @@ namespace IntugentWebApp.Pages.Mfg_Group
 
         public async void OnGet()
         {
+            ViewData["Index"] = HttpContext.Session.GetInt32("UserId");
             try
             {
                 SetData();

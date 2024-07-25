@@ -107,6 +107,7 @@ namespace IntugentWebApp.Pages.Mfg_Group
         }
         public void OnGet()
         {
+            ViewData["Index"] = HttpContext.Session.GetInt32("UserId");
             gLoc1  = _objectsService.MfgProcesscheck.CDefault.sLocMfg1;
             gLoc2  = _objectsService.MfgProcesscheck.CDefault.sLocMfg2;
             gLoc3  = _objectsService.MfgProcesscheck.CDefault.sLocMfg3;

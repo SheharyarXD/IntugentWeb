@@ -22,6 +22,7 @@ namespace IntugentWebApp.Pages.Admin_Group
         public string gProperty {  get; set; }
         public string gSource {  get; set; }
         public string gID {  get; set; }
+        public int gInputIndex;
         public DataTable gData {  get; set; }
         public DataTable gStat {  get; set; }
         public List<string> gInputVar = new List<string>();
@@ -34,10 +35,12 @@ namespace IntugentWebApp.Pages.Admin_Group
         public AIAnalysisModel(ObjectsService objectsService)
         {
             _objectsService= objectsService;
-            nnModel = _objectsService.CNNModel;
+            //nnModel = _objectsService.CNNModel;
+            nnModel = _objectsService.CNNData.GetModelData();
         }
         public void OnGet()
         {
+
             ViewData["Index"] = HttpContext.Session.GetInt32("UserId");
             if (_objectsService.CDBase.dr["sNote"] == DBNull.Value) gStudyName = string.Empty; else gStudyName = (string)_objectsService.CDBase.dr["sNote"];
             if (_objectsService.CDBase.dr["sFilePath"] == DBNull.Value) gDataFile = string.Empty; else gDataFile = (string)_objectsService.CDBase.dr["sFilePath"];
@@ -57,6 +60,7 @@ namespace IntugentWebApp.Pages.Admin_Group
 
         public void SetView()
         {
+
             _objectsService.CNNData.ReadData(_objectsService.CDBase);
             gData = _objectsService.CNNData.dt; // dt.DefaultView;
 
@@ -160,8 +164,8 @@ namespace IntugentWebApp.Pages.Admin_Group
             if (_objectsService.CNNData.data != null)
             {
 
-            x = _objectsService.cMatrix.GetColumn2D(_objectsService.CNNData.data, 0);
-            gInputVar = _objectsService.CNNData.sInputNames.ToList(); gInputVarSelectedIndex = 0;
+            x = _objectsService.cMatrix.GetColumn2D(_objectsService.CNNData.data, _objectsService.gInputIndex);
+            gInputVar = _objectsService.CNNData.sInputNames.ToList(); gInputVarSelectedIndex = _objectsService.gInputIndex;
             }
 
             gChartLeftTitle = _objectsService.CNNData.sOutputName;
@@ -189,35 +193,40 @@ namespace IntugentWebApp.Pages.Admin_Group
             return new JsonResult(true);
         }
 
-        //private void BrowseFile(object sender, RoutedEventArgs e)
-        //{
-        //    string sFile; string sForm = "0.000";
-        //    OpenFileDialog openFileDialog1 = new OpenFileDialog
-        //    {
-        //        Title = "Open Data File .csv file ",
-        //        Filter = "Tab delimited Files (*.txt)|*.txt|Comma delimited Files (*.csv)|*.csv"
-        //    };
+        public IActionResult OnPostBrowseFile(string filePath)
+        {
+            string sFile; string sForm = "0.000";
+            //OpenFileDialog openFileDialog1 = new OpenFileDialog
+            //{
+            //    Title = "Open Data File .csv file ",
+            //    Filter = "Tab delimited Files (*.txt)|*.txt|Comma delimited Files (*.csv)|*.csv"
+            //};
 
-        //    if (openFileDialog1.ShowDialog() == false) return;
+            //if (openFileDialog1.ShowDialog() == false) return new JsonResult(false);
 
-        //    sFile = openFileDialog1.FileName;
-        //    if (!File.Exists(sFile))
-        //    {
-        //       // MessageBox.Show("Could not find the data file " + sFile, Cbfile.sAppName, MessageBoxButton.OK, MessageBoxImage.Error);
-        //        return;
-        //    }
-        //    gDataFile  = sFile;
-        //    _objectsService.CDBase.dr["sFilePath"] = sFile;
-        //    _objectsService.CDBase.UpdateModel();
-        //}
+            //sFile = openFileDialog1.FileName;
+            sFile = filePath;
+
+            //if (!File.Exists(sFile))
+            //{
+            //    // MessageBox.Show("Could not find the data file " + sFile, Cbfile.sAppName, MessageBoxButton.OK, MessageBoxImage.Error);
+            //    return new JsonResult(false);
+            //}
+            gDataFile  = sFile;
+            _objectsService.CDBase.dr["sFilePath"] = sFile;
+            _objectsService.CDBase.UpdateModel();
+            return new JsonResult(true);
+        }
 
         public IActionResult OnPostGInputVar_Change(string Value)
         {
             gInputVarSelectedIndex = Int32.Parse(Value);
             if (gInputVarSelectedIndex < 0) return new JsonResult(false);
             x = _objectsService.cMatrix.GetColumn2D(_objectsService.CNNData.data, gInputVarSelectedIndex);
-            return new JsonResult(true);
+
             SetView();
+            _objectsService.gInputIndex = gInputVarSelectedIndex;
+            return new JsonResult(_objectsService.gInputIndex) ;
             //SetgChartAxes();
 
         } 

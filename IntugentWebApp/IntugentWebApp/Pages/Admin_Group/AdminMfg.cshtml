@@ -17,10 +17,10 @@
         Paste Green Product Targets from the IP Product Target file
     </button>
 </div>
- <div class="row">           
-@*         <table id="searchResultsTable" class="table table-hover table-product dataTable" style="width:100%">
-        <thead>
-            <tr>
+ <div class="row col-12">           
+      <table id="searchResultsTable" class="table table-hover table-product dataTable" >
+      <thead>
+    @*         <tr>
                         @if (Model.gIPT != null && Model.gIPT.Table != null)
                 {
                     foreach (DataColumn column in Model.gIPT.Table.Columns)
@@ -28,10 +28,10 @@
                         <th>@column.ColumnName</th>
                     }
                 }
-            </tr>
+            </tr> *@
         </thead>
         <tbody>
-            @if (Model.gIPT != null && Model.gIPT.Count > 0)
+@*             @if (Model.gIPT != null && Model.gIPT.Count > 0)
             {
                 int rowIndex = 0;
                 foreach (DataRowView rowView in Model.gIPT)
@@ -50,9 +50,9 @@
                     rowIndex++;
                 }
 
-            }
-        </tbody>
-    </table> *@
+            } *@
+        </tbody> 
+    </table> 
 
 </div>
 @section Scripts{
@@ -72,6 +72,7 @@
                     data: { clipboard: clipboard },
                     success: function (response) {
                         console.log('Server response:', response);
+                        populateTable(response);
                         //location.reload();
                     },
                     error: function (xhr, status, error) {
@@ -98,6 +99,38 @@
                     console.error('Failed to read clipboard text:', err);
                     return null;
                 });
+        }
+        function populateTable(data) {
+            let table = document.getElementById('searchResultsTable');
+            let thead = table.getElementsByTagName('thead')[0];
+            let tbody = table.getElementsByTagName('tbody')[0];
+
+            // Clear existing table headers and body
+            thead.innerHTML = '';
+            tbody.innerHTML = '';
+
+            if (data.length > 0) {
+                // Create table headers
+                let headerRow = document.createElement('tr');
+                let headers = Object.keys(data[0]);
+                headers.forEach(header => {
+                    let th = document.createElement('th');
+                    th.textContent = header;
+                    headerRow.appendChild(th);
+                });
+                thead.appendChild(headerRow);
+
+                // Create table rows
+                data.forEach(row => {
+                    let tr = document.createElement('tr');
+                    headers.forEach(header => {
+                        let td = document.createElement('td');
+                        td.textContent = row[header];
+                        tr.appendChild(td);
+                    });
+                    tbody.appendChild(tr);
+                });
+            }
         }
 
 

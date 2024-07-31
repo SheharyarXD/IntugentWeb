@@ -118,7 +118,7 @@ namespace IntugentWebApp.Pages.Admin_Group
                 // Mouse.OverrideCursor = null;
 
             }
-            return new JsonResult(_objectsService.CDBase.IndexModel);
+            return new JsonResult(true);
 
         }
         public static void EnablesAIPages(bool bEn)

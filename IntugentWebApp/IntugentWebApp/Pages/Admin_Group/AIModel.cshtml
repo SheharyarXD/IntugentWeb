@@ -261,15 +261,15 @@
                     }
                 });
             }
-            function GHLayerType(Value) {
+            function GHLayerType(gHLayerTypeSelectedItem) {
                 $.ajax({
                     type: "POST",
-                    url: "/Admin_Group/AIModel?handler=GHLayerType",
+                    url: "/Admin_Group/AIModel?handler=GHLayerType_Changed",
                     headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
-                    data: {  Value: Value },
+                    data: { gHLayerTypeSelectedItem: gHLayerTypeSelectedItem },
                     success: function (response) {
-                        console.log('Server response:', response);
-                        location.reload();
+                        //console.log('Server response:', response);
+                         location.reload();
                     },
                     error: function (xhr, status, error) {
                         console.error('Error:', error);
@@ -284,7 +284,7 @@
                     data: { Index: Index },
                     success: function (response) {
                         console.log('Server response:', response);
-                        location.reload();
+                        // location.reload();
                     },
                     error: function (xhr, status, error) {
                         console.error('Error:', error);

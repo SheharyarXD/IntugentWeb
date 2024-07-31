@@ -40,10 +40,10 @@ namespace IntugentClassLibrary.Classes
         double[,,]? dEdW;
         double[,]? Delta;
         double[,] NeuronValues;
-        public CNNData CNNDatas;
+
         public CNNModel(CNNData data)
         {
-            this.CNNDatas = data;
+
         }
         public CNNModel()
         {
@@ -214,7 +214,7 @@ namespace IntugentClassLibrary.Classes
         }
 
 
-        public void Predict()
+        public void Predict(CNNData CNNDatas)
         {
 
             int i, itmp = 0, id, il = 0, ine, ine1;
@@ -286,7 +286,7 @@ namespace IntugentClassLibrary.Classes
             ErrorRMS = ErrorRMS / (double)CNNDatas.nDataPts;
 
         }
-        public void TrainModel()
+        public void TrainModel(CNNData CNNDatas)
         {
             int i, iter = 0, itmp = 0, id, il = 0, ine, ine1, ine1f;  //ine1 node # for nodes 1 layer behing.  Ine1f is node # for nodes one layer forward
             double dtmp = 0; double RMSError1 = 100;

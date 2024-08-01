@@ -27,9 +27,12 @@ namespace IntugentClassLibrary.Classes
         public DataTable? dtXCorr;
         public Cbfile Cbfile;
         public CDBase CDBase;
+        public CNNModel nnModel;
+
         public CNNData(Cbfile cbfile)
         {
             Cbfile = cbfile;
+            nnModel=new CNNModel();
         }
         public void Reset()
         {
@@ -131,7 +134,7 @@ namespace IntugentClassLibrary.Classes
             }
 
             Correlation();  //Correllations calculated before scaling the data.
-           // CPages.PageModel_1.nnModel.nInputNeurons = nInputNeurons;
+           nnModel.nInputNeurons = nInputNeurons;
 
             /* Make the datatable to display data and correllation */
 
@@ -170,11 +173,11 @@ namespace IntugentClassLibrary.Classes
             }
             if (dmax == dmin) dtmp = 1; else dtmp = 1.0 / (dmax - dmin);
             for (int i = 0; i < nDataPts; i++) Output[i] = (Output[i] - dmin) * dtmp;
-           // CPages.PageModel_1.nnModel.YMin = dmin; CPages.PageModel_1.nnModel.YMax = dmax;
+           nnModel.YMin = dmin; nnModel.YMax = dmax;
 
 
-            //CPages.PageModel_1.nnModel.XMin = new double[nInputNeurons];
-            //CPages.PageModel_1.nnModel.XMax = new double[nInputNeurons];
+             nnModel.XMin = new double[nInputNeurons];
+             nnModel.XMax = new double[nInputNeurons];
             for (int j = 0; j < nInputNeurons; j++)
             {
                 dmin = double.MaxValue; dmax = double.MinValue; dtmp = 1;
@@ -185,8 +188,8 @@ namespace IntugentClassLibrary.Classes
                 }
                 if (dmax == dmin) dtmp = 1; else dtmp = 1.0 / (dmax - dmin);
                 for (int i = 0; i < nDataPts; i++) data[i, j] = (data[i, j] - dmin) * dtmp;
-                //CPages.PageModel_1.nnModel.XMin[j] = dmin;
-               // CPages.PageModel_1.nnModel.XMax[j] = dmax;
+               nnModel.XMin[j] = dmin;
+               nnModel.XMax[j] = dmax;
             }
 
 
@@ -194,6 +197,10 @@ namespace IntugentClassLibrary.Classes
           // Mouse.OverrideCursor = null;
 
             return true;
+        }
+        public CNNModel GetModelData()
+        {
+            return nnModel;
         }
 
         public void Correlation()

@@ -18,11 +18,13 @@ namespace IntugentWebApp.Pages.Admin_Group
         public AIHomeModel(ObjectsService objectsService)
         {
             _objectsService = objectsService;
+            _objectsService.gInputIndex = 0;
         }
         public void OnGet()
         {
             ViewData["Index"] = HttpContext.Session.GetInt32("UserId");
             PerformInitialSearch();
+            _objectsService.CNNData.ReadData(_objectsService.CDBase);
         }
         public bool bInitialSearchDone = false;
         //DispatcherTimer dispTimer;
@@ -116,7 +118,7 @@ namespace IntugentWebApp.Pages.Admin_Group
                 // Mouse.OverrideCursor = null;
 
             }
-            return new JsonResult(_objectsService.CDBase.IndexModel);
+            return new JsonResult(true);
 
         }
         public static void EnablesAIPages(bool bEn)

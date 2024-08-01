@@ -99,7 +99,7 @@
                         <div class="col-12">
                             <!-- Project Study Name -->
                             <div class="form-floating mb-2">
-                                <input type="file" id="" class="form-control col-12" value="" id="gDataFile" placeholder="">
+                                <input type="file" id="" class="form-control col-12" value="" id="gDataFile" placeholder="" accept=".txt,.csv">
                                 <p class="col-11">@Model.gDataFile</p>
                                 <label for="gDataFile">Browse for Data file</label>
                             </div>
@@ -210,6 +210,7 @@
             const yy = @Html.Raw(Json.Serialize(Model.yy));
             console.log(xx);
             console.log(yy);
+            console.log(@Model.gInputIndex);
 
             const data1 = {
                 datasets: [{
@@ -243,7 +244,7 @@
                 },
                 plugins: {
                     legend: {
-                        display: true
+                        display: false
                     },
                     zoom: {
                         pan: {
@@ -294,7 +295,8 @@
                 headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
                 data: { Value: Value },
                 success: function (response) {
-                    console.log('Server response:', response);
+                   // console.log('Server response:', response);
+                    location.reload();
                 },
                 error: function (xhr, status, error) {
                     console.error('Error:', error);

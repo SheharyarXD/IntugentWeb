@@ -130,27 +130,27 @@ namespace IntugentClassLbrary.Pages
                               cDefualts.sEmployee = "Asjad.Shafi@gaf.com";
                 if (IDLocation == 1)
                 {
-                              cDefualts.sGroup = "OKTA_GAF_Intugent_Mfg_Users_Gainesville"; cDefualts.sLocation = "Gainsville TX"; cDefualts.IDLocation = 1;
+                              cDefualts.sGroup = "OKTA_GAF_Intugent_RnD_Users"; cDefualts.sLocation = "Global R&D"; cDefualts.IDLocation = 3;
                 }
                 else if(IDLocation == 2)
                 {
-                              cDefualts.sGroup = "OKTA_GAF_Intugent_Mfg_Users_CedarCity"; cDefualts.sLocation = "Cedar City"; cDefualts.IDLocation = 2;
+                              cDefualts.sGroup = "OKTA_GAF_Intugent_Mfg_Users_Gainesville"; cDefualts.sLocation = "Gainsville TX"; cDefualts.IDLocation = 1;
                 }
                 else if (IDLocation == 3)
                 {
-                              cDefualts.sGroup = "OKTA_GAF_Intugent_RnD_Users"; cDefualts.sLocation = "Global R&D"; cDefualts.IDLocation = 3;
+                              cDefualts.sGroup = "OKTA_GAF_Intugent_Mfg_Users_Statesboro"; cDefualts.sLocation = "Statesboro, GA"; cDefualts.IDLocation = 5;
                 }
                 else if (IDLocation == 4)
                 {
-                              cDefualts.sGroup = "OKTA_GAF_Intugent_Admins"; cDefualts.sLocation = "Admin"; cDefualts.IDLocation = 4;
+                              cDefualts.sGroup = "OKTA_GAF_Intugent_Mfg_Users_CedarCity"; cDefualts.sLocation = "Cedar City"; cDefualts.IDLocation = 2;
                 }
                 else if (IDLocation == 5)
                 {
-                              cDefualts.sGroup = "OKTA_GAF_Intugent_Mfg_Users_Statesboro"; cDefualts.sLocation = "Statesboro, GA"; cDefualts.IDLocation = 5;
+                            cDefualts.sGroup = "OKTA_GAF_Intugent_Mfg_Users_NewColumbia"; cDefualts.sLocation = "New COlumbia, PA"; cDefualts.IDLocation = 6;
                 }
                 else if (IDLocation == 6)
                 {
-                            cDefualts.sGroup = "OKTA_GAF_Intugent_Mfg_Users_NewColumbia"; cDefualts.sLocation = "New COlumbia, PA"; cDefualts.IDLocation = 6;
+                              cDefualts.sGroup = "OKTA_GAF_Intugent_Admins"; cDefualts.sLocation = "Admin"; cDefualts.IDLocation = 4;
                 }
                 /*                CPages.PageOktaAuth_1.gGroup.Items.Add("OKTA_GAF_Intugent_RnD_Users");
                                 CPages.PageOktaAuth_1.gGroup.Items.Add("OKTA_GAF_Intugent_Mfg_Users_Gainesville");

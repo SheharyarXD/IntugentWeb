@@ -51,5 +51,6 @@ namespace IntugentWebApp.Utilities
 
         //              local variables
         public bool gInProcessDoneIsChecked { get; set; }
+        public int gInputIndex {  get; set; }
     }
 }

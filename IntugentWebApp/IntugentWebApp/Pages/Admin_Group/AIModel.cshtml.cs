@@ -42,10 +42,14 @@ namespace IntugentWebApp.Pages.Admin_Group
         public void OnGet()
         {
             ViewData["Index"] = HttpContext.Session.GetInt32("UserId");
-            if (_objectsService.CDBase.dr["snnModel"] == DBNull.Value) nnModel = _objectsService.CNNModel;
-            else { 
+            if (_objectsService.CDBase.dr["snnModel"] == DBNull.Value) {
+                nnModel = _objectsService.CNNData.GetModelData();
+            }
+            else
+            {
                 nnModel = (CNNModel)System.Text.Json.JsonSerializer.Deserialize((string)_objectsService.CDBase.dr["snnModel"], typeof(CNNModel));
             }
+            //nnModel = _objectsService.CNNData.GetModelData();
             nnModel.nInputNeurons = _objectsService.CNNData.nInputNeurons;
             nnModel.Reset();
 
@@ -62,8 +66,7 @@ namespace IntugentWebApp.Pages.Admin_Group
             SetWeights(1);
             if (nnModel != null)
             {
-                nnModel.CNNDatas = _objectsService.CNNData;
-                nnModel.Predict();
+                nnModel.Predict(_objectsService.CNNData);
             }
             else
             {
@@ -101,44 +104,44 @@ namespace IntugentWebApp.Pages.Admin_Group
 
         public IActionResult OnPostGenInfo_LF(string Name,string Value)
         {
+            nnModel = _objectsService.CNNData.GetModelData();
             string sFld = String.Empty, sMsg, sdum; ;
             string sName = Name;
             int itmp; double dtmp;
-            itmp=int.Parse(Value);
-            dtmp=double.Parse(Value);
+
             switch (sName)
             {
                 case "gMaxIter":
                     if (gMaxIter  == string.Empty) { 
                         //MessageBox.Show("Maximum number of iterations must be greater than zero", Cbfile.sAppName);
                         gMaxIter  = nnModel.nMaxIter.ToString(); }
-                    else if (int.TryParse(gMaxIter , out itmp)) nnModel.nMaxIter = itmp; else gMaxIter  = nnModel.nMaxIter.ToString(); break;
+                    else if (int.TryParse(Value, out itmp)) nnModel.nMaxIter = itmp; else gMaxIter  = nnModel.nMaxIter.ToString(); break;
 
                 case "gConvTol":
                     if (gConvTol  == string.Empty) { 
                         //MessageBox.Show("The Convergence Tolerance must be greater than zero", Cbfile.sAppName); 
                         gConvTol  = nnModel.ConvTol.ToString(); }
-                    else if (double.TryParse(gConvTol , out dtmp)) nnModel.ConvTol = dtmp; else gConvTol  = nnModel.ConvTol.ToString(); break;
+                    else if (double.TryParse(Value, out dtmp)) nnModel.ConvTol = dtmp; else gConvTol  = nnModel.ConvTol.ToString(); break;
 
                 case "gLearnRate":
                     if (gLearnRate  == string.Empty) { 
                         //MessageBox.Show("Learning rate must be greater than zero", Cbfile.sAppName); 
                         gLearnRate  = nnModel.LearnRate.ToString(); }
-                    else if (double.TryParse(gLearnRate , out dtmp)) nnModel.LearnRate = dtmp; else gLearnRate  = nnModel.LearnRate.ToString(); break;
+                    else if (double.TryParse(Value, out dtmp)) nnModel.LearnRate = dtmp; else gLearnRate  = nnModel.LearnRate.ToString(); break;
 
 
                 case "gStepSizeMin":
                     if (gStepSizeMin  == string.Empty) {
                         //MessageBox.Show("Learning acceleration must be greater than zero", Cbfile.sAppName);
                         gStepSizeMin  = nnModel.StepSizeMin.ToString(); }
-                    else if (double.TryParse(gStepSizeMin , out dtmp)) nnModel.StepSizeMin = dtmp; else gStepSizeMin  = nnModel.LearnRate.ToString(); break;
+                    else if (double.TryParse(Value, out dtmp)) nnModel.StepSizeMin = dtmp; else gStepSizeMin  = nnModel.LearnRate.ToString(); break;
 
 
                 case "gnHiddenLayers":
                     if (gnHiddenLayers  == string.Empty) { 
                         //MessageBox.Show("Number of Hidden Layers must be greater than zero", Cbfile.sAppName);
                         gnHiddenLayers  = nnModel.nHLayers.ToString(); }
-                    else if (!int.TryParse(gnHiddenLayers , out itmp)) gnHiddenLayers  = nnModel.nHLayers.ToString();
+                    else if (!int.TryParse(Value, out itmp)) gnHiddenLayers  = nnModel.nHLayers.ToString();
                     else if (itmp != nnModel.nHLayers) { nnModel.nHLayers = itmp; nnModel.ResetNeurons(nnModel.nInputNeurons); SetNeurons(); nnModel.ResetWeights(); SetWeights(1); gLayerSelectedIndex = 0; }
                     break;
             }
@@ -306,18 +309,34 @@ namespace IntugentWebApp.Pages.Admin_Group
 
         public IActionResult OnPostGLayer_Changed(string Index)
         {
+            if (_objectsService.CDBase.dr["snnModel"] == DBNull.Value)
+            {
+                nnModel = _objectsService.CNNData.GetModelData();
+            }
+            else
+            {
+                nnModel = (CNNModel)System.Text.Json.JsonSerializer.Deserialize((string)_objectsService.CDBase.dr["snnModel"], typeof(CNNModel));
+            }
             gLayerSelectedIndex = Int32.Parse(Index);
             if (gLayerSelectedIndex >= 0) SetWeights(gLayerSelectedIndex + 1);
-            nnModel.Predict();
+            nnModel.Predict(_objectsService.CNNData);
             SetView();
-            return new JsonResult(true);
+            return new JsonResult(gWeights.AsEnumerable().ToList());
         }
 
         public IActionResult OnPostTrainTheModel()
         {
+            if (_objectsService.CDBase.dr["snnModel"] == DBNull.Value)
+            {
+                nnModel = _objectsService.CNNData.GetModelData();
+            }
+            else
+            {
+                nnModel = (CNNModel)System.Text.Json.JsonSerializer.Deserialize((string)_objectsService.CDBase.dr["snnModel"], typeof(CNNModel));
+            }
             //Mouse.OverrideCursor = Cursors.Wait;
-            nnModel.TrainModel();
-            nnModel.Predict();
+            nnModel.TrainModel(_objectsService.CNNData);
+            nnModel.Predict(_objectsService.CNNData);
             SetView();
             SaveModel();
             SetWeights(gLayerSelectedIndex + 1);
@@ -344,13 +363,22 @@ namespace IntugentWebApp.Pages.Admin_Group
 
         public IActionResult OnPostGHLayerType_Changed(string gHLayerTypeSelectedItem)
         {
+            if (_objectsService.CDBase.dr["snnModel"] == DBNull.Value)
+            {
+                nnModel = _objectsService.CNNData.GetModelData();
+            }
+            else
+            {
+                nnModel = (CNNModel)System.Text.Json.JsonSerializer.Deserialize((string)_objectsService.CDBase.dr["snnModel"], typeof(CNNModel));
+            }
             nnModel.HLayerType = gHLayerTypeSelectedItem;
             SaveModel();
             //           MessageBox.Show(nnModel.HLayerType);
-            nnModel.Predict();
+            nnModel.Predict(_objectsService.CNNData);
 
             SetView();
             return new JsonResult(true);
         }
+
     }
 }

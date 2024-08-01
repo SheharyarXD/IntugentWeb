@@ -3,8 +3,12 @@
   "WorkspaceRootPath": "C:\\Users\\XD GAMING\\Desktop\\Intugent\\Intugent\\Intugent\\Library\\IntugentClassLbrary\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{3B846FCC-A353-4DAC-BDE0-C9DA9C4DFC58}|IntugentClassLbrary\\IntugentClassLibrary.csproj|c:\\users\\xd gaming\\desktop\\intugent\\intugent\\intugent\\library\\intugentclasslbrary\\intugentclasslbrary\\pages\\mainwindow.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3B846FCC-A353-4DAC-BDE0-C9DA9C4DFC58}|IntugentClassLbrary\\IntugentClassLibrary.csproj|solutionrelative:intugentclasslbrary\\pages\\mainwindow.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{3B846FCC-A353-4DAC-BDE0-C9DA9C4DFC58}|IntugentClassLbrary\\IntugentClassLibrary.csproj|c:\\users\\xd gaming\\desktop\\intugent\\intugent\\intugent\\library\\intugentclasslbrary\\intugentclasslbrary\\classes\\cnnmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3B846FCC-A353-4DAC-BDE0-C9DA9C4DFC58}|IntugentClassLbrary\\IntugentClassLibrary.csproj|solutionrelative:intugentclasslbrary\\classes\\cnnmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3B846FCC-A353-4DAC-BDE0-C9DA9C4DFC58}|IntugentClassLbrary\\IntugentClassLibrary.csproj|c:\\users\\xd gaming\\desktop\\intugent\\intugent\\intugent\\library\\intugentclasslbrary\\intugentclasslbrary\\classes\\cnndata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3B846FCC-A353-4DAC-BDE0-C9DA9C4DFC58}|IntugentClassLbrary\\IntugentClassLibrary.csproj|solutionrelative:intugentclasslbrary\\classes\\cnndata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,19 +18,32 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "MainWindow.cs",
-              "DocumentMoniker": "C:\\Users\\XD GAMING\\Desktop\\Intugent\\Intugent\\Intugent\\Library\\IntugentClassLbrary\\IntugentClassLbrary\\Pages\\MainWindow.cs",
-              "RelativeDocumentMoniker": "IntugentClassLbrary\\Pages\\MainWindow.cs",
-              "ToolTip": "C:\\Users\\XD GAMING\\Desktop\\Intugent\\Intugent\\Intugent\\Library\\IntugentClassLbrary\\IntugentClassLbrary\\Pages\\MainWindow.cs",
-              "RelativeToolTip": "IntugentClassLbrary\\Pages\\MainWindow.cs",
-              "ViewState": "AQIAAIMAAAAAAAAAAAAgwBoAAABPAAAA",
+              "DocumentIndex": 1,
+              "Title": "CNNData.cs",
+              "DocumentMoniker": "C:\\Users\\XD GAMING\\Desktop\\Intugent\\Intugent\\Intugent\\Library\\IntugentClassLbrary\\IntugentClassLbrary\\Classes\\CNNData.cs",
+              "RelativeDocumentMoniker": "IntugentClassLbrary\\Classes\\CNNData.cs",
+              "ToolTip": "C:\\Users\\XD GAMING\\Desktop\\Intugent\\Intugent\\Intugent\\Library\\IntugentClassLbrary\\IntugentClassLbrary\\Classes\\CNNData.cs",
+              "RelativeToolTip": "IntugentClassLbrary\\Classes\\CNNData.cs",
+              "ViewState": "AQIAABkAAAAAAAAAAAAAwCIAAAAjAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-24T11:00:33.785Z",
+              "WhenOpened": "2024-07-29T13:16:43.463Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "CNNModel.cs",
+              "DocumentMoniker": "C:\\Users\\XD GAMING\\Desktop\\Intugent\\Intugent\\Intugent\\Library\\IntugentClassLbrary\\IntugentClassLbrary\\Classes\\CNNModel.cs",
+              "RelativeDocumentMoniker": "IntugentClassLbrary\\Classes\\CNNModel.cs",
+              "ToolTip": "C:\\Users\\XD GAMING\\Desktop\\Intugent\\Intugent\\Intugent\\Library\\IntugentClassLbrary\\IntugentClassLbrary\\Classes\\CNNModel.cs",
+              "RelativeToolTip": "IntugentClassLbrary\\Classes\\CNNModel.cs",
+              "ViewState": "AQIAACkAAAAAAAAAAAAIwNgAAAAsAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-29T13:01:28.841Z",
               "EditorCaption": ""
             }
           ]

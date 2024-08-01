@@ -46,15 +46,16 @@ namespace IntugentWebApp.Pages.RnD_Users
               public FormulationsModel(ObjectsService objectsService) {
       
                   _objectsService = objectsService;
-            gFormProps =  _objectsService.RNDFormulations.dtFormProp.DefaultView;
-            gPolyolList = _objectsService.RNDFormulations.sMatNameListPO.ToList();
-            gIsoList =    _objectsService.RNDFormulations.sMatNameListIso.ToList();
         }
       
               public void OnGet()
               {
+            ReadDataset();
             ViewData["Index"] = HttpContext.Session.GetInt32("UserId");
-            gPO  =  _objectsService.RNDFormulations.Forms.POMats;
+                       gFormProps =  _objectsService.RNDFormulations.dtFormProp.DefaultView;
+                       gPolyolList = _objectsService.RNDFormulations.sMatNameListPO.ToList();
+                       gIsoList =    _objectsService.RNDFormulations.sMatNameListIso.ToList();
+                       gPO  =  _objectsService.RNDFormulations.Forms.POMats;
                        gNco =  _objectsService.RNDFormulations.Forms.NCOIndexMats;
                        gIso =  _objectsService.RNDFormulations.Forms.IsoMats;
                        gStudyType = _objectsService.CLists.dvRunTypeRND2;

@@ -120,8 +120,8 @@
         </div>
     </div>
 </div>
-
-<div class="row">
+<div class="row" >
+    <div class="row col-6" >
     <div class="card card-default">
         <div class="card-header align-items-center">
             <h2 class="">Formulation Details</h2>
@@ -222,9 +222,9 @@
                     }
                 </tbody>
             </table>
-
-            <table class="table table-striped mb-4">
-                <thead class="thead-light">
+                <div style="height:300px; overflow:scroll;">
+                <table class="table table-striped mb-4" >
+                        <thead class="thead-light" style="position:sticky; top:0;">
                     <tr>
                         <th scope="col">
                             Side B (Polyol Side) Material
@@ -261,7 +261,7 @@
                                     </select>
                                 </td>
                             <td id="PO-@rowIndex5-@colIndex[1]">@row.MatType</td>
-                            <td class="td" id="PO-@rowIndex5-@colIndex[2]">@row.MatNco</td>
+                                <td class="td" id="PO-@rowIndex5-@colIndex[2]">@row.MatOHNum</td>
                             <td id="PO-@rowIndex5-@colIndex[3]">@row.MatFunc</td>
                             <td class="td" id="PO-@rowIndex5-@colIndex[4]">@row.Pbw1</td>
                             <td class="td" id="PO-@rowIndex5-@colIndex[5]">@row.Pbw2</td>
@@ -276,40 +276,20 @@
                     }
                 </tbody>
             </table>
-
-            <div class="row">
-                <div class="col-md-6">
-                    <button type="button" onclick="OnGPO_AddARow()" class="btn btn-primary m-1">
-                        Add A Row
-                    </button>
-                    <button type="button" class="btn btn-primary m-1" onclick="sendClipboardData()">
-                        Paste Formulations pbw
-                    </button>
                 </div>
-
-                <div class="col-md-6">
-                    <div class="row align-items-center justify-content-between">
-                        <label for="sampleMass" class="col-md-9 col-form-label">Total Sample Mass needed for Foamat Experiment (gm) </label>
-                        <div class="col-md-3">
-                            <input type="number" onblur="OngFoamatGmLostFocus(this.value)" value="@Model.gFoamatGm" class="form-control" id="sampleMass">
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </div>
 
-
-<div class="row">
+    <div class="row col-6" >
     <div class="card card-default">
         <div class="card-header align-items-center">
             <h2 class="">Preliminary Material Science Analysis of the Formulations</h2>
         </div>
 
-        <div class="card-body">
+            <div class="card-body" style="height:500px; overflow:scroll;">
             <table class="table">
-                <thead class="thead-light">
+                <thead class="thead-light" style="position:sticky; top:0;">
                     <tr>
                         <th scope="col">
                             Descriptors
@@ -324,7 +304,8 @@
                         <th scope="col">#8</th>
                     </tr>
                 </thead>
-                <tbody>
+                    <tbody>
+
                     @{
                         int rowIndex3 = 0;
                     }
@@ -347,6 +328,26 @@
                 </tbody>
             </table>
 
+        </div>
+    </div>
+</div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <button type="button" onclick="OnGPO_AddARow()" class="btn btn-primary m-1">
+            Add A Row
+        </button>
+        <button type="button" class="btn btn-primary m-1" onclick="sendClipboardData()">
+            Paste Formulations pbw
+        </button>
+    </div>
+
+    <div class="col-md-6">
+        <div class="row align-items-center justify-content-between">
+            <label for="sampleMass" class="col-md-9 col-form-label">Total Sample Mass needed for Foamat Experiment (gm) </label>
+            <div class="col-md-3">
+                <input type="number" onblur="OngFoamatGmLostFocus(this.value)" value="@Model.gFoamatGm" class="form-control" id="sampleMass">
+            </div>
         </div>
     </div>
 </div>

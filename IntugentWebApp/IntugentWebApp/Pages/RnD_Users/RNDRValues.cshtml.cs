@@ -28,13 +28,13 @@ namespace IntugentWebApp.Pages.RnD_Users
         public string gXAxisSelectedValue {  get; set; }
         public string gYAxisSelectedItem { get; set; }
         public string gYAxisSelectedValue { get; set; }
-        public double[] dAr0 = new double[Params.nDataPts];
-        public double[] dAr1 = new double[Params.nDataPts];
-        public double[] dAr2 = new double[Params.nDataPts];
-        public double[] dAr3 = new double[Params.nDataPts];
-        public double[] dAr4 = new double[Params.nDataPts];
+        public double[] dAr0;
+        public double[] dAr1;
+        public double[] dAr2;
+        public double[] dAr3;
+        public double[] dAr4;
+        public double[] dArX;
         public readonly ObjectsService _objectsService; 
-        public double[] dArX = new double[Params.nDataPts];
 
                 
             public RNDRValuesModel(ObjectsService objectsService)
@@ -48,6 +48,7 @@ namespace IntugentWebApp.Pages.RnD_Users
             ViewData["Index"] = HttpContext.Session.GetInt32("UserId");
             // CPages.PageRecipe_1.ReadDataset();
             _objectsService.RNDFormulations.FormDescriptors();
+
 
 
             for (int ifo = 0; ifo < Params.nFormMax; ifo++)
@@ -306,8 +307,13 @@ namespace IntugentWebApp.Pages.RnD_Users
                 int idpt, ncount, iba, ifo;
                 double AvFoamDen, dsum1, dtemp;
 
-
-                _objectsService.RNDRValues.RCalc.dTempKTT = _objectsService.RNDRValues.RData.dTestTempC + 273.0;//Reset Lambdas and vap press to base values
+            dAr0 = new double[Params.nDataPts];
+            dAr1 = new double[Params.nDataPts];
+            dAr2 = new double[Params.nDataPts];
+            dAr3 = new double[Params.nDataPts];
+            dAr4 = new double[Params.nDataPts];
+            dArX = new double[Params.nDataPts];
+            _objectsService.RNDRValues.RCalc.dTempKTT = _objectsService.RNDRValues.RData.dTestTempC + 273.0;//Reset Lambdas and vap press to base values
                 _objectsService.RNDRValues.RCalc.dCellPressTT = _objectsService.RNDRValues.RData.dInitCellPress;
                 _objectsService.RNDRValues.RCalc.dCellSizeTT = _objectsService.RNDRValues.RData.dCellSize;
                 _objectsService.RNDRValues.RCalc.dPolyDenTT = _objectsService.RNDRValues.RData.dPolDensity;

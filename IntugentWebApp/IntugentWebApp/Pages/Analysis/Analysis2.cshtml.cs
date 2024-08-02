@@ -39,7 +39,7 @@ namespace IntugentWebApp.Pages.Analysis
             gY1SelectedValue = scnY1;
             gY2SelectedValue = scnY2;
 
-            _objectsService.CAnalysisData1.GetData(null);
+
             dt = _objectsService.CAnalysisData1.dtPropValues;
             DrawCharts();
         }
@@ -51,7 +51,7 @@ namespace IntugentWebApp.Pages.Analysis
             this.gY2SelectedValue = gY2SelectedValue;
 
             // Ensure the data is fetched and processed
-            _objectsService.CAnalysisData1.GetData(null);
+
             dt = _objectsService.CAnalysisData1.dtPropValues;
 
             // Redraw charts with the new data

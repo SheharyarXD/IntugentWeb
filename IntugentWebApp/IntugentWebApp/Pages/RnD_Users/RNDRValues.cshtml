@@ -49,13 +49,13 @@
     </div>
     <div class="col-8">
         <!-- R  Values and Cell Gas Composition -->
-        <div class="card card-default" style="height:300px; overflow:scroll;">
+        <div class="card card-default" >
             <div class="card-header align-items-center">
                 <h2 class="">R  Values and Cell Gas Composition</h2>
             </div>
-            <div class="card-body">
+            <div class="card-body" style="height:300px; overflow:scroll;">
                 <table class="table table-sm table-bordered table-hover table-striped table-responsive-md">
-                    <thead class="thead-light">
+                    <thead class="thead-light" style="position:sticky; top:0;">
                         <tr>
                             <th scope="col">Property</th>
                             <th scope="col">#1</th>
@@ -136,7 +136,7 @@
             const ctx = document.getElementById('charts').getContext('2d');
 
             const data1 = {
-                label: 'Dataset 1',
+                label: 'Form 1',
                 data: @Html.Raw(Json.Serialize(Model.dArX.Zip(Model.dAr0, (x, y) => new { x, y }))),
                 backgroundColor: 'rgba(255, 0, 0, 0.6)',
                 borderColor: 'rgba(255, 0, 0, 1)',
@@ -145,7 +145,7 @@
             };
 
             const data2 = {
-                label: 'Dataset 2',
+                label: 'Form 2',
                 data: @Html.Raw(Json.Serialize(Model.dArX.Zip(Model.dAr1, (x, y) => new { x, y }))),
                 backgroundColor: 'rgba(0, 0, 255, 0.6)',
                 borderColor: 'rgba(0, 0, 255, 1)',
@@ -154,7 +154,7 @@
             };
 
             const data3 = {
-                label: 'Dataset 3',
+                label: 'Form 3',
                 data: @Html.Raw(Json.Serialize(Model.dArX.Zip(Model.dAr2, (x, y) => new { x, y }))),
                 backgroundColor: 'rgba(0, 255, 0, 0.6)',
                 borderColor: 'rgba(0, 255, 0, 1)',
@@ -163,7 +163,7 @@
             };
 
             const data4 = {
-                label: 'Dataset 4',
+                label: 'Form 4',
                 data: @Html.Raw(Json.Serialize(Model.dArX.Zip(Model.dAr3, (x, y) => new { x, y }))),
                 backgroundColor: 'rgba(255, 255, 0, 0.6)',
                 borderColor: 'rgba(255, 255, 0, 1)',
@@ -172,13 +172,18 @@
             };
 
             const data5 = {
-                label: 'Dataset 5',
+                label: 'Form 5',
                 data: @Html.Raw(Json.Serialize(Model.dArX.Zip(Model.dAr4, (x, y) => new { x, y }))),
-                backgroundColor: 'rgba(255, 0, 0, 0.6)',
-                borderColor: 'rgba(255, 0, 0, 1)',
+                backgroundColor: 'DarkMagenta',
+                borderColor: 'DarkMagenta',
                 borderWidth: 3,
                 pointRadius: 0
             };
+
+
+
+
+
 
             const config = {
                 type: 'line',
@@ -191,12 +196,14 @@
                         x: {
                             type: 'linear',
                             position: 'bottom',
+
                             title: {
                                 display: true,
                                 text: 'Temperature (F)',
                             }
                         },
                         y: {
+
                             title: {
                                 display: true,
                                 text: 'R / n value',
@@ -208,31 +215,39 @@
                             display: true
                         },
                         zoom: {
-                            pan: {
-                                enabled: true,
-                                mode: 'xy',
-                            },
                             zoom: {
-                                enabled: true,
-                                mode: 'xy',
                                 wheel: {
-                                    enabled: true,
+                                    enabled: true
                                 },
                                 pinch: {
                                     enabled: true
-                                }
-                            }
+                                },
+                                drag: {
+                                    enabled: true
+                                },
+                                mode: 'xy'
+                            },
+                            pan: {
+                                enabled: true,
+                                mode: 'xy',
+                                threshold: 10,
+                                speed: 10
+                            },
                         }
                     }
                 }
             };
 
             const myChart = new Chart(ctx, config);
-
+          
             document.getElementById('charts').addEventListener('dblclick', () => {
                 myChart.resetZoom();
             });
         });
+     
+        
+        
+        
         function gAxisSelectionChanged(selectElement, name) {
             const axisValue = selectElement.value;
             const axisName = name;

@@ -105,7 +105,6 @@ namespace IntugentWebApp.Pages.Admin_Group
                     {
                   _objectsService.CDBase.dr = _objectsService.CDBase.dt.Rows[i];
 
-
                     }
                 }
                 _objectsService.CDBase.IDModel = (int)_objectsService.CDBase.dr["ID"];

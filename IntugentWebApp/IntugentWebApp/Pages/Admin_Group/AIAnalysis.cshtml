@@ -99,8 +99,7 @@
                         <div class="col-12">
                             <!-- Project Study Name -->
                             <div class="form-floating mb-2">
-                                <input type="file" id="" class="form-control col-12" value="" id="gDataFile" placeholder="" accept=".txt,.csv">
-                                <p class="col-11">@Model.gDataFile</p>
+                                <input type="text" id="" class="form-control col-12" onblur="BrowseFile(this.value)" value="@Model.gDataFile" id="gDataFile" placeholder="">
                                 <label for="gDataFile">Browse for Data file</label>
                             </div>
                         </div>
@@ -303,6 +302,23 @@
                 }
             });
         }
+
+        function BrowseFile(filePath) {
+            $.ajax({
+                type: "POST",
+                url: "/Admin_Group/AIAnalysis?handler=BrowseFile",
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                data: { filePath: filePath },
+                success: function (response) {
+                    // console.log('Server response:', response);
+                    location.reload();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+
 
         function GUploadData() {
             $.ajax({

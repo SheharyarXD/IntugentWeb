@@ -55,6 +55,9 @@
     </table> 
 
 </div>
+
+
+
 @section Scripts{
     <script>
 
@@ -101,37 +104,64 @@
                 });
         }
         function populateTable(data) {
-            let table = document.getElementById('searchResultsTable');
-            let thead = table.getElementsByTagName('thead')[0];
-            let tbody = table.getElementsByTagName('tbody')[0];
+            let table = $('#searchResultsTable');
+            let thead = table.find('thead');
+            let tbody = table.find('tbody');
 
-            // Clear existing table headers and body
-            thead.innerHTML = '';
-            tbody.innerHTML = '';
+            thead.empty();
+            tbody.empty();
 
             if (data.length > 0) {
-                // Create table headers
-                let headerRow = document.createElement('tr');
+                let headerRow = $('<tr></tr>');
                 let headers = Object.keys(data[0]);
                 headers.forEach(header => {
-                    let th = document.createElement('th');
-                    th.textContent = header;
-                    headerRow.appendChild(th);
-                });
-                thead.appendChild(headerRow);
-
-                // Create table rows
-                data.forEach(row => {
-                    let tr = document.createElement('tr');
-                    headers.forEach(header => {
-                        let td = document.createElement('td');
-                        td.textContent = row[header];
-                        tr.appendChild(td);
+                    let th = $('<th></th>').text(header);
+                    th.css({
+                        width: 'auto', 
+                        whiteSpace: 'nowrap',
+                        padding: '8px'
                     });
-                    tbody.appendChild(tr);
+                    headerRow.append(th);
+                });
+                thead.append(headerRow);
+
+
+                data.forEach(row => {
+                    let tr = $('<tr></tr>');
+                    headers.forEach(header => {
+                        let td = $('<td></td>');
+                        let cellValue = row[header];
+
+                        // Check if cell value is an object and set to 0 if true
+                        if (typeof cellValue === 'object' && cellValue !== null) {
+                            td.text('');
+                        } else {
+                            td.text(cellValue);
+                        }
+                        td.css({
+                            width: 'auto', 
+                            whiteSpace: 'nowrap',
+                            padding: '8px'
+                        });
+                        tr.append(td);
+                    });
+                    tbody.append(tr);
+                });
+
+
+                table.css({
+                    width: '100%',
+                    tableLayout: 'auto' 
+                });
+
+                table.wrap('<div class="table-responsive"></div>');
+                $('.table-responsive').css({
+                    width: '100%',
+                    overflowX: 'auto'
                 });
             }
         }
+
 
 
     </script>

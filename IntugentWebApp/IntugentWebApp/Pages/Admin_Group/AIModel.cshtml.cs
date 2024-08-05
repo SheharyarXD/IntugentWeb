@@ -41,6 +41,8 @@ namespace IntugentWebApp.Pages.Admin_Group
         }
         public void OnGet()
         {
+            _objectsService.CNNData.ReadData(_objectsService.CDBase);
+            PerformInitialSearch();
             ViewData["Index"] = HttpContext.Session.GetInt32("UserId");
             if (_objectsService.CDBase.dr["snnModel"] == DBNull.Value) {
                 nnModel = _objectsService.CNNData.GetModelData();
@@ -74,7 +76,20 @@ namespace IntugentWebApp.Pages.Admin_Group
             }
             SetView();
         }
+        public void PerformInitialSearch()
+        {
+            if (_objectsService.CDBase.SearchDatabase(string.Empty) && _objectsService.CDBase.dt.Rows.Count > 0)
+            {
+                int itmp;
 
+                _objectsService.CDBase.IndexModel = 0;
+                _objectsService.CDBase.dr = _objectsService.CDBase.dt.Rows[_objectsService.CDBase.IndexModel];
+                _objectsService.CDBase.IDModel = (int)_objectsService.CDBase.dr["ID"];
+
+
+            }
+
+        }
         public void SetView()
         {
             //           if(CNNData.OutputPred !=null || CNNData.Output !=null)
@@ -227,49 +242,61 @@ namespace IntugentWebApp.Pages.Admin_Group
             gLayer.Add("Output"); gLayerSelectedIndex = 0;
         }
       
-        //private void OnNodeNoEditing(object sender, DataGridCellEditEndingEventArgs e)
-        //{
-        //    string sMsg;
-        //    int irow = e.Row.GetIndex();
-        //    int icol = e.Column.DisplayIndex;
+        public IActionResult OnPostNodeNoEditing(int rowId,int colId,string text)
+        {
+            string sMsg;
+            int irow = rowId;
+            int icol = colId;
 
-        //    int iSel;
-        //    double dtemp;
+            int iSel;
+            double dtemp;
 
-        //    DataGridRow dgr = e.Row;
+            if (_objectsService.CDBase.dr["snnModel"] == DBNull.Value)
+            {
+                nnModel = _objectsService.CNNData.GetModelData();
+            }
+            else
+            {
+                nnModel = (CNNModel)System.Text.Json.JsonSerializer.Deserialize((string)_objectsService.CDBase.dr["snnModel"], typeof(CNNModel));
+            }
 
-        //    if (irow > nnModel.nHLayers - 1)
-        //    {
-        //        sMsg = "Too many hidden layers";
-        //      //  MessageBox.Show(sMsg, Cbfile.sAppName, MessageBoxButton.OK, MessageBoxImage.Stop);
-        //        return;
-        //    }
-        //    if (icol == 2)
-        //    {
-        //        int itmp; string stmp = string.Empty;
-        //        TextBox tb = gHNeurons.Columns[icol].GetCellContent(dgr) as TextBox;
+            //DataGridRow dgr = e.Row;
 
-        //        if (tb  == string.Empty) {
-        //            //MessageBox.Show("Number of neurons must be greater than zero", Cbfile.sAppName);
-        //            tb  = nnModel.nNeuronsInLayers[irow + 1].ToString(); }
-        //        else if (!int.TryParse(tb , out itmp)) tb  = nnModel.nNeuronsInLayers[irow + 1].ToString();
-        //        else
-        //        if (itmp != nnModel.nNeuronsInLayers[irow + 1]) { nnModel.nNeuronsInLayers[irow + 1] = itmp; nnModel.ResetWeights(); SetWeights(gLayer.SelectedIndex + 1); }
+            if (irow > nnModel.nHLayers - 1)
+            {
+                sMsg = "Too many hidden layers";
+              //  MessageBox.Show(sMsg, Cbfile.sAppName, MessageBoxButton.OK, MessageBoxImage.Stop);
+                return new JsonResult(sMsg);
+            }
+            if (icol == 2)
+            {
+                int itmp; string stmp = string.Empty;
+                //TextBox tb = gHNeurons.Columns[icol].GetCellContent(dgr) as TextBox;
+                string tb = text;
 
-        //        //               if (int.TryParse(tb , out itmp) && itmp > 0) nnModel.nNeuronsInLayers[irow + 1] = itmp;
-        //        //                else { MessageBox.Show("The number of Neurons must be > 0"); tb  = nnModel.nNeuronsInLayers[irow + 1].ToString(); }
-        //        nnModel.Predict();
-        //        SetView();
+                if (tb  == string.Empty) {
+                    //MessageBox.Show("Number of neurons must be greater than zero", Cbfile.sAppName);
+                    tb  = nnModel.nNeuronsInLayers[irow + 1].ToString(); }
+                else if (!int.TryParse(tb , out itmp)) tb  = nnModel.nNeuronsInLayers[irow + 1].ToString();
+                else
+                if (itmp != nnModel.nNeuronsInLayers[irow + 1]) { nnModel.nNeuronsInLayers[irow + 1] = itmp; nnModel.ResetWeights(); SetWeights(gLayerSelectedIndex + 1); }
+
+                //               if (int.TryParse(tb , out itmp) && itmp > 0) nnModel.nNeuronsInLayers[irow + 1] = itmp;
+                //                else { MessageBox.Show("The number of Neurons must be > 0"); tb  = nnModel.nNeuronsInLayers[irow + 1].ToString(); }
+                nnModel.Predict(_objectsService.CNNData);
+                SetView();
 
 
-        //        string sModel = System.Text.Json.JsonSerializer.Serialize(nnModel);
-        //        //                MessageBox.Show(sModel);
-        //        _objectsService.CDBase.dr["snnModel"] = sModel;
-        //        _objectsService.CDBase.dr["sUser"] = _objectsService.CDefualts.sEmployee;
-        //        _objectsService.CDBase.dr["DateLastChanged"] = DateTime.Now;
-        //        _objectsService.CDBase.UpdateModel();
-        //    }
-        //}
+                string sModel = System.Text.Json.JsonSerializer.Serialize(nnModel);
+                //                MessageBox.Show(sModel);
+                _objectsService.CDBase.dr["snnModel"] = sModel;
+                _objectsService.CDBase.dr["sUser"] = _objectsService.CDefualts.sEmployee;
+                _objectsService.CDBase.dr["DateLastChanged"] = DateTime.Now;
+                _objectsService.CDBase.UpdateModel();
+                _objectsService.CNNData.ReadData(_objectsService.CDBase);
+            }
+            return new JsonResult(true);
+        }
 
         public void SaveModel()
         {
@@ -321,7 +348,19 @@ namespace IntugentWebApp.Pages.Admin_Group
             if (gLayerSelectedIndex >= 0) SetWeights(gLayerSelectedIndex + 1);
             nnModel.Predict(_objectsService.CNNData);
             SetView();
-            return new JsonResult(gWeights.AsEnumerable().ToList());
+            var result = new List<Dictionary<string, object>>();
+            foreach (DataRow rowView in gWeights.Rows)
+            {
+                var rowDict = new Dictionary<string, object>();
+                foreach (DataColumn column in gWeights.Columns)
+                {
+                    rowDict[column.ColumnName] = rowView[column.ColumnName];
+                }
+                result.Add(rowDict);
+            }
+
+            // Return the result as JSON
+            return new JsonResult(result);
         }
 
         public IActionResult OnPostTrainTheModel()

@@ -176,11 +176,76 @@
                             type: 'linear',
                             position: 'bottom'
                         }
-                    }
-                }
-            };
+                    },
+                    plugins: {
+                        legend: {
+                            display: true
+                        },
+                        zoom: {
+                            zoom: {
 
-            window.chart = new Chart(ctx, config);
+                                wheel: {
+                                    enabled: true,
+                                },
+
+                                drag: {
+                                    enabled: true
+                                }
+                            },
+                        }
+                    }
+
+                }
+
+            };
+            const myChart = new Chart(ctx, config);
+            let isPanning = false;
+            let startX, startY;
+
+            // Start panning
+            ctx.canvas.addEventListener('mousedown', function (event) {
+                isPanning = true;
+                startX = event.clientX;
+                startY = event.clientY;
+            });
+
+            // Handle panning movement
+            ctx.canvas.addEventListener('mousemove', function (event) {
+                if (isPanning) {
+                    const diffX = startX - event.clientX;
+                    const diffY = startY - event.clientY;
+
+                    const xScale = myChart.scales.x;
+                    const yScale = myChart.scales.y;
+
+
+                    xScale.min += diffX * (xScale.max - xScale.min) / ctx.canvas.clientWidth;
+                    xScale.max += diffX * (xScale.max - xScale.min) / ctx.canvas.clientWidth;
+
+                    yScale.min -= diffY * (yScale.max - yScale.min) / ctx.canvas.clientHeight;
+                    yScale.max -= diffY * (yScale.max - yScale.min) / ctx.canvas.clientHeight;
+
+
+                    myChart.update('none');
+
+
+                    startX = event.clientX;
+                    startY = event.clientY;
+                }
+            });
+
+
+            ctx.canvas.addEventListener('mouseup', function () {
+                isPanning = false;
+            });
+
+
+            ctx.canvas.addEventListener('mouseleave', function () {
+                isPanning = false;
+            });
+            document.getElementById('line-chart').addEventListener('dblclick', () => {
+                myChart.resetZoom();
+            });
         }
 
         function gProp1(value) {

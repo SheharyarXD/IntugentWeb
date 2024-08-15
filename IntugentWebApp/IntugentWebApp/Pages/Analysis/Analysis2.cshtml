@@ -142,7 +142,7 @@
                 label: 'Dataset 3',
                 data: @Html.Raw(Json.Serialize(Model.gX2Y1_X.Zip(Model.gX2Y1_Y, (x, y) => new { x, y }))),
                 backgroundColor: 'rgba(255, 255, 0, 0.6)',
-                borderColor: 'rgba(255, 255, 0, 1)',
+                borderColor: 'rgba(0, 0, 0, 1)',
                 borderWidth: 1,
                 pointRadius: 2
             }]
@@ -171,20 +171,27 @@
                     display: false
                 },
                 zoom: {
-                    pan: {
-                        enabled: true,
-                        mode: 'xy',
-                    },
-                    zoom: {
-                        enabled: true,
-                        mode: 'xy',
-                        wheel: {
-                            enabled: true,
-                        },
-                        pinch: {
-                            enabled: true
-                        }
-                    }
+
+            
+                            zoom: {
+                                wheel: {
+                                    enabled: true
+                                },
+                                pinch: {
+                                    enabled: true
+                                },
+                                drag: {
+                                    enabled: true
+                                },
+                                mode: 'xy'
+                            },
+                            pan: {
+                                enabled: true,
+                                mode: 'xy',
+                                threshold: 10,
+                                speed: 10
+                            },
+
                 }
             }
         };
@@ -209,22 +216,26 @@
                 legend: {
                     display: false
                 },
-                zoom: {
-                    pan: {
-                        enabled: true,
-                        mode: 'xy',
-                    },
                     zoom: {
-                        enabled: true,
-                        mode: 'xy',
-                        wheel: {
-                            enabled: true,
+                        zoom: {
+                            wheel: {
+                                enabled: true
+                            },
+                            pinch: {
+                                enabled: true
+                            },
+                            drag: {
+                                enabled: true
+                            },
+                            mode: 'xy'
                         },
-                        pinch: {
-                            enabled: true
-                        }
+                        pan: {
+                            enabled: true,
+                            mode: 'xy',
+                            threshold: 10,
+                            speed: 10
+                        },
                     }
-                }
             }
         };
          options2 = {
@@ -248,22 +259,26 @@
                 legend: {
                     display: false
                 },
-                zoom: {
-                    pan: {
-                        enabled: true,
-                        mode: 'xy',
-                    },
                     zoom: {
-                        enabled: true,
-                        mode: 'xy',
-                        wheel: {
-                            enabled: true,
+                        zoom: {
+                            wheel: {
+                                enabled: true
+                            },
+                            pinch: {
+                                enabled: true
+                            },
+                            drag: {
+                                enabled: true
+                            },
+                            mode: 'xy'
                         },
-                        pinch: {
-                            enabled: true
-                        }
+                        pan: {
+                            enabled: true,
+                            mode: 'xy',
+                            threshold: 10,
+                            speed: 10
+                        },
                     }
-                }
             }
         };
          options3 = {
@@ -287,22 +302,26 @@
                 legend: {
                     display: false
                 },
-                zoom: {
-                    pan: {
-                        enabled: true,
-                        mode: 'xy',
-                    },
                     zoom: {
-                        enabled: true,
-                        mode: 'xy',
-                        wheel: {
-                            enabled: true,
+                        zoom: {
+                            wheel: {
+                                enabled: true
+                            },
+                            pinch: {
+                                enabled: true
+                            },
+                            drag: {
+                                enabled: true
+                            },
+                            mode: 'xy'
                         },
-                        pinch: {
-                            enabled: true
-                        }
+                        pan: {
+                            enabled: true,
+                            mode: 'xy',
+                            threshold: 10,
+                            speed: 10
+                        },
                     }
-                }
             }
         };
 
@@ -313,7 +332,9 @@
             data: data1,
             options: options
         });
-
+            document.getElementById('gCircles11').addEventListener('dblclick', () => {
+                myScatterChart1.resetZoom();
+            });
         // Create the second chart
         const ctx2 = document.getElementById('gCircles22').getContext('2d');
         myScatterChart2 = new Chart(ctx2, {
@@ -321,7 +342,9 @@
             data: data2,
             options: options1
         });
-
+            document.getElementById('gCircles22').addEventListener('dblclick', () => {
+                myScatterChart2.resetZoom();
+            })
         // Create the second chart
         const ctx3 = document.getElementById('gCircles12').getContext('2d');
         myScatterChart3 = new Chart(ctx3, {
@@ -329,6 +352,9 @@
             data: data3,
             options: options2
         });
+            document.getElementById('gCircles12').addEventListener('dblclick', () => {
+                myScatterChart3.resetZoom();
+            })
 
         // Create the second chart
         const ctx4 = document.getElementById('gCircles21').getContext('2d');
@@ -337,6 +363,10 @@
             data: data4,
             options: options3
         });
+
+            document.getElementById('gCircles21').addEventListener('dblclick', () => {
+                myScatterChart4.resetZoom();
+            })
 
     });
     function UpdateCharts() {

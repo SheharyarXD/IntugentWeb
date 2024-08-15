@@ -71,7 +71,7 @@
 
                             <div class="col-12 card-body text-center pb-5">
                                 <h2 class=" py-3"># of Neurons in Layers</h2>
-                                <table id="searchResultsTable" class="table table-sm table-bordered table-hover table-striped table-responsive-md" style="width:100%">
+                                <table id="" class="table table-sm table-bordered table-hover table-striped table-responsive-md" style="width:100%">
                                     <thead>
                                         <tr>
                                             <th>Layer #</th>
@@ -80,14 +80,17 @@
                                         </tr>
                                     </thead>
                                     <tbody id="DataTable">
-
+                                        @{
+                                            int rowIndex1 = 0;
+                                        }
                                         @foreach (DataRowView rowView in Model.gHNeurons)
                                         {
                                         <tr>
                                                 <td>@rowView["Layer #"]</td>
                                                 <td>@rowView["Description"]</td>
-                                                <td>@rowView["# of Neurons"]</td>
-                                        </tr>
+                                                <td id="@rowIndex1-2" class="td">@rowView["# of Neurons"]</td>
+                                            </tr>
+                                            rowIndex1++;
                                         }
 
                                     </tbody>
@@ -120,7 +123,7 @@
             <div class="card-body">
                 <!-- Weight Functions for the Hidden Layer -->
                 <div class="form-floating mb-2">
-                    <select class="form-select" id="gLayer" onblur="GLayer(this.options[this.selectedIndex].id)">
+                    <select class="form-select" id="gLayer" onchange="GLayer(this.options[this.selectedIndex].id)">
                         @{
                             int rowIndex = 0;
                         }
@@ -174,6 +177,49 @@
 @section Scripts {
     <script>
         document.addEventListener("DOMContentLoaded", function () {
+                $(function () {
+                    $(".td").click(function (event) {
+                        if ($(this).children("input").length > 0)
+                            return false;
+
+                        var tdObj = $(this);
+                        var preText = tdObj.html();
+                        var inputObj = $("<input type='text' />");
+                        tdObj.html("");
+
+                        inputObj.width(tdObj.width())
+                            .height(tdObj.height())
+                            .css({ border: "0px", fontSize: "13px" })
+                            .val(preText)
+                            .appendTo(tdObj)
+                            .trigger("focus")
+                            .trigger("select");
+
+                        inputObj.keyup(function (event) {
+                            if (13 == event.which) { // press ENTER-key
+                                var text = $(this).val();
+                                tdObj.html(text);
+                            }
+                            else if (27 == event.which) {  // press ESC-key
+                                tdObj.html(preText);
+                            }
+                        });
+
+                        inputObj.click(function () {
+                            return false;
+                        });
+                        inputObj.blur(function () {
+                            var text = $(this).val();
+                            tdObj.html(text);
+
+                            var cellId = tdObj.attr("id");
+                            var ids = cellId.split("-");
+                            var rowId = ids[0];
+                            var colId = ids[1];
+                            NodeNoEditing(rowId, colId, text);
+                        });
+                    });
+                });
             const ctx = document.getElementById('charts').getContext('2d');
 
             const data1 = {
@@ -248,13 +294,36 @@
                 myChart.resetZoom();
             });
         });
+
+            function NodeNoEditing(rowId, colId, text) {
+                // console.log("Row ID: " + rowId + ", Column ID: " + colId + ", New Value: " + text);
+                $.ajax({
+                    type: "POST",
+                    url: "/Admin_Group/AIModel?handler=NodeNoEditing",
+                    headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                    data: { rowId: rowId, colId: colId, text: text },
+                    success: function (response) {
+                        // console.log('Server response:', response);
+                        location.reload();
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error:', error);
+                    }
+                });
+            }
+
+
+
+
+
             function GTrainModel() {
                 $.ajax({
                     type: "POST",
                     url: "/Admin_Group/AIModel?handler=TrainTheModel",
                     headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
                     success: function (response) {
-                        console.log('Server response:', response);
+                        // console.log('Server response:', response);
+                           location.reload();
                     },
                     error: function (xhr, status, error) {
                         console.error('Error:', error);
@@ -283,8 +352,18 @@
                     headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
                     data: { Index: Index },
                     success: function (response) {
+                        $("#searchResultsTable tbody").empty();
+
+                        response.forEach(function (rowData) {
+                            let row = "<tr>";
+                            for (const [key, value] of Object.entries(rowData)) {
+                                row += `<td>${value}</td>`;
+                            }
+                            row += "</tr>";
+                            $("#searchResultsTable tbody").append(row);
+                        });
+
                         console.log('Server response:', response);
-                        // location.reload();
                     },
                     error: function (xhr, status, error) {
                         console.error('Error:', error);
@@ -298,7 +377,8 @@
                     headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
                     data: { Name: Name, Value: Value },
                     success: function (response) {
-                        console.log('Server response:', response);
+                        // console.log('Server response:', response);
+                        location.reload();
                     },
                     error: function (xhr, status, error) {
                         console.error('Error:', error);

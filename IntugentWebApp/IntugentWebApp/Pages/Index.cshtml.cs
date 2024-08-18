@@ -22,7 +22,7 @@ namespace IntugentWebApp.Pages
     public class IndexModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;
-        private readonly ObjectsService _objectsService;
+        public ObjectsService _objectsService;
         public List<string> gGroup = new List<string>();
 
         public IndexModel(ILogger<IndexModel> logger, ObjectsService objectsService)

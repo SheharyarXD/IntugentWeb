@@ -39,6 +39,10 @@ namespace IntugentWebApp.Pages
             if (_objectsService.CDefualts != null && _objectsService.CLists != null && _objectsService.Cbfile != null)
             {
                 SetOptionBoxes(_objectsService.CDefualts, _objectsService.CLists);
+                
+                CProdTargets cProdTargets = new CProdTargets(_objectsService.Cbfile,_objectsService.CDefualts);
+                _objectsService.CProdTargets = cProdTargets;
+
                 cMatrix cMatrix = new cMatrix();
                 _objectsService.cMatrix = cMatrix;
 
@@ -63,6 +67,8 @@ namespace IntugentWebApp.Pages
                 MfgInProcess mfgInProcess = new MfgInProcess(_objectsService.Cbfile);
                 _objectsService.MfgInProcess = mfgInProcess;
 
+                CIPProdTargets cIPProdTargets = new CIPProdTargets(_objectsService.Cbfile, _objectsService.MfgInProcess);
+                _objectsService.CIPProdTargets= cIPProdTargets;
                 MfgFinishedGoods mfgFinishedGoods = new MfgFinishedGoods(_objectsService.Cbfile);
                 _objectsService.MfgFinishedGoods = mfgFinishedGoods;
 

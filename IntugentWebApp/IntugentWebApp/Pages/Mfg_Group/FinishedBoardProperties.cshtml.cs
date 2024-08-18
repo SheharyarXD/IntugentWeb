@@ -189,10 +189,47 @@ namespace IntugentWebApp.Pages.Mfg_Group
         public DateTime? gRetestQCTime { get; set; }
         //public DateTime?  {get;set; }
 
-        private readonly ObjectsService _objectsService;
+
+
+
+
+        //                                          Color Properties
+        public string backColorCal { get; set; } = "#FFFFFF"; 
+        public string backColorRed { get; set; } 
+        public string backColorEsc { get; set; }
+        public string backColor { get; set; } = "#FFFFFF"; 
+        public string gIPLengthBackground {  get; set; }
+        public string gIPWidthBackground {  get; set; }
+        public string gThicknessIPBackground {  get; set; }
+        public string gCoreDensityIPBackground {  get; set; }
+        public string gCompressiveIPBackground {  get; set; }
+        public string gCoreDensityBackground {  get; set; }
+        public string gCompressiveIP5Background {  get; set; }
+        public string gCoreDens1Background {  get; set; }
+        public string gCoreDens2Background {  get; set; }
+        public string gCoreDens3Background {  get; set; }
+        public string gCompStrFG_Avg6Background {  get; set; }
+        public string gCompStrFG_Avg5Background {  get; set; }
+        public string gThicknessBackground {  get; set; }
+        public string gRValueBackground {  get; set; }
+        public string gkFactor_AvgBackground {  get; set; }
+        public string gFacerPeelAvgBackground {  get; set; }
+        public string gFacerPeelAvg_QCBackground {  get; set; }
+        public string gCompStrFGRetest_Avg5Background {  get; set; }
+        public string gCompStrFGRetest_Avg6Background {  get; set; }
+        public string gkFactor90Background {  get; set; }
+        public string gkFactor180Background {  get; set; }
+        public string gFGDiagonalDiffBackground {  get; set; }
+
+
+
+
+        private  ObjectsService _objectsService;
         public FinishedBoardPropertiesModel(ObjectsService objectsService)
         {
             _objectsService = objectsService;
+            backColorEsc = "#FF8FC7";
+            backColorRed = "#F6007B";
         }
         public void OnGet()
         {
@@ -505,60 +542,60 @@ namespace IntugentWebApp.Pages.Mfg_Group
             string sRet = string.Empty;
 
 
-            //if (sF == "All") CProdTargets.GetProductTargets();
+            if (sF == "All") _objectsService.CProdTargets.GetProductTargets();
 
 
-            //if (sF == "All")
-            //{
+            if (sF == "All")
+            {
 
-            //    if (_objectsService.MfgFinishedGoods.drIP["Length"] == DBNull.Value) gIPLength.Background = backColorCal;
-            //    else
-            //    {
-            //        sRet = CIPProdTargets.BoardLengthWithinLimits((double)_objectsService.MfgFinishedGoods.drIP["Length"]);
-            //        //if (sRet == "Red") gIPLength.Background = backColorRed; else if (sRet == "Esc") gIPLength.Background = backColorEsc; else gIPLength.Background = backColorCal;
-            //    }
+                if (_objectsService.MfgFinishedGoods.drIP["Length"] == DBNull.Value) gIPLengthBackground = backColorCal;
+                else
+                {
+                    sRet = _objectsService.CIPProdTargets.BoardLengthWithinLimits((double)_objectsService.MfgFinishedGoods.drIP["Length"]);
+                    //if (sRet == "Red") gIPLength.Background = backColorRed; else if (sRet == "Esc") gIPLength.Background = backColorEsc; else gIPLength.Background = backColorCal;
+                }
 
-            //    if (_objectsService.MfgFinishedGoods.drIP["Width"] == DBNull.Value) gIPWidth.Background = backColorCal;
-            //    else
-            //    {
-            //        sRet = CIPProdTargets.BoardWidthWithinLimits((double)_objectsService.MfgFinishedGoods.drIP["Width"]);
-            //       // if (sRet == "Red") gIPWidth.Background = backColorRed; else if (sRet == "Esc") gIPWidth.Background = backColorEsc; else gIPWidth.Background = backColorCal;
-            //    }
+                if (_objectsService.MfgFinishedGoods.drIP["Width"] == DBNull.Value) gIPWidthBackground = backColorCal;
+                else
+                {
+                    sRet = _objectsService.CIPProdTargets.BoardWidthWithinLimits((double)_objectsService.MfgFinishedGoods.drIP["Width"]);
+                   // if (sRet == "Red") gIPWidth.Background = backColorRed; else if (sRet == "Esc") gIPWidth.Background = backColorEsc; else gIPWidth.Background = backColorCal;
+                }
 
-            //    /*              if (_objectsService.MfgFinishedGoods.drIP["IP Diagonal Diff"] == DBNull.Value) gDiagoanlDiff.Background = backColorCal;
-            //                  else
-            //                  {
-            //                      sRet = CIPProdTargets.BoardSquarenessWithinLimits((double)_objectsService.MfgFinishedGoods.drIP["IP Diagonal Diff"]);
-            //                      if (sRet == "Red") gDiagoanlDiff.Background = backColorRed; else if (sRet == "Esc") gDiagoanlDiff.Background = backColorEsc;  else gDiagoanlDiff.Background = backColor;
-            //                  }
-            //    */
-            //    if (_objectsService.MfgFinishedGoods.drIP["Thickness - IP"] == DBNull.Value) gThicknessIP.Background = backColorCal;
-            //    else
-            //    {
-            //        sRet = CIPProdTargets.ThicknessWithinLimits((double)_objectsService.MfgFinishedGoods.drIP["Thickness - IP"]);
-            //       // if (sRet == "Red") gThicknessIP.Background = backColorRed; else if (sRet == "Esc") gThicknessIP.Background = backColorEsc; else gThicknessIP.Background = backColorCal;
-            //    }
+                /*              if (_objectsService.MfgFinishedGoods.drIP["IP Diagonal Diff"] == DBNull.Value) gDiagoanlDiff.Background = backColorCal;
+                              else
+                              {
+                                  sRet = CIPProdTargets.BoardSquarenessWithinLimits((double)_objectsService.MfgFinishedGoods.drIP["IP Diagonal Diff"]);
+                                  if (sRet == "Red") gDiagoanlDiff.Background = backColorRed; else if (sRet == "Esc") gDiagoanlDiff.Background = backColorEsc;  else gDiagoanlDiff.Background = backColor;
+                              }
+                */
+                if (_objectsService.MfgFinishedGoods.drIP["Thickness - IP"] == DBNull.Value) gThicknessIPBackground = backColorCal;
+                else
+                {
+                    sRet = _objectsService.CIPProdTargets.ThicknessWithinLimits((double)_objectsService.MfgFinishedGoods.drIP["Thickness - IP"]);
+                   // if (sRet == "Red") gThicknessIP.Background = backColorRed; else if (sRet == "Esc") gThicknessIP.Background = backColorEsc; else gThicknessIP.Background = backColorCal;
+                }
 
-            //    if (_objectsService.MfgFinishedGoods.drIP["Core Density - IP"] == DBNull.Value) gCoreDensityIP.Background = backColorCal;
-            //    else
-            //    {
-            //        sRet = CIPProdTargets.CoreDensityWithinLimits((double)_objectsService.MfgFinishedGoods.drIP["Core Density - IP"]);
-            //       // if (sRet == "Red") gCoreDensityIP.Background = backColorRed; else if (sRet == "Esc") gCoreDensityIP.Background = backColorEsc; else gCoreDensityIP.Background = backColorCal;
-            //    }
+                if (_objectsService.MfgFinishedGoods.drIP["Core Density - IP"] == DBNull.Value) gCoreDensityIPBackground = backColorCal;
+                else
+                {
+                    sRet = _objectsService.CIPProdTargets.CoreDensityWithinLimits((double)_objectsService.MfgFinishedGoods.drIP["Core Density - IP"]);
+                   // if (sRet == "Red") gCoreDensityIP.Background = backColorRed; else if (sRet == "Esc") gCoreDensityIP.Background = backColorEsc; else gCoreDensityIP.Background = backColorCal;
+                }
 
-            //    if (_objectsService.MfgFinishedGoods.drIP["Compressive Strength - IP"] == DBNull.Value) gCompressiveIP.Background = backColorCal;
-            //    else
-            //    {
-            //        sRet = CIPProdTargets.CompressionStrWithinLimits((double)_objectsService.MfgFinishedGoods.drIP["Compressive Strength - IP"]);
-            //        //if (sRet == "Red") gCompressiveIP.Background = backColorRed; else if (sRet == "Esc") gCompressiveIP.Background = backColorEsc; else gCompressiveIP.Background = backColorCal;
-            //    }
+                if (_objectsService.MfgFinishedGoods.drIP["Compressive Strength - IP"] == DBNull.Value) gCompressiveIPBackground = backColorCal;
+                else
+                {
+                    sRet = _objectsService.CIPProdTargets.CompressionStrWithinLimits((double)_objectsService.MfgFinishedGoods.drIP["Compressive Strength - IP"]);
+                    //if (sRet == "Red") gCompressiveIP.Background = backColorRed; else if (sRet == "Esc") gCompressiveIP.Background = backColorEsc; else gCompressiveIP.Background = backColorCal;
+                }
 
-            //    if (_objectsService.MfgFinishedGoods.drIP["Compressive Strength 5 - IP"] == DBNull.Value) gCompressiveIP5.Background = backColorCal;
-            //    else
-            //    {
-            //        sRet = CIPProdTargets.CompressionStrWithinLimits((double)_objectsService.MfgFinishedGoods.drIP["Compressive Strength 5 - IP"]);
-            //       // if (sRet == "Red") gCompressiveIP5.Background = backColorRed; else if (sRet == "Esc") gCompressiveIP5.Background = backColorEsc; else gCompressiveIP5.Background = backColorCal;
-            //    }
+                if (_objectsService.MfgFinishedGoods.drIP["Compressive Strength 5 - IP"] == DBNull.Value) gCompressiveIP5Background = backColorCal;
+                else
+                {
+                    sRet = _objectsService.CIPProdTargets.CompressionStrWithinLimits((double)_objectsService.MfgFinishedGoods.drIP["Compressive Strength 5 - IP"]);
+                   // if (sRet == "Red") gCompressiveIP5.Background = backColorRed; else if (sRet == "Esc") gCompressiveIP5.Background = backColorEsc; else gCompressiveIP5.Background = backColorCal;
+                }
 
 
             /*
@@ -580,89 +617,89 @@ namespace IntugentWebApp.Pages.Mfg_Group
                             if (_objectsService.MfgFinishedGoods.drIP["Compressive Strength 5 - IP"] == DBNull.Value) gCompressiveIP5.Background = backColorCal;
                             else if (CProdTargets.CompressionWithinLimits((double)_objectsService.MfgFinishedGoods.drIP["Compressive Strength 5 - IP"]) == "N") gCompressiveIP5.Background = backColorRed; else gCompressiveIP5.Background = backColorCal;
             */
-            //}
+            }
 
-            //if (sF == "gCoreDensity" || sF == "All")
-            //{
-            //    if (_objectsService.MfgFinishedGoods.dr["FG Core Density"] == DBNull.Value) gCoreDensity.Background = backColorCal;
-            //    else if (CProdTargets.CoreDensWithinLimits((double)_objectsService.MfgFinishedGoods.dr["FG Core Density"]) == "N") gCoreDensity.Background = backColorRed; else gCoreDensity.Background = backColorCal;
-            //}
+            if (sF == "gCoreDensity" || sF == "All")
+            {
+                if (_objectsService.MfgFinishedGoods.dr["FG Core Density"] == DBNull.Value) gCoreDensityBackground = backColorCal;
+                else if (_objectsService.CProdTargets.CoreDensWithinLimits((double)_objectsService.MfgFinishedGoods.dr["FG Core Density"]) == "N") gCoreDensityBackground = backColorRed; else gCoreDensityBackground = backColorCal;
+            }
 
-            //if (sF == "gCoreDens1" || sF == "All")
-            //{
-            //    if (_objectsService.MfgFinishedGoods.dr["FG Core Density 1"] == DBNull.Value) gCoreDens1.Background = backColorCal;
-            //    else if (CProdTargets.CoreDensWithinLimits((double)_objectsService.MfgFinishedGoods.dr["FG Core Density 1"]) == "N") gCoreDens1.Background = backColorRed; else gCoreDens1.Background = backColorCal;
-            //}
-            //if (sF == "gCoreDens2" || sF == "All")
-            //{
-            //    if (_objectsService.MfgFinishedGoods.dr["FG Core Density 2"] == DBNull.Value) gCoreDens2.Background = backColorCal;
-            //    else if (CProdTargets.CoreDensWithinLimits((double)_objectsService.MfgFinishedGoods.dr["FG Core Density 2"]) == "N") gCoreDens2.Background = backColorRed; else gCoreDens2.Background = backColorCal;
-            //}
-            //if (sF == "gCoreDens3" || sF == "All")
-            //{
-            //    if (_objectsService.MfgFinishedGoods.dr["FG Core Density 3"] == DBNull.Value) gCoreDens3.Background = backColorCal;
-            //    else if (CProdTargets.CoreDensWithinLimits((double)_objectsService.MfgFinishedGoods.dr["FG Core Density 3"]) == "N") gCoreDens3.Background = backColorRed; else gCoreDens3.Background = backColorCal;
-            //}
+            if (sF == "gCoreDens1" || sF == "All")
+            {
+                if (_objectsService.MfgFinishedGoods.dr["FG Core Density 1"] == DBNull.Value) gCoreDens1Background = backColorCal;
+                else if (_objectsService.CProdTargets.CoreDensWithinLimits((double)_objectsService.MfgFinishedGoods.dr["FG Core Density 1"]) == "N") gCoreDens1Background = backColorRed; else gCoreDens1Background = backColorCal;
+            }
+            if (sF == "gCoreDens2" || sF == "All")
+            {
+                if (_objectsService.MfgFinishedGoods.dr["FG Core Density 2"] == DBNull.Value) gCoreDens2Background = backColorCal;
+                else if (_objectsService.CProdTargets.CoreDensWithinLimits((double)_objectsService.MfgFinishedGoods.dr["FG Core Density 2"]) == "N") gCoreDens2Background = backColorRed; else gCoreDens2Background = backColorCal;
+            }
+            if (sF == "gCoreDens3" || sF == "All")
+            {
+                if (_objectsService.MfgFinishedGoods.dr["FG Core Density 3"] == DBNull.Value) gCoreDens3Background = backColorCal;
+                else if (_objectsService.CProdTargets.CoreDensWithinLimits((double)_objectsService.MfgFinishedGoods.dr["FG Core Density 3"]) == "N") gCoreDens3Background = backColorRed; else gCoreDens3Background = backColorCal;
+            }
 
-            //if (sF == "gCompStrFG_Avg6" || sF == "All")
-            //{
-            //    if (_objectsService.MfgFinishedGoods.dr["Compressive Strength (6) FG"] == DBNull.Value) gCompStrFG_Avg6.Background = backColorCal;
-            //    else if (CProdTargets.CompressionWithinLimits((double)_objectsService.MfgFinishedGoods.dr["Compressive Strength (6) FG"]) == "N") gCompStrFG_Avg6.Background = backColorRed; else gCompStrFG_Avg6.Background = backColorCal;
-            //}
+            if (sF == "gCompStrFG_Avg6" || sF == "All")
+            {
+                if (_objectsService.MfgFinishedGoods.dr["Compressive Strength (6) FG"] == DBNull.Value) gCompStrFG_Avg6Background = backColorCal;
+                else if (_objectsService.CProdTargets.CompressionWithinLimits((double)_objectsService.MfgFinishedGoods.dr["Compressive Strength (6) FG"]) == "N") gCompStrFG_Avg6Background = backColorRed; else gCompStrFG_Avg6Background = backColorCal;
+            }
 
-            //if (sF == "gCompStrFG_Avg5" || sF == "All")
-            //{
-            //    if (_objectsService.MfgFinishedGoods.dr["Compressive Strength (5) FG"] == DBNull.Value) gCompStrFG_Avg5.Background = backColorCal;
-            //    else if (CProdTargets.CompressionWithinLimits((double)_objectsService.MfgFinishedGoods.dr["Compressive Strength (5) FG"]) == "N") gCompStrFG_Avg5.Background = backColorRed; else gCompStrFG_Avg5.Background = backColorCal;
-            //}
+            if (sF == "gCompStrFG_Avg5" || sF == "All")
+            {
+                if (_objectsService.MfgFinishedGoods.dr["Compressive Strength (5) FG"] == DBNull.Value) gCompStrFG_Avg5Background = backColorCal;
+                else if (_objectsService.CProdTargets.CompressionWithinLimits((double)_objectsService.MfgFinishedGoods.dr["Compressive Strength (5) FG"]) == "N") gCompStrFG_Avg5Background = backColorRed; else gCompStrFG_Avg5Background = backColorCal;
+            }
 
-            //if (sF == "gThickness" || sF == "All")
-            //{
-            //    if (_objectsService.MfgFinishedGoods.dr["Thickness Avg FG"] == DBNull.Value) gThickness.Background = backColorCal;
-            //    else if (CProdTargets.ThicknessWithinLimits((double)_objectsService.MfgFinishedGoods.dr["Thickness Avg FG"]) == "N") gThickness.Background = backColorRed; else gThickness.Background = backColorCal;
-            //}
+            if (sF == "gThickness" || sF == "All")
+            {
+                if (_objectsService.MfgFinishedGoods.dr["Thickness Avg FG"] == DBNull.Value) gThicknessBackground = backColorCal;
+                else if (_objectsService.CProdTargets.ThicknessWithinLimits((double)_objectsService.MfgFinishedGoods.dr["Thickness Avg FG"]) == "N") gThicknessBackground = backColorRed; else gThicknessBackground = backColorCal;
+            }
 
-            //if (sF == "gRValue" || sF == "gkFactor_Avg" || sF == "All")
-            //{
-            //    if (_objectsService.MfgFinishedGoods.dr["R Value - AVG FG"] == DBNull.Value) gRValue.Background = gkFactor_Avg.Background = backColorCal;
-            //    else if (CProdTargets.RValueAged90DWithinLimits((double)_objectsService.MfgFinishedGoods.dr["R Value - AVG FG"]) == "N") gRValue.Background = gkFactor_Avg.Background = backColorRed; else gRValue.Background = gkFactor_Avg.Background = backColorCal;
-            //}
+            if (sF == "gRValue" || sF == "gkFactor_Avg" || sF == "All")
+            {
+                if (_objectsService.MfgFinishedGoods.dr["R Value - AVG FG"] == DBNull.Value) gRValueBackground = gkFactor_AvgBackground = backColorCal;
+                else if (_objectsService.CProdTargets.RValueAged90DWithinLimits((double)_objectsService.MfgFinishedGoods.dr["R Value - AVG FG"]) == "N") gRValueBackground = gkFactor_AvgBackground = backColorRed; else gRValueBackground = gkFactor_AvgBackground = backColorCal;
+            }
 
-            //if (sF == "gFacerPeelAvg" || sF == "gFacerPeelAvg_QC" || sF == "All")
-            //{
-            //    if (_objectsService.MfgFinishedGoods.dr["Facer Peel FG"] == DBNull.Value) gFacerPeelAvg.Background = gFacerPeelAvg_QC.Background = backColorCal;
-            //    else if (CProdTargets.FacerPeelWithinLimits((double)_objectsService.MfgFinishedGoods.dr["Facer Peel FG"]) == "N") gFacerPeelAvg.Background = gFacerPeelAvg_QC.Background = backColorRed; else gFacerPeelAvg.Background = gFacerPeelAvg_QC.Background = backColorCal;
-            //}
+            if (sF == "gFacerPeelAvg" || sF == "gFacerPeelAvg_QC" || sF == "All")
+            {
+                if (_objectsService.MfgFinishedGoods.dr["Facer Peel FG"] == DBNull.Value) gFacerPeelAvgBackground = gFacerPeelAvg_QCBackground = backColorCal;
+                else if (_objectsService.CProdTargets.FacerPeelWithinLimits((double)_objectsService.MfgFinishedGoods.dr["Facer Peel FG"]) == "N") gFacerPeelAvgBackground = gFacerPeelAvg_QCBackground = backColorRed; else gFacerPeelAvgBackground = gFacerPeelAvg_QCBackground = backColorCal;
+            }
 
-            //if (sF == "gCompStrFGRetest_Avg6" || sF == "All")
-            //{
-            //    if (_objectsService.MfgFinishedGoods.dr["Retest - AVG Comp Strength (6) FG"] == DBNull.Value) gCompStrFGRetest_Avg6.Background = backColorCal;
-            //    else if (CProdTargets.CompressionWithinLimits((double)_objectsService.MfgFinishedGoods.dr["Retest - AVG Comp Strength (6) FG"]) == "N") gCompStrFGRetest_Avg6.Background = backColorRed; else gCompStrFGRetest_Avg6.Background = backColorCal;
-            //}
+            if (sF == "gCompStrFGRetest_Avg6" || sF == "All")
+            {
+                if (_objectsService.MfgFinishedGoods.dr["Retest - AVG Comp Strength (6) FG"] == DBNull.Value) gCompStrFGRetest_Avg6Background = backColorCal;
+                else if (_objectsService.CProdTargets.CompressionWithinLimits((double)_objectsService.MfgFinishedGoods.dr["Retest - AVG Comp Strength (6) FG"]) == "N") gCompStrFGRetest_Avg6Background = backColorRed; else gCompStrFGRetest_Avg6Background = backColorCal;
+            }
 
-            //if (sF == "gCompStrFGRetest_Avg5" || sF == "All")
-            //{
-            //    if (_objectsService.MfgFinishedGoods.dr["Retest - AVG Comp Strength (5) FG"] == DBNull.Value) gCompStrFGRetest_Avg5.Background = backColorCal;
-            //    else if (CProdTargets.CompressionWithinLimits((double)_objectsService.MfgFinishedGoods.dr["Retest - AVG Comp Strength (5) FG"]) == "N") gCompStrFGRetest_Avg5.Background = backColorRed; else gCompStrFGRetest_Avg5.Background = backColorCal;
-            //}
+            if (sF == "gCompStrFGRetest_Avg5" || sF == "All")
+            {
+                if (_objectsService.MfgFinishedGoods.dr["Retest - AVG Comp Strength (5) FG"] == DBNull.Value) gCompStrFGRetest_Avg5Background = backColorCal;
+                else if (_objectsService.CProdTargets.CompressionWithinLimits((double)_objectsService.MfgFinishedGoods.dr["Retest - AVG Comp Strength (5) FG"]) == "N") gCompStrFGRetest_Avg5Background = backColorRed; else gCompStrFGRetest_Avg5Background = backColorCal;
+            }
 
-            //if (sF == "gkFactor90" || sF == "gkFactor_Avg" || sF == "All")
-            //{
-            //    if (_objectsService.MfgFinishedGoods.dr["R Value 90 - AVG FG"] == DBNull.Value) gkFactor90.Background = backColorCal;
-            //    else if (CProdTargets.RValueAged90DWithinLimits((double)_objectsService.MfgFinishedGoods.dr["R Value 90 - AVG FG"]) == "N") gkFactor90.Background = backColorRed; else gkFactor90.Background = backColorCal;
-            //}
+            if (sF == "gkFactor90" || sF == "gkFactor_Avg" || sF == "All")
+            {
+                if (_objectsService.MfgFinishedGoods.dr["R Value 90 - AVG FG"] == DBNull.Value) gkFactor90Background = backColorCal;
+                else if (_objectsService.CProdTargets.RValueAged90DWithinLimits((double)_objectsService.MfgFinishedGoods.dr["R Value 90 - AVG FG"]) == "N") gkFactor90Background = backColorRed; else gkFactor90Background = backColorCal;
+            }
 
-            //if (sF == "gkFactor180" || sF == "gkFactor_Avg" || sF == "All")
-            //{
-            //    if (_objectsService.MfgFinishedGoods.dr["R Value 180 - AVG FG"] == DBNull.Value) gkFactor180.Background = backColorCal;
-            //    else if (CProdTargets.RValueAged90DWithinLimits((double)_objectsService.MfgFinishedGoods.dr["R Value 180 - AVG FG"]) == "N") gkFactor180.Background = backColorRed; else gkFactor180.Background = backColorCal;
-            //}
+            if (sF == "gkFactor180" || sF == "gkFactor_Avg" || sF == "All")
+            {
+                if (_objectsService.MfgFinishedGoods.dr["R Value 180 - AVG FG"] == DBNull.Value) gkFactor180Background = backColorCal;
+                else if (_objectsService.CProdTargets.RValueAged90DWithinLimits((double)_objectsService.MfgFinishedGoods.dr["R Value 180 - AVG FG"]) == "N") gkFactor180Background = backColorRed; else gkFactor180Background = backColorCal;
+            }
 
-            //if (sF == "gFGDiagonalDiff" || sF == "All")
-            //{
-            //    if (_objectsService.MfgFinishedGoods.dr["Diagonal Diff FG"] == DBNull.Value) gFGDiagonalDiff.Background = backColorCal;
-            //    else if (CProdTargets.SquarenessWithinLimits((double)_objectsService.MfgFinishedGoods.dr["Diagonal Diff FG"]) == "N") gFGDiagonalDiff.Background = backColorRed; else gFGDiagonalDiff.Background = backColorCal;
-            //}
+            if (sF == "gFGDiagonalDiff" || sF == "All")
+            {
+                if (_objectsService.MfgFinishedGoods.dr["Diagonal Diff FG"] == DBNull.Value) gFGDiagonalDiffBackground = backColorCal;
+                else if (_objectsService.CProdTargets.SquarenessWithinLimits((double)_objectsService.MfgFinishedGoods.dr["Diagonal Diff FG"]) == "N") gFGDiagonalDiffBackground = backColorRed; else gFGDiagonalDiffBackground = backColorCal;
+            }
 
             DateTime IPdate, FGdate;
             string sMsg = "Green Board and FG Board time stamps must be greater than 01-01-2000 and must be within " + _objectsService.CDefualts.dDelTimeButton.ToString() + " minutes of each other.";
@@ -705,6 +742,9 @@ namespace IntugentWebApp.Pages.Mfg_Group
                 }
             }
         }
+     
+        
+        
         public IActionResult OnPostNavigateDataSet(string direction)
         {
             if (!_objectsService.Cbfile.bCanSwitchRecord)

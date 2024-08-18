@@ -21,6 +21,8 @@ namespace IntugentWebApp.Utilities
         public CJetMix? CJetMix { get; set; }
         public CAnalysisData CAnalysisData1 { get; set; }
         public CForms Forms {  get; set; }
+        public CProdTargets CProdTargets {  get; set; }
+        public CIPProdTargets CIPProdTargets {  get; set; }
 
         //              Mfg Variables
         public MfgHome MfgHome { get; set; }

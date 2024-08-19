@@ -18,21 +18,8 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "FinishedBoardProperties.cshtml",
-              "DocumentMoniker": "C:\\Users\\XD GAMING\\Desktop\\Intugent\\Intugent\\Intugent\\IntugentWebApp\\IntugentWebApp\\Pages\\Mfg_Group\\FinishedBoardProperties.cshtml",
-              "RelativeDocumentMoniker": "IntugentWebApp\\Pages\\Mfg_Group\\FinishedBoardProperties.cshtml",
-              "ToolTip": "C:\\Users\\XD GAMING\\Desktop\\Intugent\\Intugent\\Intugent\\IntugentWebApp\\IntugentWebApp\\Pages\\Mfg_Group\\FinishedBoardProperties.cshtml",
-              "RelativeToolTip": "IntugentWebApp\\Pages\\Mfg_Group\\FinishedBoardProperties.cshtml",
-              "ViewState": "AQIAAJIDAAAAAAAAAAAAAKgDAABvAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-08-18T21:29:55.444Z",
-              "EditorCaption": ""
-            },
             {
               "$type": "Document",
               "DocumentIndex": 1,
@@ -41,9 +28,22 @@
               "RelativeDocumentMoniker": "IntugentWebApp\\Pages\\Mfg_Group\\FinishedBoardProperties.cshtml.cs",
               "ToolTip": "C:\\Users\\XD GAMING\\Desktop\\Intugent\\Intugent\\Intugent\\IntugentWebApp\\IntugentWebApp\\Pages\\Mfg_Group\\FinishedBoardProperties.cshtml.cs",
               "RelativeToolTip": "IntugentWebApp\\Pages\\Mfg_Group\\FinishedBoardProperties.cshtml.cs",
-              "ViewState": "AQIAAMYAAAAAAAAAAAAgwCkCAAAUAAAA",
+              "ViewState": "AQIAAMICAAAAAAAAAAAAANwCAAApAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-18T20:40:54.616Z",
+              "WhenOpened": "2024-08-19T10:45:45.7Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "FinishedBoardProperties.cshtml",
+              "DocumentMoniker": "C:\\Users\\XD GAMING\\Desktop\\Intugent\\Intugent\\Intugent\\IntugentWebApp\\IntugentWebApp\\Pages\\Mfg_Group\\FinishedBoardProperties.cshtml",
+              "RelativeDocumentMoniker": "IntugentWebApp\\Pages\\Mfg_Group\\FinishedBoardProperties.cshtml",
+              "ToolTip": "C:\\Users\\XD GAMING\\Desktop\\Intugent\\Intugent\\Intugent\\IntugentWebApp\\IntugentWebApp\\Pages\\Mfg_Group\\FinishedBoardProperties.cshtml",
+              "RelativeToolTip": "IntugentWebApp\\Pages\\Mfg_Group\\FinishedBoardProperties.cshtml",
+              "ViewState": "AQIAAF4AAAAAAAAAAAAewHgAAABQAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-08-18T21:29:55.444Z",
               "EditorCaption": ""
             }
           ]

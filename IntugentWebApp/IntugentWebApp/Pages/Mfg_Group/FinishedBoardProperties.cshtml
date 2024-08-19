@@ -34,7 +34,7 @@
                 <div class="col-md-3">
                     <!-- ipLength -->
                     <div class="form-floating mb-2">
-                        <input type="number" class="form-control" id="ipLength" style="background-color:@Model.gIPLengthBackground;" placeholder="" value="@Model.gIPLength" disabled />
+                        <input type="number" class="form-control @(Model.gIPLengthBackground ? "" : "illegalValue")" id="ipLength"  placeholder="" value="@Model.gIPLength" disabled />
                         <label for="ipLength">IP Length</label>
                     </div>
                 </div>
@@ -42,7 +42,7 @@
                 <div class="col-md-3">
                     <!-- ipWidth -->
                     <div class="form-floating mb-2">
-                        <input type="number" class="form-control" id="ipWidth" placeholder="" value="@Model.gIPWidth" disabled />
+                        <input type="number" class="form-control @(Model.gIPWidthBackground ? "" : "illegalValue")" id="ipWidth"  placeholder="" value="@Model.gIPWidth" disabled />
                         <label for="ipWidth">IP Width</label>
                     </div>
                 </div>
@@ -71,7 +71,7 @@
                 <div class="col-md-5">
                     <!-- finishedBoardTimeStamp -->
                     <div class="form-floating mb-2">
-                        <input type="datetime-local" class="form-control" id="finishedBoardTimeStamp" value="@Model.gFBTimeStamp?.ToString("yyyy-MM-ddTHH:mm")" onblur="GenInfoQC_Time_LF(this.value)">
+                        <input type="datetime-local" class="form-control @(Model.gFBTimeHostBackground? "" : "illegalValue")" id="finishedBoardTimeStamp" value="@Model.gFBTimeStamp?.ToString("yyyy-MM-ddTHH:mm")" onblur="GenInfoQC_Time_LF(this.value)">
                         <label for="finishedBoardTimeStamp">Finished Board Time Stamp</label>
                     </div>
                 </div>
@@ -118,7 +118,7 @@
                 </div>
                 <!-- nextDayQCCollectionTime -->
                 <div class="form-floating mb-2">
-                    <input type="datetime-local" class="form-control text-center illegalValue" id="nextDayQCCollectionTime" value="@Model.gQCTimesDateTime?.ToString("yyyy-MM-ddTHH:mm")" onblur="GQCTimesDateTime_LF(this.value)" onfocus="">
+                    <input type="datetime-local" class="form-control text-center" id="nextDayQCCollectionTime" value="@Model.gQCTimesDateTime?.ToString("yyyy-MM-ddTHH:mm")" onblur="GQCTimesDateTime_LF(this.value)" onfocus="">
                     <label for="nextDayQCCollectionTime">Next Day QC Collection Time</label>
                 </div>
                 <!-- ipTimeStampNotLegible -->
@@ -139,22 +139,22 @@
                     <div class="col-md-6">
                         <!-- fgCoreDensity -->
                         <div class="form-floating mb-2">
-                            <input type="number" class="form-control text-center" id="fgCoreDensity" placeholder="" value="@Model.gCoreDensity" disabled>
+                            <input type="number" class="form-control text-center @(Model.gCoreDensityBackground ? "" : "illegalValue")" id="fgCoreDensity" placeholder="" value="@Model.gCoreDensity" disabled>
                             <label for="fgCoreDensity">FG Core Density</label>
                         </div>
                         <!-- avgCompStrength5 -->
                         <div class="form-floating mb-2">
-                            <input type="number" class="form-control text-center" id="avgCompStrength5" placeholder="" value="@Model.gCompStrFG_Avg5" disabled>
+                            <input type="number" class="form-control text-center @(Model.gCompStrFG_Avg5Background ? "" : "illegalValue")" " id="avgCompStrength5" placeholder="" value="@Model.gCompStrFG_Avg5" disabled>
                             <label for="avgCompStrength5">Avg Comp Strength-5</label>
                         </div>
                         <!-- avgCompStrength6 -->
                         <div class="form-floating mb-2">
-                            <input type="number" class="form-control text-center" id="avgCompStrength6" placeholder="" value="@Model.gCompStrFG_Avg6" disabled>
+                            <input type="number" class="form-control text-center @(Model.gCompStrFG_Avg6Background ? "" : "illegalValue")" id="avgCompStrength6" placeholder="" value="@Model.gCompStrFG_Avg6" disabled>
                             <label for="avgCompStrength6">Avg Comp Strength-6</label>
                         </div>
                         <!-- fgThicknessAvg -->
                         <div class="form-floating mb-2">
-                            <input type="number" class="form-control text-center" id="fgThicknessAvg" placeholder="" value="@Model.gThickness" disabled>
+                            <input type="number" class="form-control text-center @(Model.gThicknessBackground ? "" : "illegalValue")" id="fgThicknessAvg" placeholder="" value="@Model.gThickness" disabled>
                             <label for="fgThicknessAvg">Thickness Avg FG</label>
                         </div>
                     </div>
@@ -166,12 +166,12 @@
                         </div>
                         <!-- initialRValueAvgQC -->
                         <div class="form-floating mb-2">
-                            <input type="number" class="form-control text-center" id="initialRValueAvgQC" placeholder="" value="@Model.gRValue" disabled>
+                            <input type="number" class="form-control text-center @(Model.gRValueBackground ? "" : "illegalValue")" id="initialRValueAvgQC" placeholder="" value="@Model.gRValue" disabled>
                             <label for="initialRValueAvgQC">Initial R Value Avg</label>
                         </div>
                         <!-- facerPeelAvgQC -->
                         <div class="form-floating mb-2">
-                            <input type="number" class="form-control text-center illegalValue" id="facerPeelAvgQC" placeholder="" value="@Model.gFacerPeelAvg_QC" disabled>
+                            <input type="number" class="form-control text-center @(Model.gFacerPeelAvg_QCBackground ? "" : "illegalValue")" id="facerPeelAvgQC" placeholder="" value="@Model.gFacerPeelAvg_QC" disabled>
                             <label for="facerPeelAvgQC">Facer Peel Avg</label>
                         </div>
                     </div>
@@ -206,24 +206,24 @@
                         </div>
                         <!-- thicknessIP -->
                         <div class="form-floating mb-2">
-                            <input type="number" class="form-control text-center" id="thicknessIP" placeholder="" value="@Model.gThicknessIP" disabled>
+                            <input type="number" class="form-control text-center  @(Model.gThicknessIPBackground ? "" : "illegalValue")" id="thicknessIP" placeholder="" value="@Model.gThicknessIP"  disabled>
                             <label for="thicknessIP">Thickness IP</label>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <!-- coreDensityIP -->
                         <div class="form-floating mb-2">
-                            <input type="number" class="form-control text-center" id="coreDensityIP" placeholder="" value="@Model.gThicknessIP" disabled>
+                            <input type="number" class="form-control text-center @(Model.gCoreDensityIPBackground ? "" : "illegalValue")" id="coreDensityIP" placeholder="" value="@Model.gCoreDensityIP" disabled>
                             <label for="coreDensityIP">Core Density IP</label>
                         </div>
                         <!-- avgCompStrength5IP -->
                         <div class="form-floating mb-2">
-                            <input type="number" class="form-control text-center" id="avgCompStrength5IP" placeholder="" value="@Model.gCompressiveIP5" disabled>
+                            <input type="number" class="form-control text-center @(Model.gCompressiveIP5Background ? "" : "illegalValue")" id="avgCompStrength5IP" placeholder="" value="@Model.gCompressiveIP5" disabled >
                             <label for="avgCompStrength5IP">Avg Comp Strength-5 IP</label>
                         </div>
                         <!-- avgCompStrength6IP -->
                         <div class="form-floating mb-2">
-                            <input type="number" class="form-control text-center" id="avgCompStrength6IP" placeholder="" value="@Model.gCompressiveIP" disabled>
+                            <input type="number" class="form-control text-center @(Model.gCompressiveIPBackground ? "" : "illegalValue")" id="avgCompStrength6IP" placeholder="" value="@Model.gCompressiveIP" disabled>
                             <label for="avgCompStrength6IP">Avg Comp Strength-6 IP</label>
                         </div>
                     </div>
@@ -516,7 +516,7 @@
 
                         <!-- initialRValueAvg -->
                         <div class="form-floating mb-2 w-50">
-                            <input type="number" class="form-control" id="initialRValueAvg" placeholder="" value="@Model.gkFactor_Avg" disabled>
+                            <input type="number" class="form-control  @(Model.gkFactor_AvgBackground ? "" : "illegalValue")" id="initialRValueAvg" placeholder="" value="@Model.gkFactor_Avg" disabled>
                             <label for="initialRValueAvg">Initial R Value Avg</label>
                         </div>
                     </div>
@@ -551,7 +551,7 @@
                         </div>
                         <!-- fgBoardDiagonalDifference -->
                         <div class="form-floating mb-2">
-                            <input type="number" class="form-control text-center" id="fgBoardDiagonalDifference" placeholder="" value="@Model.gFGDiagonalDiff" disabled>
+                            <input type="number" class="form-control text-center  @(Model.gFGDiagonalDiffBackground ? "" : "illegalValue")"  id="fgBoardDiagonalDifference" placeholder="" value="@Model.gFGDiagonalDiff" disabled>
                             <label for="fgBoardDiagonalDifference">Abs. Diagonal Diff.</label>
                         </div>
                     </div>
@@ -650,12 +650,12 @@
                                 </div>
                                 <!-- restestAvgCompStrength5 -->
                                 <div class="form-floating mb-3 h-auto pt-1">
-                                    <input type="number" class="form-control text-center" id="restestAvgCompStrength5" placeholder="" value="@Model.gCompStrFGRetest_Avg5" disabled>
+                                    <input type="number" class="form-control text-center @(Model.gCompStrFGRetest_Avg5Background ? "" : "illegalValue")" id="restestAvgCompStrength5" placeholder="" value="@Model.gCompStrFGRetest_Avg5" disabled>
                                     <label for="restestAvgCompStrength5">Retest Avg Comp Strength - 5</label>
                                 </div>
                                 <!-- restestAvgCompStrength6 -->
                                 <div class="form-floating mb-3 h-auto pt-1">
-                                    <input type="number" class="form-control text-center" id="restestAvgCompStrength6" placeholder="" value="@Model.gCompStrFGRetest_Avg6" disabled>
+                                    <input type="number" class="form-control text-center @(Model.gCompStrFGRetest_Avg6Background ? "" : "illegalValue")" id="restestAvgCompStrength6" placeholder="" value="@Model.gCompStrFGRetest_Avg6" disabled>
                                     <label for="restestAvgCompStrength6">Retest Avg Comp Strength - 6</label>
                                 </div>
                             </div>
@@ -781,12 +781,12 @@
                         <div class="row">
                             <!-- agedRValueAvg90 -->
                             <div class="form-floating mb-2  w-50">
-                                <input type="number" class="form-control" id="agedRValueAvg90" placeholder="" value="@Model.gkFactor90" disabled>
+                                <input type="number" class="form-control @(Model.gkFactor90Background ? "" : "illegalValue")" id="agedRValueAvg90" placeholder="" value="@Model.gkFactor90" disabled>
                                 <label for="agedRValueAvg90">Aged R Value Avg - 90 Days</label>
                             </div>
                             <!-- agedRValueAvg180 -->
                             <div class="form-floating mb-2 w-50">
-                                <input type="number" class="form-control" id="agedRValueAvg180" placeholder="" value="@Model.gkFactor180" disabled>
+                                <input type="number" class="form-control @(Model.gkFactor180Background ? "" : "illegalValue")" id="agedRValueAvg180" placeholder="" value="@Model.gkFactor180" disabled>
                                 <label for="agedRValueAvg180">Aged R Value Avg - 180 Days</label>
                             </div>
                         </div>
@@ -934,7 +934,7 @@
                                     </td>
                                     <td>
                                         <div class="input-group input-group-sm ">
-                                            <input type="number" class="form-control text-center" style="border-color:@Model.gCoreDens3Background" value="@Model.gCoreDens3" disabled>
+                                            <input type="number" class="form-control text-center @(Model.gCoreDens3Background ? "" : "illegalValue")" value="@Model.gCoreDens3" disabled>
                                         </div>
                                     </td>
                                 </tr>
@@ -989,7 +989,7 @@
                                     </td>
                                     <td>
                                         <div class="input-group input-group-sm ">
-                                            <input type="number" class="form-control text-center" value="@Model.gCoreDens2" disabled>
+                                            <input type="number" class="form-control text-center @(Model.gCoreDens2Background ? "" : "illegalValue")" value="@Model.gCoreDens2" disabled>
                                         </div>
                                     </td>
                                 </tr>
@@ -1044,7 +1044,7 @@
                                     </td>
                                     <td>
                                         <div class="input-group input-group-sm ">
-                                            <input type="number" class="form-control text-center" value="@Model.gCoreDens1" disabled>
+                                            <input type="number"  class="form-control text-center @(Model.gCoreDens1Background ? "" : "illegalValue")" value="@Model.gCoreDens1" disabled>
                                         </div>
                                     </td>
                                 </tr>
@@ -1077,7 +1077,7 @@
                         </div>
                         <!-- facerPeelAvg -->
                         <div class="form-floating mb-2">
-                            <input type="number" class="form-control text-center" id="facerPeelAvg" placeholder="" value="@Model.gFacerPeelAvg" disabled>
+                            <input type="number" class="form-control text-center  @(Model.gFacerPeelAvgBackground ? "" : "illegalValue")"  id="facerPeelAvg" placeholder="" value="@Model.gFacerPeelAvg" disabled>
                             <label for="facerPeelAvg">Avg</label>
                         </div>
                     </div>

@@ -194,32 +194,31 @@ namespace IntugentWebApp.Pages.Mfg_Group
 
 
         //                                          Color Properties
-        public string backColorCal { get; set; } = "#FFFFFF"; 
-        public string backColorRed { get; set; } 
-        public string backColorEsc { get; set; }
-        public string backColor { get; set; } = "#FFFFFF"; 
-        public string gIPLengthBackground {  get; set; }
-        public string gIPWidthBackground {  get; set; }
-        public string gThicknessIPBackground {  get; set; }
-        public string gCoreDensityIPBackground {  get; set; }
-        public string gCompressiveIPBackground {  get; set; }
-        public string gCoreDensityBackground {  get; set; }
-        public string gCompressiveIP5Background {  get; set; }
-        public string gCoreDens1Background {  get; set; }
-        public string gCoreDens2Background {  get; set; }
-        public string gCoreDens3Background {  get; set; }
-        public string gCompStrFG_Avg6Background {  get; set; }
-        public string gCompStrFG_Avg5Background {  get; set; }
-        public string gThicknessBackground {  get; set; }
-        public string gRValueBackground {  get; set; }
-        public string gkFactor_AvgBackground {  get; set; }
-        public string gFacerPeelAvgBackground {  get; set; }
-        public string gFacerPeelAvg_QCBackground {  get; set; }
-        public string gCompStrFGRetest_Avg5Background {  get; set; }
-        public string gCompStrFGRetest_Avg6Background {  get; set; }
-        public string gkFactor90Background {  get; set; }
-        public string gkFactor180Background {  get; set; }
-        public string gFGDiagonalDiffBackground {  get; set; }
+        public bool backColorCal { get; set; } = true;
+        public bool backColorRed { get; set; } = false;
+        public bool gIPLengthBackground {  get; set; }
+        public bool gIPWidthBackground {  get; set; }
+        public bool gThicknessIPBackground {  get; set; }
+        public bool gCoreDensityIPBackground {  get; set; }
+        public bool gCompressiveIPBackground {  get; set; }
+        public bool gCoreDensityBackground {  get; set; }
+        public bool gCompressiveIP5Background {  get; set; }
+        public bool gCoreDens1Background {  get; set; }
+        public bool gCoreDens2Background {  get; set; }
+        public bool gCoreDens3Background {  get; set; }
+        public bool gCompStrFG_Avg6Background {  get; set; }
+        public bool gCompStrFG_Avg5Background {  get; set; }
+        public bool gThicknessBackground {  get; set; }
+        public bool gRValueBackground {  get; set; }
+        public bool gkFactor_AvgBackground {  get; set; }
+        public bool gFacerPeelAvgBackground {  get; set; }
+        public bool gFacerPeelAvg_QCBackground {  get; set; }
+        public bool gCompStrFGRetest_Avg5Background {  get; set; }
+        public bool gCompStrFGRetest_Avg6Background {  get; set; }
+        public bool gkFactor90Background {  get; set; }
+        public bool gkFactor180Background {  get; set; }
+        public bool gFGDiagonalDiffBackground {  get; set; }
+        public bool gFBTimeHostBackground { get; set; }
 
 
 
@@ -228,8 +227,6 @@ namespace IntugentWebApp.Pages.Mfg_Group
         public FinishedBoardPropertiesModel(ObjectsService objectsService)
         {
             _objectsService = objectsService;
-            backColorEsc = "#FF8FC7";
-            backColorRed = "#F6007B";
         }
         public void OnGet()
         {
@@ -552,14 +549,18 @@ namespace IntugentWebApp.Pages.Mfg_Group
                 else
                 {
                     sRet = _objectsService.CIPProdTargets.BoardLengthWithinLimits((double)_objectsService.MfgFinishedGoods.drIP["Length"]);
-                    //if (sRet == "Red") gIPLength.Background = backColorRed; else if (sRet == "Esc") gIPLength.Background = backColorEsc; else gIPLength.Background = backColorCal;
+                    if (sRet == "Red") gIPLengthBackground = backColorRed; 
+                    //else if (sRet == "Esc") gIPLengthBackground = backColorEsc; 
+                    else gIPLengthBackground = backColorCal;
                 }
 
                 if (_objectsService.MfgFinishedGoods.drIP["Width"] == DBNull.Value) gIPWidthBackground = backColorCal;
                 else
                 {
                     sRet = _objectsService.CIPProdTargets.BoardWidthWithinLimits((double)_objectsService.MfgFinishedGoods.drIP["Width"]);
-                   // if (sRet == "Red") gIPWidth.Background = backColorRed; else if (sRet == "Esc") gIPWidth.Background = backColorEsc; else gIPWidth.Background = backColorCal;
+                    if (sRet == "Red") gIPWidthBackground = backColorRed;
+                    //else if (sRet == "Esc") gIPWidthBackground = backColorEsc; 
+                    else gIPWidthBackground = backColorCal;
                 }
 
                 /*              if (_objectsService.MfgFinishedGoods.drIP["IP Diagonal Diff"] == DBNull.Value) gDiagoanlDiff.Background = backColorCal;
@@ -573,28 +574,36 @@ namespace IntugentWebApp.Pages.Mfg_Group
                 else
                 {
                     sRet = _objectsService.CIPProdTargets.ThicknessWithinLimits((double)_objectsService.MfgFinishedGoods.drIP["Thickness - IP"]);
-                   // if (sRet == "Red") gThicknessIP.Background = backColorRed; else if (sRet == "Esc") gThicknessIP.Background = backColorEsc; else gThicknessIP.Background = backColorCal;
+                   if (sRet == "Red") gThicknessIPBackground = backColorRed; 
+                    //else if (sRet == "Esc") gThicknessIPBackground = backColorEsc;
+                    else gThicknessIPBackground = backColorCal;
                 }
 
                 if (_objectsService.MfgFinishedGoods.drIP["Core Density - IP"] == DBNull.Value) gCoreDensityIPBackground = backColorCal;
                 else
                 {
                     sRet = _objectsService.CIPProdTargets.CoreDensityWithinLimits((double)_objectsService.MfgFinishedGoods.drIP["Core Density - IP"]);
-                   // if (sRet == "Red") gCoreDensityIP.Background = backColorRed; else if (sRet == "Esc") gCoreDensityIP.Background = backColorEsc; else gCoreDensityIP.Background = backColorCal;
+                   if (sRet == "Red") gCoreDensityIPBackground = backColorRed;
+                    //else if (sRet == "Esc") gCoreDensityIPBackground = backColorEsc;
+                    else gCoreDensityIPBackground = backColorCal;
                 }
 
                 if (_objectsService.MfgFinishedGoods.drIP["Compressive Strength - IP"] == DBNull.Value) gCompressiveIPBackground = backColorCal;
                 else
                 {
                     sRet = _objectsService.CIPProdTargets.CompressionStrWithinLimits((double)_objectsService.MfgFinishedGoods.drIP["Compressive Strength - IP"]);
-                    //if (sRet == "Red") gCompressiveIP.Background = backColorRed; else if (sRet == "Esc") gCompressiveIP.Background = backColorEsc; else gCompressiveIP.Background = backColorCal;
+                    if (sRet == "Red") gCompressiveIPBackground = backColorRed;
+                    //else if (sRet == "Esc") gCompressiveIPBackground = backColorEsc;
+                    else gCompressiveIPBackground = backColorCal;
                 }
 
                 if (_objectsService.MfgFinishedGoods.drIP["Compressive Strength 5 - IP"] == DBNull.Value) gCompressiveIP5Background = backColorCal;
                 else
                 {
                     sRet = _objectsService.CIPProdTargets.CompressionStrWithinLimits((double)_objectsService.MfgFinishedGoods.drIP["Compressive Strength 5 - IP"]);
-                   // if (sRet == "Red") gCompressiveIP5.Background = backColorRed; else if (sRet == "Esc") gCompressiveIP5.Background = backColorEsc; else gCompressiveIP5.Background = backColorCal;
+                   if (sRet == "Red") gCompressiveIP5Background = backColorRed; 
+                    //else if (sRet == "Esc") gCompressiveIP5Background = backColorEsc;
+                    else gCompressiveIP5Background = backColorCal;
                 }
 
 
@@ -708,7 +717,8 @@ namespace IntugentWebApp.Pages.Mfg_Group
             {
                 if (_objectsService.MfgFinishedGoods.dr["Finished Board Time Stamp FG"] == DBNull.Value || _objectsService.MfgFinishedGoods.drIP["Test Date"] == DBNull.Value)
                 {
-                    //gFBTimeHost.Background = backColorRed; if (sF == "BoardTimeStamp")
+                    gFBTimeHostBackground = backColorRed; 
+                    //if (sF == "BoardTimeStamp")
                     //   MessageBox.Show(sMsg, _objectsService.Cbfile.sAppName); 
                 }
                 else
@@ -717,27 +727,27 @@ namespace IntugentWebApp.Pages.Mfg_Group
                     IPdate = (DateTime)_objectsService.MfgFinishedGoods.drIP["Test Date"];
                     if (FGdate < new DateTime(2000, 01, 01) || Math.Abs((FGdate - IPdate).TotalMinutes) > _objectsService.CDefualts.dDelTimeButton)
                     {
-                        // gFBTimeHost.Background = backColorRed; 
+                        gFBTimeHostBackground = backColorRed; 
                     }
                     else
-                    //gFBTimeHost.Background = backColor;
+                    gFBTimeHostBackground = backColorCal;
 
                     if (sF == "BoardTimeStamp")
                     {
                         //                       if (gFBTimeHost.Background != backColorRed) CPages.PagePlantData_1.GetPlantDataBackground(FGdate);
                         //                       else MessageBox.Show(sMsg, Cbfile.sAppName);
 
-                        //if (gFBTimeHost.Background == backColor)
-                        // {
-                        //    CStatusBar.SetText("Pulling process data for dataset " + _objectsService.Cbfile.iIDMfg.ToString());
-                        //    CPages.PagePlantData_1.GetPlantDataBackground(FGdate);
-                        //                           CStatusBar.SetText("Finished pulling process data for dataset " + Cbfile.iIDMfg.ToString());
-                        // }
-                        // else
-                        // {
+                        if (gFBTimeHostBackground == backColorCal)
+                         {
+                            //CStatusBar.SetText("Pulling process data for dataset " + _objectsService.Cbfile.iIDMfg.ToString());
+                            //CPages.PagePlantData_1.GetPlantDataBackground(FGdate);
+                                                   //CStatusBar.SetText("Finished pulling process data for dataset " + Cbfile.iIDMfg.ToString());
+                         }
+                         else
+                         {
 
                         //MessageBox.Show(sMsg, Cbfile.sAppName);
-                        //  }
+                          }
                     }
                 }
             }

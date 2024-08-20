@@ -1,4 +1,6 @@
+using Google.Api.Gax;
 using IntugentClassLbrary.Classes;
+using IntugentClassLibrary.Classes;
 using IntugentClassLibrary.Pages.Mfg;
 using IntugentClassLibrary.Utilities;
 using IntugentWebApp.Utilities;
@@ -161,6 +163,26 @@ namespace IntugentWebApp.Pages.Mfg_Group
         public string gHeadPlateAgeText { get; set; }
         public int gSurfactantSelectedValue { get; set; }
         public int gLayoutSelectedValue { get; set; }
+        //            color properties
+        public bool backColorCal { get; set; } = true;
+        public bool backColorRed { get; set; } = false;
+        public bool gThicknessIPBackground {  get; set; }
+        public bool gThicknessAvg1Background {  get; set; }
+        public bool gThicknessAvg2Background {  get; set; }
+        public bool gThicknessSlopeBackground {  get; set; }
+        public bool gFlatnessBackground {  get; set; }
+        public bool gBundleHeightIPBackground {  get; set; }
+        public bool gLengthBackground {  get; set; }
+        public bool gWidthBackground {  get; set; }
+        public bool gDiagoanlDiffBackground {  get; set; }
+
+        public bool gCoreDensityIPBackground { get; set; }
+        public bool gCoreDensityIP_1Background { get; set; }
+        public bool gCoreDensityIP_2Background { get; set; }
+        public bool gCoreDensityIP_3Background { get; set; }
+        public bool gCompressiveIPBackground {  get; set; }
+        public bool gCompressiveIP5Background {  get; set; }
+        public bool gBoardTimeStampBackground {  get; set; }
         #endregion
 
         private readonly ObjectsService _objectsService;
@@ -171,6 +193,7 @@ namespace IntugentWebApp.Pages.Mfg_Group
         }
         public void OnGet()
         {
+            (_objectsService.MfgInProcess, _objectsService.MfgFinishedGoods, _objectsService.MfgDimensionsStability, _objectsService.MfgPlantsData, _objectsService.MfgJetMixing) = _objectsService.MfgHome.GetAllMfgData(_objectsService.MfgInProcess, _objectsService.MfgFinishedGoods, _objectsService.MfgDimensionsStability, _objectsService.MfgPlantsData, _objectsService.MfgJetMixing);
             ViewData["Index"] = HttpContext.Session.GetInt32("UserId");
             SetData();
 
@@ -216,6 +239,291 @@ namespace IntugentWebApp.Pages.Mfg_Group
                 gOperatorSelectedItem = _objectsService.CDefualts.IDEmployee;
             }
             #endregion
+        }
+        private void CheckLimits(string sF)
+        {
+            //Must be included in setview and   change products
+            string sRet = string.Empty;
+            //            if (sF == "All") CProdTargets.GetProductTargets();
+
+
+            if (sF == "gThicknessIP" || sF == "All")
+            {
+                if (_objectsService.MfgInProcess.dr["Thickness - IP"] == DBNull.Value) gThicknessIPBackground = backColorCal;
+                else
+                {
+                    sRet = _objectsService.CIPProdTargets.ThicknessWithinLimits((double)_objectsService.MfgInProcess.dr["Thickness - IP"]);
+                    if (sRet == "Red") gThicknessIPBackground = backColorRed;
+                    //else if (sRet == "Esc") gThicknessIP.Background = backColorEsc;
+                    else gThicknessIPBackground = backColorCal;
+                }
+
+            }
+
+            if (sF == "gThicknessAvg1" || sF == "All")
+            {
+                if (_objectsService.MfgInProcess.dr["Thickness IP Avg1"] == DBNull.Value) gThicknessAvg1Background = backColorCal;
+                else
+                {
+                    sRet = _objectsService.CIPProdTargets.ThicknessAvg1WithinLimits((double)_objectsService.MfgInProcess.dr["Thickness IP Avg1"]);
+                    if (sRet == "Red") gThicknessAvg1Background = backColorRed;
+                    //else if (sRet == "Esc") gThicknessAvg1.Background = backColorEsc;
+                    else gThicknessAvg1Background = backColorCal;
+                }
+
+            }
+            if (sF == "gThicknessAvg2" || sF == "All")
+            {
+                if (_objectsService.MfgInProcess.dr["Thickness IP Avg2"] == DBNull.Value) gThicknessAvg2Background = backColorCal;
+                else
+                {
+                    sRet = _objectsService.CIPProdTargets.ThicknessAvg2WithinLimits((double)_objectsService.MfgInProcess.dr["Thickness IP Avg2"]);
+                    if (sRet == "Red") gThicknessAvg2Background = backColorRed;
+                    //else if (sRet == "Esc") gThicknessAvg2.Background = backColorEsc;
+                    else gThicknessAvg2Background = backColorCal;
+                }
+
+            }
+            if (sF == "gThicknessSlope" || sF == "All")
+            {
+                if (_objectsService.MfgInProcess.dr["IP Thickness Slope"] == DBNull.Value) gThicknessSlopeBackground = backColorCal;
+                else
+                {
+                    sRet = _objectsService.CIPProdTargets.ThicknessSlopeWithinLimits((double)_objectsService.MfgInProcess.dr["IP Thickness Slope"]);
+                    if (sRet == "Red") gThicknessSlopeBackground = backColorRed;
+                    //else if (sRet == "Esc") gThicknessSlope.Background = backColorEsc;
+                    else gThicknessSlopeBackground = backColorCal;
+                }
+
+            }
+
+            if (sF == "gFlatness" || sF == "All")
+            {
+                if (_objectsService.MfgInProcess.dr["Flatness IP"] == DBNull.Value) gFlatnessBackground = backColorCal;
+                else
+                {
+                    sRet = _objectsService.CIPProdTargets.ThicknessProfileWithinLimits((double)_objectsService.MfgInProcess.dr["Flatness IP"]);
+                    if (sRet == "Red") gFlatnessBackground = backColorRed;
+                    //else if (sRet == "Esc") gFlatness.Background = backColorEsc;
+                    else gFlatnessBackground = backColorCal;
+                }
+
+            }
+            if (sF == "gBundleHeightIP" || sF == "All")
+            {
+                if (_objectsService.MfgInProcess.dr["Bundle Height IP"] == DBNull.Value) gBundleHeightIPBackground = backColorCal;
+                else
+                {
+                    sRet = _objectsService.CIPProdTargets.BundleHeightWithinLimits((double)_objectsService.MfgInProcess.dr["Bundle Height IP"]);
+                    if (sRet == "Red") gBundleHeightIPBackground = backColorRed;
+                    //else if (sRet == "Esc") gBundleHeightIP.Background = backColorEsc;
+                    else gBundleHeightIPBackground = backColorCal;
+                }
+
+            }
+
+            if (sF == "gLength" || sF == "All")
+            {
+                if (_objectsService.MfgInProcess.dr["Length"] == DBNull.Value) gLengthBackground = backColorCal;
+                else
+                {
+                    sRet = _objectsService.CIPProdTargets.BoardLengthWithinLimits((double)_objectsService.MfgInProcess.dr["Length"]);
+                    if (sRet == "Red") gLengthBackground = backColorRed;
+                    //else if (sRet == "Esc") gLength.Background = backColorEsc;
+                    else gLengthBackground = backColorCal;
+                }
+
+            }
+            if (sF == "gWidth" || sF == "All")
+            {
+                if (_objectsService.MfgInProcess.dr["Width"] == DBNull.Value) gWidthBackground = backColorCal;
+                else
+                {
+                    sRet = _objectsService.CIPProdTargets.BoardWidthWithinLimits((double)_objectsService.MfgInProcess.dr["Width"]);
+                    if (sRet == "Red") gWidthBackground = backColorRed;
+                    //else if (sRet == "Esc") gWidth.Background = backColorEsc;
+                    else gWidthBackground = backColorCal;
+                }
+
+            }
+            if (sF == "gDiagoanlDiff" || sF == "All")
+            {
+                if (_objectsService.MfgInProcess.dr["IP Diagonal Diff"] == DBNull.Value) gDiagoanlDiffBackground = backColorCal;
+                else
+                {
+                    sRet = _objectsService.CIPProdTargets.BoardSquarenessWithinLimits((double)_objectsService.MfgInProcess.dr["IP Diagonal Diff"]);
+                    if (sRet == "Red") gDiagoanlDiffBackground = backColorRed;
+                    //else if (sRet == "Esc") gDiagoanlDiff.Background = backColorEsc;
+                    else gDiagoanlDiffBackground = backColorCal;
+                }
+            }
+            /*         if (sF == "gCoreDensityIP" || sF == "All")
+                     {
+                         if (_objectsService.MfgInProcess.dr["Width"] == DBNull.Value) gCoreDensityIP.Background = backColor;
+                         else
+                         {
+                             sRet = _objectsService.CIPProdTargets.BoardWidthWithinLimits((double)_objectsService.MfgInProcess.dr["Width"]);
+                             if (sRet == "Red") gCoreDensityIP.Background = backColorRed;
+                             else if (sRet == "Esc") gCoreDensityIP.Background = backColorEsc;
+                             else gCoreDensityIP.Background = backColor;
+                         }
+
+                     }*/
+            if (sF == "gCoreDensityIP" || sF == "All")
+            {
+                if (_objectsService.MfgInProcess.dr["Core Density - IP"] == DBNull.Value) gCoreDensityIPBackground = backColorCal;
+                else
+                {
+                    sRet = _objectsService.CIPProdTargets.CoreDensityWithinLimits((double)_objectsService.MfgInProcess.dr["Core Density - IP"]);
+                    if (sRet == "Red") gCoreDensityIPBackground = backColorRed;
+                    //else if (sRet == "Esc") gCoreDensityIP.Background = backColorEsc;
+                    else gCoreDensityIPBackground = backColorCal;
+                }
+            }
+            if (sF == "gCoreDensityIP_1" || sF == "All")
+            {
+                if (_objectsService.MfgInProcess.dr["Core Density - IP 1"] == DBNull.Value) gCoreDensityIP_1Background = backColorCal;
+                else
+                {
+                    sRet = _objectsService.CIPProdTargets.CoreDensityWithinLimits((double)_objectsService.MfgInProcess.dr["Core Density - IP 1"]);
+                    if (sRet == "Red") gCoreDensityIP_1Background = backColorRed;
+                    //else if (sRet == "Esc") gCoreDensityIP_1.Background = backColorEsc;
+                    else gCoreDensityIP_1Background = backColorCal;
+                }
+            }
+            if (sF == "gCoreDensityIP_2" || sF == "All")
+            {
+                if (_objectsService.MfgInProcess.dr["Core Density - IP 2"] == DBNull.Value) gCoreDensityIP_2Background = backColorCal;
+                else
+                {
+                    sRet = _objectsService.CIPProdTargets.CoreDensityWithinLimits((double)_objectsService.MfgInProcess.dr["Core Density - IP 2"]);
+                    if (sRet == "Red") gCoreDensityIP_2Background = backColorRed;
+                    //else if (sRet == "Esc") gCoreDensityIP_2.Background = backColorEsc;
+                    else gCoreDensityIP_2Background = backColorCal;
+                }
+            }
+            if (sF == "gCoreDensityIP_3" || sF == "All")
+            {
+                if (_objectsService.MfgInProcess.dr["Core Density - IP 3"] == DBNull.Value) gCoreDensityIP_3Background = backColorCal;
+                else
+                {
+                    sRet = _objectsService.CIPProdTargets.CoreDensityWithinLimits((double)_objectsService.MfgInProcess.dr["Core Density - IP 3"]);
+                    if (sRet == "Red") gCoreDensityIP_3Background = backColorRed;
+                    //else if (sRet == "Esc") gCoreDensityIP_3.Background = backColorEsc;
+                    else gCoreDensityIP_3Background = backColorCal;
+                }
+            }
+            if (sF == "gCompressiveIP" || sF == "All")
+            {
+                if (_objectsService.MfgInProcess.dr["Compressive Strength - IP"] == DBNull.Value) gCompressiveIPBackground = backColorCal;
+                else
+                {
+                    sRet = _objectsService.CIPProdTargets.CompressionStrWithinLimits((double)_objectsService.MfgInProcess.dr["Compressive Strength - IP"]);
+                    if (sRet == "Red") gCompressiveIPBackground = backColorRed;
+                    //else if (sRet == "Esc") gCompressiveIP.Background = backColorEsc;
+                    else gCompressiveIPBackground = backColorCal;
+                }
+            }
+            if (sF == "gCompressiveIP5" || sF == "All")
+            {
+                if (_objectsService.MfgInProcess.dr["Compressive Strength 5 - IP"] == DBNull.Value) gCompressiveIP5Background = backColorCal;
+                else
+                {
+                    sRet = _objectsService.CIPProdTargets.CompressionStrWithinLimits((double)_objectsService.MfgInProcess.dr["Compressive Strength 5 - IP"]);
+                    if (sRet == "Red") gCompressiveIP5Background = backColorRed;
+                    //else if (sRet == "Esc") gCompressiveIP5.Background = backColorEsc;
+                    else gCompressiveIP5Background = backColorCal;
+                }
+            }
+
+
+            /*
+                        if (sF == "gCompressiveIP" || sF == "All")
+                        {
+                            if (_objectsService.MfgInProcess.dr["Compressive Strength - IP"] == DBNull.Value) gCompressiveIP.Background = backColorCal;
+                            else if (CProdTargets.CompressionWithinLimits((double)_objectsService.MfgInProcess.dr["Compressive Strength - IP"]) == "N") gCompressiveIP.Background = backColorWarn; else gCompressiveIP.Background = backColorCal;
+                        }
+
+                        if (sF == "gCompressiveIP5" || sF == "All")
+                        {
+                            if (_objectsService.MfgInProcess.dr["Compressive Strength 5 - IP"] == DBNull.Value) gCompressiveIP5.Background = backColorCal;
+                            else if (CProdTargets.CompressionWithinLimits((double)_objectsService.MfgInProcess.dr["Compressive Strength 5 - IP"]) == "N") gCompressiveIP5.Background = backColorWarn; else gCompressiveIP5.Background = backColorCal;
+                        }
+
+                        if (sF == "gCoreDensityIP" || sF == "All")
+                        {
+                            if (_objectsService.MfgInProcess.dr["Core Density - IP"] == DBNull.Value) gCoreDensityIP.Background = backColorCal;
+                            else if (CProdTargets.CoreDensWithinLimits((double)_objectsService.MfgInProcess.dr["Core Density - IP"]) == "N") gCoreDensityIP.Background = backColorWarn; else gCoreDensityIP.Background = backColorCal;
+                        }
+
+                        if (sF == "gCoreDensityIP_1" || sF == "All")
+                        {
+                            if (_objectsService.MfgInProcess.dr["Core Density - IP 1"] == DBNull.Value) gCoreDensityIP_1.Background = backColorCal;
+                            else if (CProdTargets.CoreDensWithinLimits((double)_objectsService.MfgInProcess.dr["Core Density - IP 1"]) == "N") gCoreDensityIP_1.Background = backColorWarn; else gCoreDensityIP_1.Background = backColorCal;
+                        }
+
+                        if (sF == "gCoreDensityIP_2" || sF == "All")
+                        {
+                            if (_objectsService.MfgInProcess.dr["Core Density - IP 2"] == DBNull.Value) gCoreDensityIP_2.Background = backColorCal;
+                            else if (CProdTargets.CoreDensWithinLimits((double)_objectsService.MfgInProcess.dr["Core Density - IP 2"]) == "N") gCoreDensityIP_2.Background = backColorWarn; else gCoreDensityIP_2.Background = backColorCal;
+                        }
+
+                        if (sF == "gCoreDensityIP_3" || sF == "All")
+                        {
+                            if (_objectsService.MfgInProcess.dr["Core Density - IP 3"] == DBNull.Value) gCoreDensityIP_3.Background = backColorCal;
+                            else if (CProdTargets.CoreDensWithinLimits((double)_objectsService.MfgInProcess.dr["Core Density - IP 3"]) == "N") gCoreDensityIP_3.Background = backColorWarn; else gCoreDensityIP_3.Background = backColorCal;
+                        }
+
+                        if (sF == "gLength" || sF == "All")
+                        {
+                            if (_objectsService.MfgInProcess.dr["Length"] == DBNull.Value) gLength.Background = backColor;
+                            else if (CProdTargets.LengthWithinLimits((double)_objectsService.MfgInProcess.dr["Length"]) == "N") gLength.Background = backColorWarn; else gLength.Background = backColor;
+                        }
+
+                        if (sF == "gCoreDensityIP" || sF == "All")
+                        {
+                            if (_objectsService.MfgInProcess.dr["Width"] == DBNull.Value) gCoreDensityIP.Background = backColor;
+                            else if (CProdTargets.WidthWithinLimits((double)_objectsService.MfgInProcess.dr["Width"]) == "N") gCoreDensityIP.Background = backColorWarn; else gCoreDensityIP.Background = backColor;
+                        }
+
+                        if (sF == "gDiagoanlDiff" || sF == "All")
+                        {
+                            if (_objectsService.MfgInProcess.dr["IP Diagonal Diff"] == DBNull.Value) gDiagoanlDiff.Background = backColorCal;
+                            else if (CProdTargets.SquarenessWithinLimits((double)_objectsService.MfgInProcess.dr["IP Diagonal Diff"]) == "N") gDiagoanlDiff.Background = backColorWarn; else gDiagoanlDiff.Background = backColorCal;
+                        }
+               */
+
+            DateTime IPdate, FGdate;
+            string sMsg = "Green Board and FG Board time stamps must be greater than 01-01-2000 and must be within " + _objectsService.CDefualts.dDelTimeButton.ToString() + " minutes of each other.";
+
+            //if (sF == "BoardTimeStamp" || sF == "All")
+            //{
+            //    if (_objectsService.MfgInProcess.drFG["Finished Board Time Stamp FG"] == DBNull.Value || _objectsService.MfgInProcess.dr["Test Date"] == DBNull.Value)
+            //    { gBoardTimeStampBackground = backColorRed;
+            //            //if (sF == "BoardTimeStamp")
+            //            //MessageBox.Show(sMsg, _objectsService.Cbfile.sAppName);
+            //    }
+            //    else
+            //    {
+            //        FGdate = (DateTime)_objectsService.MfgInProcess.drFG["Finished Board Time Stamp FG"];
+            //        IPdate = (DateTime)_objectsService.MfgInProcess.dr["Test Date"];
+            //        if (IPdate < new DateTime(2000, 01, 01) || Math.Abs((FGdate - IPdate).TotalMinutes) > _objectsService.CDefualts.dDelTimeButton)
+            //        { gBoardTimeStampBackground = backColorRed; }
+            //        else gBoardTimeStampBackground = backColorCal;
+            //        if (sF == "BoardTimeStamp")
+            //        {
+            //            if (gBoardTimeStampBackground == backColorCal)
+            //            {
+            //                //CStatusBar.SetText("Pulling process data for dataset " + Cbfile.iIDMfg.ToString());
+            //                _objectsService.MfgPlantsData.GetPlantDataBackground(FGdate);
+            //                //                           CStatusBar.SetText("Finished pulling process data for dataset " + Cbfile.iIDMfg.ToString());
+            //            }
+            //            //else MessageBox.Show(sMsg, _objectsService.Cbfile.sAppName);
+
+            //        }
+            //    }
+            //}
+
         }
         public void SetView()
         {
@@ -379,7 +687,7 @@ namespace IntugentWebApp.Pages.Mfg_Group
             gThicknessSlopeText = _objectsService.MfgInProcess.SetDoubleTextField("IP Thickness Slope", MfgInProcess.sOr);
             #endregion
 
-            //CheckLimits("All");
+            CheckLimits("All");
 
 
             #endregion

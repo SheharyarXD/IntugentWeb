@@ -583,7 +583,15 @@ namespace IntugentClassLibrary.Pages.Mfg
             return sRet;
         }
 
-
+        public async void GetPlantDataBackground(DateTime dateTime)
+        {
+            cBfile.bCanSwitchRecord = false;
+            // CStatusBar.SetText("Pulling process data for dataset " + _objectsService.Cbfile.iIDMfg.ToString());
+            string sRet = await Task.Run(() => GetPlantData(dateTime));
+           cBfile.bCanSwitchRecord = true;
+            // CStatusBar.SetText("Finished pulling process data for dataset " + _objectsService.Cbfile.iIDMfg.ToString());
+            return;
+        }
 
     }
 }

@@ -153,6 +153,16 @@ namespace IntugentWebApp.Pages.Mfg_Group
         public DateTime? gTestDateTime { get; set; }
         public string gDevType { get; set; }
 
+        //            color properties
+        public bool backColorWarn { get; set; } = false;
+        public bool backColorCal { get; set; } = true;
+        public bool gChangeOvenLengthBackground { get; set; }
+        public bool gChangeOvenWidthBackground { get; set; }
+        public bool gChangeOvenThicknessBackground { get; set; }
+        public bool gChangeFreezerLengthBackground { get; set; }
+        public bool gChangeFreezerWidthBackground { get; set; }
+        public bool gChangeFreezerThicknessBackground { get; set; }
+
         private readonly ObjectsService _objectsService;
         public DimensionStabilityModel(ObjectsService objectsService)
         {
@@ -384,44 +394,44 @@ namespace IntugentWebApp.Pages.Mfg_Group
         {
             //Must be included in setview and   change products
 
-            //if (sF == "All") CProdTargets.GetProductTargets();
+            if (sF == "All") _objectsService.CProdTargets.GetProductTargets();
 
 
-            //if (sF == "gChangeOvenLength" || sF == "All")
-            //{
-            //    if (_objectsService.MfgDimensionsStability.dr["% Change Length Oven"] == DBNull.Value) gChangeOvenLength.Background = backColorCal;
-            //    else if (CProdTargets.DimStabLengthWithinLimits((double)_objectsService.MfgDimensionsStability.dr["% Change Length Oven"], "hot") == "N") gChangeOvenLength.Background = backColorWarn; else gChangeOvenLength.Background = backColorCal;
-            //}
+            if (sF == "gChangeOvenLength" || sF == "All")
+            {
+                if (_objectsService.MfgDimensionsStability.dr["% Change Length Oven"] == DBNull.Value) gChangeOvenLengthBackground = backColorCal;
+                else if (_objectsService.CProdTargets.DimStabLengthWithinLimits((double)_objectsService.MfgDimensionsStability.dr["% Change Length Oven"], "hot") == "N") gChangeOvenLengthBackground = backColorWarn; else gChangeOvenLengthBackground = backColorCal;
+            }
 
-            //if (sF == "gChangeOvenWidth" || sF == "All")
-            //{
-            //    if (_objectsService.MfgDimensionsStability.dr["% Change Width Oven"] == DBNull.Value) gChangeOvenWidth.Background = backColorCal;
-            //    else if (CProdTargets.DimStabWidthWithinLimits((double)_objectsService.MfgDimensionsStability.dr["% Change Width Oven"], "hot") == "N") gChangeOvenWidth.Background = backColorWarn; else gChangeOvenWidth.Background = backColorCal;
-            //}
+            if (sF == "gChangeOvenWidth" || sF == "All")
+            {
+                if (_objectsService.MfgDimensionsStability.dr["% Change Width Oven"] == DBNull.Value) gChangeOvenWidthBackground = backColorCal;
+                else if (_objectsService.CProdTargets.DimStabWidthWithinLimits((double)_objectsService.MfgDimensionsStability.dr["% Change Width Oven"], "hot") == "N") gChangeOvenWidthBackground = backColorWarn; else gChangeOvenWidthBackground = backColorCal;
+            }
 
-            //if (sF == "gChangeOvenThickness" || sF == "All")
-            //{
-            //    if (_objectsService.MfgDimensionsStability.dr["% Change Thickness Oven"] == DBNull.Value) gChangeOvenThickness.Background = backColorCal;
-            //    else if (CProdTargets.DimStabThicknessWithinLimits((double)_objectsService.MfgDimensionsStability.dr["% Change Thickness Oven"], "hot") == "N") gChangeOvenThickness.Background = backColorWarn; else gChangeOvenThickness.Background = backColorCal;
-            //}
+            if (sF == "gChangeOvenThickness" || sF == "All")
+            {
+                if (_objectsService.MfgDimensionsStability.dr["% Change Thickness Oven"] == DBNull.Value) gChangeOvenThicknessBackground = backColorCal;
+                else if (_objectsService.CProdTargets.DimStabThicknessWithinLimits((double)_objectsService.MfgDimensionsStability.dr["% Change Thickness Oven"], "hot") == "N") gChangeOvenThicknessBackground = backColorWarn; else gChangeOvenThicknessBackground = backColorCal;
+            }
 
-            //if (sF == "gChangeFreezerLength" || sF == "All")
-            //{
-            //    if (_objectsService.MfgDimensionsStability.dr["% Change Length Freezer"] == DBNull.Value) gChangeFreezerLength.Background = backColorCal;
-            //    else if (CProdTargets.DimStabLengthWithinLimits((double)_objectsService.MfgDimensionsStability.dr["% Change Length Freezer"], "cold") == "N") gChangeFreezerLength.Background = backColorWarn; else gChangeFreezerLength.Background = backColorCal;
-            //}
+            if (sF == "gChangeFreezerLength" || sF == "All")
+            {
+                if (_objectsService.MfgDimensionsStability.dr["% Change Length Freezer"] == DBNull.Value) gChangeFreezerLengthBackground = backColorCal;
+                else if (_objectsService.CProdTargets.DimStabLengthWithinLimits((double)_objectsService.MfgDimensionsStability.dr["% Change Length Freezer"], "cold") == "N") gChangeFreezerLengthBackground = backColorWarn; else gChangeFreezerLengthBackground = backColorCal;
+            }
 
-            //if (sF == "gChangeFreezerWidth" || sF == "All")
-            //{
-            //    if (_objectsService.MfgDimensionsStability.dr["% Change Width Freezer"] == DBNull.Value) gChangeFreezerWidth.Background = backColorCal;
-            //    else if (CProdTargets.DimStabWidthWithinLimits((double)_objectsService.MfgDimensionsStability.dr["% Change Width Freezer"], "cold") == "N") gChangeFreezerWidth.Background = backColorWarn; else gChangeFreezerWidth.Background = backColorCal;
-            //}
+            if (sF == "gChangeFreezerWidth" || sF == "All")
+            {
+                if (_objectsService.MfgDimensionsStability.dr["% Change Width Freezer"] == DBNull.Value) gChangeFreezerWidthBackground = backColorCal;
+                else if (_objectsService.CProdTargets.DimStabWidthWithinLimits((double)_objectsService.MfgDimensionsStability.dr["% Change Width Freezer"], "cold") == "N") gChangeFreezerWidthBackground = backColorWarn; else gChangeFreezerWidthBackground = backColorCal;
+            }
 
-            //if (sF == "gChangeFreezerThickness" || sF == "All")
-            //{
-            //    if (_objectsService.MfgDimensionsStability.dr["% Change Thickness Freezer"] == DBNull.Value) gChangeFreezerThickness.Background = backColorCal;
-            //    else if (CProdTargets.DimStabThicknessWithinLimits((double)_objectsService.MfgDimensionsStability.dr["% Change Thickness Freezer"], "cold") == "N") gChangeFreezerThickness.Background = backColorWarn; else gChangeFreezerThickness.Background = backColorCal;
-            //}
+            if (sF == "gChangeFreezerThickness" || sF == "All")
+            {
+                if (_objectsService.MfgDimensionsStability.dr["% Change Thickness Freezer"] == DBNull.Value) gChangeFreezerThicknessBackground = backColorCal;
+                else if (_objectsService.CProdTargets.DimStabThicknessWithinLimits((double)_objectsService.MfgDimensionsStability.dr["% Change Thickness Freezer"], "cold") == "N") gChangeFreezerThicknessBackground = backColorWarn; else gChangeFreezerThicknessBackground = backColorCal;
+            }
         }
 
         public IActionResult OnPostGCheckBoxes_LF(string Name, string value)

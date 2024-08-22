@@ -105,8 +105,9 @@ namespace IntugentWebApp.Pages.Mfg_Group
         {
             _objectsService = objectsService;
         }
-        public void OnGet()
+        public IActionResult OnGet()
         {
+            //return new JsonResult(_objectsService.MfgProcesscheck.CDefault.IDLocation);
  
             (_objectsService.MfgInProcess, _objectsService.MfgFinishedGoods, _objectsService.MfgDimensionsStability, _objectsService.MfgPlantsData, _objectsService.MfgJetMixing) = _objectsService.MfgHome.GetAllMfgData(_objectsService.MfgInProcess, _objectsService.MfgFinishedGoods, _objectsService.MfgDimensionsStability, _objectsService.MfgPlantsData, _objectsService.MfgJetMixing);
             ViewData["Index"] = HttpContext.Session.GetInt32("UserId");
@@ -130,7 +131,7 @@ namespace IntugentWebApp.Pages.Mfg_Group
                  //   sMsgData = "There is no Process Check Data for " + _objectsService.MfgProcesscheck.CDefault.sLocation;
                     EnableDataControls(false);
                  //   CTelClient.TelTrace(sMsgData);
-                    return ;
+                    return null;
 
                 }
 
@@ -145,13 +146,15 @@ namespace IntugentWebApp.Pages.Mfg_Group
                 EnableDataControls(false);
                 gNewCheckSheetIsEnabled = false;
               //  CTelClient.TelException(ex, sMsgData);  //Azue Insight Trace Message
-                return ;
+                return null;
             }
             finally
             {
                 _objectsService.MfgProcesscheck.cbfile.conAZ.Close();
             }
             SetView();
+            return null;
+
             //  if (sMsgData != string.Empty) MessageBox.Show(sMsgData, _objectsService.MfgProcesscheck.cbfile.sAppName);
         }
         private void SetView()
@@ -441,6 +444,10 @@ namespace IntugentWebApp.Pages.Mfg_Group
         {
             int ncount = 0; double dSum = 0.0;
             bool bLength = false, bDiag = false, bWidth = false;
+            if (value == null)
+            {
+                return null;
+            }
             switch (Name)
             {
                 case "gQuantity": _objectsService.MfgProcesscheck.dr["Bundle Quantity 1"]=Int32.Parse(value); break;

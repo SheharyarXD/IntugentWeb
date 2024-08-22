@@ -31,9 +31,11 @@ namespace IntugentClassLibrary.Pages.Rnd
         public const string sDef = "0.0000", sOr = "0.00";
         public CDefualts cDefualts;
         public Cbfile cbfile;
-        public RNDFormulations(CDefualts cDefualts,Cbfile cbfile) { 
+        public RNDHome RNDHome;
+        public RNDFormulations(CDefualts cDefualts,Cbfile cbfile,RNDHome  rNDHome) { 
                 this.cDefualts = cDefualts;
             this.cbfile = cbfile;
+            this.RNDHome = rNDHome;
             Startup();
         }
         public void Startup()
@@ -432,6 +434,151 @@ namespace IntugentClassLibrary.Pages.Rnd
                 sMsg = "Error in calculating formulation descriptors";
                 //MessageBox.Show(sMsg, Cbfile.sAppName); CTelClient.TelException(ex, sMsg); 
             }
+        }
+        public void ReadDataset()
+        {
+            int id, iSel, j, nRows, itmp;
+            double dtmp;
+
+            char[] delimiterChars = new char[] { ' ', ',', ':', '\t' };
+
+            if (RNDHome.drS["PORows"] != DBNull.Value)
+                nRows = (int)RNDHome.drS["PORows"];
+            else nRows = 3;
+           Forms.POMats.Clear();
+            for (int i = 0; i < nRows; i++)Forms.POMats.Add(new CMaterial());
+
+            //Read PO dataset and PO side formulation
+            if (RNDHome.drS["POMats"] != DBNull.Value)
+            {
+                string[] strParts = RNDHome.drS["POMats"].ToString().Split(delimiterChars);
+                if (nRows > strParts.Length) nRows = strParts.Length;
+                for (int i = 0; i < nRows; i++) //Grid by default adds an extra row sometime
+                {
+                    id = int.Parse(strParts[i]);
+                    iSel = FindIndex(id,dtPO);
+                   ModifyPOIsoLists(i, ref Forms.POMats, iSel,dtPO);
+                }
+                /*
+                                id = int.Parse(strParts[nRows-1]);
+                                iSel = FindIndex(id, dtPO);
+                                if(iSel > 0)
+                                {
+                                   Forms.POMats.Add(new CMaterial());
+                                    ModifyPOIsoLists(Forms.POMats.Count-1, refForms.POMats, iSel, dtPO);
+                                }
+                */
+            }
+
+            //Ajust for the user assigned OH numbers
+
+            if (RNDHome.drS["sPOMatsOH"] != DBNull.Value)
+            {
+                string[] strParts = RNDHome.drS["sPOMatsOH"].ToString().Split(delimiterChars);
+                if (nRows > strParts.Length) nRows = strParts.Length;
+                for (int i = 0; i < nRows - 1; i++) //Grid by default adds an extra row sometime
+                {
+                    if (double.TryParse(strParts[i], out dtmp))Forms.POMats[i].MatOHNum = dtmp;
+                }
+            }
+
+            //Set pbws
+
+
+            string sPOf = "0.0", stmp;
+            for (int i = 0; i < RNDHome.dtF.Rows.Count; i++)
+            {
+                for (j = 0; j <Forms.FormAr[i].POMatPbw.Length; j++)Forms.FormAr[i].POMatPbw[j] = 0.0;
+                if (RNDHome.dtF.Rows[i]["POPbws"] != DBNull.Value)
+                {
+                   Forms.FormAr[i].POMatPbw = System.Text.Json.JsonSerializer.Deserialize<double[]>((string)RNDHome.dtF.Rows[i]["POPbws"]);
+                    switch (i)
+                    {
+
+                        case (0):
+                            for (j = 0; j < nRows; j++)
+                            { if (Forms.FormAr[0].POMatPbw[j] > 0) stmp = (Forms.FormAr[0].POMatPbw[j]).ToString(sPOf); else stmp = string.Empty;Forms.POMats[j].Pbw1 = stmp; }
+                            break;
+
+                        case (1):
+                            for (j = 0; j < nRows; j++)
+                            { if (Forms.FormAr[1].POMatPbw[j] > 0) stmp = (Forms.FormAr[1].POMatPbw[j]).ToString(sPOf); else stmp = string.Empty;Forms.POMats[j].Pbw2 = stmp; }
+                            break;
+                        case (2):
+                            for (j = 0; j < nRows; j++)
+                            { if (Forms.FormAr[2].POMatPbw[j] > 0) stmp = (Forms.FormAr[2].POMatPbw[j]).ToString(sPOf); else stmp = string.Empty;Forms.POMats[j].Pbw3 = stmp; }
+                            break;
+                        case (3):
+                            for (j = 0; j < nRows; j++)
+                            { if (Forms.FormAr[3].POMatPbw[j] > 0) stmp = (Forms.FormAr[3].POMatPbw[j]).ToString(sPOf); else stmp = string.Empty;Forms.POMats[j].Pbw4 = stmp; }
+                            break;
+                        case (4):
+                            for (j = 0; j < nRows; j++)
+                            { if (Forms.FormAr[4].POMatPbw[j] > 0) stmp = (Forms.FormAr[4].POMatPbw[j]).ToString(sPOf); else stmp = string.Empty;Forms.POMats[j].Pbw5 = stmp; }
+                            break;
+                        case (5):
+                            for (j = 0; j < nRows; j++)
+                            { if (Forms.FormAr[5].POMatPbw[j] > 0) stmp = (Forms.FormAr[5].POMatPbw[j]).ToString(sPOf); else stmp = string.Empty;Forms.POMats[j].Pbw6 = stmp; }
+                            break;
+                        case (6):
+                            for (j = 0; j < nRows; j++)
+                            { if (Forms.FormAr[6].POMatPbw[j] > 0) stmp = (Forms.FormAr[6].POMatPbw[j]).ToString(sPOf); else stmp = string.Empty;Forms.POMats[j].Pbw7 = stmp; }
+                            break;
+                        case (7):
+                            for (j = 0; j < nRows; j++)
+                            { if (Forms.FormAr[7].POMatPbw[j] > 0) stmp = (Forms.FormAr[7].POMatPbw[j]).ToString(sPOf); else stmp = string.Empty;Forms.POMats[j].Pbw8 = stmp; }
+                            break;
+
+                            /*
+                                                    case (0): for (j = 0; j < nRows; j++)Forms.POMats[j].Pbw1 =Forms.FormAr[0].POMatPbw[j]; break;
+                                                    case (1): for (j = 0; j < nRows; j++)Forms.POMats[j].Pbw2 =Forms.FormAr[1].POMatPbw[j]; break;
+                                                    case (2): for (j = 0; j < nRows; j++)Forms.POMats[j].Pbw3 =Forms.FormAr[2].POMatPbw[j]; break;
+                                                    case (3): for (j = 0; j < nRows; j++)Forms.POMats[j].Pbw4 =Forms.FormAr[3].POMatPbw[j]; break;
+                                                    case (4): for (j = 0; j < nRows; j++)Forms.POMats[j].Pbw5 =Forms.FormAr[4].POMatPbw[j]; break;
+                                                    case (5): for (j = 0; j < nRows; j++)Forms.POMats[j].Pbw6 =Forms.FormAr[5].POMatPbw[j]; break;
+                                                    case (6): for (j = 0; j < nRows; j++)Forms.POMats[j].Pbw7 =Forms.FormAr[6].POMatPbw[j]; break;
+                                                    case (7): for (j = 0; j < nRows; j++)Forms.POMats[j].Pbw8 =Forms.FormAr[7].POMatPbw[j]; break;
+                            */
+                    }
+                }
+            }
+
+            //Read Iso Section
+
+            nRows = 1;
+           Forms.IsoMats.Clear();
+            for (int i = 0; i < nRows; i++)Forms.IsoMats.Add(new CMaterial());
+
+            if (RNDHome.drS["IsoMats"] != DBNull.Value)
+            {
+                id = (int)RNDHome.drS["IsoMats"];
+                iSel = FindIndex(id,dtIso);
+               ModifyPOIsoLists(0, ref Forms.IsoMats, iSel,dtIso);
+            }
+            if (RNDHome.drS["sIsoMatsNCO"] != DBNull.Value)  //Adjust NCO for user entered #
+                if (double.TryParse(RNDHome.drS["sIsoMatsNCO"].ToString(), out dtmp))Forms.IsoMats[0].MatNco = dtmp;
+
+            for (int i = 0; i < RNDHome.dtF.Rows.Count; i++)
+            {
+                if (RNDHome.dtF.Rows[i]["NCOIndex"] != DBNull.Value)Forms.FormAr[i].NcoIndex = (double)RNDHome.dtF.Rows[i]["NCOIndex"];
+                else Forms.FormAr[i].NcoIndex = 270;
+            } 
+           Forms.NCOIndexMats[0].Pbw1 = (Forms.FormAr[0].NcoIndex).ToString(sPOf);
+           Forms.NCOIndexMats[0].Pbw2 = (Forms.FormAr[1].NcoIndex).ToString(sPOf);
+           Forms.NCOIndexMats[0].Pbw3 = (Forms.FormAr[2].NcoIndex).ToString(sPOf);
+           Forms.NCOIndexMats[0].Pbw4 = (Forms.FormAr[3].NcoIndex).ToString(sPOf);
+           Forms.NCOIndexMats[0].Pbw5 = (Forms.FormAr[4].NcoIndex).ToString(sPOf);
+           Forms.NCOIndexMats[0].Pbw6 = (Forms.FormAr[5].NcoIndex).ToString(sPOf);
+           Forms.NCOIndexMats[0].Pbw7 = (Forms.FormAr[6].NcoIndex).ToString(sPOf);
+           Forms.NCOIndexMats[0].Pbw8 = (Forms.FormAr[7].NcoIndex).ToString(sPOf);
+
+        }
+        public static int FindIndex(int id, DataTable dt)
+        {
+            int index = -1;
+            for (int i = 0; i < dt.Rows.Count; i++)
+                if ((int)dt.Rows[i]["ID"] == id) return i;
+            return index;
         }
     }
 }

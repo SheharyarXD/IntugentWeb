@@ -66,6 +66,7 @@ namespace IntugentWebApp.Pages.Analysis
             if (gProd1SelectedValue == null) gProd1SelectedIndex = 0;
             if (gMfgSiteSelectedValue == null) gMfgSiteSelectedIndex = 0;
             _objectsService.CAnalysisData1.GetData(GetSearchCriteria());
+            return new JsonResult(GetSearchCriteria());
             SetView();
             var responseData = new
             {

@@ -132,7 +132,7 @@
                         </div>
                         <!-- thicknessAvg -->
                         <div class="form-floating mb-1">
-                            <input type="number" class="form-control" id="thicknessAvg" placeholder="" asp-for="gThicknessIPText" disabled>
+                            <input type="number" class="form-control  @(Model.gThicknessIPBackground ? "" : "illegalValue")" id="thicknessAvg" placeholder="" asp-for="gThicknessIPText" disabled>
                             <label for="thicknessAvg">Thickness Avg</label>
                         </div>
                         <!-- thicknessValley -->

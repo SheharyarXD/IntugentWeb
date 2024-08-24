@@ -138,15 +138,16 @@ namespace IntugentClassLibrary.Classes
                 " Left join tblLocations on [In Process Identify].Location = tblLocations.ID Left join Roster on [In Process Identify].Operator = Roster.ID ";
   
                 if (!string.IsNullOrEmpty(sql1)) sql = sql + " Where " + sql1;
-                sql += "Order by[Test Date]";
+                sql += "Order by [Test Date]";
 
                 da = new SqlDataAdapter(sql, cbfile.conAZ);
                 // if (dtPropValues == null) dtPropValues = new DataTable(); else dtPropValues.Clear();
                 int itmp = da.Fill(dt);
-
+                Console.WriteLine("SQL Query: " + sql);
             }
             catch (Exception e)
             {
+                throw new Exception(e.ToString());
               //  MessageBox.Show(e.Message);
             }
             dtPropValues.Columns.Clear();

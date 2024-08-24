@@ -73,16 +73,30 @@
                         {
                             <tr>
                                 <td>@row["GasName"]</td>
-                                <td>@row["#1"]</td>
-                                <td>@row["#2"]</td>
-                                <td>@row["#3"]</td>
-                                <td>@row["#4"]</td>
-                                <td>@row["#5"]</td>
-                                <td>@row["#6"]</td>
-                                <td>@row["#7"]</td>
-                                <td>@row["#8"]</td>
+                                <td>@NormalizeValue(row["#1"])</td>
+                                <td>@NormalizeValue(row["#2"])</td>
+                                <td>@NormalizeValue(row["#3"])</td>
+                                <td>@NormalizeValue(row["#4"])</td>
+                                <td>@NormalizeValue(row["#5"])</td>
+                                <td>@NormalizeValue(row["#6"])</td>
+                                <td>@NormalizeValue(row["#7"])</td>
+                                <td>@NormalizeValue(row["#8"])</td>
                             </tr>
-                        } 
+                        }
+                        @functions {
+                            public string NormalizeValue(object value)
+                            {
+                                if (value is double doubleValue)
+                                {
+                                    if (double.IsNaN(doubleValue) || double.IsInfinity(doubleValue))
+                                    {
+                                        return "N/A"; // or handle with another default value
+                                    }
+                                    return doubleValue.ToString("G"); // general format
+                                }
+                                return value?.ToString() ?? "N/A";
+                            }
+                        }
                     </tbody>
                 </table>
             </div>

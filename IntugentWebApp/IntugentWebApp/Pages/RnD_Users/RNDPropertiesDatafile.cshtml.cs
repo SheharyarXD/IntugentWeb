@@ -29,6 +29,7 @@ namespace IntugentWebApp.Pages.RnD_Users
         }
         public void OnGet()
         {
+            _objectsService.RNDHome.GetDataSet();
             ViewData["Index"] = HttpContext.Session.GetInt32("UserId");
             _objectsService.RNDFormulations.ReadDataset();
             gProdList = PopulateListFromDataView(_objectsService.CLists.dvComProd);

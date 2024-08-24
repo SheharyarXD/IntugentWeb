@@ -50,6 +50,7 @@ namespace IntugentWebApp.Pages.RnD_Users
       
               public void OnGet()
               {
+            _objectsService.RNDHome.GetDataSet();
             _objectsService.RNDFormulations.ReadDataset();
             SetView();
 
@@ -641,13 +642,15 @@ namespace IntugentWebApp.Pages.RnD_Users
         {
             if (this.gPO.Count > 28)
             {
-              //  MessageBox.Show("Cannot add another row", Cbfile.sAppName, MessageBoxButton.OK, MessageBoxImage.Warning); return;
+                //  MessageBox.Show("Cannot add another row", Cbfile.sAppName, MessageBoxButton.OK, MessageBoxImage.Warning); return;
+                return new JsonResult(false);
             }
 
             _objectsService.RNDFormulations.Forms.POMats.Add(new CMaterial());
             _objectsService.RNDHome.drS["PORows"] = this.gPO.Count;
+            _objectsService.RNDHome.drS["PORows"] = _objectsService.RNDFormulations.Forms.POMats.Count;
             _objectsService.RNDHome.UpdateDataSet();
-            return new JsonResult(true);
+            return new JsonResult(this.gPO.Count);
         }
 
         public string SetTimeField(string sField)

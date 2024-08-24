@@ -492,6 +492,7 @@
                 headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
                 success: function (response) {
                     console.log('Server response:', response);
+                    location.reload();
                 },
                 error: function (xhr, status, error) {
                     console.error('Error:', error);

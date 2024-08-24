@@ -66,7 +66,6 @@ namespace IntugentWebApp.Pages.Analysis
             if (gProd1SelectedValue == null) gProd1SelectedIndex = 0;
             if (gMfgSiteSelectedValue == null) gMfgSiteSelectedIndex = 0;
             _objectsService.CAnalysisData1.GetData(GetSearchCriteria());
-            return new JsonResult(GetSearchCriteria());
             SetView();
             var responseData = new
             {
@@ -195,11 +194,12 @@ namespace IntugentWebApp.Pages.Analysis
             //Location
 
             sql = sql1 = string.Empty;
-            if (gMfgSiteSelectedValue!=null) sql = "sLocation = '" + gMfgSiteSelectedValue.ToString() + "'";
+            if (gMfgSiteSelectedValue != null && gMfgSiteSelectedValue != "All Locations")
+            { sql = "sLocation = '" + gMfgSiteSelectedValue.ToString() + "'"; }
 
 
             sql1 = string.Empty;
-            if (gProd1SelectedValue!=null)
+            if (gProd1SelectedValue!=null && gProd1SelectedValue != "All Products")
             {
                 sql1 = "[Product Code Global] = '" + gProd1SelectedValue.ToString() + "'";
                 if (sql == string.Empty) sql = sql1; else sql = sql + " And " + sql1;

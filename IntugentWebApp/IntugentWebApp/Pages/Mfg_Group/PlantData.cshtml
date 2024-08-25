@@ -30,7 +30,7 @@
      </div>
     </div>
     <div class="row col-2 mx-2 px-3">
-        <button type="button" onclick=gGetData() class="btn btn-primary btn-sm">Extract Relevant Process Data</button>
+        <button type="button" onclick=gGetData() @(Model.gGetPlantDataIsEnabled?"":"disabled") class="btn btn-primary btn-sm">Extract Relevant Process Data</button>
     </div>
     <div class="row col-4 mr-1">
         <!-- General Info Card -->

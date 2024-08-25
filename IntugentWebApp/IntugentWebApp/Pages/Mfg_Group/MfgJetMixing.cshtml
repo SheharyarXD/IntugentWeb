@@ -26,7 +26,7 @@
                 <div class="text-center mb-2">Iso Mix</div>
                 <!-- Flow Rate [lb/min] -->
                 <div class="form-floating mb-1">
-                    <input type="number" class="form-control" id="lengthA" onblur="LostFocus_Fields('gFRate_A',this.value)" placeholder="" value="@Model.gFRate_A" onblur="">
+                    <input required type="number" class="form-control" id="lengthA" onblur="LostFocus_Fields('gFRate_A',this.value)" placeholder="" value="@Model.gFRate_A" onblur="">
                     <label for="lengthA">Flow Rate [lb/min]</label>
                 </div>
                 <!-- Inlet Temperature [° F] -->
@@ -199,7 +199,11 @@
             <button type="button" onclick=gImportData('gImport3') class="btn btn-primary btn-sm">Use Pour Head 3 Data</button>
         </div>
     </div>
-    <div class="col-4">@Model.gMsg</div>
+    <div class="col-4 px-7">
+        <p class="" style="color:red;">
+        @Model.gMsg
+        </p>
+    </div>
     <div class="col-4">
         <div class="row my-1">
             <button type="button" onclick=gResetData() class="btn btn-primary btn-sm">Reset All Fields</button>
@@ -315,7 +319,11 @@
         }
        
         function LostFocus_Fields(Name,value) {
-
+            if (value == null || value === "") {
+                alert('value cannot be null');
+                location.reload();
+                return
+            }
             var form = $('#SearchParamsForm');
 
             $.ajax({
@@ -324,7 +332,7 @@
                 headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
                 data: { Name: Name ,value: value},
                 success: function (response) {
-                    //console.log('Server response:', response);
+                    // console.log('Server response:', response);
                     location.reload();
                 },
                 error: function (xhr, status, error) {

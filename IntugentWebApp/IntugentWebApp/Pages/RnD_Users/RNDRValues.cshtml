@@ -150,7 +150,7 @@
             const ctx = document.getElementById('charts').getContext('2d');
             const datasets = [];
 
-        @if (Model.dArX != null && Model.dAr0 != null )
+        @if (Model.dArX != null && Model.dAr0 != null && Model.dArX.Any() && Model.dAr0.Any())
         {
             <text>
                     datasets.push({
@@ -164,7 +164,7 @@
             </text>
         }
 
-        @if (Model.dArX != null && Model.dAr1 != null)
+        @if (Model.dArX != null && Model.dAr1 != null && Model.dArX.Any() && Model.dAr1.Any())
         {
             <text>
                     datasets.push({
@@ -178,7 +178,7 @@
             </text>
         }
 
-        @if (Model.dArX != null && Model.dAr2 != null)
+        @if (Model.dArX != null && Model.dAr2 != null && Model.dArX.Any() && Model.dAr2.Any())
         {
             <text>
                     datasets.push({
@@ -192,7 +192,7 @@
             </text>
         }
 
-        @if (Model.dArX != null && Model.dAr3 != null)
+        @if (Model.dArX != null && Model.dAr3 != null && Model.dArX.Any() && Model.dAr3.Any())
         {
             <text>
                     datasets.push({
@@ -206,7 +206,7 @@
             </text>
         }
 
-        @if (Model.dArX != null && Model.dAr4 != null)
+        @if (Model.dArX != null && Model.dAr4 != null && Model.dArX.Any() && Model.dAr4.Any())
         {
             <text>
                     datasets.push({

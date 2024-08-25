@@ -35,7 +35,6 @@ namespace IntugentWebApp.Pages
             int value = Int32.Parse(values);
             MainWindow mainWindow = new MainWindow();
             (_objectsService.CDefualts, _objectsService.CLists, _objectsService.Cbfile) = mainWindow.MainWindowConstructor(value);
-
             if (_objectsService.CDefualts != null && _objectsService.CLists != null && _objectsService.Cbfile != null)
             {
                 SetOptionBoxes(_objectsService.CDefualts, _objectsService.CLists);

@@ -92,7 +92,7 @@
                     </div>
                     <!-- fgTestingComplete -->
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="fgTestingComplete" checked="@Model.gFinsihedGoodsDone" onchange="CheckBoxes_LFClick('gFinsihedGoodsDone',this)">
+                        <input type="checkbox" class="custom-control-input" id="fgTestingComplete" @(Model.gFinsihedGoodsDone?"checked":"") onchange="CheckBoxes_LFClick('gFinishedGoodsDone',this)">
                         <label class="custom-control-label" for="fgTestingComplete">FG Testing Complete</label>
                     </div>
                 </div>
@@ -351,7 +351,7 @@
                                     </div>
 
                                     <div class="custom-control custom-checkbox col-3 text-center">
-                                        <input type="checkbox" class="custom-control-input" id="compStrength1Check" checked="@Model.gCompStrFGKnit_1" onchange="GCompStrFG2_LFClick('gCompStrFGKnit_1',this)">
+                                        <input type="checkbox" class="custom-control-input" id="compStrength1Check"  @(Model.gCompStrFGKnit_1 ? "checked" : "") onchange="GCompStrFG2_LFClick('gCompStrFGKnit_1',this)">
                                         <label class="custom-control-label" for="compStrength1Check"> </label>
                                     </div>
                                 </div>
@@ -362,7 +362,7 @@
                                         <label for="compStrength2">Comp. Str-2</label>
                                     </div>
                                     <div class="custom-control custom-checkbox col-3 text-center">
-                                        <input type="checkbox" class="custom-control-input" id="compStrength2Check" checked="@Model.gCompStrFGKnit_2" onchange="GCompStrFG2_LFClick('gCompStrFGKnit_2',this)">
+                                        <input type="checkbox" class="custom-control-input" id="compStrength2Check"  @(Model.gCompStrFGKnit_2 ? "checked" : "") onchange="GCompStrFG2_LFClick('gCompStrFGKnit_2',this)">
                                         <label class="custom-control-label" for="compStrength2Check"> </label>
                                     </div>
                                 </div>
@@ -373,7 +373,7 @@
                                         <label for="compStrength3">Comp. Str-3</label>
                                     </div>
                                     <div class="custom-control custom-checkbox col-3 text-center">
-                                        <input type="checkbox" class="custom-control-input" id="compStrength3Check" checked="@Model.gCompStrFGKnit_3" onchange="GCompStrFG2_LFClick('gCompStrFGKnit_3',this)">
+                                        <input type="checkbox" class="custom-control-input" id="compStrength3Check"  @(Model.gCompStrFGKnit_3 ? "checked" : "") onchange="GCompStrFG2_LFClick('gCompStrFGKnit_3',this)">
                                         <label class="custom-control-label" for="compStrength3Check"> </label>
                                     </div>
                                 </div>
@@ -384,7 +384,7 @@
                                         <label for="compStrength4">Comp. Str-4</label>
                                     </div>
                                     <div class="custom-control custom-checkbox col-3 text-center">
-                                        <input type="checkbox" class="custom-control-input" id="compStrength4Check" checked="@Model.gCompStrFGKnit_4" onchange="GCompStrFG2_LFClick('gCompStrFGKnit_4',this)">
+                                        <input type="checkbox" class="custom-control-input" id="compStrength4Check"  @(Model.gCompStrFGKnit_4 ? "checked" : "") onchange="GCompStrFG2_LFClick('gCompStrFGKnit_4',this)">
                                         <label class="custom-control-label" for="compStrength4Check"> </label>
                                     </div>
                                 </div>
@@ -395,7 +395,7 @@
                                         <label for="compStrength5">Comp. Str-5</label>
                                     </div>
                                     <div class="custom-control custom-checkbox col-3 text-center">
-                                        <input type="checkbox" class="custom-control-input" id="compStrength5Check" checked="@Model.gCompStrFGKnit_5" onchange="GCompStrFG2_LFClick('gCompStrFGKnit_5',this)">
+                                        <input type="checkbox" class="custom-control-input" id="compStrength5Check"  @(Model.gCompStrFGKnit_5 ? "checked" : "") onchange="GCompStrFG2_LFClick('gCompStrFGKnit_5',this)">
                                         <label class="custom-control-label" for="compStrength5Check"> </label>
                                     </div>
                                 </div>
@@ -406,7 +406,7 @@
                                         <label for="compStrength6">Comp. Str-6</label>
                                     </div>
                                     <div class="custom-control custom-checkbox col-3 text-center">
-                                        <input type="checkbox" class="custom-control-input" id="compStrength6Check" checked="@Model.gCompStrFGKnit_6" onchange="GCompStrFG2_LFClick('gCompStrFGKnit_6',this)">
+                                        <input type="checkbox" class="custom-control-input" id="compStrength6Check"  @(Model.gCompStrFGKnit_6 ? "checked" : "") onchange="GCompStrFG2_LFClick('gCompStrFGKnit_6',this)">
                                         <label class="custom-control-label" for="compStrength6Check"> </label>
                                     </div>
                                 </div>
@@ -453,7 +453,7 @@
                             <div class="col-2 d-flex justify-content-center align-items-center">
                                 <!-- rWestKnitLine -->
                                 <div class="custom-control custom-checkbox col-3 text-center">
-                                    <input type="checkbox" class="custom-control-input" id="rWestKnitLine" checked="@Model.gRValueKnitPresent3" onchange="CheckBoxes_LFClick('gRValueKnitPresent3',this)">
+                                    <input type="checkbox" class="custom-control-input" id="rWestKnitLine"  @(Model.gRValueKnitPresent3 ? "checked" : "") onchange="CheckBoxes_LFClick('gRValueKnitPresent3',this)">
                                     <label class="custom-control-label" for="rWestKnitLine"> </label>
                                 </div>
                             </div>
@@ -477,7 +477,7 @@
                             <div class="col-2 d-flex justify-content-center align-items-center">
                                 <!-- rCenterKnitLine -->
                                 <div class="custom-control custom-checkbox col-3 text-center">
-                                    <input type="checkbox" class="custom-control-input" id="rCenterKnitLine" checked="@Model.gRValueKnitPresent2" onchange="CheckBoxes_LFClick('gRValueKnitPresent2',this)">
+                                    <input type="checkbox" class="custom-control-input" id="rCenterKnitLine"  @(Model.gRValueKnitPresent2 ? "checked" : "") onchange="CheckBoxes_LFClick('gRValueKnitPresent2',this)">
                                     <label class="custom-control-label" for="rCenterKnitLine"> </label>
                                 </div>
                             </div>
@@ -501,7 +501,7 @@
                             <div class="col-2 d-flex justify-content-center align-items-center">
                                 <!-- rEastKnitLine -->
                                 <div class="custom-control custom-checkbox col-3 text-center">
-                                    <input type="checkbox" class="custom-control-input" id="rEastKnitLine" checked="@Model.gRValueKnitPresent1" onchange="CheckBoxes_LFClick('gRValueKnitPresent1',this)">
+                                    <input type="checkbox" class="custom-control-input" id="rEastKnitLine"  @(Model.gRValueKnitPresent1 ? "checked" : "") onchange="CheckBoxes_LFClick('gRValueKnitPresent1',this)">
                                     <label class="custom-control-label" for="rEastKnitLine"> </label>
                                 </div>
                             </div>
@@ -577,7 +577,7 @@
                                     </div>
 
                                     <div class="custom-control custom-checkbox col-3 text-center">
-                                        <input type="checkbox" class="custom-control-input" id="compStrengthRetest1Check" checked="@Model.gCompStrFGKnitRetest_1" onchange="GCompStrFG2_LFClick('gCompStrFGKnitRetest_1',this)">
+                                        <input type="checkbox" class="custom-control-input" id="compStrengthRetest1Check"  @(Model.gCompStrFGKnitRetest_1 ? "checked" : "") onchange="GCompStrFG2_LFClick('gCompStrFGKnitRetest_1',this)">
                                         <label class="custom-control-label" for="compStrengthRetest1Check"> </label>
                                     </div>
                                 </div>
@@ -588,7 +588,7 @@
                                         <label for="compStrengthRetest2">Comp. Str-2</label>
                                     </div>
                                     <div class="custom-control custom-checkbox col-3 text-center">
-                                        <input type="checkbox" class="custom-control-input" id="compStrengthRetest2Check" checked="@Model.gCompStrFGKnitRetest_2" onchange="GCompStrFG2_LFClick('gCompStrFGKnitRetest_2',this)">
+                                        <input type="checkbox" class="custom-control-input" id="compStrengthRetest2Check"  @(Model.gCompStrFGKnitRetest_2 ? "checked" : "") onchange="GCompStrFG2_LFClick('gCompStrFGKnitRetest_2',this)">
                                         <label class="custom-control-label" for="compStrengthRetest2Check"> </label>
                                     </div>
                                 </div>
@@ -599,7 +599,7 @@
                                         <label for="compStrengthRetest3">Comp. Str-3</label>
                                     </div>
                                     <div class="custom-control custom-checkbox col-3 text-center">
-                                        <input type="checkbox" class="custom-control-input" id="compStrengthRetest3Check" checked="@Model.gCompStrFGKnitRetest_3" onchange="GCompStrFG2_LFClick('gCompStrFGKnitRetest_3',this)">
+                                        <input type="checkbox" class="custom-control-input" id="compStrengthRetest3Check"  @(Model.gCompStrFGKnitRetest_3 ? "checked" : "") onchange="GCompStrFG2_LFClick('gCompStrFGKnitRetest_3',this)">
                                         <label class="custom-control-label" for="compStrengthRetest3Check"> </label>
                                     </div>
                                 </div>
@@ -610,7 +610,7 @@
                                         <label for="compStrengthRetest4">Comp. Str-4</label>
                                     </div>
                                     <div class="custom-control custom-checkbox col-3 text-center">
-                                        <input type="checkbox" class="custom-control-input" id="compStrengthRetest4Check" checked="@Model.gCompStrFGKnitRetest_4" onchange="GCompStrFG2_LFClick('gCompStrFGKnitRetest_4',this)">
+                                        <input type="checkbox" class="custom-control-input" id="compStrengthRetest4Check"  @(Model.gCompStrFGKnitRetest_4 ? "checked" : "") onchange="GCompStrFG2_LFClick('gCompStrFGKnitRetest_4',this)">
                                         <label class="custom-control-label" for="compStrengthRetest4Check"> </label>
                                     </div>
                                 </div>
@@ -621,7 +621,7 @@
                                         <label for="compStrengthRetest5">Comp. Str-5</label>
                                     </div>
                                     <div class="custom-control custom-checkbox col-3 text-center">
-                                        <input type="checkbox" class="custom-control-input" id="compStrengthRetest5Check" checked="@Model.gCompStrFGKnitRetest_5" onchange="GCompStrFG2_LFClick('gCompStrFGKnitRetest_5',this)">
+                                        <input type="checkbox" class="custom-control-input" id="compStrengthRetest5Check"  @(Model.gCompStrFGKnitRetest_5 ? "checked" : "") onchange="GCompStrFG2_LFClick('gCompStrFGKnitRetest_5',this)">
                                         <label class="custom-control-label" for="compStrengthRetest5Check"> </label>
                                     </div>
                                 </div>
@@ -632,7 +632,7 @@
                                         <label for="compStrengthRetest6">Comp. Str-6</label>
                                     </div>
                                     <div class="custom-control custom-checkbox col-3 text-center">
-                                        <input type="checkbox" class="custom-control-input" id="compStrengthRetest6Check" checked="@Model.gCompStrFGKnitRetest_6" onchange="GCompStrFG2_LFClick('gCompStrFGKnitRetest_6',this)">
+                                        <input type="checkbox" class="custom-control-input" id="compStrengthRetest6Check"  @(Model.gCompStrFGKnitRetest_6 ? "checked" : "") onchange="GCompStrFG2_LFClick('gCompStrFGKnitRetest_6',this)">
                                         <label class="custom-control-label" for="compStrengthRetest6Check"> </label>
                                     </div>
                                 </div>
@@ -645,7 +645,7 @@
                                 </div>
                                 <!-- retestFromSameBundleCheck -->
                                 <div class="custom-control custom-checkbox mb-3">
-                                    <input type="checkbox" class="custom-control-input" id="retestFromSameBundleCheck" checked="@Model.gRestestFromSameBundle" onchange="GRestestFromSameBundle_LF(this)">
+                                    <input type="checkbox" class="custom-control-input" id="retestFromSameBundleCheck"  @(Model.gRestestFromSameBundle ? "checked" : "") onchange="GRestestFromSameBundle_LF(this)">
                                     <label class="custom-control-label" for="retestFromSameBundleCheck">Is Retest From Same Bundle?</label>
                                 </div>
                                 <!-- restestAvgCompStrength5 -->
@@ -791,7 +791,7 @@
                             </div>
                         </div>
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="gAgedRValueDone" checked="@Model.gAgedRValueDone" onchange="CheckBoxes_LFClick('gAgedrValueDone', this)">
+                            <input type="checkbox" class="custom-control-input" id="gAgedRValueDone" @(Model.gAgedRValueDone ? "checked" : "") onchange="CheckBoxes_LFClick('gAgedrValueDone', this)">
                             <label class="custom-control-label" for="gAgedRValueDone">Aged R Value Testing Complete</label>
                         </div>
 
@@ -927,7 +927,7 @@
                                     </td>
                                     <td class="text-center">
                                         <label class="switch switch-primary switch-pill form-control-label ">
-                                            <input type="checkbox" class="switch-input form-check-input" id="" checked="@Model.gCoreDensKnitLine3" onchange="CheckBoxes_LFClick('gCoreDensKnitLine3',this)">
+                                            <input type="checkbox" class="switch-input form-check-input" id=""  @(Model.gCoreDensKnitLine3 ? "checked" : "") onchange="CheckBoxes_LFClick('gCoreDensKnitLine3',this)">
                                             <span class="switch-label"></span>
                                             <span class="switch-handle"></span>
                                         </label>
@@ -982,7 +982,7 @@
                                     </td>
                                     <td class="text-center">
                                         <label class="switch switch-primary switch-pill form-control-label ">
-                                            <input type="checkbox" class="switch-input form-check-input" id="" checked="@Model.gCoreDensKnitLine2" onchange="CheckBoxes_LFClick('gCoreDensKnitLine2',this)">
+                                            <input type="checkbox" class="switch-input form-check-input" id=""  @(Model.gCoreDensKnitLine2 ? "checked" : "") onchange="CheckBoxes_LFClick('gCoreDensKnitLine2',this)">
                                             <span class="switch-label"></span>
                                             <span class="switch-handle"></span>
                                         </label>
@@ -1037,7 +1037,7 @@
                                     </td>
                                     <td class="text-center">
                                         <label class="switch switch-primary switch-pill form-control-label ">
-                                            <input type="checkbox" class="switch-input form-check-input" id="" checked="@Model.gCoreDensKnitLine1" onchange="CheckBoxes_LFClick('gCoreDensKnitLine1',this)">
+                                            <input type="checkbox" class="switch-input form-check-input" id="" @(Model.gCoreDensKnitLine1 ? "checked" : "") onchange="CheckBoxes_LFClick('gCoreDensKnitLine1',this)">
                                             <span class="switch-label"></span>
                                             <span class="switch-handle"></span>
                                         </label>
@@ -1193,8 +1193,8 @@
                 headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
                 data: { name: name, value: value },
                 success: function (response) {
-                   // console.log('Server response:', response);
-                    location.reload();
+                   console.log('Server response:', response);
+                    // location.reload();
                 },
                 error: function (xhr, status, error) {
                     console.error('Error:', error);
@@ -1696,7 +1696,7 @@
                 headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
                 data: { Name: Name , value:value },
                 success: function (response) {
-                    //console.log('Server response:', response);
+                    // console.log('Server response:', response);
                     location.reload();
                 },
                 error: function (xhr, status, error) {

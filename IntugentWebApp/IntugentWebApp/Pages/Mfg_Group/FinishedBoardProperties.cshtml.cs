@@ -872,12 +872,12 @@ namespace IntugentWebApp.Pages.Mfg_Group
             string sText = Value;
             switch (sName)
             {
-                case "gCompStrFG_1": _objectsService.MfgFinishedGoods.dr["Compressive FG - 1"] = Value; break;
-                case "gCompStrFG_2": _objectsService.MfgFinishedGoods.dr["Compressive FG - 2"] = Value; break;
-                case "gCompStrFG_3": _objectsService.MfgFinishedGoods.dr["Compressive FG - 3"] = Value; break;
-                case "gCompStrFG_4": _objectsService.MfgFinishedGoods.dr["Compressive FG - 4"] = Value; break;
-                case "gCompStrFG_5": _objectsService.MfgFinishedGoods.dr["Compressive FG - 5"] = Value; break;
-                case "gCompStrFG_6": _objectsService.MfgFinishedGoods.dr["Compressive FG - 6"] = Value; break;
+                case "gCompStrFG_1": _objectsService.MfgFinishedGoods.dr["Compressive FG - 1"] = Value == null ? (object)DBNull.Value : Value; break;
+                case "gCompStrFG_2": _objectsService.MfgFinishedGoods.dr["Compressive FG - 2"] = Value == null ? (object)DBNull.Value : Value; break;
+                case "gCompStrFG_3": _objectsService.MfgFinishedGoods.dr["Compressive FG - 3"] = Value == null ? (object)DBNull.Value : Value; break;
+                case "gCompStrFG_4": _objectsService.MfgFinishedGoods.dr["Compressive FG - 4"] = Value == null ? (object)DBNull.Value : Value; break;
+                case "gCompStrFG_5": _objectsService.MfgFinishedGoods.dr["Compressive FG - 5"] = Value == null ? (object)DBNull.Value : Value; break;
+                case "gCompStrFG_6": _objectsService.MfgFinishedGoods.dr["Compressive FG - 6"] = Value == null ? (object)DBNull.Value : Value; break;
 
             }
 
@@ -980,12 +980,12 @@ namespace IntugentWebApp.Pages.Mfg_Group
             _objectsService.MfgFinishedGoods.bDataSetChanged = true;
             switch (sName)
             {
-                case "gCompStrFGRetest_1": _objectsService.MfgFinishedGoods.dr["Retest - Comp 1 FG"] = Text; break;
-                case "gCompStrFGRetest_2": _objectsService.MfgFinishedGoods.dr["Retest - Comp 2 FG"] = Text; break;
-                case "gCompStrFGRetest_3": _objectsService.MfgFinishedGoods.dr["Retest - Comp 3 FG"] = Text; break;
-                case "gCompStrFGRetest_4": _objectsService.MfgFinishedGoods.dr["Retest - Comp 4 FG"] = Text; break;
-                case "gCompStrFGRetest_5": _objectsService.MfgFinishedGoods.dr["Retest - Comp 5 FG"] = Text; break;
-                case "gCompStrFGRetest_6": _objectsService.MfgFinishedGoods.dr["Retest - Comp 6 FG"] = Text; break;
+                case "gCompStrFGRetest_1": _objectsService.MfgFinishedGoods.dr["Retest - Comp 1 FG"] = Text == null ? (object)DBNull.Value : Text; break;
+                case "gCompStrFGRetest_2": _objectsService.MfgFinishedGoods.dr["Retest - Comp 2 FG"] = Text== null ? (object)DBNull.Value : Text; break;
+                case "gCompStrFGRetest_3": _objectsService.MfgFinishedGoods.dr["Retest - Comp 3 FG"] = Text== null ? (object)DBNull.Value : Text; break;
+                case "gCompStrFGRetest_4": _objectsService.MfgFinishedGoods.dr["Retest - Comp 4 FG"] = Text== null ? (object)DBNull.Value : Text; break;
+                case "gCompStrFGRetest_5": _objectsService.MfgFinishedGoods.dr["Retest - Comp 5 FG"] = Text== null ? (object)DBNull.Value : Text; break;
+                case "gCompStrFGRetest_6": _objectsService.MfgFinishedGoods.dr["Retest - Comp 6 FG"] = Text== null ? (object)DBNull.Value : Text; break;
             }
 
             int nCount = 0;
@@ -1078,16 +1078,16 @@ namespace IntugentWebApp.Pages.Mfg_Group
 
             switch (sName)
             {
-                case "gMass1": _objectsService.MfgFinishedGoods.dr["Mass 1 FG"] = value; break;
-                case "gL1_1": _objectsService.MfgFinishedGoods.dr["L1 1 FG"] = value; break;
+                case "gMass1":_objectsService.MfgFinishedGoods.dr["Mass 1 FG"] = value == null ? (object)DBNull.Value : value; break;
+                case "gL1_1": _objectsService.MfgFinishedGoods.dr["L1 1 FG"] = value == null ? (object)DBNull.Value : value; break;
                 //            _objectsService.MfgFinishedGoods.dr[oubleField=value(gL2_1, "L2 1 FG"); break;
-                case "gW1_1": _objectsService.MfgFinishedGoods.dr["W1 1 FG"] = value; break;
+                case "gW1_1": _objectsService.MfgFinishedGoods.dr["W1 1 FG"] = value == null ? (object)DBNull.Value : value; break;
                 //            _objectsService.MfgFinishedGoods.dr[ubleField(=valuesText, "W2 1 FG"); break;
-                case "gT1_1": _objectsService.MfgFinishedGoods.dr["T1 1 FG"] = value; break;
-                case "gT2_1": _objectsService.MfgFinishedGoods.dr["T2 1 FG"] = value; break;
-                case "gT3_1": _objectsService.MfgFinishedGoods.dr["T3 1 FG"] = value; break;
-                case "gT4_1": _objectsService.MfgFinishedGoods.dr["T4 1 FG"] = value; break;
-                case "gT5_1": _objectsService.MfgFinishedGoods.dr["T5 1 FG"] = value; break;
+                case "gT1_1": _objectsService.MfgFinishedGoods.dr["T1 1 FG"] = value== null ? (object)DBNull.Value : value; break;
+                case "gT2_1": _objectsService.MfgFinishedGoods.dr["T2 1 FG"] = value== null ? (object)DBNull.Value : value; break;
+                case "gT3_1": _objectsService.MfgFinishedGoods.dr["T3 1 FG"] = value== null ? (object)DBNull.Value : value; break;
+                case "gT4_1": _objectsService.MfgFinishedGoods.dr["T4 1 FG"] = value== null ? (object)DBNull.Value : value; break;
+                case "gT5_1": _objectsService.MfgFinishedGoods.dr["T5 1 FG"] = value == null ? (object)DBNull.Value : value; break;
 
             }
 
@@ -1149,16 +1149,16 @@ namespace IntugentWebApp.Pages.Mfg_Group
 
             switch (sName)
             {
-                case "gMass2": _objectsService.MfgFinishedGoods.dr["Mass 2 FG"] = value; break;
-                case "gL1_2": _objectsService.MfgFinishedGoods.dr["L1 2 FG"] = value; break;
+                case "gMass2": _objectsService.MfgFinishedGoods.dr["Mass 2 FG"] = value == null ? (object)DBNull.Value : value; break;
+                case "gL1_2": _objectsService.MfgFinishedGoods.dr["L1 2 FG"] = value == null ? (object)DBNull.Value : value; break;
                 //            _objectsService.MfgFinishedGoods.dr[ubleField]=valuesText, "L2 2 FG"); break;
-                case "gW1_2": _objectsService.MfgFinishedGoods.dr["W1 2 FG"] = value; break;
+                case "gW1_2": _objectsService.MfgFinishedGoods.dr["W1 2 FG"] = value == null ? (object)DBNull.Value : value; break;
                 //            _objectsService.MfgFinishedGoods.dr[ubleField]=valuesText, "W2 2 FG"); break;
-                case "gT1_2": _objectsService.MfgFinishedGoods.dr["T1 2 FG"] = value; break;
-                case "gT2_2": _objectsService.MfgFinishedGoods.dr["T2 2 FG"] = value; break;
-                case "gT3_2": _objectsService.MfgFinishedGoods.dr["T3 2 FG"] = value; break;
-                case "gT4_2": _objectsService.MfgFinishedGoods.dr["T4 2 FG"] = value; break;
-                case "gT5_2": _objectsService.MfgFinishedGoods.dr["T5 2 FG"] = value; break;
+                case "gT1_2": _objectsService.MfgFinishedGoods.dr["T1 2 FG"] = value == null ? (object)DBNull.Value : value; break;
+                case "gT2_2": _objectsService.MfgFinishedGoods.dr["T2 2 FG"] = value== null ? (object)DBNull.Value : value; break;
+                case "gT3_2": _objectsService.MfgFinishedGoods.dr["T3 2 FG"] = value== null ? (object)DBNull.Value : value; break;
+                case "gT4_2": _objectsService.MfgFinishedGoods.dr["T4 2 FG"] = value== null ? (object)DBNull.Value : value; break;
+                case "gT5_2": _objectsService.MfgFinishedGoods.dr["T5 2 FG"] = value== null ? (object)DBNull.Value : value; break;
             }
 
 
@@ -1209,16 +1209,16 @@ namespace IntugentWebApp.Pages.Mfg_Group
 
             switch (sName)
             {
-                case "gMass3": _objectsService.MfgFinishedGoods.dr["Mass 3 FG"] = value; break;
-                case "gL1_3": _objectsService.MfgFinishedGoods.dr["L1 3 FG"] = value; break;
+                case "gMass3":_objectsService.MfgFinishedGoods.dr["Mass 3 FG"] = value == null ? (object)DBNull.Value : value; break;
+                case "gL1_3": _objectsService.MfgFinishedGoods.dr["L1 3 FG"] = value == null ? (object)DBNull.Value : value; break;
                 //                case "gL2_3": _objectsServicedr[oubleFiel]=value(sText, "L2 3 FG"); break;
-                case "gW1_3": _objectsService.MfgFinishedGoods.dr["W1 3 FG"] = value; break;
+                case "gW1_3": _objectsService.MfgFinishedGoods.dr["W1 3 FG"] = value == null ? (object)DBNull.Value : value; break;
                 //              case "gW2_3": _objectsService.Mdr[bleField(]=valueText, "W2 3 FG"); break;
-                case "gT1_3": _objectsService.MfgFinishedGoods.dr["T1 3 FG"] = value; break;
-                case "gT2_3": _objectsService.MfgFinishedGoods.dr["T2 3 FG"] = value; break;
-                case "gT3_3": _objectsService.MfgFinishedGoods.dr["T3 3 FG"] = value; break;
-                case "gT4_3": _objectsService.MfgFinishedGoods.dr["T4 3 FG"] = value; break;
-                case "gT5_3": _objectsService.MfgFinishedGoods.dr["T5 3 FG"] = value; break;
+                case "gT1_3": _objectsService.MfgFinishedGoods.dr["T1 3 FG"] = value == null ? (object)DBNull.Value : value; break;
+                case "gT2_3": _objectsService.MfgFinishedGoods.dr["T2 3 FG"] = value== null ? (object)DBNull.Value : value; break;
+                case "gT3_3": _objectsService.MfgFinishedGoods.dr["T3 3 FG"] = value== null ? (object)DBNull.Value : value; break;
+                case "gT4_3": _objectsService.MfgFinishedGoods.dr["T4 3 FG"] = value== null ? (object)DBNull.Value : value; break;
+                case "gT5_3": _objectsService.MfgFinishedGoods.dr["T5 3 FG"] = value== null ? (object)DBNull.Value : value; break;
             }
 
             int nCount = 0; double dSum = 0, dtmp;
@@ -1270,23 +1270,23 @@ namespace IntugentWebApp.Pages.Mfg_Group
 
             switch (sName)
             {
-                case "gThicknessFG_1": _objectsService.MfgFinishedGoods.dr["Thickness FG - 1"] = value; break;
-                case "gThicknessFG_2": _objectsService.MfgFinishedGoods.dr["Thickness FG - 2"] = value; break;
-                case "gThicknessFG_3": _objectsService.MfgFinishedGoods.dr["Thickness FG - 3"] = value; break;
-                case "gThicknessFG_4": _objectsService.MfgFinishedGoods.dr["Thickness FG - 4"] = value; break;
-                case "gThicknessFG_5": _objectsService.MfgFinishedGoods.dr["Thickness FG - 5"] = value; break;
-                case "gThicknessFG_6": _objectsService.MfgFinishedGoods.dr["Thickness FG - 6"] = value; break;
-                case "gThicknessFG_7": _objectsService.MfgFinishedGoods.dr["Thickness FG - 7"] = value; break;
-                case "gThicknessFG_8": _objectsService.MfgFinishedGoods.dr["Thickness FG - 8"] = value; break;
-                case "gThicknessFG_9": _objectsService.MfgFinishedGoods.dr["Thickness FG - 9"] = value; break;
-                case "gThicknessFG_10": _objectsService.MfgFinishedGoods.dr["Thickness FG - 10"] = value; break;
-                case "gThicknessFG_11": _objectsService.MfgFinishedGoods.dr["Thickness FG - 11"] = value; break;
-                case "gThicknessFG_12": _objectsService.MfgFinishedGoods.dr["Thickness FG - 12"] = value; break;
-                case "gThicknessFG_13": _objectsService.MfgFinishedGoods.dr["Thickness FG - 13"] = value; break;
-                case "gThicknessFG_14": _objectsService.MfgFinishedGoods.dr["Thickness FG - 14"] = value; break;
-                case "gThicknessFG_15": _objectsService.MfgFinishedGoods.dr["Thickness FG - 15"] = value; break;
-                case "gThicknessFG_16": _objectsService.MfgFinishedGoods.dr["Thickness FG - 16"] = value; break;
-                case "gThicknessFG_17": _objectsService.MfgFinishedGoods.dr["Thickness FG - 17"] = value; break;
+                case "gThicknessFG_1": if(value!=null){_objectsService.MfgFinishedGoods.dr["Thickness FG - 1"] = value;}else{ _objectsService.MfgFinishedGoods.dr["Thickness FG - 1"] = DBNull.Value; }; break;
+                case "gThicknessFG_2": if(value!=null){_objectsService.MfgFinishedGoods.dr["Thickness FG - 2"] = value;}else{_objectsService.MfgFinishedGoods.dr["Thickness FG - 2"] = DBNull.Value; }; break;
+                case "gThicknessFG_3": if(value!=null){_objectsService.MfgFinishedGoods.dr["Thickness FG - 3"] = value;}else{_objectsService.MfgFinishedGoods.dr["Thickness FG - 3"] = DBNull.Value; }; break;
+                case "gThicknessFG_4": if(value!=null){_objectsService.MfgFinishedGoods.dr["Thickness FG - 4"] = value;}else{_objectsService.MfgFinishedGoods.dr["Thickness FG - 4"] = DBNull.Value; }; break;
+                case "gThicknessFG_5": if(value!=null){_objectsService.MfgFinishedGoods.dr["Thickness FG - 5"] = value;}else{_objectsService.MfgFinishedGoods.dr["Thickness FG - 5"] = DBNull.Value; }; break;
+                case "gThicknessFG_6": if(value!=null){_objectsService.MfgFinishedGoods.dr["Thickness FG - 6"] = value;}else{_objectsService.MfgFinishedGoods.dr["Thickness FG - 6"] = DBNull.Value; }; break;
+                case "gThicknessFG_7": if(value!=null){_objectsService.MfgFinishedGoods.dr["Thickness FG - 7"] = value;}else{_objectsService.MfgFinishedGoods.dr["Thickness FG - 7"] = DBNull.Value; }; break;
+                case "gThicknessFG_8": if(value!=null){_objectsService.MfgFinishedGoods.dr["Thickness FG - 8"] = value;}else{ _objectsService.MfgFinishedGoods.dr["Thickness FG - 8"] = DBNull.Value; }; break;
+                case "gThicknessFG_9": if(value!=null){_objectsService.MfgFinishedGoods.dr["Thickness FG - 9"] = value;}else{ _objectsService.MfgFinishedGoods.dr["Thickness FG - 9"] = DBNull.Value; }; break;
+                case "gThicknessFG_10": if (value != null) { _objectsService.MfgFinishedGoods.dr["Thickness FG - 10"] = value; } else { _objectsService.MfgFinishedGoods.dr["Thickness FG - 10"] = DBNull.Value; }; break;
+                case "gThicknessFG_11": if(value!=null){_objectsService.MfgFinishedGoods.dr["Thickness FG - 11"] = value;} else { _objectsService.MfgFinishedGoods.dr["Thickness FG - 11"] = DBNull.Value; }; break;
+                case "gThicknessFG_12": if(value!=null){_objectsService.MfgFinishedGoods.dr["Thickness FG - 12"] = value;} else{ _objectsService.MfgFinishedGoods.dr["Thickness FG - 12"] = DBNull.Value; };break;
+                case "gThicknessFG_13": if(value!=null){_objectsService.MfgFinishedGoods.dr["Thickness FG - 13"] = value;} else{ _objectsService.MfgFinishedGoods.dr["Thickness FG - 13"] = DBNull.Value; };break;
+                case "gThicknessFG_14": if(value!=null){_objectsService.MfgFinishedGoods.dr["Thickness FG - 14"] = value;} else{ _objectsService.MfgFinishedGoods.dr["Thickness FG - 14"] = DBNull.Value; };break;
+                case "gThicknessFG_15": if(value!=null){_objectsService.MfgFinishedGoods.dr["Thickness FG - 15"] = value;} else{ _objectsService.MfgFinishedGoods.dr["Thickness FG - 15"] = DBNull.Value; };break;
+                case "gThicknessFG_16": if(value!=null){_objectsService.MfgFinishedGoods.dr["Thickness FG - 16"] = value;} else{ _objectsService.MfgFinishedGoods.dr["Thickness FG - 16"] = DBNull.Value; };break;
+                case "gThicknessFG_17": if(value!=null){_objectsService.MfgFinishedGoods.dr["Thickness FG - 17"] = value;} else{ _objectsService.MfgFinishedGoods.dr["Thickness FG - 17"] = DBNull.Value; };break;
 
             }
 
@@ -1385,7 +1385,15 @@ namespace IntugentWebApp.Pages.Mfg_Group
         public IActionResult OnPostGBundleHeight_LF(string value)
         {
             _objectsService.MfgFinishedGoods.bDataSetChanged = true;
+            if (value == null)
+            {
+                _objectsService.MfgFinishedGoods.dr["Bundle Height FG"] = DBNull.Value;
+            }
+            else
+            {
+
             _objectsService.MfgFinishedGoods.dr["Bundle Height FG"]=value;
+            }
             _objectsService.MfgFinishedGoods.UpdateDataSet();
             return new JsonResult(new {message=value});
         }
@@ -1431,9 +1439,9 @@ namespace IntugentWebApp.Pages.Mfg_Group
             _objectsService.MfgFinishedGoods.bDataSetChanged = true;
             switch (sName)
             {
-                case "gkFactor90_1": _objectsService.MfgFinishedGoods.dr["k Factor 90 FG 1"]=Value; break;
-                case "gkFactor90_2": _objectsService.MfgFinishedGoods.dr["k Factor 90 FG 2"]=Value; break;
-                case "gkFactor90_3": _objectsService.MfgFinishedGoods.dr["k Factor 90 FG 3"]=Value; break;
+                case "gkFactor90_1": _objectsService.MfgFinishedGoods.dr["k Factor 90 FG 1"]=Value == null ? (object)DBNull.Value : Value; break;
+                case "gkFactor90_2": _objectsService.MfgFinishedGoods.dr["k Factor 90 FG 2"]=Value == null ? (object)DBNull.Value : Value; break;
+                case "gkFactor90_3": _objectsService.MfgFinishedGoods.dr["k Factor 90 FG 3"]=Value == null ? (object)DBNull.Value : Value; break;
             }
 
             int nCount = 0;
@@ -1466,9 +1474,9 @@ namespace IntugentWebApp.Pages.Mfg_Group
             _objectsService.MfgFinishedGoods.bDataSetChanged = true;
             switch (sName)
             {
-                case "gkFactor180_1": _objectsService.MfgFinishedGoods.dr["k Factor 180 FG 1"]=value; break;
-                case "gkFactor180_2": _objectsService.MfgFinishedGoods.dr["k Factor 180 FG 2"]=value; break;
-                case "gkFactor180_3": _objectsService.MfgFinishedGoods.dr["k Factor 180 FG 3"]=value; break;
+                case "gkFactor180_1": _objectsService.MfgFinishedGoods.dr["k Factor 180 FG 1"]=value == null ? (object)DBNull.Value : value; break;
+                case "gkFactor180_2": _objectsService.MfgFinishedGoods.dr["k Factor 180 FG 2"]=value== null ? (object)DBNull.Value : value; break;
+                case "gkFactor180_3": _objectsService.MfgFinishedGoods.dr["k Factor 180 FG 3"]=value== null ? (object)DBNull.Value : value; break;
             }
 
             int nCount = 0;
@@ -1504,10 +1512,10 @@ namespace IntugentWebApp.Pages.Mfg_Group
             switch (sName)
             {
 
-                case "gFGLength": _objectsService.MfgFinishedGoods.dr[ "Length FG"]=value; break;
-                case "gFGWidth": _objectsService.MfgFinishedGoods.dr["Width FG"] = value; break;
-                case "gFGDiagoanl1": _objectsService.MfgFinishedGoods.dr["Diagonal FG 1"]=value; bDia = true; break;
-                case "gFGDiagoanl2": _objectsService.MfgFinishedGoods.dr["Diagonal FG 2"]=value; bDia = true; break;
+                case "gFGLength": _objectsService.MfgFinishedGoods.dr[ "Length FG"]= value == null ? (object)DBNull.Value : value; break;
+                case "gFGWidth": _objectsService.MfgFinishedGoods.dr["Width FG"] = value == null ? (object)DBNull.Value : value; break;
+                case "gFGDiagoanl1": _objectsService.MfgFinishedGoods.dr["Diagonal FG 1"]= value == null ? (object)DBNull.Value : value; bDia = true; break;
+                case "gFGDiagoanl2": _objectsService.MfgFinishedGoods.dr["Diagonal FG 2"]= value == null ? (object)DBNull.Value : value; bDia = true; break;
             }
 
             if (!(_objectsService.MfgFinishedGoods.dr["Diagonal FG 1"] == DBNull.Value) && !(_objectsService.MfgFinishedGoods.dr["Diagonal FG 2"] == DBNull.Value))
@@ -1526,10 +1534,10 @@ namespace IntugentWebApp.Pages.Mfg_Group
             _objectsService.MfgFinishedGoods.bDataSetChanged = true;
             switch (sName)
             {
-                case "gLoggerID": _objectsService.MfgFinishedGoods.dr["Logger ID # FG"]=value; break;
-                case "gInitProbeTemp": _objectsService.MfgFinishedGoods.dr["Initial Probe Temp FG"]=value; break;
-                case "gMaxProbeTemp": _objectsService.MfgFinishedGoods.dr["Max Probe Temp FG"]=value; break;
-                case "gFinalProbeTemp": _objectsService.MfgFinishedGoods.dr["Final Probe Temp FG"]=value; break;
+                case "gLoggerID": _objectsService.MfgFinishedGoods.dr["Logger ID # FG"]=value == null ? (object)DBNull.Value : value; break;
+                case "gInitProbeTemp": _objectsService.MfgFinishedGoods.dr["Initial Probe Temp FG"]=value == null ? (object)DBNull.Value : value; break;
+                case "gMaxProbeTemp": _objectsService.MfgFinishedGoods.dr["Max Probe Temp FG"]=value == null ? (object)DBNull.Value : value; break;
+                case "gFinalProbeTemp": _objectsService.MfgFinishedGoods.dr["Final Probe Temp FG"]=value == null ? (object)DBNull.Value : value; break;
             }
 
             _objectsService.MfgFinishedGoods.UpdateDataSet();
@@ -1545,9 +1553,9 @@ namespace IntugentWebApp.Pages.Mfg_Group
             _objectsService.MfgFinishedGoods.bDataSetChanged = true;
             switch (sName)
             {
-                case "gNailPull_1": _objectsService.MfgFinishedGoods.dr["Nail Pull FG 1"]=value; break;
-                case "gNailPull_2": _objectsService.MfgFinishedGoods.dr["Nail Pull FG 2"]=value; break;
-                case "gNailPull_3": _objectsService.MfgFinishedGoods.dr["Nail Pull FG 3"]=value; break;
+                case "gNailPull_1": _objectsService.MfgFinishedGoods.dr["Nail Pull FG 1"]=value == null ? (object)DBNull.Value : value; break;
+                case "gNailPull_2": _objectsService.MfgFinishedGoods.dr["Nail Pull FG 2"]=value== null ? (object)DBNull.Value : value; break;
+                case "gNailPull_3": _objectsService.MfgFinishedGoods.dr["Nail Pull FG 3"]=value== null ? (object)DBNull.Value : value; break;
             }
             int nCount = 0;
             double dSum = 0, dtmp;
@@ -1573,9 +1581,9 @@ namespace IntugentWebApp.Pages.Mfg_Group
             _objectsService.MfgFinishedGoods.bDataSetChanged = true;
             switch (sName)
             {
-                case "gFacerPeel1": _objectsService.MfgFinishedGoods.dr["Facer Peel 1 FG"]=value; break;
-                case "gFacerPeel2": _objectsService.MfgFinishedGoods.dr["Facer Peel 2 FG"]=value; break;
-                case "gFacerPeel3": _objectsService.MfgFinishedGoods.dr["Facer Peel 3 FG"]=value; break;
+                case "gFacerPeel1": _objectsService.MfgFinishedGoods.dr["Facer Peel 1 FG"]=value == null ? (object)DBNull.Value : value; break;
+                case "gFacerPeel2": _objectsService.MfgFinishedGoods.dr["Facer Peel 2 FG"]=value== null ? (object)DBNull.Value : value; break;
+                case "gFacerPeel3": _objectsService.MfgFinishedGoods.dr["Facer Peel 3 FG"]=value== null ? (object)DBNull.Value : value; break;
 
             }
 

@@ -37,21 +37,22 @@ namespace IntugentWebApp.Pages.Admin_Group
         public AIModelModel(ObjectsService objectsService) { 
         
             _objectsService = objectsService;
-        
+
         }
         public void OnGet()
         {
-            _objectsService.CNNData.ReadData(_objectsService.CDBase);
-            PerformInitialSearch();
+            //PerformInitialSearch();
+            //_objectsService.CNNData.ReadData(_objectsService.CDBase);
             ViewData["Index"] = HttpContext.Session.GetInt32("UserId");
-            if (_objectsService.CDBase.dr["snnModel"] == DBNull.Value) {
-                nnModel = _objectsService.CNNData.GetModelData();
-            }
-            else
-            {
-                nnModel = (CNNModel)System.Text.Json.JsonSerializer.Deserialize((string)_objectsService.CDBase.dr["snnModel"], typeof(CNNModel));
-            }
-            //nnModel = _objectsService.CNNData.GetModelData();
+            //if (_objectsService.CDBase.dr["snnModel"] == DBNull.Value) {
+            //    nnModel = _objectsService.CNNData.GetModelData();
+            //}
+            //else
+            //{
+            //    nnModel = (CNNModel)System.Text.Json.JsonSerializer.Deserialize((string)_objectsService.CDBase.dr["snnModel"], typeof(CNNModel));
+            //}
+            nnModel = _objectsService.CNNData.GetModelData();
+
             nnModel.nInputNeurons = _objectsService.CNNData.nInputNeurons;
             nnModel.Reset();
 
@@ -85,7 +86,7 @@ namespace IntugentWebApp.Pages.Admin_Group
                 _objectsService.CDBase.IndexModel = 0;
                 _objectsService.CDBase.dr = _objectsService.CDBase.dt.Rows[_objectsService.CDBase.IndexModel];
                 _objectsService.CDBase.IDModel = (int)_objectsService.CDBase.dr["ID"];
-
+                _objectsService.CNNData.ReadData(_objectsService.CDBase);
 
             }
 
@@ -336,14 +337,14 @@ namespace IntugentWebApp.Pages.Admin_Group
 
         public IActionResult OnPostGLayer_Changed(string Index)
         {
-            if (_objectsService.CDBase.dr["snnModel"] == DBNull.Value)
-            {
+            //if (_objectsService.CDBase.dr["snnModel"] == DBNull.Value)
+            //{
+            //}
+            //else
+            //{
+            //    nnModel = (CNNModel)System.Text.Json.JsonSerializer.Deserialize((string)_objectsService.CDBase.dr["snnModel"], typeof(CNNModel));
+            //}
                 nnModel = _objectsService.CNNData.GetModelData();
-            }
-            else
-            {
-                nnModel = (CNNModel)System.Text.Json.JsonSerializer.Deserialize((string)_objectsService.CDBase.dr["snnModel"], typeof(CNNModel));
-            }
             gLayerSelectedIndex = Int32.Parse(Index);
             if (gLayerSelectedIndex >= 0) SetWeights(gLayerSelectedIndex + 1);
             nnModel.Predict(_objectsService.CNNData);

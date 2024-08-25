@@ -140,7 +140,7 @@
                             <td></td>
                              <td>
                                   <label class="switch switch-primary switch-pill form-control-label ">
-                                            <input type="checkbox" class="switch-input form-check-input" id="@rowView["ID"]" data-index="@rowView["ID"]">
+                                            <input type="checkbox" class="switch-input form-check-input" id="@rowView["ID"]" data-index="@rowView["ID"]" data-rowindex="@rowIndex">
                                             <span class="switch-label"></span>
                                             <span class="switch-handle"></span>
                                         </label>
@@ -169,11 +169,14 @@
         document.addEventListener("DOMContentLoaded", function () {
             var currentId = @Html.Raw(Model.gModelsSelectedIndex);
 
-                var checkbox = document.getElementById(currentId);
+            var checkbox = document.querySelector(`input[data-rowindex='${currentId}']`);
+
 
             console.log(@Model.gModelsSelectedIndex, currentId, @Model._objectsService.CDBase.IndexModel)
-                if (checkbox) {
+            if (checkbox) {
+
                     checkbox.checked = true;
+        
                 }
          
         });

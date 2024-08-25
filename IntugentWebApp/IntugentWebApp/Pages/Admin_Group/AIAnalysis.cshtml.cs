@@ -60,31 +60,36 @@ namespace IntugentWebApp.Pages.Admin_Group
 
         public void SetView()
         {
-
-            _objectsService.CNNData.ReadData(_objectsService.CDBase);
-            gData = _objectsService.CNNData.dt; // dt.DefaultView;
-
-             xx = new double[_objectsService.CNNData.nDataPts];
-             yy = new double[_objectsService.CNNData.nDataPts];
-            double dYmin = nnModel.YMin;
-
-            double dYdelta = nnModel.YMax - nnModel.YMin;
-            if (dYdelta == 0) dYdelta = dYmin;
-
-            double dXmin = nnModel.XMin[gInputVarSelectedIndex];
-            double dXdelta = nnModel.XMax[gInputVarSelectedIndex] - dXmin;
-            if (dXdelta == 0) dXdelta = dXmin;
-
-            for (int i = 0; i < _objectsService.CNNData.nDataPts; i++)
+            try
             {
-                if (x != null)
-                {
 
-                xx[i] = x[i] * dXdelta + dXmin;
+                _objectsService.CNNData.ReadData(_objectsService.CDBase);
+                gData = _objectsService.CNNData.dt; // dt.DefaultView;
+
+                xx = new double[_objectsService.CNNData.nDataPts];
+                yy = new double[_objectsService.CNNData.nDataPts];
+                double dYmin = nnModel.YMin;
+
+                double dYdelta = nnModel.YMax - nnModel.YMin;
+                if (dYdelta == 0) dYdelta = dYmin;
+
+                double dXmin = nnModel.XMin[gInputVarSelectedIndex];
+                double dXdelta = nnModel.XMax[gInputVarSelectedIndex] - dXmin;
+                if (dXdelta == 0) dXdelta = dXmin;
+
+                for (int i = 0; i < _objectsService.CNNData.nDataPts; i++)
+                {
+                    if (x != null)
+                    {
+
+                        xx[i] = x[i] * dXdelta + dXmin;
+                    }
+                    yy[i] = _objectsService.CNNData.Output[i] * dYdelta + dYmin;
                 }
-                yy[i] = _objectsService.CNNData.Output[i] * dYdelta + dYmin;
+                //circles.Plot(xx, yy);
             }
-            //circles.Plot(xx, yy);
+            catch (Exception ex) { 
+            }
 
         }
 

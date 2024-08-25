@@ -464,30 +464,30 @@ namespace IntugentWebApp.Pages.Mfg_Group
             _objectsService.MfgDimensionsStability.bDataSetChanged = true;
             switch (sName)
             {
-                case "gInit_H1_L1": _objectsService.MfgDimensionsStability.dr["Initial H1 - L1"] = value; bl = true; break;
-                case "gInit_H1_L2": _objectsService.MfgDimensionsStability.dr["Initial H1 - L2"] = value; bl = true; break;
-                case "gInit_H1_L3": _objectsService.MfgDimensionsStability.dr["Initial H1 - L3"] = value; bl = true; break;
-                case "gFinal_H1_L1": _objectsService.MfgDimensionsStability.dr["Final H1 - L1"] = value; bl = true; break;
-                case "gFinal_H1_L2": _objectsService.MfgDimensionsStability.dr["Final H1 - L2"] = value; bl = true; break;
-                case "gFinal_H1_L3": _objectsService.MfgDimensionsStability.dr["Final H1 - L3"] = value; bl = true; break;
+                case "gInit_H1_L1": _objectsService.MfgDimensionsStability.dr["Initial H1 - L1"] = value == null ? (object)DBNull.Value : value; bl = true; break;
+                case "gInit_H1_L2": _objectsService.MfgDimensionsStability.dr["Initial H1 - L2"] = value == null ? (object)DBNull.Value : value; bl = true; break;
+                case "gInit_H1_L3": _objectsService.MfgDimensionsStability.dr["Initial H1 - L3"] = value == null ? (object)DBNull.Value : value; bl = true; break;
+                case "gFinal_H1_L1": _objectsService.MfgDimensionsStability.dr["Final H1 - L1"] = value == null ? (object)DBNull.Value : value; bl = true; break;
+                case "gFinal_H1_L2": _objectsService.MfgDimensionsStability.dr["Final H1 - L2"] = value == null ? (object)DBNull.Value : value; bl = true; break;
+                case "gFinal_H1_L3": _objectsService.MfgDimensionsStability.dr["Final H1 - L3"] = value == null ? (object)DBNull.Value : value; bl = true; break;
 
-                case "gInit_H1_W1": _objectsService.MfgDimensionsStability.dr["Initial H1 - W1"]=value; bw = true; break;
-                case "gInit_H1_W2": _objectsService.MfgDimensionsStability.dr["Initial H1 - W2"]=value; bw = true; break;
-                case "gInit_H1_W3": _objectsService.MfgDimensionsStability.dr["Initial H1 - W3"]=value; bw = true; break;
-                case "gFinal_H1_W1": _objectsService.MfgDimensionsStability.dr["Final H1 - W1"]=value; bw = true; break;
-                case "gFinal_H1_W2": _objectsService.MfgDimensionsStability.dr["Final H1 - W2"]=value; bw = true; break;
-                case "gFinal_H1_W3": _objectsService.MfgDimensionsStability.dr["Final H1 - W3"]=value; bw = true; break;
+                case "gInit_H1_W1": _objectsService.MfgDimensionsStability.dr["Initial H1 - W1"]= value == null ? (object)DBNull.Value : value; bw = true; break;
+                case "gInit_H1_W2": _objectsService.MfgDimensionsStability.dr["Initial H1 - W2"]=value == null ? (object)DBNull.Value : value; bw = true; break;
+                case "gInit_H1_W3": _objectsService.MfgDimensionsStability.dr["Initial H1 - W3"]=value == null ? (object)DBNull.Value : value; bw = true; break;
+                case "gFinal_H1_W1": _objectsService.MfgDimensionsStability.dr["Final H1 - W1"]= value == null ? (object)DBNull.Value : value; bw = true; break;
+                case "gFinal_H1_W2": _objectsService.MfgDimensionsStability.dr["Final H1 - W2"]=value == null ? (object)DBNull.Value : value; bw = true; break;
+                case "gFinal_H1_W3": _objectsService.MfgDimensionsStability.dr["Final H1 - W3"]=value == null ? (object)DBNull.Value : value; bw = true; break;
 
-                case "gInit_H1_T1": _objectsService.MfgDimensionsStability.dr["Initial H1 - T1"] = value; bt = true; break;
-                case "gInit_H1_T2": _objectsService.MfgDimensionsStability.dr["Initial H1 - T2"] = value; bt = true; break;
-                case "gInit_H1_T3": _objectsService.MfgDimensionsStability.dr["Initial H1 - T3"] = value; bt = true; break;
-                case "gInit_H1_T4": _objectsService.MfgDimensionsStability.dr["Initial H1 - T4"] = value; bt = true; break;
-                case "gInit_H1_T5": _objectsService.MfgDimensionsStability.dr["Initial H1 - T5"] = value; bt = true; break;
-                case "gFinal_H1_T1": _objectsService.MfgDimensionsStability.dr["Final H1 - T1"] = value; bt = true; break;
-                case "gFinal_H1_T2": _objectsService.MfgDimensionsStability.dr["Final H1 - T2"] = value; bt = true; break;
-                case "gFinal_H1_T3": _objectsService.MfgDimensionsStability.dr["Final H1 - T3"] = value; bt = true; break;
-                case "gFinal_H1_T4": _objectsService.MfgDimensionsStability.dr["Final H1 - T4"] = value; bt = true; break;
-                case "gFinal_H1_T5": _objectsService.MfgDimensionsStability.dr["Final H1 - T5"] = value; bt = true; break;
+                case "gInit_H1_T1": _objectsService.MfgDimensionsStability.dr["Initial H1 - T1"] = value == null ? (object)DBNull.Value : value; bt = true; break;
+                case "gInit_H1_T2": _objectsService.MfgDimensionsStability.dr["Initial H1 - T2"] = value == null ? (object)DBNull.Value : value; bt = true; break;
+                case "gInit_H1_T3": _objectsService.MfgDimensionsStability.dr["Initial H1 - T3"] = value == null ? (object)DBNull.Value : value; bt = true; break;
+                case "gInit_H1_T4": _objectsService.MfgDimensionsStability.dr["Initial H1 - T4"] = value == null ? (object)DBNull.Value : value; bt = true; break;
+                case "gInit_H1_T5": _objectsService.MfgDimensionsStability.dr["Initial H1 - T5"] = value == null ? (object)DBNull.Value : value; bt = true; break;
+                case "gFinal_H1_T1": _objectsService.MfgDimensionsStability.dr["Final H1 - T1"] = value == null ? (object)DBNull.Value : value; bt = true; break;
+                case "gFinal_H1_T2": _objectsService.MfgDimensionsStability.dr["Final H1 - T2"] = value == null ? (object)DBNull.Value : value; bt = true; break;
+                case "gFinal_H1_T3": _objectsService.MfgDimensionsStability.dr["Final H1 - T3"] = value == null ? (object)DBNull.Value : value; bt = true; break;
+                case "gFinal_H1_T4": _objectsService.MfgDimensionsStability.dr["Final H1 - T4"] = value == null ? (object)DBNull.Value : value; bt = true; break;
+                case "gFinal_H1_T5": _objectsService.MfgDimensionsStability.dr["Final H1 - T5"] = value == null ? (object)DBNull.Value : value; bt = true; break;
             }
             if (bl)
             {
@@ -585,30 +585,30 @@ namespace IntugentWebApp.Pages.Mfg_Group
             _objectsService.MfgDimensionsStability.bDataSetChanged = true;
             switch (sName)
             {
-                case "gInit_H2_L1":  _objectsService.MfgDimensionsStability.dr["Initial H2 - L1"]=value; bl = true; break;
-                case "gInit_H2_L2":  _objectsService.MfgDimensionsStability.dr["Initial H2 - L2"]=value; bl = true; break;
-                case "gInit_H2_L3":  _objectsService.MfgDimensionsStability.dr["Initial H2 - L3"]=value; bl = true; break;
-                case "gFinal_H2_L1": _objectsService.MfgDimensionsStability.dr[ "Final H2 - L1"]=value; bl = true; break;
-                case "gFinal_H2_L2": _objectsService.MfgDimensionsStability.dr[ "Final H2 - L2"]=value; bl = true; break;
-                case "gFinal_H2_L3": _objectsService.MfgDimensionsStability.dr[ "Final H2 - L3"]=value; bl = true; break;
+                case "gInit_H2_L1":  _objectsService.MfgDimensionsStability.dr["Initial H2 - L1"]=value == null ? (object)DBNull.Value : value; bl = true; break;
+                case "gInit_H2_L2":  _objectsService.MfgDimensionsStability.dr["Initial H2 - L2"]=value == null ? (object)DBNull.Value : value; bl = true; break;
+                case "gInit_H2_L3":  _objectsService.MfgDimensionsStability.dr["Initial H2 - L3"]=value == null ? (object)DBNull.Value : value; bl = true; break;
+                case "gFinal_H2_L1": _objectsService.MfgDimensionsStability.dr[ "Final H2 - L1"]=value == null ? (object)DBNull.Value : value; bl = true; break;
+                case "gFinal_H2_L2": _objectsService.MfgDimensionsStability.dr[ "Final H2 - L2"]=value == null ? (object)DBNull.Value : value; bl = true; break;
+                case "gFinal_H2_L3": _objectsService.MfgDimensionsStability.dr[ "Final H2 - L3"]=value == null ? (object)DBNull.Value : value; bl = true; break;
 
-                case "gInit_H2_W1": _objectsService.MfgDimensionsStability.dr["Initial H2 - W1"]=value; bw = true; break;
-                case "gInit_H2_W2": _objectsService.MfgDimensionsStability.dr["Initial H2 - W2"]=value; bw = true; break;
-                case "gInit_H2_W3": _objectsService.MfgDimensionsStability.dr["Initial H2 - W3"]=value; bw = true; break;
-                case "gFinal_H2_W1":_objectsService.MfgDimensionsStability.dr[ "Final H2 - W1"]=value; bw = true; break;
-                case "gFinal_H2_W2":_objectsService.MfgDimensionsStability.dr[ "Final H2 - W2"]=value; bw = true; break;
-                case "gFinal_H2_W3":_objectsService.MfgDimensionsStability.dr[ "Final H2 - W3"]=value; bw = true; break;
+                case "gInit_H2_W1": _objectsService.MfgDimensionsStability.dr["Initial H2 - W1"]=value == null ? (object)DBNull.Value : value; bw = true; break;
+                case "gInit_H2_W2": _objectsService.MfgDimensionsStability.dr["Initial H2 - W2"]=value == null ? (object)DBNull.Value : value; bw = true; break;
+                case "gInit_H2_W3": _objectsService.MfgDimensionsStability.dr["Initial H2 - W3"]=value == null ? (object)DBNull.Value : value; bw = true; break;
+                case "gFinal_H2_W1":_objectsService.MfgDimensionsStability.dr[ "Final H2 - W1"]=value == null ? (object)DBNull.Value : value; bw = true; break;
+                case "gFinal_H2_W2":_objectsService.MfgDimensionsStability.dr[ "Final H2 - W2"]=value == null ? (object)DBNull.Value : value; bw = true; break;
+                case "gFinal_H2_W3":_objectsService.MfgDimensionsStability.dr[ "Final H2 - W3"]=value == null ? (object)DBNull.Value : value; bw = true; break;
 
-                case "gInit_H2_T1":  _objectsService.MfgDimensionsStability.dr["Initial H2 - T1"]=value; bt = true; break;
-                case "gInit_H2_T2":  _objectsService.MfgDimensionsStability.dr["Initial H2 - T2"]=value; bt = true; break;
-                case "gInit_H2_T3":  _objectsService.MfgDimensionsStability.dr["Initial H2 - T3"]=value; bt = true; break;
-                case "gInit_H2_T4":  _objectsService.MfgDimensionsStability.dr["Initial H2 - T4"]=value; bt = true; break;
-                case "gInit_H2_T5":  _objectsService.MfgDimensionsStability.dr["Initial H2 - T5"]=value; bt = true; break;
-                case "gFinal_H2_T1": _objectsService.MfgDimensionsStability.dr["Final H2 - T1"] = value; bt = true; break;
-                case "gFinal_H2_T2": _objectsService.MfgDimensionsStability.dr[ "Final H2 - T2"]=value; bt = true; break;
-                case "gFinal_H2_T3": _objectsService.MfgDimensionsStability.dr[ "Final H2 - T3"]=value; bt = true; break;
-                case "gFinal_H2_T4": _objectsService.MfgDimensionsStability.dr[ "Final H2 - T4"]=value; bt = true; break;
-                case "gFinal_H2_T5": _objectsService.MfgDimensionsStability.dr[ "Final H2 - T5"]=value; bt = true; break;
+                case "gInit_H2_T1":  _objectsService.MfgDimensionsStability.dr["Initial H2 - T1"]=value == null ? (object)DBNull.Value : value; bt = true; break;
+                case "gInit_H2_T2":  _objectsService.MfgDimensionsStability.dr["Initial H2 - T2"]=value == null ? (object)DBNull.Value : value; bt = true; break;
+                case "gInit_H2_T3":  _objectsService.MfgDimensionsStability.dr["Initial H2 - T3"]=value == null ? (object)DBNull.Value : value; bt = true; break;
+                case "gInit_H2_T4":  _objectsService.MfgDimensionsStability.dr["Initial H2 - T4"]=value == null ? (object)DBNull.Value : value; bt = true; break;
+                case "gInit_H2_T5":  _objectsService.MfgDimensionsStability.dr["Initial H2 - T5"]=value == null ? (object)DBNull.Value : value; bt = true; break;
+                case "gFinal_H2_T1": _objectsService.MfgDimensionsStability.dr["Final H2 - T1"] = value == null ? (object)DBNull.Value : value; bt = true; break;
+                case "gFinal_H2_T2": _objectsService.MfgDimensionsStability.dr[ "Final H2 - T2"]=value == null ? (object)DBNull.Value : value; bt = true; break;
+                case "gFinal_H2_T3": _objectsService.MfgDimensionsStability.dr[ "Final H2 - T3"]=value == null ? (object)DBNull.Value : value; bt = true; break;
+                case "gFinal_H2_T4": _objectsService.MfgDimensionsStability.dr[ "Final H2 - T4"]=value == null ? (object)DBNull.Value : value; bt = true; break;
+                case "gFinal_H2_T5": _objectsService.MfgDimensionsStability.dr[ "Final H2 - T5"]=value == null ? (object)DBNull.Value : value; bt = true; break;
             }
 
 
@@ -655,30 +655,30 @@ namespace IntugentWebApp.Pages.Mfg_Group
             _objectsService.MfgDimensionsStability.bDataSetChanged = true;
             switch (sName)
             {
-                case "gInit_C1_L1": _objectsService.MfgDimensionsStability.dr["Initial C1 - L1"]=value; bl = true; break;
-                case "gInit_C1_L2": _objectsService.MfgDimensionsStability.dr["Initial C1 - L2"]=value; bl = true; break;
-                case "gInit_C1_L3": _objectsService.MfgDimensionsStability.dr["Initial C1 - L3"]=value; bl = true; break;
-                case "gFinal_C1_L1": _objectsService.MfgDimensionsStability.dr["Final C1 - L1"]=value; bl = true; break;
-                case "gFinal_C1_L2": _objectsService.MfgDimensionsStability.dr["Final C1 - L2"]=value; bl = true; break;
-                case "gFinal_C1_L3": _objectsService.MfgDimensionsStability.dr["Final C1 - L3"]=value; bl = true; break;
+                case "gInit_C1_L1": _objectsService.MfgDimensionsStability.dr["Initial C1 - L1"]=value == null ? (object)DBNull.Value : value; bl = true; break;
+                case "gInit_C1_L2": _objectsService.MfgDimensionsStability.dr["Initial C1 - L2"]=value == null ? (object)DBNull.Value : value; bl = true; break;
+                case "gInit_C1_L3": _objectsService.MfgDimensionsStability.dr["Initial C1 - L3"]=value == null ? (object)DBNull.Value : value; bl = true; break;
+                case "gFinal_C1_L1": _objectsService.MfgDimensionsStability.dr["Final C1 - L1"]=value == null ? (object)DBNull.Value : value; bl = true; break;
+                case "gFinal_C1_L2": _objectsService.MfgDimensionsStability.dr["Final C1 - L2"]=value == null ? (object)DBNull.Value : value; bl = true; break;
+                case "gFinal_C1_L3": _objectsService.MfgDimensionsStability.dr["Final C1 - L3"]=value == null ? (object)DBNull.Value : value; bl = true; break;
 
-                case "gInit_C1_W1": _objectsService.MfgDimensionsStability.dr["Initial C1 - W1"]=value; bw = true; break;
-                case "gInit_C1_W2": _objectsService.MfgDimensionsStability.dr["Initial C1 - W2"]=value; bw = true; break;
-                case "gInit_C1_W3": _objectsService.MfgDimensionsStability.dr["Initial C1 - W3"]=value; bw = true; break;
-                case "gFinal_C1_W1":  _objectsService.MfgDimensionsStability.dr["Final C1 - W1"]=value; bw = true; break;
-                case "gFinal_C1_W2":  _objectsService.MfgDimensionsStability.dr["Final C1 - W2"]=value; bw = true; break;
-                case "gFinal_C1_W3":  _objectsService.MfgDimensionsStability.dr["Final C1 - W3"]=value; bw = true; break;
+                case "gInit_C1_W1": _objectsService.MfgDimensionsStability.dr["Initial C1 - W1"]=value == null ? (object)DBNull.Value : value; bw = true; break;
+                case "gInit_C1_W2": _objectsService.MfgDimensionsStability.dr["Initial C1 - W2"]=value == null ? (object)DBNull.Value : value; bw = true; break;
+                case "gInit_C1_W3": _objectsService.MfgDimensionsStability.dr["Initial C1 - W3"]=value == null ? (object)DBNull.Value : value; bw = true; break;
+                case "gFinal_C1_W1":  _objectsService.MfgDimensionsStability.dr["Final C1 - W1"]=value == null ? (object)DBNull.Value : value; bw = true; break;
+                case "gFinal_C1_W2":  _objectsService.MfgDimensionsStability.dr["Final C1 - W2"]=value == null ? (object)DBNull.Value : value; bw = true; break;
+                case "gFinal_C1_W3":  _objectsService.MfgDimensionsStability.dr["Final C1 - W3"]=value == null ? (object)DBNull.Value : value; bw = true; break;
 
-                case "gInit_C1_T1": _objectsService.MfgDimensionsStability.dr["Initial C1 - T1"]=value; bt = true; break;
-                case "gInit_C1_T2": _objectsService.MfgDimensionsStability.dr["Initial C1 - T2"]=value; bt = true; break;
-                case "gInit_C1_T3": _objectsService.MfgDimensionsStability.dr["Initial C1 - T3"]=value; bt = true; break;
-                case "gInit_C1_T4": _objectsService.MfgDimensionsStability.dr["Initial C1 - T4"]=value; bt = true; break;
-                case "gInit_C1_T5": _objectsService.MfgDimensionsStability.dr["Initial C1 - T5"]=value; bt = true; break;
-                case "gFinal_C1_T1": _objectsService.MfgDimensionsStability.dr["Final C1 - T1"]=value; bt = true; break;
-                case "gFinal_C1_T2": _objectsService.MfgDimensionsStability.dr["Final C1 - T2"]=value; bt = true; break;
-                case "gFinal_C1_T3": _objectsService.MfgDimensionsStability.dr["Final C1 - T3"]=value; bt = true; break;
-                case "gFinal_C1_T4": _objectsService.MfgDimensionsStability.dr["Final C1 - T4"]=value; bt = true; break;
-                case "gFinal_C1_T5": _objectsService.MfgDimensionsStability.dr["Final C1 - T5"]=value; bt = true; break;
+                case "gInit_C1_T1": _objectsService.MfgDimensionsStability.dr["Initial C1 - T1"]=value == null ? (object)DBNull.Value : value; bt = true; break;
+                case "gInit_C1_T2": _objectsService.MfgDimensionsStability.dr["Initial C1 - T2"]=value == null ? (object)DBNull.Value : value; bt = true; break;
+                case "gInit_C1_T3": _objectsService.MfgDimensionsStability.dr["Initial C1 - T3"]=value == null ? (object)DBNull.Value : value; bt = true; break;
+                case "gInit_C1_T4": _objectsService.MfgDimensionsStability.dr["Initial C1 - T4"]=value == null ? (object)DBNull.Value : value; bt = true; break;
+                case "gInit_C1_T5": _objectsService.MfgDimensionsStability.dr["Initial C1 - T5"]=value == null ? (object)DBNull.Value : value; bt = true; break;
+                case "gFinal_C1_T1": _objectsService.MfgDimensionsStability.dr["Final C1 - T1"]=value == null ? (object)DBNull.Value : value; bt = true; break;
+                case "gFinal_C1_T2": _objectsService.MfgDimensionsStability.dr["Final C1 - T2"]=value == null ? (object)DBNull.Value : value; bt = true; break;
+                case "gFinal_C1_T3": _objectsService.MfgDimensionsStability.dr["Final C1 - T3"]=value == null ? (object)DBNull.Value : value; bt = true; break;
+                case "gFinal_C1_T4": _objectsService.MfgDimensionsStability.dr["Final C1 - T4"]=value == null ? (object)DBNull.Value : value; bt = true; break;
+                case "gFinal_C1_T5": _objectsService.MfgDimensionsStability.dr["Final C1 - T5"]=value == null ? (object)DBNull.Value : value; bt = true; break;
             }
 
 
@@ -727,30 +727,30 @@ namespace IntugentWebApp.Pages.Mfg_Group
             _objectsService.MfgDimensionsStability.bDataSetChanged = true;
             switch (sName)
             {
-                case "gInit_C2_L1": _objectsService.MfgDimensionsStability.dr["Initial C2 - L1"]=value; bl = true; break;
-                case "gInit_C2_L2": _objectsService.MfgDimensionsStability.dr["Initial C2 - L2"]=value; bl = true; break;
-                case "gInit_C2_L3": _objectsService.MfgDimensionsStability.dr["Initial C2 - L3"]=value; bl = true; break;
-                case "gFinal_C2_L1": _objectsService.MfgDimensionsStability.dr["Final C2 - L1"]=value; bl = true; break;
-                case "gFinal_C2_L2": _objectsService.MfgDimensionsStability.dr["Final C2 - L2"]=value; bl = true; break;
-                case "gFinal_C2_L3": _objectsService.MfgDimensionsStability.dr["Final C2 - L3"]=value; bl = true; break;
+                case "gInit_C2_L1": _objectsService.MfgDimensionsStability.dr["Initial C2 - L1"]=value == null ? (object)DBNull.Value : value; bl = true; break;
+                case "gInit_C2_L2": _objectsService.MfgDimensionsStability.dr["Initial C2 - L2"]=value == null ? (object)DBNull.Value : value; bl = true; break;
+                case "gInit_C2_L3": _objectsService.MfgDimensionsStability.dr["Initial C2 - L3"]=value == null ? (object)DBNull.Value : value; bl = true; break;
+                case "gFinal_C2_L1": _objectsService.MfgDimensionsStability.dr["Final C2 - L1"]=value == null ? (object)DBNull.Value : value; bl = true; break;
+                case "gFinal_C2_L2": _objectsService.MfgDimensionsStability.dr["Final C2 - L2"]=value == null ? (object)DBNull.Value : value; bl = true; break;
+                case "gFinal_C2_L3": _objectsService.MfgDimensionsStability.dr["Final C2 - L3"]=value == null ? (object)DBNull.Value : value; bl = true; break;
 
-                case "gInit_C2_W1": _objectsService.MfgDimensionsStability.dr["Initial C2 - W1"]=value; bw = true; break;
-                case "gInit_C2_W2": _objectsService.MfgDimensionsStability.dr["Initial C2 - W2"]=value; bw = true; break;
-                case "gInit_C2_W3": _objectsService.MfgDimensionsStability.dr["Initial C2 - W3"]=value; bw = true; break;
-                case "gFinal_C2_W1": _objectsService.MfgDimensionsStability.dr["Final C2 - W1"]=value; bw = true; break;
-                case "gFinal_C2_W2": _objectsService.MfgDimensionsStability.dr["Final C2 - W2"]=value; bw = true; break;
-                case "gFinal_C2_W3": _objectsService.MfgDimensionsStability.dr["Final C2 - W3"]=value; bw = true; break;
+                case "gInit_C2_W1": _objectsService.MfgDimensionsStability.dr["Initial C2 - W1"]=value == null ? (object)DBNull.Value : value; bw = true; break;
+                case "gInit_C2_W2": _objectsService.MfgDimensionsStability.dr["Initial C2 - W2"]=value == null ? (object)DBNull.Value : value; bw = true; break;
+                case "gInit_C2_W3": _objectsService.MfgDimensionsStability.dr["Initial C2 - W3"]=value == null ? (object)DBNull.Value : value; bw = true; break;
+                case "gFinal_C2_W1": _objectsService.MfgDimensionsStability.dr["Final C2 - W1"]=value == null ? (object)DBNull.Value : value; bw = true; break;
+                case "gFinal_C2_W2": _objectsService.MfgDimensionsStability.dr["Final C2 - W2"]=value == null ? (object)DBNull.Value : value; bw = true; break;
+                case "gFinal_C2_W3": _objectsService.MfgDimensionsStability.dr["Final C2 - W3"]=value == null ? (object)DBNull.Value : value; bw = true; break;
 
-                case "gInit_C2_T1": _objectsService.MfgDimensionsStability.dr["Initial C2 - T1"]=value; bt = true; break;
-                case "gInit_C2_T2": _objectsService.MfgDimensionsStability.dr["Initial C2 - T2"]=value; bt = true; break;
-                case "gInit_C2_T3": _objectsService.MfgDimensionsStability.dr["Initial C2 - T3"]=value; bt = true; break;
-                case "gInit_C2_T4": _objectsService.MfgDimensionsStability.dr["Initial C2 - T4"]=value; bt = true; break;
-                case "gInit_C2_T5": _objectsService.MfgDimensionsStability.dr["Initial C2 - T5"]=value; bt = true; break;
-                case "gFinal_C2_T1": _objectsService.MfgDimensionsStability.dr["Final C2 - T1"]=value; bt = true; break;
-                case "gFinal_C2_T2": _objectsService.MfgDimensionsStability.dr["Final C2 - T2"]=value; bt = true; break;
-                case "gFinal_C2_T3": _objectsService.MfgDimensionsStability.dr["Final C2 - T3"]=value; bt = true; break;
-                case "gFinal_C2_T4": _objectsService.MfgDimensionsStability.dr["Final C2 - T4"]=value; bt = true; break;
-                case "gFinal_C2_T5": _objectsService.MfgDimensionsStability.dr["Final C2 - T5"]=value; bt = true; break;
+                case "gInit_C2_T1": _objectsService.MfgDimensionsStability.dr["Initial C2 - T1"]=value == null ? (object)DBNull.Value : value; bt = true; break;
+                case "gInit_C2_T2": _objectsService.MfgDimensionsStability.dr["Initial C2 - T2"]=value == null ? (object)DBNull.Value : value; bt = true; break;
+                case "gInit_C2_T3": _objectsService.MfgDimensionsStability.dr["Initial C2 - T3"]=value == null ? (object)DBNull.Value : value; bt = true; break;
+                case "gInit_C2_T4": _objectsService.MfgDimensionsStability.dr["Initial C2 - T4"]=value == null ? (object)DBNull.Value : value; bt = true; break;
+                case "gInit_C2_T5": _objectsService.MfgDimensionsStability.dr["Initial C2 - T5"]=value == null ? (object)DBNull.Value : value; bt = true; break;
+                case "gFinal_C2_T1": _objectsService.MfgDimensionsStability.dr["Final C2 - T1"]=value == null ? (object)DBNull.Value : value; bt = true; break;
+                case "gFinal_C2_T2": _objectsService.MfgDimensionsStability.dr["Final C2 - T2"]=value == null ? (object)DBNull.Value : value; bt = true; break;
+                case "gFinal_C2_T3": _objectsService.MfgDimensionsStability.dr["Final C2 - T3"]=value == null ? (object)DBNull.Value : value; bt = true; break;
+                case "gFinal_C2_T4": _objectsService.MfgDimensionsStability.dr["Final C2 - T4"]=value == null ? (object)DBNull.Value : value; bt = true; break;
+                case "gFinal_C2_T5": _objectsService.MfgDimensionsStability.dr["Final C2 - T5"]=value == null ? (object)DBNull.Value : value; bt = true; break;
             }
 
 
@@ -812,30 +812,30 @@ namespace IntugentWebApp.Pages.Mfg_Group
             switch (sName)
             {
                 case "gInit_WF_L1":
-                    _objectsService.MfgDimensionsStability.dr["InitialWF-L1"]=value; bl = true; break;
+                    _objectsService.MfgDimensionsStability.dr["InitialWF-L1"]= value == null ? (object)DBNull.Value : value; bl = true; break;
                 case "gInit_WF_L2":
-                    _objectsService.MfgDimensionsStability.dr[ "InitialWF-L2"] = value; bl = true; break;
+                    _objectsService.MfgDimensionsStability.dr[ "InitialWF-L2"] = value == null ? (object)DBNull.Value : value; bl = true; break;
                 case "gInit_WF_L3":
-                    _objectsService.MfgDimensionsStability.dr["InitialWF-L3"] = value; bl = true; break;
+                    _objectsService.MfgDimensionsStability.dr["InitialWF-L3"] = value == null ? (object)DBNull.Value : value; bl = true; break;
                 case "gFinal_WF_L1":
-                    _objectsService.MfgDimensionsStability.dr["FinalWF-L1"] = value; bl = true; break;
+                    _objectsService.MfgDimensionsStability.dr["FinalWF-L1"] = value == null ? (object)DBNull.Value : value; bl = true; break;
                 case "gFinal_WF_L2":
-                    _objectsService.MfgDimensionsStability.dr[ "FinalWF-L2"] = value; bl = true; break;
+                    _objectsService.MfgDimensionsStability.dr[ "FinalWF-L2"] = value == null ? (object)DBNull.Value : value; bl = true; break;
                 case "gFinal_WF_L3":
-                    _objectsService.MfgDimensionsStability.dr["FinalWF-L3"] = value; bl = true; break;
+                    _objectsService.MfgDimensionsStability.dr["FinalWF-L3"] = value == null ? (object)DBNull.Value : value; bl = true; break;
 
                 case "gInit_WF_W1":
-                    _objectsService.MfgDimensionsStability.dr[ "InitialWF-W1"] = value; bw = true; break;
+                    _objectsService.MfgDimensionsStability.dr[ "InitialWF-W1"] = value == null ? (object)DBNull.Value : value; bw = true; break;
                 case "gInit_WF_W2":
-                    _objectsService.MfgDimensionsStability.dr["InitialWF-W2"] = value; bw = true; break;
+                    _objectsService.MfgDimensionsStability.dr["InitialWF-W2"] = value == null ? (object)DBNull.Value : value; bw = true; break;
                 case "gInit_WF_W3":
-                    _objectsService.MfgDimensionsStability.dr[ "InitialWF-W3"] = value; bw = true; break;
+                    _objectsService.MfgDimensionsStability.dr[ "InitialWF-W3"] = value == null ? (object)DBNull.Value : value; bw = true; break;
                 case "gFinal_WF_W1":
-                    _objectsService.MfgDimensionsStability.dr[ "FinalWF-W1"] = value; bw = true; break;
+                    _objectsService.MfgDimensionsStability.dr[ "FinalWF-W1"] = value == null ? (object)DBNull.Value : value; bw = true; break;
                 case "gFinal_WF_W2":
-                    _objectsService.MfgDimensionsStability.dr[ "FinalWF-W2"] = value; bw = true; break;
+                    _objectsService.MfgDimensionsStability.dr[ "FinalWF-W2"] = value == null ? (object)DBNull.Value : value; bw = true; break;
                 case "gFinal_WF_W3":
-                    _objectsService.MfgDimensionsStability.dr["FinalWF-W3"] = value; bw = true; break;
+                    _objectsService.MfgDimensionsStability.dr["FinalWF-W3"] = value == null ? (object)DBNull.Value : value; bw = true; break;
             }
 
             if (bl)
@@ -884,17 +884,17 @@ namespace IntugentWebApp.Pages.Mfg_Group
             _objectsService.MfgDimensionsStability.bDataSetChanged = true;
             switch (sName)
             {
-                case "gSide1_Depth1": _objectsService.MfgDimensionsStability.dr["Loc1Depth1"]=value; b1 = true; break;
-                case "gSide1_Depth2": _objectsService.MfgDimensionsStability.dr["Loc1Depth2"]=value; b1 = true; break;
-                case "gSide1_Depth3": _objectsService.MfgDimensionsStability.dr["Loc1Depth3"]=value; b1 = true; break;
-                case "gSide1_Depth4": _objectsService.MfgDimensionsStability.dr["Loc1Depth4"]=value; b1 = true; break;
-                case "gSide1_Depth5": _objectsService.MfgDimensionsStability.dr["Loc1Depth5"]=value; b1 = true; break;
+                case "gSide1_Depth1": _objectsService.MfgDimensionsStability.dr["Loc1Depth1"]=value == null ? (object)DBNull.Value : value; b1 = true; break;
+                case "gSide1_Depth2": _objectsService.MfgDimensionsStability.dr["Loc1Depth2"]=value == null ? (object)DBNull.Value : value; b1 = true; break;
+                case "gSide1_Depth3": _objectsService.MfgDimensionsStability.dr["Loc1Depth3"]=value == null ? (object)DBNull.Value : value; b1 = true; break;
+                case "gSide1_Depth4": _objectsService.MfgDimensionsStability.dr["Loc1Depth4"]=value == null ? (object)DBNull.Value : value; b1 = true; break;
+                case "gSide1_Depth5": _objectsService.MfgDimensionsStability.dr["Loc1Depth5"]=value == null ? (object)DBNull.Value : value; b1 = true; break;
 
-                case "gSide2_Depth1": _objectsService.MfgDimensionsStability.dr["Loc2Depth1"]=value; b2 = true; break;
-                case "gSide2_Depth2": _objectsService.MfgDimensionsStability.dr["Loc2Depth2"]=value; b2 = true; break;
-                case "gSide2_Depth3": _objectsService.MfgDimensionsStability.dr["Loc2Depth3"]=value; b2 = true; break;
-                case "gSide2_Depth4": _objectsService.MfgDimensionsStability.dr["Loc2Depth4"]=value; b2 = true; break;
-                case "gSide2_Depth5": _objectsService.MfgDimensionsStability.dr["Loc2Depth5"]=value; b2 = true; break;
+                case "gSide2_Depth1": _objectsService.MfgDimensionsStability.dr["Loc2Depth1"]=value == null ? (object)DBNull.Value : value; b2 = true; break;
+                case "gSide2_Depth2": _objectsService.MfgDimensionsStability.dr["Loc2Depth2"]=value == null ? (object)DBNull.Value : value; b2 = true; break;
+                case "gSide2_Depth3": _objectsService.MfgDimensionsStability.dr["Loc2Depth3"]=value == null ? (object)DBNull.Value : value; b2 = true; break;
+                case "gSide2_Depth4": _objectsService.MfgDimensionsStability.dr["Loc2Depth4"]=value == null ? (object)DBNull.Value : value; b2 = true; break;
+                case "gSide2_Depth5": _objectsService.MfgDimensionsStability.dr["Loc2Depth5"]=value == null ? (object)DBNull.Value : value; b2 = true; break;
             }
 
             for (int i = 1; i <= 5; i++)
@@ -928,10 +928,10 @@ namespace IntugentWebApp.Pages.Mfg_Group
             switch (sName)
             {
                 case "gDeviation":
-                    _objectsService.MfgDimensionsStability.dr["DevFromTable"]=value; break;
+                    _objectsService.MfgDimensionsStability.dr["DevFromTable"]=value == null ? (object)DBNull.Value : value; break;
                 case "gDevType":
                     if (_objectsService.MfgDimensionsStability.dr["DevType"] == null) _objectsService.MfgDimensionsStability.dr["DevType"] = DBNull.Value; else 
-                        _objectsService.MfgDimensionsStability.dr["DevType"] = value; break;
+                        _objectsService.MfgDimensionsStability.dr["DevType"] = value == null ? (object)DBNull.Value : value; break;
             }
 
             _objectsService.MfgDimensionsStability.UpdateDataSet();

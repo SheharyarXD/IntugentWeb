@@ -303,6 +303,7 @@ namespace IntugentClassLbrary.Pages
 
             }
 
+            GetUserInfo();
             GetSqlLists();
             // CTelClient.TelTrace("Lists for listboxes obtained");  //Azue Insight Trace Message
 
@@ -312,7 +313,6 @@ namespace IntugentClassLbrary.Pages
 
             //            CStatusBar.SetText("Welcome " + CDefualts.sEmployee); ;
 
-            GetUserInfo();
         }
 
 
@@ -536,8 +536,9 @@ namespace IntugentClassLbrary.Pages
                 itmp = da.Fill(cLists.dtLoc);
 
                 sql = "Select    [Product Code],  [Product Code]+' - ' +  [Product Description] as Product  from [Product Matrix] Order by [Product Code] Asc";
-                if (cDefualts.IDLocation != 3 && cDefualts.IDLocation != 4) //Filter products for Mfg group
+                if (cDefualts.IDLocation != 3 && cDefualts.IDLocation != 4) { 
                     sql = "Select    [Product Code],  [Product Code]+' - ' +  [Product Description] as Product  from [Product Matrix] Where IDLoc = " + cDefualts.IDLocation.ToString() + " Order by [Product Code] Asc";
+                } //Filter products for Mfg group
                 da = new SqlDataAdapter(sql, cbfile.conAZ);
                 itmp = da.Fill(cLists.dtComProd);
 

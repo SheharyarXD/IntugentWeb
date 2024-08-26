@@ -66,10 +66,11 @@ namespace IntugentWebApp.Pages.RnD_Users
             //            CPages.PageRndHome_1.gRndProp1.SelectedValue = "Density";
             //            CPages.PageRndHome_1.gRndProp2.SelectedValue = "R90D75FFinal";
 
-            _objectsService.CLists.dvLists.RowFilter = "sList = 'RND Study Type' and ID <> 59";  //Testing Status
+            _objectsService.CLists.dvLists.RowFilter = "sList = 'RND Study Type'";  //Testing Status
+            //_objectsService.CLists.dvLists.RowFilter = "sList = 'RND Study Type' and ID <> 59";  //Testing Status
             _objectsService.CLists.dvRunTypeRND2 = _objectsService.CLists.dvLists.ToTable().DefaultView;
             gStudyType = _objectsService.CLists.dvRunTypeRND2;
-            gStudyTypeSelectedValue = 1;
+            gStudyTypeSelectedValue = 0;
 
             _objectsService.CLists.dvEmployees = _objectsService.CLists.dtLoc.DefaultView;
             _objectsService.CLists.dvEmployees.RowFilter = "IDLocation = 3";  //Employees

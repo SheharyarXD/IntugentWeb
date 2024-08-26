@@ -119,14 +119,14 @@
                 <div class="col-md-6">
                     <!-- % Change Length Oven -->
                     <div class="form-floating mb-2">
-                        <input type="text" class="form-control" id="ChangeLengthOven" placeholder="" value="@Model.gChangeOvenLength" disabled>
+                        <input type="text" class="form-control  @(Model.gChangeOvenLengthBackground ? "" : "illegalValue")" id="ChangeLengthOven" placeholder="" value="@Model.gChangeOvenLength" disabled>
                         <label for="ChangeLengthOven">% Change Length Oven</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <!-- % Change Width Oven -->
                     <div class="form-floating mb-2">
-                        <input type="text" class="form-control" id="ChangeWidthOven" placeholder="" value="@Model.gChangeOvenWidth" disabled>
+                        <input type="text" class="form-control @(Model.gChangeOvenWidthBackground ? "" : "illegalValue")" id="ChangeWidthOven" placeholder="" value="@Model.gChangeOvenWidth" disabled>
                         <label for="ChangeWidthOven">% Change Width Oven</label>
                     </div>
                 </div>
@@ -135,14 +135,14 @@
                 <div class="col-md-6">
                     <!-- % Change Thickness Oven -->
                     <div class="form-floating mb-2">
-                        <input type="text" class="form-control" id="ChangeThicknessOven" placeholder="" value="@Model.gChangeOvenThickness" disabled>
+                        <input type="text" class="form-control @(Model.gChangeOvenThicknessBackground ? "" : "illegalValue")" id="ChangeThicknessOven" placeholder="" value="@Model.gChangeOvenThickness" disabled>
                         <label for="ChangeThicknessOven">% Change Thickness Oven</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <!-- % Change Length Freezer -->
                     <div class="form-floating mb-2">
-                        <input type="text" class="form-control" id="ChangeLengthFreezer" placeholder="" value="@Model.gChangeFreezerLength" disabled>
+                        <input type="text" class="form-control @(Model.gChangeFreezerLengthBackground ? "" : "illegalValue")" id="ChangeLengthFreezer" placeholder="" value="@Model.gChangeFreezerLength" disabled>
                         <label for="ChangeLengthFreezer">% Change Length Freezer</label>
                     </div>
                 </div>
@@ -151,14 +151,14 @@
                 <div class="col-md-6">
                     <!-- % Change Width Freezer -->
                     <div class="form-floating mb-2">
-                        <input type="text" class="form-control" id="ChangeWidthFreezer" placeholder="" value="@Model.gChangeFreezerWidth" disabled>
+                        <input type="text" class="form-control @(Model.gChangeFreezerWidthBackground ? "" : "illegalValue")" id="ChangeWidthFreezer" placeholder="" value="@Model.gChangeFreezerWidth" disabled>
                         <label for="ChangeWidthFreezer">% Change Width Freezer</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <!-- % Change Thickness Freezer -->
                     <div class="form-floating mb-2">
-                        <input type="text" class="form-control" id="ChangeThicknessFreezer" placeholder="" value="@Model.gChangeFreezerThickness" disabled>
+                        <input type="text" class="form-control @(Model.gChangeFreezerThicknessBackground ? "" : "illegalValue")" id="ChangeThicknessFreezer" placeholder="" value="@Model.gChangeFreezerThickness" disabled>
                         <label for="ChangeThicknessFreezer">% Change Thickness Freezer</label>
                     </div>
                 </div>

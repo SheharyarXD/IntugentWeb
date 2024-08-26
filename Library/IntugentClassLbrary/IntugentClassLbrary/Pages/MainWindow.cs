@@ -130,27 +130,33 @@ namespace IntugentClassLbrary.Pages
                               cDefualts.sEmployee = "Asjad.Shafi@gaf.com";
                 if (IDLocation == 1)
                 {
-                              cDefualts.sGroup = "OKTA_GAF_Intugent_RnD_Users"; cDefualts.sLocation = "Global R&D"; cDefualts.IDLocation = 3;
+                              cDefualts.sGroup = "OKTA_GAF_Intugent_RnD_Users";
+                    //cDefualts.sLocation = "Global R&D"; cDefualts.IDLocation = 3;
                 }
                 else if(IDLocation == 2)
                 {
-                              cDefualts.sGroup = "OKTA_GAF_Intugent_Mfg_Users_Gainesville"; cDefualts.sLocation = "Gainsville TX"; cDefualts.IDLocation = 1;
+                              cDefualts.sGroup = "OKTA_GAF_Intugent_Mfg_Users_Gainesville"; 
+                    //cDefualts.sLocation = "Gainsville TX"; cDefualts.IDLocation = 1;
                 }
                 else if (IDLocation == 3)
                 {
-                              cDefualts.sGroup = "OKTA_GAF_Intugent_Mfg_Users_Statesboro"; cDefualts.sLocation = "Statesboro, GA"; cDefualts.IDLocation = 5;
+                              cDefualts.sGroup = "OKTA_GAF_Intugent_Mfg_Users_Statesboro"; 
+                    //cDefualts.sLocation = "Statesboro, GA"; cDefualts.IDLocation = 5;
                 }
                 else if (IDLocation == 4)
                 {
-                              cDefualts.sGroup = "OKTA_GAF_Intugent_Mfg_Users_CedarCity"; cDefualts.sLocation = "Cedar City"; cDefualts.IDLocation = 2;
+                              cDefualts.sGroup = "OKTA_GAF_Intugent_Mfg_Users_CedarCity"; 
+                    //cDefualts.sLocation = "Cedar City"; cDefualts.IDLocation = 2;
                 }
                 else if (IDLocation == 5)
                 {
-                            cDefualts.sGroup = "OKTA_GAF_Intugent_Mfg_Users_NewColumbia"; cDefualts.sLocation = "New COlumbia, PA"; cDefualts.IDLocation = 6;
+                            cDefualts.sGroup = "OKTA_GAF_Intugent_Mfg_Users_NewColumbia";
+                    //cDefualts.sLocation = "New COlumbia, PA"; cDefualts.IDLocation = 6;
                 }
                 else if (IDLocation == 6)
                 {
-                              cDefualts.sGroup = "OKTA_GAF_Intugent_Admins"; cDefualts.sLocation = "Admin"; cDefualts.IDLocation = 4;
+                              cDefualts.sGroup = "OKTA_GAF_Intugent_Admins";
+                    //cDefualts.sLocation = "Admin"; cDefualts.IDLocation = 4;
                 }
                 /*                CPages.PageOktaAuth_1.gGroup.Items.Add("OKTA_GAF_Intugent_RnD_Users");
                                 CPages.PageOktaAuth_1.gGroup.Items.Add("OKTA_GAF_Intugent_Mfg_Users_Gainesville");
@@ -297,6 +303,7 @@ namespace IntugentClassLbrary.Pages
 
             }
 
+            GetUserInfo();
             GetSqlLists();
             // CTelClient.TelTrace("Lists for listboxes obtained");  //Azue Insight Trace Message
 
@@ -306,7 +313,6 @@ namespace IntugentClassLbrary.Pages
 
             //            CStatusBar.SetText("Welcome " + CDefualts.sEmployee); ;
 
-            GetUserInfo();
         }
 
 
@@ -530,8 +536,9 @@ namespace IntugentClassLbrary.Pages
                 itmp = da.Fill(cLists.dtLoc);
 
                 sql = "Select    [Product Code],  [Product Code]+' - ' +  [Product Description] as Product  from [Product Matrix] Order by [Product Code] Asc";
-                if (cDefualts.IDLocation != 3 && cDefualts.IDLocation != 4) //Filter products for Mfg group
+                if (cDefualts.IDLocation != 3 && cDefualts.IDLocation != 4) { 
                     sql = "Select    [Product Code],  [Product Code]+' - ' +  [Product Description] as Product  from [Product Matrix] Where IDLoc = " + cDefualts.IDLocation.ToString() + " Order by [Product Code] Asc";
+                } //Filter products for Mfg group
                 da = new SqlDataAdapter(sql, cbfile.conAZ);
                 itmp = da.Fill(cLists.dtComProd);
 
@@ -768,7 +775,7 @@ namespace IntugentClassLbrary.Pages
                 }
 
                 cLists.drEmployee = cLists.dtEmployee.Rows[0];
-                cDefualts.IDLocation = (int)cLists.drEmployee["IDLocation"];  //Must be commented after implementing Okta
+                //cDefualts.IDLocation = (int)cLists.drEmployee["IDLocation"];  //Must be commented after implementing Okta
                 cDefualts.IDEmployee = (int)cLists.drEmployee["ID"];
                 if (cDefualts.IDLocation != (int)cLists.drEmployee["IDLocation"])
                 {

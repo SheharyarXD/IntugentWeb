@@ -99,14 +99,17 @@ namespace IntugentWebApp.Pages.Mfg_Group
         public bool gCommentIsEnabled {  get; set; }
         public bool gCupReactivityIsEnabled {  get; set; }
         public bool gBoardDeviationIsEnabled {  get; set; }
-        public readonly ObjectsService _objectsService;
+        public ObjectsService _objectsService;
 
         public MfgProcessCheckModel(ObjectsService objectsService)
         {
             _objectsService = objectsService;
         }
-        public void OnGet()
+        public IActionResult OnGet()
         {
+            //return new JsonResult(_objectsService.MfgProcesscheck.CDefault.IDLocation);
+ 
+            //(_objectsService.MfgInProcess, _objectsService.MfgFinishedGoods, _objectsService.MfgDimensionsStability, _objectsService.MfgPlantsData, _objectsService.MfgJetMixing) = _objectsService.MfgHome.GetAllMfgData(_objectsService.MfgInProcess, _objectsService.MfgFinishedGoods, _objectsService.MfgDimensionsStability, _objectsService.MfgPlantsData, _objectsService.MfgJetMixing);
             ViewData["Index"] = HttpContext.Session.GetInt32("UserId");
             gLoc1  = _objectsService.MfgProcesscheck.CDefault.sLocMfg1;
             gLoc2  = _objectsService.MfgProcesscheck.CDefault.sLocMfg2;
@@ -115,6 +118,8 @@ namespace IntugentWebApp.Pages.Mfg_Group
             int itmp;
             try
             {
+
+
                 _objectsService.MfgProcesscheck.cbfile.conAZ.Open();
                 _objectsService.MfgProcesscheck.sSqlQuery = "SELECT  top(1000) * FROM [dbo].[Process Check] where IDLocation = " + _objectsService.MfgProcesscheck.CDefault.IDLocation.ToString() + "  order by ID Desc  ";
                 _objectsService.MfgProcesscheck.da = new SqlDataAdapter(_objectsService.MfgProcesscheck.sSqlQuery, _objectsService.MfgProcesscheck.cbfile.conAZ);
@@ -126,7 +131,7 @@ namespace IntugentWebApp.Pages.Mfg_Group
                  //   sMsgData = "There is no Process Check Data for " + _objectsService.MfgProcesscheck.CDefault.sLocation;
                     EnableDataControls(false);
                  //   CTelClient.TelTrace(sMsgData);
-                    return;
+                    return null;
 
                 }
 
@@ -141,17 +146,20 @@ namespace IntugentWebApp.Pages.Mfg_Group
                 EnableDataControls(false);
                 gNewCheckSheetIsEnabled = false;
               //  CTelClient.TelException(ex, sMsgData);  //Azue Insight Trace Message
-                return;
+                return null;
             }
             finally
             {
                 _objectsService.MfgProcesscheck.cbfile.conAZ.Close();
             }
-            //  if (sMsgData != string.Empty) MessageBox.Show(sMsgData, _objectsService.MfgProcesscheck.cbfile.sAppName);
             SetView();
+            return null;
+
+            //  if (sMsgData != string.Empty) MessageBox.Show(sMsgData, _objectsService.MfgProcesscheck.cbfile.sAppName);
         }
         private void SetView()
         {
+
             gProdID = _objectsService.CLists.dvComProd;
             gProdIDSelected = _objectsService.CDefualts.sProdMfg;
 
@@ -436,6 +444,10 @@ namespace IntugentWebApp.Pages.Mfg_Group
         {
             int ncount = 0; double dSum = 0.0;
             bool bLength = false, bDiag = false, bWidth = false;
+            if (value == null)
+            {
+                return null;
+            }
             switch (Name)
             {
                 case "gQuantity": _objectsService.MfgProcesscheck.dr["Bundle Quantity 1"]=Int32.Parse(value); break;

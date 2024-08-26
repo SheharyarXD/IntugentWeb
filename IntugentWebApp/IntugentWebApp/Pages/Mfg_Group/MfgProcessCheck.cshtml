@@ -40,9 +40,12 @@
                     <!-- Production Code -->
                     <div class="form-floating mb-2" onblur="">
                             <select class="form-select" id="ProdID" onblur="GComboBox_LF('gProdID', this.value)">
+                                @if(Model.gProdID!=null){
+
                                 @foreach (DataRowView row in Model.gProdID)
                                 {
                                     <option value="@row["Product Code"]" selected="@(Model.gProdIDSelected == row["Product Code"].ToString())">@row["Product"]</option>
+                                }
                                 }
                         </select>
                             <label for="ProdID">Production Code</label>
@@ -66,10 +69,14 @@
                         <!-- Operator -->
                         <div class="form-floating mb-2" onblur="">
                             <select class="form-select" id="operator" onblur="GComboBox_LF('gOperator', this.value)">
+                                @if (Model.gOperator != null)
+                                {
+
                                 @foreach (DataRowView row in Model.gOperator)
                                 {
                                     <option value="@row["ID"]" selected="@(Model.gOperatorSelectedItem == (int)row["ID"])">@row["Employees"]</option>
                                 }
+                                       }
                             </select>
                             <label for="operator">Operator</label>
                         </div>
@@ -78,10 +85,14 @@
                         <!-- Type -->
                         <div class="form-floating mb-2" >
                             <select class="form-select" id="TypeOp" onblur="GComboBox_LF('gType', this.value)">
+                                @if (Model.gType != null)
+                                {
+                                    
                                 @foreach (DataRowView row in Model.gType)
                                             {
                                         <option value="@row["ID"]" selected="@(Model.gTypeSelectedValue == (int)row["ID"])">@row["sName"]</option>
                                             }
+                                }
                             </select>
                             <label for="TypeOp">Type</label>
                         </div>
@@ -113,9 +124,13 @@
                     <!-- Top board print -->
                     <div class="form-floating mb-2 col-6" onblur="">
                         <select class="form-select" id="TopBoardPrint" onblur="GComboBox_LF('gTopBoardPrint', this.value)">
+                            @if (Model.gTopBoardPrintCollection!=null)
+                            {
+
                             @foreach (DataRowView row in Model.gTopBoardPrintCollection)
                             {
                      <option value="@row["ID"]" selected="@(Model.gTopBoardPrint == (int)row["ID"])">@row["sName"]</option>
+                            }
                             }
                         </select>
                         <label for="TopBoardPrint">Top board print</label>
@@ -123,9 +138,12 @@
                     <!-- Bottom board print -->
                 <div class="form-floating mb-2 col-6" onblur="">
                         <select class="form-select" id="BottomBoardPrint" onblur="GComboBox_LF('gBottomBoardPrint', this.value)">
+                            @if (Model.gBottomBoardPrintCol != null)
+                            {
                             @foreach (DataRowView row in Model.gBottomBoardPrintCol)
                             {
                                 <option value="@row["ID"]" selected="@(Model.gBottomBoardPrint == (int)row["ID"])">@row["sName"]</option>
+                            }
                             }
                     </select>
                         <label for="BottomBoardPrint">Bottom board print</label>
@@ -135,9 +153,13 @@
                     <!-- Perferation -->
                 <div class="form-floating mb-2 col-6" onblur="">
                         <select class="form-select" id="Perferation" onblur="GComboBox_LF('gPerferation', this.value)">
+                            @if (Model.gPerferationCol != null)
+                            {
+
                             @foreach (DataRowView row in Model.gPerferationCol)
                             {
                                 <option value="@row["ID"]" selected="@(Model.gPerferation == (int)row["ID"])">@row["sName"]</option>
+                            }
                             }
                     </select>
                         <label for="Perferation">Perferation</label>
@@ -145,9 +167,12 @@
                     <!-- Flipper Operating-->
                 <div class="form-floating mb-2 col-6" onblur="">
                         <select class="form-select" id="FlipperOperating" onblur="GComboBox_LF('gFlipper', this.value)">
+                            @if (Model.gFlipperCol != null)
+                            {
                             @foreach (DataRowView row in Model.gFlipperCol)
                             {
                                 <option value="@row["ID"]" selected="@(Model.gFlipper == (int)row["ID"])">@row["sName"]</option>
+                            }
                             }
                     </select>
                         <label for="FlipperOperating">Flipper Operating</label>
@@ -166,20 +191,26 @@
                 <!-- gAdhesion -->
                 <div class="form-floating mb-2 col-6" onblur="">
                     <select class="form-select" id="gAdhesion" onblur="GComboBox_LF('gAdhesion', this.value)">
+                        @if (Model.gAdhesionCol != null)
+                            {
                         @foreach (DataRowView row in Model.gAdhesionCol)
                         {
                             <option value="@row["ID"]" selected="@(Model.gAdhesionSelected == (int)row["ID"])">@row["sName"]</option>
                         }
+                            }
                     </select>
                     <label for="gAdhesion">Facer Adhesion</label>
                 </div>
                 <!-- Edge Cut -->
                 <div class="form-floating mb-2 col-6" onblur="">
                     <select class="form-select" id="EdgeCut" onblur="GComboBox_LF('gEdgeCut', this.value)">
+                        @if (Model.gEdgeCutCol != null)
+                            {
                         @foreach (DataRowView row in Model.gEdgeCutCol)
                         {
                             <option value="@row["ID"]" selected="@(Model.gEdgeCutSelected == (int)row["ID"])">@row["sName"]</option>
                         }
+                            }
                     </select>
                     <label for="EdgeCut">Edge Cut</label>
                 </div>
@@ -193,20 +224,26 @@
                 <!-- Hooder Quality -->
                 <div class="form-floating mb-2 col-6" onblur="">
                     <select class="form-select" id="HooderQuality" onblur="GComboBox_LF('gHooder', this.value)">
+                              @if (Model.gHooderCol != null)
+                            {
                         @foreach (DataRowView row in Model.gHooderCol)
                         {
                             <option value="@row["ID"]" selected="@(Model.gHooderSelected == (int)row["ID"])">@row["sName"]</option>
                         }
+                            }
                     </select>
                     <label for="HooderQuality">Hooder Quality</label>
                 </div>
                 <!-- Board Quality -->
                 <div class="form-floating mb-2 col-6" onblur="">
                     <select class="form-select" id="BoardQuality" onblur="GComboBox_LF('gBoardQuality', this.value)">
+                        @if (Model.gBoardQualityCol != null)
+                            {
                         @foreach (DataRowView row in Model.gBoardQualityCol)
                         {
                             <option value="@row["ID"]" selected="@(Model.gBoardQualitySelected == (int)row["ID"])">@row["sName"]</option>
                         }
+                            }
                     </select>
                     <label for="BoardQuality">Board Quality</label>
                 </div>

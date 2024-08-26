@@ -43,6 +43,7 @@ namespace IntugentWebApp.Pages.Mfg_Group
         }
         public void OnGet()
         {
+            //(_objectsService.MfgInProcess, _objectsService.MfgFinishedGoods, _objectsService.MfgDimensionsStability, _objectsService.MfgPlantsData, _objectsService.MfgJetMixing) = _objectsService.MfgHome.GetAllMfgData(_objectsService.MfgInProcess, _objectsService.MfgFinishedGoods, _objectsService.MfgDimensionsStability, _objectsService.MfgPlantsData, _objectsService.MfgJetMixing);
             ViewData["Index"] = HttpContext.Session.GetInt32("UserId");
             SetView();
             SetFields();
@@ -409,7 +410,7 @@ namespace IntugentWebApp.Pages.Mfg_Group
 
             UpdateDataset();
             SetView();
-            return new JsonResult(new { message = sName});
+            return new JsonResult(new { message = sName,value});
         }
 
 

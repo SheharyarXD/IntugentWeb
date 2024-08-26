@@ -199,6 +199,7 @@
 
             };
             const myChart = new Chart(ctx, config);
+            window.chart = myChart;
             let isPanning = false;
             let startX, startY;
 
@@ -263,14 +264,21 @@
 
         function updateUI(response) {
 
-            window.chart.data.datasets[0].data = response.xa.map((x, i) => ({ x, y: response.ya[i] }));
-            window.chart.data.datasets[1].data = response.xa.map((x, i) => ({ x, y: response.ya[i] }));
-            window.chart.data.datasets[2].data = response.xAvg1.map((x, i) => ({ x, y: response.yAvg1[i] }));
-            window.chart.data.datasets[3].data = response.xAvg1.map((x, i) => ({ x, y: response.yucL1[i] }));
-            window.chart.data.datasets[4].data = response.xAvg1.map((x, i) => ({ x, y: response.ylcL1[i] }));
+            console.log('response.xa:', response.xa);
+            console.log('response.ya:', response.ya);
+            console.log('response.xAvg1:', response.xAvg1);
+            console.log('response.yAvg1:', response.yAvg1);
+            console.log('response.yucL1:', response.yucL1);
+            console.log('response.ylcL1:', response.ylcL1);
 
+            if (response.xa && response.ya && response.xAvg1 && response.yAvg1 && response.yucL1 && response.ylcL1) {
+                window.chart.data.datasets[0].data = response.xa.map((x, i) => ({ x, y: response.ya[i] }));
+                window.chart.data.datasets[1].data = response.xa.map((x, i) => ({ x, y: response.ya[i] }));
+                window.chart.data.datasets[2].data = response.xAvg1.map((x, i) => ({ x, y: response.yAvg1[i] }));
+                window.chart.data.datasets[3].data = response.xAvg1.map((x, i) => ({ x, y: response.yucL1[i] }));
+                window.chart.data.datasets[4].data = response.xAvg1.map((x, i) => ({ x, y: response.ylcL1[i] }));
 
-            window.chart.update();
+                window.chart.update();
             const correlationTableBody = document.getElementById('CorrTable');
             correlationTableBody.innerHTML = '';
 
@@ -282,6 +290,25 @@
                 propCell.textContent = row.propName;
                 corrCell.textContent = row.corrValue;
             });
+            }
+            else {
+                window.chart.data.datasets[0].data = [];
+                window.chart.data.datasets[1].data = [];
+                window.chart.data.datasets[2].data = [];
+                window.chart.data.datasets[3].data = [];
+                window.chart.data.datasets[4].data = [];
+                window.chart.update();
+                const correlationTableBody = document.getElementById('CorrTable');
+                correlationTableBody.innerHTML = '';
+                const newRow = correlationTableBody.insertRow();
+                const propCell = newRow.insertCell(0);
+                const corrCell = newRow.insertCell(1);
+
+                propCell.textContent = '';  // Leave the propName cell empty
+                corrCell.textContent = '';  // Leave the corrValue cell empty
+                console.error("One or more properties are undefined in the response object.");
+            }
+
         }
          function gSearchDB() {
             var gProp1SelectedValue = $('#gProp1').val();

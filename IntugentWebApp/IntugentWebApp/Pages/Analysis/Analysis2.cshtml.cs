@@ -6,6 +6,7 @@ using System.Data;
 using System.Drawing;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace IntugentWebApp.Pages.Analysis
 {
@@ -20,7 +21,19 @@ namespace IntugentWebApp.Pages.Analysis
         {
             _objectsService= objectsService;
         }
-       public string gX1SelectedValue {get; set;}
+        public DataView gProd1;
+        public int gProd1SelectedIndex;
+        public string gProd1SelectedValue;
+        public DataView gMfgSite;
+        public int gMfgSiteSelectedIndex;
+        public string gMfgSiteSelectedValue;
+        public DataView gProp1;
+        public DataView gCorr;
+        public string gProp1SelectedValue;
+        public string test;
+        public DateTime? gMfgDate1;
+        public DateTime? gMfgDate2; 
+        public string gX1SelectedValue {get; set;}
        public string gX2SelectedValue {get; set;}
        public string gY1SelectedValue {get; set;}
        public string gY2SelectedValue {get; set;}
@@ -32,7 +45,11 @@ namespace IntugentWebApp.Pages.Analysis
         public void OnGet()
         {
             ViewData["Index"] = HttpContext.Session.GetInt32("UserId");
-            _objectsService.CAnalysisData1.GetLists();
+            _objectsService.CAnalysisData1.GetLists();      
+            if (gProp1SelectedValue == null) gProp1SelectedValue = "FG-Compressive Str Avg6";
+            if (gProd1SelectedValue == null) gProd1SelectedIndex = 0;
+            if (gMfgSiteSelectedValue == null) gMfgSiteSelectedIndex = 0;
+            _objectsService.CAnalysisData1.GetData(GetSearchCriteria());
             gY2 = gY1 = gX2 = gX1 = _objectsService.CAnalysisData1.dtProps.DefaultView;
             gX1SelectedValue = scnX1;
             gX2SelectedValue = scnX2;
@@ -162,5 +179,48 @@ namespace IntugentWebApp.Pages.Analysis
 
 
         }
+
+
+        public string GetSearchCriteria()
+        {
+            gProd1 = _objectsService.CAnalysisData1.dtGlobalProducts.DefaultView;
+            gMfgSite = _objectsService.CAnalysisData1.dtLocations.DefaultView;
+            gProp1 = _objectsService.CAnalysisData1.dtProps.DefaultView;
+            gProp1SelectedValue = "FG-Compressive Str Avg6";
+            gMfgDate2 = DateTime.Now;
+            gMfgDate1 = DateTime.Now.AddYears(-1);
+            string sql = string.Empty, sql1 = string.Empty;
+            DateTime dateTime1;
+            //Location
+
+            sql = sql1 = string.Empty;
+            if (gMfgSiteSelectedValue != null) sql = "sLocation = '" + gMfgSiteSelectedValue.ToString() + "'";
+
+
+            sql1 = string.Empty;
+            if (gProd1SelectedValue != null)
+            {
+                sql1 = "[Product Code Global] = '" + gProd1SelectedValue.ToString() + "'";
+                if (sql == string.Empty) sql = sql1; else sql = sql + " And " + sql1;
+            }
+
+            //Dates
+            if (gMfgDate2 != null)
+            {
+                dateTime1 = ((DateTime)gMfgDate2).AddDays(1);
+                sql1 = "[Test Date] < '" + dateTime1.ToString() + "'";
+                if (sql == string.Empty) sql = sql1; else sql = sql + " And " + sql1;
+            }
+
+            if (gMfgDate1 != null)
+            {
+                dateTime1 = ((DateTime)gMfgDate1);
+                sql1 = "[Test Date] >= '" + dateTime1.ToString() + "'";
+                if (sql == string.Empty) sql = sql1; else sql = sql + " And " + sql1;
+            }
+            test = sql;
+            return sql;
+        }
+
     }
 }

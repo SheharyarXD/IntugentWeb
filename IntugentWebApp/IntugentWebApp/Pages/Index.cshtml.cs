@@ -22,7 +22,7 @@ namespace IntugentWebApp.Pages
     public class IndexModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;
-        private readonly ObjectsService _objectsService;
+        public ObjectsService _objectsService;
         public List<string> gGroup = new List<string>();
 
         public IndexModel(ILogger<IndexModel> logger, ObjectsService objectsService)
@@ -39,6 +39,10 @@ namespace IntugentWebApp.Pages
             if (_objectsService.CDefualts != null && _objectsService.CLists != null && _objectsService.Cbfile != null)
             {
                 SetOptionBoxes(_objectsService.CDefualts, _objectsService.CLists);
+                
+                CProdTargets cProdTargets = new CProdTargets(_objectsService.Cbfile,_objectsService.CDefualts);
+                _objectsService.CProdTargets = cProdTargets;
+
                 cMatrix cMatrix = new cMatrix();
                 _objectsService.cMatrix = cMatrix;
 
@@ -63,6 +67,8 @@ namespace IntugentWebApp.Pages
                 MfgInProcess mfgInProcess = new MfgInProcess(_objectsService.Cbfile);
                 _objectsService.MfgInProcess = mfgInProcess;
 
+                CIPProdTargets cIPProdTargets = new CIPProdTargets(_objectsService.Cbfile, _objectsService.MfgInProcess);
+                _objectsService.CIPProdTargets= cIPProdTargets;
                 MfgFinishedGoods mfgFinishedGoods = new MfgFinishedGoods(_objectsService.Cbfile);
                 _objectsService.MfgFinishedGoods = mfgFinishedGoods;
 
@@ -84,7 +90,7 @@ namespace IntugentWebApp.Pages
                 RNDHome rNDHome = new RNDHome(_objectsService.CDefualts, _objectsService.CLists, _objectsService.Cbfile);
                 _objectsService.RNDHome = rNDHome;
 
-                RNDFormulations rNDFormulations = new RNDFormulations(_objectsService.CDefualts, _objectsService.Cbfile);
+                RNDFormulations rNDFormulations = new RNDFormulations(_objectsService.CDefualts, _objectsService.Cbfile, _objectsService.RNDHome);
                 _objectsService.RNDFormulations = rNDFormulations;
 
                 RNDRValues rNDRValues = new RNDRValues(_objectsService.CLists);

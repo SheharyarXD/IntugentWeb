@@ -73,16 +73,30 @@
                         {
                             <tr>
                                 <td>@row["GasName"]</td>
-                                <td>@row["#1"]</td>
-                                <td>@row["#2"]</td>
-                                <td>@row["#3"]</td>
-                                <td>@row["#4"]</td>
-                                <td>@row["#5"]</td>
-                                <td>@row["#6"]</td>
-                                <td>@row["#7"]</td>
-                                <td>@row["#8"]</td>
+                                <td>@NormalizeValue(row["#1"])</td>
+                                <td>@NormalizeValue(row["#2"])</td>
+                                <td>@NormalizeValue(row["#3"])</td>
+                                <td>@NormalizeValue(row["#4"])</td>
+                                <td>@NormalizeValue(row["#5"])</td>
+                                <td>@NormalizeValue(row["#6"])</td>
+                                <td>@NormalizeValue(row["#7"])</td>
+                                <td>@NormalizeValue(row["#8"])</td>
                             </tr>
-                        } 
+                        }
+                        @functions {
+                            public string NormalizeValue(object value)
+                            {
+                                if (value is double doubleValue)
+                                {
+                                    if (double.IsNaN(doubleValue) || double.IsInfinity(doubleValue))
+                                    {
+                                        return "N/A"; // or handle with another default value
+                                    }
+                                    return doubleValue.ToString("G"); // general format
+                                }
+                                return value?.ToString() ?? "N/A";
+                            }
+                        }
                     </tbody>
                 </table>
             </div>
@@ -134,61 +148,82 @@
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const ctx = document.getElementById('charts').getContext('2d');
+            const datasets = [];
 
-            const data1 = {
-                label: 'Form 1',
-                data: @Html.Raw(Json.Serialize(Model.dArX.Zip(Model.dAr0, (x, y) => new { x, y }))),
-                backgroundColor: 'rgba(255, 0, 0, 0.6)',
-                borderColor: 'rgba(255, 0, 0, 1)',
-                borderWidth: 3,
-                pointRadius: 0
-            };
+        @if (Model.dArX != null && Model.dAr0 != null && Model.dArX.Any() && Model.dAr0.Any())
+        {
+            <text>
+                    datasets.push({
+                        label: 'Form 1',
+                        data: @Html.Raw(Json.Serialize(Model.dArX.Zip(Model.dAr0, (x, y) => new { x, y }))),
+                        backgroundColor: 'rgba(255, 0, 0, 0.6)',
+                        borderColor: 'rgba(255, 0, 0, 1)',
+                        borderWidth: 3,
+                        pointRadius: 0
+                    });
+            </text>
+        }
 
-            const data2 = {
-                label: 'Form 2',
-                data: @Html.Raw(Json.Serialize(Model.dArX.Zip(Model.dAr1, (x, y) => new { x, y }))),
-                backgroundColor: 'rgba(0, 0, 255, 0.6)',
-                borderColor: 'rgba(0, 0, 255, 1)',
-                borderWidth: 3,
-                pointRadius: 0
-            };
+        @if (Model.dArX != null && Model.dAr1 != null && Model.dArX.Any() && Model.dAr1.Any())
+        {
+            <text>
+                    datasets.push({
+                        label: 'Form 2',
+                        data: @Html.Raw(Json.Serialize(Model.dArX.Zip(Model.dAr1, (x, y) => new { x, y }))),
+                        backgroundColor: 'rgba(0, 0, 255, 0.6)',
+                        borderColor: 'rgba(0, 0, 255, 1)',
+                        borderWidth: 3,
+                        pointRadius: 0
+                    });
+            </text>
+        }
 
-            const data3 = {
-                label: 'Form 3',
-                data: @Html.Raw(Json.Serialize(Model.dArX.Zip(Model.dAr2, (x, y) => new { x, y }))),
-                backgroundColor: 'rgba(0, 255, 0, 0.6)',
-                borderColor: 'rgba(0, 255, 0, 1)',
-                borderWidth: 3,
-                pointRadius: 0
-            };
+        @if (Model.dArX != null && Model.dAr2 != null && Model.dArX.Any() && Model.dAr2.Any())
+        {
+            <text>
+                    datasets.push({
+                        label: 'Form 3',
+                        data: @Html.Raw(Json.Serialize(Model.dArX.Zip(Model.dAr2, (x, y) => new { x, y }))),
+                        backgroundColor: 'rgba(0, 255, 0, 0.6)',
+                        borderColor: 'rgba(0, 255, 0, 1)',
+                        borderWidth: 3,
+                        pointRadius: 0
+                    });
+            </text>
+        }
 
-            const data4 = {
-                label: 'Form 4',
-                data: @Html.Raw(Json.Serialize(Model.dArX.Zip(Model.dAr3, (x, y) => new { x, y }))),
-                backgroundColor: 'rgba(255, 255, 0, 0.6)',
-                borderColor: 'rgba(255, 255, 0, 1)',
-                borderWidth: 3,
-                pointRadius: 0
-            };
+        @if (Model.dArX != null && Model.dAr3 != null && Model.dArX.Any() && Model.dAr3.Any())
+        {
+            <text>
+                    datasets.push({
+                        label: 'Form 4',
+                        data: @Html.Raw(Json.Serialize(Model.dArX.Zip(Model.dAr3, (x, y) => new { x, y }))),
+                        backgroundColor: 'rgba(255, 255, 0, 0.6)',
+                        borderColor: 'rgba(255, 255, 0, 1)',
+                        borderWidth: 3,
+                        pointRadius: 0
+                    });
+            </text>
+        }
 
-            const data5 = {
-                label: 'Form 5',
-                data: @Html.Raw(Json.Serialize(Model.dArX.Zip(Model.dAr4, (x, y) => new { x, y }))),
-                backgroundColor: 'DarkMagenta',
-                borderColor: 'DarkMagenta',
-                borderWidth: 3,
-                pointRadius: 0
-            };
-
-
-
-
-
+        @if (Model.dArX != null && Model.dAr4 != null && Model.dArX.Any() && Model.dAr4.Any())
+        {
+            <text>
+                    datasets.push({
+                        label: 'Form 5',
+                        data: @Html.Raw(Json.Serialize(Model.dArX.Zip(Model.dAr4, (x, y) => new { x, y }))),
+                        backgroundColor: 'DarkMagenta',
+                        borderColor: 'DarkMagenta',
+                        borderWidth: 3,
+                        pointRadius: 0
+                    });
+            </text>
+        }
 
             const config = {
                 type: 'line',
                 data: {
-                    datasets: [data1, data2, data3, data4, data5]
+                    datasets: datasets
                 },
                 options: {
                     responsive: true,
@@ -196,14 +231,12 @@
                         x: {
                             type: 'linear',
                             position: 'bottom',
-
                             title: {
                                 display: true,
                                 text: 'Temperature (F)',
                             }
                         },
                         y: {
-
                             title: {
                                 display: true,
                                 text: 'R / n value',
@@ -239,12 +272,12 @@
             };
 
             const myChart = new Chart(ctx, config);
-          
+
             document.getElementById('charts').addEventListener('dblclick', () => {
                 myChart.resetZoom();
             });
         });
-     
+
         
         
         

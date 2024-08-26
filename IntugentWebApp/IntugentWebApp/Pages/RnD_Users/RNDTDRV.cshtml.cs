@@ -21,6 +21,8 @@ namespace IntugentWebApp.Pages.RnD_Users
         public void OnGet()
         {
             ViewData["Index"] = HttpContext.Session.GetInt32("UserId");
+            _objectsService.RNDHome.GetDataSet();
+            _objectsService.RNDFormulations.ReadDataset();
             int ir;
             for (int i = 0; i < 8; i++)
             {

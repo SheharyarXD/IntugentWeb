@@ -50,7 +50,10 @@ namespace IntugentWebApp.Pages.RnD_Users
       
               public void OnGet()
               {
-            ReadDataset();
+            _objectsService.RNDHome.GetDataSet();
+            _objectsService.RNDFormulations.ReadDataset();
+            SetView();
+
             ViewData["Index"] = HttpContext.Session.GetInt32("UserId");
                        gFormProps =  _objectsService.RNDFormulations.dtFormProp.DefaultView;
                        gPolyolList = _objectsService.RNDFormulations.sMatNameListPO.ToList();
@@ -74,8 +77,10 @@ namespace IntugentWebApp.Pages.RnD_Users
                       //
                       //  GetDataSet();
 
-            if (_objectsService.RNDHome.bDataRead == false) { 
-                ReadDataset();
+            if (_objectsService.RNDHome.bDataRead == false) {
+                _objectsService.RNDFormulations.ReadDataset();
+                SetView();
+
                 _objectsService.RNDHome.bDataRead = true; }
 
             gID = SetIntTextField("ID");
@@ -637,13 +642,15 @@ namespace IntugentWebApp.Pages.RnD_Users
         {
             if (this.gPO.Count > 28)
             {
-              //  MessageBox.Show("Cannot add another row", Cbfile.sAppName, MessageBoxButton.OK, MessageBoxImage.Warning); return;
+                //  MessageBox.Show("Cannot add another row", Cbfile.sAppName, MessageBoxButton.OK, MessageBoxImage.Warning); return;
+                return new JsonResult(false);
             }
 
             _objectsService.RNDFormulations.Forms.POMats.Add(new CMaterial());
             _objectsService.RNDHome.drS["PORows"] = this.gPO.Count;
+            _objectsService.RNDHome.drS["PORows"] = _objectsService.RNDFormulations.Forms.POMats.Count;
             _objectsService.RNDHome.UpdateDataSet();
-            return new JsonResult(true);
+            return new JsonResult(this.gPO.Count);
         }
 
         public string SetTimeField(string sField)
@@ -726,145 +733,145 @@ namespace IntugentWebApp.Pages.RnD_Users
         #endregion
 
         #region read formulation data for new dataset
-        public void ReadDataset()
-        {
-            int id, iSel, j, nRows, itmp;
-            double dtmp;
+        //public void ReadDataset()
+        //{
+        //    int id, iSel, j, nRows, itmp;
+        //    double dtmp;
 
-            char[] delimiterChars = new char[] { ' ', ',', ':', '\t' };
+        //    char[] delimiterChars = new char[] { ' ', ',', ':', '\t' };
 
-            if (_objectsService.RNDHome.drS["PORows"] != DBNull.Value) 
-                nRows = (int)_objectsService.RNDHome.drS["PORows"];
-            else nRows = 3;
-            _objectsService.RNDFormulations.Forms.POMats.Clear();
-            for (int i = 0; i < nRows; i++) _objectsService.RNDFormulations.Forms.POMats.Add(new CMaterial());
+        //    if (_objectsService.RNDHome.drS["PORows"] != DBNull.Value) 
+        //        nRows = (int)_objectsService.RNDHome.drS["PORows"];
+        //    else nRows = 3;
+        //    _objectsService.RNDFormulations.Forms.POMats.Clear();
+        //    for (int i = 0; i < nRows; i++) _objectsService.RNDFormulations.Forms.POMats.Add(new CMaterial());
 
-            //Read PO dataset and PO side formulation
-            if (_objectsService.RNDHome.drS["POMats"] != DBNull.Value)
-            {
-                string[] strParts = _objectsService.RNDHome.drS["POMats"].ToString().Split(delimiterChars);
-                if (nRows > strParts.Length) nRows = strParts.Length;
-                for (int i = 0; i < nRows; i++) //Grid by default adds an extra row sometime
-                {
-                    id = int.Parse(strParts[i]);
-                    iSel = FindIndex(id, _objectsService.RNDFormulations.dtPO);
-                    _objectsService.RNDFormulations.ModifyPOIsoLists(i, ref _objectsService.RNDFormulations.Forms.POMats, iSel, _objectsService.RNDFormulations.dtPO);
-                }
-                /*
-                                id = int.Parse(strParts[nRows-1]);
-                                iSel = FindIndex(id, dtPO);
-                                if(iSel > 0)
-                                {
-                                    _objectsService.RNDFormulations.Forms.POMats.Add(new CMaterial());
-                                    ModifyPOIsoLists(_objectsService.RNDFormulations.Forms.POMats.Count-1, ref _objectsService.RNDFormulations.Forms.POMats, iSel, dtPO);
-                                }
-                */
-            }
+        //    //Read PO dataset and PO side formulation
+        //    if (_objectsService.RNDHome.drS["POMats"] != DBNull.Value)
+        //    {
+        //        string[] strParts = _objectsService.RNDHome.drS["POMats"].ToString().Split(delimiterChars);
+        //        if (nRows > strParts.Length) nRows = strParts.Length;
+        //        for (int i = 0; i < nRows; i++) //Grid by default adds an extra row sometime
+        //        {
+        //            id = int.Parse(strParts[i]);
+        //            iSel = FindIndex(id, _objectsService.RNDFormulations.dtPO);
+        //            _objectsService.RNDFormulations.ModifyPOIsoLists(i, ref _objectsService.RNDFormulations.Forms.POMats, iSel, _objectsService.RNDFormulations.dtPO);
+        //        }
+        //        /*
+        //                        id = int.Parse(strParts[nRows-1]);
+        //                        iSel = FindIndex(id, dtPO);
+        //                        if(iSel > 0)
+        //                        {
+        //                            _objectsService.RNDFormulations.Forms.POMats.Add(new CMaterial());
+        //                            ModifyPOIsoLists(_objectsService.RNDFormulations.Forms.POMats.Count-1, ref _objectsService.RNDFormulations.Forms.POMats, iSel, dtPO);
+        //                        }
+        //        */
+        //    }
 
-            //Ajust for the user assigned OH numbers
+        //    //Ajust for the user assigned OH numbers
 
-            if (_objectsService.RNDHome.drS["sPOMatsOH"] != DBNull.Value)
-            {
-                string[] strParts = _objectsService.RNDHome.drS["sPOMatsOH"].ToString().Split(delimiterChars);
-                if (nRows > strParts.Length) nRows = strParts.Length;
-                for (int i = 0; i < nRows - 1; i++) //Grid by default adds an extra row sometime
-                {
-                    if (double.TryParse(strParts[i], out dtmp)) _objectsService.RNDFormulations.Forms.POMats[i].MatOHNum = dtmp;
-                }
-            }
+        //    if (_objectsService.RNDHome.drS["sPOMatsOH"] != DBNull.Value)
+        //    {
+        //        string[] strParts = _objectsService.RNDHome.drS["sPOMatsOH"].ToString().Split(delimiterChars);
+        //        if (nRows > strParts.Length) nRows = strParts.Length;
+        //        for (int i = 0; i < nRows - 1; i++) //Grid by default adds an extra row sometime
+        //        {
+        //            if (double.TryParse(strParts[i], out dtmp)) _objectsService.RNDFormulations.Forms.POMats[i].MatOHNum = dtmp;
+        //        }
+        //    }
 
-            //Set pbws
+        //    //Set pbws
 
 
-            string sPOf = "0.0", stmp;
-            for (int i = 0; i < _objectsService.RNDHome.dtF.Rows.Count; i++)
-            {
-                for (j = 0; j < _objectsService.RNDFormulations.Forms.FormAr[i].POMatPbw.Length; j++) _objectsService.RNDFormulations.Forms.FormAr[i].POMatPbw[j] = 0.0;
-                if (_objectsService.RNDHome.dtF.Rows[i]["POPbws"] != DBNull.Value)
-                {
-                    _objectsService.RNDFormulations.Forms.FormAr[i].POMatPbw = System.Text.Json.JsonSerializer.Deserialize<double[]>((string)_objectsService.RNDHome.dtF.Rows[i]["POPbws"]);
-                    switch (i)
-                    {
+        //    string sPOf = "0.0", stmp;
+        //    for (int i = 0; i < _objectsService.RNDHome.dtF.Rows.Count; i++)
+        //    {
+        //        for (j = 0; j < _objectsService.RNDFormulations.Forms.FormAr[i].POMatPbw.Length; j++) _objectsService.RNDFormulations.Forms.FormAr[i].POMatPbw[j] = 0.0;
+        //        if (_objectsService.RNDHome.dtF.Rows[i]["POPbws"] != DBNull.Value)
+        //        {
+        //            _objectsService.RNDFormulations.Forms.FormAr[i].POMatPbw = System.Text.Json.JsonSerializer.Deserialize<double[]>((string)_objectsService.RNDHome.dtF.Rows[i]["POPbws"]);
+        //            switch (i)
+        //            {
 
-                        case (0):
-                            for (j = 0; j < nRows; j++)
-                            { if (_objectsService.RNDFormulations.Forms.FormAr[0].POMatPbw[j] > 0) stmp = (_objectsService.RNDFormulations.Forms.FormAr[0].POMatPbw[j]).ToString(sPOf); else stmp = string.Empty; _objectsService.RNDFormulations.Forms.POMats[j].Pbw1 = stmp; }
-                            break;
+        //                case (0):
+        //                    for (j = 0; j < nRows; j++)
+        //                    { if (_objectsService.RNDFormulations.Forms.FormAr[0].POMatPbw[j] > 0) stmp = (_objectsService.RNDFormulations.Forms.FormAr[0].POMatPbw[j]).ToString(sPOf); else stmp = string.Empty; _objectsService.RNDFormulations.Forms.POMats[j].Pbw1 = stmp; }
+        //                    break;
 
-                        case (1):
-                            for (j = 0; j < nRows; j++)
-                            { if (_objectsService.RNDFormulations.Forms.FormAr[1].POMatPbw[j] > 0) stmp = (_objectsService.RNDFormulations.Forms.FormAr[1].POMatPbw[j]).ToString(sPOf); else stmp = string.Empty; _objectsService.RNDFormulations.Forms.POMats[j].Pbw2 = stmp; }
-                            break;
-                        case (2):
-                            for (j = 0; j < nRows; j++)
-                            { if (_objectsService.RNDFormulations.Forms.FormAr[2].POMatPbw[j] > 0) stmp = (_objectsService.RNDFormulations.Forms.FormAr[2].POMatPbw[j]).ToString(sPOf); else stmp = string.Empty; _objectsService.RNDFormulations.Forms.POMats[j].Pbw3 = stmp; }
-                            break;
-                        case (3):
-                            for (j = 0; j < nRows; j++)
-                            { if (_objectsService.RNDFormulations.Forms.FormAr[3].POMatPbw[j] > 0) stmp = (_objectsService.RNDFormulations.Forms.FormAr[3].POMatPbw[j]).ToString(sPOf); else stmp = string.Empty; _objectsService.RNDFormulations.Forms.POMats[j].Pbw4 = stmp; }
-                            break;
-                        case (4):
-                            for (j = 0; j < nRows; j++)
-                            { if (_objectsService.RNDFormulations.Forms.FormAr[4].POMatPbw[j] > 0) stmp = (_objectsService.RNDFormulations.Forms.FormAr[4].POMatPbw[j]).ToString(sPOf); else stmp = string.Empty; _objectsService.RNDFormulations.Forms.POMats[j].Pbw5 = stmp; }
-                            break;
-                        case (5):
-                            for (j = 0; j < nRows; j++)
-                            { if (_objectsService.RNDFormulations.Forms.FormAr[5].POMatPbw[j] > 0) stmp = (_objectsService.RNDFormulations.Forms.FormAr[5].POMatPbw[j]).ToString(sPOf); else stmp = string.Empty; _objectsService.RNDFormulations.Forms.POMats[j].Pbw6 = stmp; }
-                            break;
-                        case (6):
-                            for (j = 0; j < nRows; j++)
-                            { if (_objectsService.RNDFormulations.Forms.FormAr[6].POMatPbw[j] > 0) stmp = (_objectsService.RNDFormulations.Forms.FormAr[6].POMatPbw[j]).ToString(sPOf); else stmp = string.Empty; _objectsService.RNDFormulations.Forms.POMats[j].Pbw7 = stmp; }
-                            break;
-                        case (7):
-                            for (j = 0; j < nRows; j++)
-                            { if (_objectsService.RNDFormulations.Forms.FormAr[7].POMatPbw[j] > 0) stmp = (_objectsService.RNDFormulations.Forms.FormAr[7].POMatPbw[j]).ToString(sPOf); else stmp = string.Empty; _objectsService.RNDFormulations.Forms.POMats[j].Pbw8 = stmp; }
-                            break;
+        //                case (1):
+        //                    for (j = 0; j < nRows; j++)
+        //                    { if (_objectsService.RNDFormulations.Forms.FormAr[1].POMatPbw[j] > 0) stmp = (_objectsService.RNDFormulations.Forms.FormAr[1].POMatPbw[j]).ToString(sPOf); else stmp = string.Empty; _objectsService.RNDFormulations.Forms.POMats[j].Pbw2 = stmp; }
+        //                    break;
+        //                case (2):
+        //                    for (j = 0; j < nRows; j++)
+        //                    { if (_objectsService.RNDFormulations.Forms.FormAr[2].POMatPbw[j] > 0) stmp = (_objectsService.RNDFormulations.Forms.FormAr[2].POMatPbw[j]).ToString(sPOf); else stmp = string.Empty; _objectsService.RNDFormulations.Forms.POMats[j].Pbw3 = stmp; }
+        //                    break;
+        //                case (3):
+        //                    for (j = 0; j < nRows; j++)
+        //                    { if (_objectsService.RNDFormulations.Forms.FormAr[3].POMatPbw[j] > 0) stmp = (_objectsService.RNDFormulations.Forms.FormAr[3].POMatPbw[j]).ToString(sPOf); else stmp = string.Empty; _objectsService.RNDFormulations.Forms.POMats[j].Pbw4 = stmp; }
+        //                    break;
+        //                case (4):
+        //                    for (j = 0; j < nRows; j++)
+        //                    { if (_objectsService.RNDFormulations.Forms.FormAr[4].POMatPbw[j] > 0) stmp = (_objectsService.RNDFormulations.Forms.FormAr[4].POMatPbw[j]).ToString(sPOf); else stmp = string.Empty; _objectsService.RNDFormulations.Forms.POMats[j].Pbw5 = stmp; }
+        //                    break;
+        //                case (5):
+        //                    for (j = 0; j < nRows; j++)
+        //                    { if (_objectsService.RNDFormulations.Forms.FormAr[5].POMatPbw[j] > 0) stmp = (_objectsService.RNDFormulations.Forms.FormAr[5].POMatPbw[j]).ToString(sPOf); else stmp = string.Empty; _objectsService.RNDFormulations.Forms.POMats[j].Pbw6 = stmp; }
+        //                    break;
+        //                case (6):
+        //                    for (j = 0; j < nRows; j++)
+        //                    { if (_objectsService.RNDFormulations.Forms.FormAr[6].POMatPbw[j] > 0) stmp = (_objectsService.RNDFormulations.Forms.FormAr[6].POMatPbw[j]).ToString(sPOf); else stmp = string.Empty; _objectsService.RNDFormulations.Forms.POMats[j].Pbw7 = stmp; }
+        //                    break;
+        //                case (7):
+        //                    for (j = 0; j < nRows; j++)
+        //                    { if (_objectsService.RNDFormulations.Forms.FormAr[7].POMatPbw[j] > 0) stmp = (_objectsService.RNDFormulations.Forms.FormAr[7].POMatPbw[j]).ToString(sPOf); else stmp = string.Empty; _objectsService.RNDFormulations.Forms.POMats[j].Pbw8 = stmp; }
+        //                    break;
 
-                            /*
-                                                    case (0): for (j = 0; j < nRows; j++) _objectsService.RNDFormulations.Forms.POMats[j].Pbw1 = _objectsService.RNDFormulations.Forms.FormAr[0].POMatPbw[j]; break;
-                                                    case (1): for (j = 0; j < nRows; j++) _objectsService.RNDFormulations.Forms.POMats[j].Pbw2 = _objectsService.RNDFormulations.Forms.FormAr[1].POMatPbw[j]; break;
-                                                    case (2): for (j = 0; j < nRows; j++) _objectsService.RNDFormulations.Forms.POMats[j].Pbw3 = _objectsService.RNDFormulations.Forms.FormAr[2].POMatPbw[j]; break;
-                                                    case (3): for (j = 0; j < nRows; j++) _objectsService.RNDFormulations.Forms.POMats[j].Pbw4 = _objectsService.RNDFormulations.Forms.FormAr[3].POMatPbw[j]; break;
-                                                    case (4): for (j = 0; j < nRows; j++) _objectsService.RNDFormulations.Forms.POMats[j].Pbw5 = _objectsService.RNDFormulations.Forms.FormAr[4].POMatPbw[j]; break;
-                                                    case (5): for (j = 0; j < nRows; j++) _objectsService.RNDFormulations.Forms.POMats[j].Pbw6 = _objectsService.RNDFormulations.Forms.FormAr[5].POMatPbw[j]; break;
-                                                    case (6): for (j = 0; j < nRows; j++) _objectsService.RNDFormulations.Forms.POMats[j].Pbw7 = _objectsService.RNDFormulations.Forms.FormAr[6].POMatPbw[j]; break;
-                                                    case (7): for (j = 0; j < nRows; j++) _objectsService.RNDFormulations.Forms.POMats[j].Pbw8 = _objectsService.RNDFormulations.Forms.FormAr[7].POMatPbw[j]; break;
-                            */
-                    }
-                }
-            }
+        //                    /*
+        //                                            case (0): for (j = 0; j < nRows; j++) _objectsService.RNDFormulations.Forms.POMats[j].Pbw1 = _objectsService.RNDFormulations.Forms.FormAr[0].POMatPbw[j]; break;
+        //                                            case (1): for (j = 0; j < nRows; j++) _objectsService.RNDFormulations.Forms.POMats[j].Pbw2 = _objectsService.RNDFormulations.Forms.FormAr[1].POMatPbw[j]; break;
+        //                                            case (2): for (j = 0; j < nRows; j++) _objectsService.RNDFormulations.Forms.POMats[j].Pbw3 = _objectsService.RNDFormulations.Forms.FormAr[2].POMatPbw[j]; break;
+        //                                            case (3): for (j = 0; j < nRows; j++) _objectsService.RNDFormulations.Forms.POMats[j].Pbw4 = _objectsService.RNDFormulations.Forms.FormAr[3].POMatPbw[j]; break;
+        //                                            case (4): for (j = 0; j < nRows; j++) _objectsService.RNDFormulations.Forms.POMats[j].Pbw5 = _objectsService.RNDFormulations.Forms.FormAr[4].POMatPbw[j]; break;
+        //                                            case (5): for (j = 0; j < nRows; j++) _objectsService.RNDFormulations.Forms.POMats[j].Pbw6 = _objectsService.RNDFormulations.Forms.FormAr[5].POMatPbw[j]; break;
+        //                                            case (6): for (j = 0; j < nRows; j++) _objectsService.RNDFormulations.Forms.POMats[j].Pbw7 = _objectsService.RNDFormulations.Forms.FormAr[6].POMatPbw[j]; break;
+        //                                            case (7): for (j = 0; j < nRows; j++) _objectsService.RNDFormulations.Forms.POMats[j].Pbw8 = _objectsService.RNDFormulations.Forms.FormAr[7].POMatPbw[j]; break;
+        //                    */
+        //            }
+        //        }
+        //    }
 
-            //Read Iso Section
+        //    //Read Iso Section
 
-            nRows = 1;
-            _objectsService.RNDFormulations.Forms.IsoMats.Clear();
-            for (int i = 0; i < nRows; i++) _objectsService.RNDFormulations.Forms.IsoMats.Add(new CMaterial());
+        //    nRows = 1;
+        //    _objectsService.RNDFormulations.Forms.IsoMats.Clear();
+        //    for (int i = 0; i < nRows; i++) _objectsService.RNDFormulations.Forms.IsoMats.Add(new CMaterial());
 
-            if (_objectsService.RNDHome.drS["IsoMats"] != DBNull.Value)
-            {
-                id = (int)_objectsService.RNDHome.drS["IsoMats"];
-                iSel = FindIndex(id, _objectsService.RNDFormulations.dtIso);
-                _objectsService.RNDFormulations.ModifyPOIsoLists(0, ref _objectsService.RNDFormulations.Forms.IsoMats, iSel, _objectsService.RNDFormulations.dtIso);
-            }
-            if (_objectsService.RNDHome.drS["sIsoMatsNCO"] != DBNull.Value)  //Adjust NCO for user entered #
-                if (double.TryParse(_objectsService.RNDHome.drS["sIsoMatsNCO"].ToString(), out dtmp)) _objectsService.RNDFormulations.Forms.IsoMats[0].MatNco = dtmp;
+        //    if (_objectsService.RNDHome.drS["IsoMats"] != DBNull.Value)
+        //    {
+        //        id = (int)_objectsService.RNDHome.drS["IsoMats"];
+        //        iSel = FindIndex(id, _objectsService.RNDFormulations.dtIso);
+        //        _objectsService.RNDFormulations.ModifyPOIsoLists(0, ref _objectsService.RNDFormulations.Forms.IsoMats, iSel, _objectsService.RNDFormulations.dtIso);
+        //    }
+        //    if (_objectsService.RNDHome.drS["sIsoMatsNCO"] != DBNull.Value)  //Adjust NCO for user entered #
+        //        if (double.TryParse(_objectsService.RNDHome.drS["sIsoMatsNCO"].ToString(), out dtmp)) _objectsService.RNDFormulations.Forms.IsoMats[0].MatNco = dtmp;
 
-            for (int i = 0; i < _objectsService.RNDHome.dtF.Rows.Count; i++)
-            {
-                if (_objectsService.RNDHome.dtF.Rows[i]["NCOIndex"] != DBNull.Value) _objectsService.RNDFormulations.Forms.FormAr[i].NcoIndex = (double)_objectsService.RNDHome.dtF.Rows[i]["NCOIndex"];
-                else _objectsService.RNDFormulations.Forms.FormAr[i].NcoIndex = 270;
-            }
-            _objectsService.RNDFormulations.Forms.NCOIndexMats[0].Pbw1 = (_objectsService.RNDFormulations.Forms.FormAr[0].NcoIndex).ToString(sPOf);
-            _objectsService.RNDFormulations.Forms.NCOIndexMats[0].Pbw2 = (_objectsService.RNDFormulations.Forms.FormAr[1].NcoIndex).ToString(sPOf);
-            _objectsService.RNDFormulations.Forms.NCOIndexMats[0].Pbw3 = (_objectsService.RNDFormulations.Forms.FormAr[2].NcoIndex).ToString(sPOf);
-            _objectsService.RNDFormulations.Forms.NCOIndexMats[0].Pbw4 = (_objectsService.RNDFormulations.Forms.FormAr[3].NcoIndex).ToString(sPOf);
-            _objectsService.RNDFormulations.Forms.NCOIndexMats[0].Pbw5 = (_objectsService.RNDFormulations.Forms.FormAr[4].NcoIndex).ToString(sPOf);
-            _objectsService.RNDFormulations.Forms.NCOIndexMats[0].Pbw6 = (_objectsService.RNDFormulations.Forms.FormAr[5].NcoIndex).ToString(sPOf);
-            _objectsService.RNDFormulations.Forms.NCOIndexMats[0].Pbw7 = (_objectsService.RNDFormulations.Forms.FormAr[6].NcoIndex).ToString(sPOf);
-            _objectsService.RNDFormulations.Forms.NCOIndexMats[0].Pbw8 = (_objectsService.RNDFormulations.Forms.FormAr[7].NcoIndex).ToString(sPOf);
+        //    for (int i = 0; i < _objectsService.RNDHome.dtF.Rows.Count; i++)
+        //    {
+        //        if (_objectsService.RNDHome.dtF.Rows[i]["NCOIndex"] != DBNull.Value) _objectsService.RNDFormulations.Forms.FormAr[i].NcoIndex = (double)_objectsService.RNDHome.dtF.Rows[i]["NCOIndex"];
+        //        else _objectsService.RNDFormulations.Forms.FormAr[i].NcoIndex = 270;
+        //    }
+        //    _objectsService.RNDFormulations.Forms.NCOIndexMats[0].Pbw1 = (_objectsService.RNDFormulations.Forms.FormAr[0].NcoIndex).ToString(sPOf);
+        //    _objectsService.RNDFormulations.Forms.NCOIndexMats[0].Pbw2 = (_objectsService.RNDFormulations.Forms.FormAr[1].NcoIndex).ToString(sPOf);
+        //    _objectsService.RNDFormulations.Forms.NCOIndexMats[0].Pbw3 = (_objectsService.RNDFormulations.Forms.FormAr[2].NcoIndex).ToString(sPOf);
+        //    _objectsService.RNDFormulations.Forms.NCOIndexMats[0].Pbw4 = (_objectsService.RNDFormulations.Forms.FormAr[3].NcoIndex).ToString(sPOf);
+        //    _objectsService.RNDFormulations.Forms.NCOIndexMats[0].Pbw5 = (_objectsService.RNDFormulations.Forms.FormAr[4].NcoIndex).ToString(sPOf);
+        //    _objectsService.RNDFormulations.Forms.NCOIndexMats[0].Pbw6 = (_objectsService.RNDFormulations.Forms.FormAr[5].NcoIndex).ToString(sPOf);
+        //    _objectsService.RNDFormulations.Forms.NCOIndexMats[0].Pbw7 = (_objectsService.RNDFormulations.Forms.FormAr[6].NcoIndex).ToString(sPOf);
+        //    _objectsService.RNDFormulations.Forms.NCOIndexMats[0].Pbw8 = (_objectsService.RNDFormulations.Forms.FormAr[7].NcoIndex).ToString(sPOf);
 
-            SetView();
-        }
+        //    SetView();
+        //}
 
         public static int FindIndex(int id, DataTable dt)
         {

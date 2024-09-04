@@ -40,8 +40,8 @@ namespace IntugentWebApp.Pages.RnD_Users
         public async void OnGet()
         {
             ViewData["Index"] = HttpContext.Session.GetInt32("UserId");
-            Startup();
             _objectsService.RNDHome.bInit = false;
+            Startup();
             gLoc1 = _objectsService.CDefualts.sLocation;
             gProd1 = _objectsService.CLists.dvComProdAll;
            //_objectsService.Recipe_1.gProductID.ItemsSource = _objectsService.CLists.dvComProd;
@@ -52,7 +52,7 @@ namespace IntugentWebApp.Pages.RnD_Users
             _objectsService.CLists.dvLists.RowFilter = "sList = 'Testing Status RND'";  //Testing Status
             _objectsService.CLists.dvTestingStatRND = _objectsService.CLists.dvLists.ToTable().DefaultView;
              gTestStat1= _objectsService.CLists.dvTestingStatRND;
-            //            CPages.PageRndHome_1.gTestStat1.SelectedValue = CDefualts.iRNDTestingStat;
+             //gTestStat1SelectedValue = _objectsService.CDefualts.iRNDTestingStat;
 
             _objectsService.CLists.dvLists.RowFilter = "sList = 'RND Study Type'";  //Testing Status
             _objectsService.CLists.dvRunTypeRND = _objectsService.CLists.dvLists.ToTable().DefaultView;
@@ -70,7 +70,7 @@ namespace IntugentWebApp.Pages.RnD_Users
             //_objectsService.CLists.dvLists.RowFilter = "sList = 'RND Study Type' and ID <> 59";  //Testing Status
             _objectsService.CLists.dvRunTypeRND2 = _objectsService.CLists.dvLists.ToTable().DefaultView;
             gStudyType = _objectsService.CLists.dvRunTypeRND2;
-            gStudyTypeSelectedValue = 0;
+            //gStudyTypeSelectedValue = 0;
 
             _objectsService.CLists.dvEmployees = _objectsService.CLists.dtLoc.DefaultView;
             _objectsService.CLists.dvEmployees.RowFilter = "IDLocation = 3";  //Employees
@@ -127,7 +127,7 @@ namespace IntugentWebApp.Pages.RnD_Users
             {
                 gRNDSearch = _objectsService.RNDHome.dt.DefaultView; _objectsService.RNDHome.EnableRNDPages(false);
             }
-            return new JsonResult(new {message=true});
+            return new JsonResult(gProd1SelectedValue);
         }
 
         public bool SearchRNDDB()
@@ -607,8 +607,8 @@ namespace IntugentWebApp.Pages.RnD_Users
             if (_objectsService.CLists.drEmployee["RndDate2"] == DBNull.Value) (gRndDate2) = null; else (gRndDate2) = (DateTime)_objectsService.CLists.drEmployee["RndDate2"];
             if (_objectsService.CLists.drEmployee["RNDNameSearch"] == DBNull.Value) gRNDNameSearch = null; else gRNDNameSearch = (string)_objectsService.CLists.drEmployee["RNDNameSearch"];
             if (_objectsService.CLists.drEmployee["Rnd Product Code"] == DBNull.Value) gProd1SelectedValue = _objectsService.CDefualts.sProdRNDAll; else gProd1SelectedValue = (string)_objectsService.CLists.drEmployee["Rnd Product Code"];
-            if (_objectsService.CLists.drEmployee["RndIDTestingStatus"] == DBNull.Value) gTestStat1SelectedValue = _objectsService.RNDHome.CDefualts.iRNDTestingStat; else gTestStat1SelectedValue = (int)_objectsService.CLists.drEmployee["RndIDTestingStatus"];
-            if (_objectsService.CLists.drEmployee["RndIDStudyType"] == DBNull.Value) gStudyTypeSelectedValue = _objectsService.RNDHome.CDefualts.iMfgRunType; else gStudyTypeSelectedValue = (int)_objectsService.CLists.drEmployee["RndIDStudyType"];
+            if (_objectsService.CLists.drEmployee["RndIDTestingStatus"] == DBNull.Value) gTestStat1SelectedValue = _objectsService.CDefualts.iRNDTestingStat; else gTestStat1SelectedValue = (int)_objectsService.CLists.drEmployee["RndIDTestingStatus"];
+            if (_objectsService.CLists.drEmployee["RndIDStudyType"] == DBNull.Value) gStudyTypeSelectedValue = _objectsService.CDefualts.iMfgRunType; else gStudyTypeSelectedValue = (int)_objectsService.CLists.drEmployee["RndIDStudyType"];
 
             if (_objectsService.CLists.drEmployee["RndSql"] != DBNull.Value) _objectsService.RNDHome.sqlSearchDS = (string)_objectsService.CLists.drEmployee["RndSql"];
             if (SearchRNDDB() && _objectsService.RNDHome.dt.Rows.Count > 0)

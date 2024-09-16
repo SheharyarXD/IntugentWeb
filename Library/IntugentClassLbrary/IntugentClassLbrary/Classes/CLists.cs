@@ -86,6 +86,7 @@ namespace IntugentClassLbrary.Classes
                 //MessageBox.Show(sMsg, Cbfile.sAppName, MessageBoxButton.OK, MessageBoxImage.Stop);
                 System.Diagnostics.Trace.TraceError(sMsg + "\n\n" + ex.Message);
                 //CTelClient.TelException(ex, sMsg);
+                throw;
             }
             //CStatusBar.SetText("User Preferences Saved at " + DateTime.Now.ToString("hh:mm:ss:tt"));
 

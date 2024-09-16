@@ -29,10 +29,11 @@
                         <div class="col-lg-4">
                             <!-- Testing Status -->
                             <div class="form-floating mb-2">
+
                                 <select class="form-select" id="testingStatus">
                               @foreach (DataRowView row in Model.gTestStat1)
                                 {
-                                    <option value="@row["ID"]" selected="@(Model.gTestStat1SelectedValue == Int32.Parse(row["ID"].ToString()))">@row["sName"]</option>
+                                    <option value="@row["ID"]" selected="@(Model.gTestStat1SelectedValue.ToString() ==row["ID"].ToString())">@row["sName"]</option>
                                 }  
                                 </select>
                                 <label for="testingStatus">Testing Status</label>
@@ -45,7 +46,7 @@
                                 <select class="form-select" id="productCode">
                                      @foreach (DataRowView row in Model.gProd1)
                                 {
-                                    <option value="@row["Product"]" selected="@(Model.gProd1SelectedValue == (row["Product Code"].ToString()))">@row["Product"]</option>
+                                    <option value="@row["Product Code"]" selected="@(Model.gProd1SelectedValue == row["Product Code"].ToString())">@row["Product"]</option>
                                 }   
                                 </select>
                                 <label for="productCode">Product Code</label>
@@ -55,10 +56,11 @@
                         <div class="col-lg-4">
                             <!-- Study Type -->
                             <div class="form-floating mb-2">
+
                                 <select class="form-select" id="studyType">
                                @foreach (DataRowView row in Model.gStudyType)
                                 {
-                                    <option value="@row["ID"]" selected="@(Model.gStudyTypeSelectedValue == Int32.Parse(row["ID"].ToString()))">@row["sName"]</option>
+                                    <option value="@row["ID"]" selected="@(Model.gStudyTypeSelectedValue.ToString() == row["ID"].ToString())">@row["sName"]</option>
                                 }  
                                 </select>
                                 <label for="studyType">Study Type</label>
@@ -79,6 +81,7 @@
 
                         <div class="col-lg-4">
                             <!-- After Date -->
+
                             <div class="form-floating mb-2">
                                 <input type="date" id="gRndDate2" class="form-control" value="@Model.gRndDate2?.ToString("yyyy-MM-dd")" id="afterDate" placeholder="">
                                 <label for="afterDate">Experiment Date - After or At</label>
@@ -299,7 +302,7 @@
                 data: { gRndDate1: gRndDate1, gRndDate2: gRndDate2, gProd1SelectedValue: gProd1SelectedValue, gTestStat1SelectedValue: gTestStat1SelectedValue, gStudyTypeSelectedValue: gStudyTypeSelectedValue, gRNDNameSearch: gRNDNameSearch},
                 success: function (response) {
                    // console.log('Server response:', response);
-                    location.reload();
+                   location.reload();
                 },
                 error: function (xhr, status, error) {
                     console.error('Error:', error);

@@ -177,6 +177,10 @@
 @section Scripts {
     <script>
         document.addEventListener("DOMContentLoaded", function () {
+                var weightsNull = @(Model.nnModel.Weights == null ? "true" : "false");
+                if (weightsNull === true) {
+                    alert("Weight functions not initialized");
+                }
                 $(function () {
                     $(".td").click(function (event) {
                         if ($(this).children("input").length > 0)

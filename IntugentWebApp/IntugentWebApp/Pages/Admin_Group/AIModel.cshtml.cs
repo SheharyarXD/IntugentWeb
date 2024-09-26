@@ -250,7 +250,9 @@ namespace IntugentWebApp.Pages.Admin_Group
                 return;
             }
 
-            gWeights.Clear();
+           
+
+                gWeights.Clear();
 
             for (int iN = 1; iN < nnModel.nNeuronsInLayers[iLayer] + 1; iN++)
             {

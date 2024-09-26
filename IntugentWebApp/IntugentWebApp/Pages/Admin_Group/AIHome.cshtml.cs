@@ -56,7 +56,7 @@ namespace IntugentWebApp.Pages.Admin_Group
                 bInitialSearchDone = true;
 
             }
-            else EnablesAIPages(false);
+            else  EnablesAIPages(false);
             }
             catch (Exception ex)
             {

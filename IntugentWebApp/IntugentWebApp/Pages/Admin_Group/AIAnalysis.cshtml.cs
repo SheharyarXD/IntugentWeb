@@ -42,8 +42,8 @@ namespace IntugentWebApp.Pages.Admin_Group
         {
             try
             {
-
-            ViewData["Index"] = HttpContext.Session.GetInt32("UserId");
+                ViewData["AdminPanel"] = "true";
+                ViewData["Index"] = HttpContext.Session.GetInt32("UserId");
             if (_objectsService.CDBase.dr["sNote"] == DBNull.Value) gStudyName = string.Empty; else gStudyName = (string)_objectsService.CDBase.dr["sNote"];
             if (_objectsService.CDBase.dr["sFilePath"] == DBNull.Value) gDataFile = string.Empty; else gDataFile = (string)_objectsService.CDBase.dr["sFilePath"];
             if (_objectsService.CDBase.dr["sSQL"] == DBNull.Value) gSQL = string.Empty; else gSQL = (string)_objectsService.CDBase.dr["sSQL"];

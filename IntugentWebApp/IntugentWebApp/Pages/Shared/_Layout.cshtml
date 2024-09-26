@@ -25,6 +25,7 @@
     @Html.AntiForgeryToken()
     @{
         var activePage = ViewData["ActivePage"] as string;
+        var adminPanel = ViewData["AdminPanel"] as string;
     }
     
     <div class="wrapper">
@@ -201,17 +202,17 @@
                         </a>
                         </li>
 
-                        <li class="@(activePage == "AI Data Analysis" ? "active" : "")">
-                            <a class="sidenav-item-link" href="/Admin_Group/AIAnalysis">
+                                <li class="@(activePage == "AI Data Analysis" ? "active" : "")" style="@(adminPanel != "true" ? "pointer-events: none; opacity: 0.6;" : "")">
+                                    <a class="sidenav-item-link" href="/Admin_Group/AIAnalysis">
                         <i class="mdi mdi-remote"></i>
                                 <span class="nav-text">AI Data Analysis</span>
                         </a>
                         </li>
 
-                        <li class="@(activePage == "AI Model" ? "active" : "")">
-                            <a class="sidenav-item-link" href="/Admin_Group/AIModel">
+                                <li class="@(activePage == "AI Model" ? "active" : "")" style="@(adminPanel != "true" ? "pointer-events: none; opacity: 0.6;" : "")">
+                                    <a class="sidenav-item-link " href="/Admin_Group/AIModel">
                         <i class="mdi mdi-kodi"></i>
-                                <span class="nav-text">AI Model</span>
+                                        <span class="nav-text">AI Model</span>
                         </a>
                         </li> 
                          <script type="text/javascript">

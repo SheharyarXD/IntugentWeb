@@ -44,9 +44,10 @@ namespace IntugentWebApp.Pages.Admin_Group
             try
             {
 
-            //PerformInitialSearch();
-            //_objectsService.CNNData.ReadData(_objectsService.CDBase);
-            ViewData["Index"] = HttpContext.Session.GetInt32("UserId");
+                //PerformInitialSearch();
+                ViewData["AdminPanel"] = "true";
+                //_objectsService.CNNData.ReadData(_objectsService.CDBase);
+                ViewData["Index"] = HttpContext.Session.GetInt32("UserId");
             //if (_objectsService.CDBase.dr["snnModel"] == DBNull.Value) {
             //    nnModel = _objectsService.CNNData.GetModelData();
             //}

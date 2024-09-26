@@ -41,6 +41,9 @@ namespace IntugentWebApp.Pages.Admin_Group
         }
         public void OnGet()
         {
+            try
+            {
+
             //PerformInitialSearch();
             //_objectsService.CNNData.ReadData(_objectsService.CDBase);
             ViewData["Index"] = HttpContext.Session.GetInt32("UserId");
@@ -76,6 +79,10 @@ namespace IntugentWebApp.Pages.Admin_Group
                 throw new InvalidOperationException("nnModel is not initialized.");
             }
             SetView();
+            }
+            catch (Exception ex)
+            {
+            }
         }
         public void PerformInitialSearch()
         {
@@ -93,6 +100,9 @@ namespace IntugentWebApp.Pages.Admin_Group
         }
         public void SetView()
         {
+            try
+            {
+
             //           if(CNNData.OutputPred !=null || CNNData.Output !=null)
 
             int n = _objectsService.CNNData.Output.Length;
@@ -115,11 +125,18 @@ namespace IntugentWebApp.Pages.Admin_Group
             gChartBottomTitle = _objectsService.CNNData.sOutputName + "_Exp.";
             gChartLeftTitle   = _objectsService.CNNData.sOutputName + "_Pred.";
             if (nnModel.ErrorRMSBase > 0) gRMS  = (100.0 * (1.0 - nnModel.ErrorRMS / nnModel.ErrorRMSBase)).ToString("0.00"); else gRMS  = string.Empty;
+            }
+            catch (Exception ex)
+            {
+            }
 
         }
 
         public IActionResult OnPostGenInfo_LF(string Name,string Value)
         {
+            try
+            {
+
             nnModel = _objectsService.CNNData.GetModelData();
             string sFld = String.Empty, sMsg, sdum; ;
             string sName = Name;
@@ -163,11 +180,18 @@ namespace IntugentWebApp.Pages.Admin_Group
             }
 
             SaveModel();
+            }
+            catch (Exception ex)
+            {
+            }
             return new JsonResult(true);
         }
 
         public void SetNeurons()
         {
+            try
+            {
+
             //            _objectsService.AIModel.dtNeurons.Clear();
             /*            if (nnModel.nNeuronsInLayers == null)
                         {
@@ -187,10 +211,17 @@ namespace IntugentWebApp.Pages.Admin_Group
 
             gHNeurons= _objectsService.AIModel.dtNeurons.DefaultView;
 
+            }
+            catch (Exception ex)
+            {
+            }
         }
 
         public void SetWeights(int iLayer)
         {
+            try
+            {
+
             int nCols = 0;
             string stmp;
             string sForm = "0.00";
@@ -230,21 +261,35 @@ namespace IntugentWebApp.Pages.Admin_Group
                 }
                 gWeights.Rows.Add(row);
             }
+            }
+            catch (Exception ex)
+            {
+            }
         }
     
 
         public void SetgLayer()
         {
+            try
+            {
+
             if (gLayer != null)
             {
             gLayer.Clear();
             }
             for (int i = 0; i < nnModel.nHLayers; i++) gLayer.Add("#" + (i + 1));
             gLayer.Add("Output"); gLayerSelectedIndex = 0;
+            }
+            catch (Exception ex)
+            {
+            }
         }
       
         public IActionResult OnPostNodeNoEditing(int rowId,int colId,string text)
         {
+            try
+            {
+
             string sMsg;
             int irow = rowId;
             int icol = colId;
@@ -296,15 +341,26 @@ namespace IntugentWebApp.Pages.Admin_Group
                 _objectsService.CDBase.UpdateModel();
                 _objectsService.CNNData.ReadData(_objectsService.CDBase);
             }
+            }
+            catch (Exception ex)
+            {
+            }
             return new JsonResult(true);
         }
 
         public void SaveModel()
         {
+            try
+            {
+
             string sModel = System.Text.Json.JsonSerializer.Serialize(nnModel);
             //           MessageBox.Show(sModel);
             _objectsService.CDBase.dr["snnModel"] = sModel;
             _objectsService.CDBase.UpdateModel();
+            }
+            catch (Exception ex)
+            {
+            }
         }
 
         #region Preview Function
@@ -337,6 +393,8 @@ namespace IntugentWebApp.Pages.Admin_Group
 
         public IActionResult OnPostGLayer_Changed(string Index)
         {
+            var result = new List<Dictionary<string, object>>();
+            try { 
             //if (_objectsService.CDBase.dr["snnModel"] == DBNull.Value)
             //{
             //}
@@ -349,7 +407,6 @@ namespace IntugentWebApp.Pages.Admin_Group
             if (gLayerSelectedIndex >= 0) SetWeights(gLayerSelectedIndex + 1);
             nnModel.Predict(_objectsService.CNNData);
             SetView();
-            var result = new List<Dictionary<string, object>>();
             foreach (DataRow rowView in gWeights.Rows)
             {
                 var rowDict = new Dictionary<string, object>();
@@ -360,12 +417,19 @@ namespace IntugentWebApp.Pages.Admin_Group
                 result.Add(rowDict);
             }
 
+            }
+            catch (Exception ex)
+            {
+            }
             // Return the result as JSON
             return new JsonResult(result);
         }
 
         public IActionResult OnPostTrainTheModel()
         {
+            try
+            {
+
             if (_objectsService.CDBase.dr["snnModel"] == DBNull.Value)
             {
                 nnModel = _objectsService.CNNData.GetModelData();
@@ -380,7 +444,11 @@ namespace IntugentWebApp.Pages.Admin_Group
             SetView();
             SaveModel();
             SetWeights(gLayerSelectedIndex + 1);
-            //Mouse.OverrideCursor = null;
+                //Mouse.OverrideCursor = null;
+            }
+            catch (Exception ex)
+            {
+            }
             return new JsonResult(true);
         }
 
@@ -403,6 +471,9 @@ namespace IntugentWebApp.Pages.Admin_Group
 
         public IActionResult OnPostGHLayerType_Changed(string gHLayerTypeSelectedItem)
         {
+            try
+            {
+
             if (_objectsService.CDBase.dr["snnModel"] == DBNull.Value)
             {
                 nnModel = _objectsService.CNNData.GetModelData();
@@ -417,6 +488,10 @@ namespace IntugentWebApp.Pages.Admin_Group
             nnModel.Predict(_objectsService.CNNData);
 
             SetView();
+            }
+            catch (Exception ex)
+            {
+            }
             return new JsonResult(true);
         }
 

@@ -22,9 +22,16 @@ namespace IntugentWebApp.Pages.Admin_Group
         }
         public void OnGet()
         {
+            try
+            {
+
             ViewData["Index"] = HttpContext.Session.GetInt32("UserId");
             PerformInitialSearch();
             _objectsService.CNNData.ReadData(_objectsService.CDBase);
+            }
+            catch (Exception ex)
+            {
+            }
         }
         public bool bInitialSearchDone = false;
         //DispatcherTimer dispTimer;
@@ -32,6 +39,9 @@ namespace IntugentWebApp.Pages.Admin_Group
 
         public void PerformInitialSearch()
         {
+            try
+            {
+
             if (_objectsService.CDBase.SearchDatabase(string.Empty) && _objectsService.CDBase.dt.Rows.Count > 0)
             {
                 int itmp;
@@ -46,6 +56,10 @@ namespace IntugentWebApp.Pages.Admin_Group
 
             }
             else EnablesAIPages(false);
+            }
+            catch (Exception ex)
+            {
+            }
         }
 
         //private void OnPageLoaded(object sender, RoutedEventArgs e)
@@ -86,12 +100,22 @@ namespace IntugentWebApp.Pages.Admin_Group
 
         public IActionResult OnPostGNewAIModel_Click()
         {
+            try
+            {
+
             if (_objectsService.CDBase.CreateNewModel()) { gModelsSelectedIndex = _objectsService.CDBase.IndexModel; gModels = _objectsService.CDBase.dt.DefaultView; }
+            }
+            catch (Exception ex)
+            {
+            }
             return new JsonResult(true);
         }
 
         public IActionResult OnPostGModelsSC(int gModelsSelectedIndex)
         {
+            try
+            {
+
             gModels = _objectsService.CDBase.dt.DefaultView;
             if (gModels == null 
                 //|| CPages.PageModel_1 == null
@@ -116,6 +140,10 @@ namespace IntugentWebApp.Pages.Admin_Group
                 //  CStatusBar.SetText("Finished Reading data file.");
                 // Mouse.OverrideCursor = null;
 
+            }
+            }
+            catch (Exception ex)
+            {
             }
             return new JsonResult(true);
 

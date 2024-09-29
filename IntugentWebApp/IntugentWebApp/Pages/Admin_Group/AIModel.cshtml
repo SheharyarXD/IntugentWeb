@@ -177,6 +177,14 @@
 @section Scripts {
     <script>
         document.addEventListener("DOMContentLoaded", function () {
+                if (@Model.nnModel.nInputNeurons < 2) {
+                    alert("At least 2 input variables required");
+              
+                }
+                var weightsNull = @(Model.nnModel.Weights == null ? "true" : "false");
+                if (weightsNull === true) {
+                    alert("Weight functions not initialized");
+                }
                 $(function () {
                     $(".td").click(function (event) {
                         if ($(this).children("input").length > 0)
@@ -303,6 +311,23 @@
                     headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
                     data: { rowId: rowId, colId: colId, text: text },
                     success: function (response) {
+                        var nHLayers = @Html.Raw(Json.Serialize(Model.nnModel.nHLayers));
+                        var nNeuronsInLayers = @Html.Raw(Json.Serialize(Model.nnModel.nNeuronsInLayers));
+
+                        if (nHLayers == null || nHLayers < 1) {
+                            alert("Number of Hidden layers must be greater than 0");
+                        }
+
+                        if (nNeuronsInLayers == null || nNeuronsInLayers[0] < 1) {
+                            alert("Number of Neurons in the input layer must be greater than 0");
+                        }
+
+                        if (nNeuronsInLayers == null || nNeuronsInLayers[1] < 1) { // Change index if needed
+                            alert("Number of Neurons in the Hidden Layer must be greater than 0");
+                        }
+                        if (response != true) { 
+                            alert(response.message);
+                        }
                         // console.log('Server response:', response);
                         location.reload();
                     },
@@ -377,6 +402,9 @@
                     headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
                     data: { Name: Name, Value: Value },
                     success: function (response) {
+                        if (response != true) {
+                            alert(response.message);
+                        }
                         // console.log('Server response:', response);
                         location.reload();
                     },

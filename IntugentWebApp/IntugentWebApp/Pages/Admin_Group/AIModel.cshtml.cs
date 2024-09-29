@@ -41,9 +41,13 @@ namespace IntugentWebApp.Pages.Admin_Group
         }
         public void OnGet()
         {
-            //PerformInitialSearch();
-            //_objectsService.CNNData.ReadData(_objectsService.CDBase);
-            ViewData["Index"] = HttpContext.Session.GetInt32("UserId");
+            try
+            {
+
+                //PerformInitialSearch();
+                ViewData["AdminPanel"] = "true";
+                //_objectsService.CNNData.ReadData(_objectsService.CDBase);
+                ViewData["Index"] = HttpContext.Session.GetInt32("UserId");
             //if (_objectsService.CDBase.dr["snnModel"] == DBNull.Value) {
             //    nnModel = _objectsService.CNNData.GetModelData();
             //}
@@ -56,7 +60,7 @@ namespace IntugentWebApp.Pages.Admin_Group
             nnModel.nInputNeurons = _objectsService.CNNData.nInputNeurons;
             nnModel.Reset();
 
-            string sField = "0.000";
+                string sField = "0.000";
             gMaxIter = nnModel.nMaxIter.ToString();
             gConvTol = nnModel.ConvTol.ToString("0.000E00");
             gLearnRate = nnModel.LearnRate.ToString(sField);
@@ -73,9 +77,13 @@ namespace IntugentWebApp.Pages.Admin_Group
             }
             else
             {
-                throw new InvalidOperationException("nnModel is not initialized.");
+                //throw new InvalidOperationException("nnModel is not initialized.");
             }
             SetView();
+            }
+            catch (Exception ex)
+            {
+            }
         }
         public void PerformInitialSearch()
         {
@@ -93,6 +101,9 @@ namespace IntugentWebApp.Pages.Admin_Group
         }
         public void SetView()
         {
+            try
+            {
+
             //           if(CNNData.OutputPred !=null || CNNData.Output !=null)
 
             int n = _objectsService.CNNData.Output.Length;
@@ -115,11 +126,18 @@ namespace IntugentWebApp.Pages.Admin_Group
             gChartBottomTitle = _objectsService.CNNData.sOutputName + "_Exp.";
             gChartLeftTitle   = _objectsService.CNNData.sOutputName + "_Pred.";
             if (nnModel.ErrorRMSBase > 0) gRMS  = (100.0 * (1.0 - nnModel.ErrorRMS / nnModel.ErrorRMSBase)).ToString("0.00"); else gRMS  = string.Empty;
+            }
+            catch (Exception ex)
+            {
+            }
 
         }
 
         public IActionResult OnPostGenInfo_LF(string Name,string Value)
         {
+            try
+            {
+
             nnModel = _objectsService.CNNData.GetModelData();
             string sFld = String.Empty, sMsg, sdum; ;
             string sName = Name;
@@ -128,34 +146,34 @@ namespace IntugentWebApp.Pages.Admin_Group
             switch (sName)
             {
                 case "gMaxIter":
-                    if (gMaxIter  == string.Empty) { 
-                        //MessageBox.Show("Maximum number of iterations must be greater than zero", Cbfile.sAppName);
+                    if (gMaxIter  == null) { 
+                        return new JsonResult(new { message = "Maximum number of iterations must be greater than zero", _objectsService.Cbfile.sAppName });
                         gMaxIter  = nnModel.nMaxIter.ToString(); }
                     else if (int.TryParse(Value, out itmp)) nnModel.nMaxIter = itmp; else gMaxIter  = nnModel.nMaxIter.ToString(); break;
 
                 case "gConvTol":
-                    if (gConvTol  == string.Empty) { 
-                        //MessageBox.Show("The Convergence Tolerance must be greater than zero", Cbfile.sAppName); 
+                    if (gConvTol  == null) {
+                            return new JsonResult(new { message = "The Convergence Tolerance must be greater than zero", _objectsService.Cbfile.sAppName }); 
                         gConvTol  = nnModel.ConvTol.ToString(); }
                     else if (double.TryParse(Value, out dtmp)) nnModel.ConvTol = dtmp; else gConvTol  = nnModel.ConvTol.ToString(); break;
 
                 case "gLearnRate":
-                    if (gLearnRate  == string.Empty) { 
-                        //MessageBox.Show("Learning rate must be greater than zero", Cbfile.sAppName); 
+                    if (gLearnRate  == null) {
+                            return new JsonResult(new { message = "Learning rate must be greater than zero", _objectsService.Cbfile.sAppName }); 
                         gLearnRate  = nnModel.LearnRate.ToString(); }
                     else if (double.TryParse(Value, out dtmp)) nnModel.LearnRate = dtmp; else gLearnRate  = nnModel.LearnRate.ToString(); break;
 
 
                 case "gStepSizeMin":
-                    if (gStepSizeMin  == string.Empty) {
-                        //MessageBox.Show("Learning acceleration must be greater than zero", Cbfile.sAppName);
+                    if (gStepSizeMin  == null) {
+                            return new JsonResult(new { message = "Learning acceleration must be greater than zero", _objectsService.Cbfile.sAppName });
                         gStepSizeMin  = nnModel.StepSizeMin.ToString(); }
                     else if (double.TryParse(Value, out dtmp)) nnModel.StepSizeMin = dtmp; else gStepSizeMin  = nnModel.LearnRate.ToString(); break;
 
 
                 case "gnHiddenLayers":
-                    if (gnHiddenLayers  == string.Empty) { 
-                        //MessageBox.Show("Number of Hidden Layers must be greater than zero", Cbfile.sAppName);
+                    if (gnHiddenLayers  == null) {
+                            return new JsonResult(new { message = "Number of Hidden Layers must be greater than zero", _objectsService.Cbfile.sAppName });
                         gnHiddenLayers  = nnModel.nHLayers.ToString(); }
                     else if (!int.TryParse(Value, out itmp)) gnHiddenLayers  = nnModel.nHLayers.ToString();
                     else if (itmp != nnModel.nHLayers) { nnModel.nHLayers = itmp; nnModel.ResetNeurons(nnModel.nInputNeurons); SetNeurons(); nnModel.ResetWeights(); SetWeights(1); gLayerSelectedIndex = 0; }
@@ -163,11 +181,18 @@ namespace IntugentWebApp.Pages.Admin_Group
             }
 
             SaveModel();
+            }
+            catch (Exception ex)
+            {
+            }
             return new JsonResult(true);
         }
 
         public void SetNeurons()
         {
+            try
+            {
+
             //            _objectsService.AIModel.dtNeurons.Clear();
             /*            if (nnModel.nNeuronsInLayers == null)
                         {
@@ -187,10 +212,17 @@ namespace IntugentWebApp.Pages.Admin_Group
 
             gHNeurons= _objectsService.AIModel.dtNeurons.DefaultView;
 
+            }
+            catch (Exception ex)
+            {
+            }
         }
 
         public void SetWeights(int iLayer)
         {
+            try
+            {
+
             int nCols = 0;
             string stmp;
             string sForm = "0.00";
@@ -218,7 +250,9 @@ namespace IntugentWebApp.Pages.Admin_Group
                 return;
             }
 
-            gWeights.Clear();
+           
+
+                gWeights.Clear();
 
             for (int iN = 1; iN < nnModel.nNeuronsInLayers[iLayer] + 1; iN++)
             {
@@ -230,21 +264,35 @@ namespace IntugentWebApp.Pages.Admin_Group
                 }
                 gWeights.Rows.Add(row);
             }
+            }
+            catch (Exception ex)
+            {
+            }
         }
     
 
         public void SetgLayer()
         {
+            try
+            {
+
             if (gLayer != null)
             {
             gLayer.Clear();
             }
             for (int i = 0; i < nnModel.nHLayers; i++) gLayer.Add("#" + (i + 1));
             gLayer.Add("Output"); gLayerSelectedIndex = 0;
+            }
+            catch (Exception ex)
+            {
+            }
         }
       
         public IActionResult OnPostNodeNoEditing(int rowId,int colId,string text)
         {
+            try
+            {
+
             string sMsg;
             int irow = rowId;
             int icol = colId;
@@ -266,8 +314,8 @@ namespace IntugentWebApp.Pages.Admin_Group
             if (irow > nnModel.nHLayers - 1)
             {
                 sMsg = "Too many hidden layers";
-              //  MessageBox.Show(sMsg, Cbfile.sAppName, MessageBoxButton.OK, MessageBoxImage.Stop);
-                return new JsonResult(sMsg);
+                    //  MessageBox.Show(sMsg, Cbfile.sAppName, MessageBoxButton.OK, MessageBoxImage.Stop);
+                    return new JsonResult(new { message = sMsg });
             }
             if (icol == 2)
             {
@@ -275,12 +323,16 @@ namespace IntugentWebApp.Pages.Admin_Group
                 //TextBox tb = gHNeurons.Columns[icol].GetCellContent(dgr) as TextBox;
                 string tb = text;
 
-                if (tb  == string.Empty) {
-                    //MessageBox.Show("Number of neurons must be greater than zero", Cbfile.sAppName);
+                if (tb  == null) {
+                    return new JsonResult(new { message = "Number of neurons must be greater than zero", _objectsService.Cbfile.sAppName });
                     tb  = nnModel.nNeuronsInLayers[irow + 1].ToString(); }
                 else if (!int.TryParse(tb , out itmp)) tb  = nnModel.nNeuronsInLayers[irow + 1].ToString();
                 else
-                if (itmp != nnModel.nNeuronsInLayers[irow + 1]) { nnModel.nNeuronsInLayers[irow + 1] = itmp; nnModel.ResetWeights(); SetWeights(gLayerSelectedIndex + 1); }
+                if (itmp != nnModel.nNeuronsInLayers[irow + 1]) {
+                        nnModel.nNeuronsInLayers[irow + 1] = itmp; 
+                        nnModel.ResetWeights(); 
+                        SetWeights(gLayerSelectedIndex + 1);
+                    }
 
                 //               if (int.TryParse(tb , out itmp) && itmp > 0) nnModel.nNeuronsInLayers[irow + 1] = itmp;
                 //                else { MessageBox.Show("The number of Neurons must be > 0"); tb  = nnModel.nNeuronsInLayers[irow + 1].ToString(); }
@@ -296,15 +348,26 @@ namespace IntugentWebApp.Pages.Admin_Group
                 _objectsService.CDBase.UpdateModel();
                 _objectsService.CNNData.ReadData(_objectsService.CDBase);
             }
+            }
+            catch (Exception ex)
+            {
+            }
             return new JsonResult(true);
         }
 
         public void SaveModel()
         {
+            try
+            {
+
             string sModel = System.Text.Json.JsonSerializer.Serialize(nnModel);
             //           MessageBox.Show(sModel);
             _objectsService.CDBase.dr["snnModel"] = sModel;
             _objectsService.CDBase.UpdateModel();
+            }
+            catch (Exception ex)
+            {
+            }
         }
 
         #region Preview Function
@@ -337,6 +400,8 @@ namespace IntugentWebApp.Pages.Admin_Group
 
         public IActionResult OnPostGLayer_Changed(string Index)
         {
+            var result = new List<Dictionary<string, object>>();
+            try { 
             //if (_objectsService.CDBase.dr["snnModel"] == DBNull.Value)
             //{
             //}
@@ -349,7 +414,6 @@ namespace IntugentWebApp.Pages.Admin_Group
             if (gLayerSelectedIndex >= 0) SetWeights(gLayerSelectedIndex + 1);
             nnModel.Predict(_objectsService.CNNData);
             SetView();
-            var result = new List<Dictionary<string, object>>();
             foreach (DataRow rowView in gWeights.Rows)
             {
                 var rowDict = new Dictionary<string, object>();
@@ -360,12 +424,19 @@ namespace IntugentWebApp.Pages.Admin_Group
                 result.Add(rowDict);
             }
 
+            }
+            catch (Exception ex)
+            {
+            }
             // Return the result as JSON
             return new JsonResult(result);
         }
 
         public IActionResult OnPostTrainTheModel()
         {
+            try
+            {
+
             if (_objectsService.CDBase.dr["snnModel"] == DBNull.Value)
             {
                 nnModel = _objectsService.CNNData.GetModelData();
@@ -380,7 +451,11 @@ namespace IntugentWebApp.Pages.Admin_Group
             SetView();
             SaveModel();
             SetWeights(gLayerSelectedIndex + 1);
-            //Mouse.OverrideCursor = null;
+                //Mouse.OverrideCursor = null;
+            }
+            catch (Exception ex)
+            {
+            }
             return new JsonResult(true);
         }
 
@@ -403,6 +478,9 @@ namespace IntugentWebApp.Pages.Admin_Group
 
         public IActionResult OnPostGHLayerType_Changed(string gHLayerTypeSelectedItem)
         {
+            try
+            {
+
             if (_objectsService.CDBase.dr["snnModel"] == DBNull.Value)
             {
                 nnModel = _objectsService.CNNData.GetModelData();
@@ -417,6 +495,10 @@ namespace IntugentWebApp.Pages.Admin_Group
             nnModel.Predict(_objectsService.CNNData);
 
             SetView();
+            }
+            catch (Exception ex)
+            {
+            }
             return new JsonResult(true);
         }
 

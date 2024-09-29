@@ -40,8 +40,10 @@ namespace IntugentWebApp.Pages.Admin_Group
         }
         public void OnGet()
         {
-
-            ViewData["Index"] = HttpContext.Session.GetInt32("UserId");
+            try
+            {
+                ViewData["AdminPanel"] = "true";
+                ViewData["Index"] = HttpContext.Session.GetInt32("UserId");
             if (_objectsService.CDBase.dr["sNote"] == DBNull.Value) gStudyName = string.Empty; else gStudyName = (string)_objectsService.CDBase.dr["sNote"];
             if (_objectsService.CDBase.dr["sFilePath"] == DBNull.Value) gDataFile = string.Empty; else gDataFile = (string)_objectsService.CDBase.dr["sFilePath"];
             if (_objectsService.CDBase.dr["sSQL"] == DBNull.Value) gSQL = string.Empty; else gSQL = (string)_objectsService.CDBase.dr["sSQL"];
@@ -55,6 +57,10 @@ namespace IntugentWebApp.Pages.Admin_Group
                        else
             */
             DisplayData();
+            }
+            catch (Exception ex)
+            {
+            }
         }
 
 
@@ -95,17 +101,27 @@ namespace IntugentWebApp.Pages.Admin_Group
 
         public IActionResult OnPostGUploadData()
         {
-            _objectsService.CNNData.ReadData(_objectsService.CDBase);
-            //           _objectsService.CNNData.Correlation();
-            DisplayData();
-              nnModel.nInputNeurons = _objectsService.CNNData.nInputNeurons;
-            //_objectsService.AIModel.SaveModel();
+            try
+            {
+                _objectsService.CNNData.ReadData(_objectsService.CDBase);
+                //           _objectsService.CNNData.Correlation();
+                DisplayData();
+                nnModel.nInputNeurons = _objectsService.CNNData.nInputNeurons;
+                //_objectsService.AIModel.SaveModel();
+            }
+            catch (Exception ex)
+            {
+            }
+
             return new JsonResult(true);
         }
 
 
         public void DisplayData()
         {
+            try
+            {
+
             string sMsg;
             string sForm = "0.000";
 
@@ -175,11 +191,18 @@ namespace IntugentWebApp.Pages.Admin_Group
 
             gChartLeftTitle = _objectsService.CNNData.sOutputName;
             SetView();
+            }
+            catch (Exception ex)
+            {
+            }
         }
 
 
         public IActionResult OnPostGenInfo_LF(string Name,string Value)
         {
+            try
+            {
+
             string sFld = String.Empty, sMsg, sdum; ;
             //           TextBox tbx = sender as TextBox;
             //           string sText = tbx ;
@@ -195,11 +218,18 @@ namespace IntugentWebApp.Pages.Admin_Group
                 case "gSource": if (gSource  == string.Empty) _objectsService.CDBase.dr["sDataSource"] = DBNull.Value; else _objectsService.CDBase.dr["sDataSource"] = Value; break;
             }
             _objectsService.CDBase.UpdateModel();
+            }
+            catch (Exception ex)
+            {
+            }
             return new JsonResult(true);
         }
 
         public IActionResult OnPostBrowseFile(string filePath)
         {
+            try
+            {
+
             string sFile; string sForm = "0.000";
             //OpenFileDialog openFileDialog1 = new OpenFileDialog
             //{
@@ -220,17 +250,29 @@ namespace IntugentWebApp.Pages.Admin_Group
             gDataFile  = sFile;
             _objectsService.CDBase.dr["sFilePath"] = sFile;
             _objectsService.CDBase.UpdateModel();
+            }
+            catch (Exception ex)
+            {
+            
+            }
             return new JsonResult(true);
         }
 
         public IActionResult OnPostGInputVar_Change(string Value)
         {
+            try
+            {
+
             gInputVarSelectedIndex = Int32.Parse(Value);
             if (gInputVarSelectedIndex < 0) return new JsonResult(false);
             x = _objectsService.cMatrix.GetColumn2D(_objectsService.CNNData.data, gInputVarSelectedIndex);
 
             SetView();
             _objectsService.gInputIndex = gInputVarSelectedIndex;
+            }
+            catch (Exception ex)
+            {
+            }
             return new JsonResult(_objectsService.gInputIndex) ;
             //SetgChartAxes();
 

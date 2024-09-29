@@ -205,6 +205,7 @@
 @section Scripts{
     <script>
         document.addEventListener("DOMContentLoaded", function () {
+            
             const xx = @Html.Raw(Json.Serialize(Model.xx));
             const yy = @Html.Raw(Json.Serialize(Model.yy));
             console.log(xx);
@@ -321,12 +322,36 @@
 
 
         function GUploadData() {
+            var dataSource = @Html.Raw(Json.Serialize(Model._objectsService.CDBase.dr["sDataSource"]));
+            var filePath = @Html.Raw(Json.Serialize(Model._objectsService.CDBase.dr["sFilePath"]));
+            if (dataSource === null || dataSource === "undefined" || dataSource === "") {
+                alert("You must choose a value for Data Source");
+            }
+            else if (dataSource === "SQL") {
+                alert("SQL query data source is not implemented yet");
+                return false;
+            }
+            else {
+                if (typeof filePath === 'object' && Object.keys(filePath).length === 0) {
+                    alert("File name is missing");
+                    return false;
+                } else {
+
+                    // $.getJSON('/CheckFileExists', { filePath: filePath }, function (response) {
+                    //     if (!response.exists) {
+                    //         alert("Could not find the data file " + filePath);
+                    //     } else {
+                    //     }
+                    // });
+                }
+            }
             $.ajax({
                 type: "POST",
                 url: "/Admin_Group/AIAnalysis?handler=GUploadData",
                 headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
                 success: function (response) {
-                    console.log('Server response:', response);
+                    // console.log('Server response:', response);
+                    location.reload();
                 },
                 error: function (xhr, status, error) {
                     console.error('Error:', error);

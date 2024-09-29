@@ -167,6 +167,29 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
+            var dataSource = @Html.Raw(Json.Serialize(Model._objectsService.CDBase.dr["sDataSource"]));
+            var filePath = @Html.Raw(Json.Serialize(Model._objectsService.CDBase.dr["sFilePath"]));
+            if (dataSource === null || dataSource === "undefined" || dataSource === "") {
+                alert("You must choose a value for Data Source");
+            } 
+            else if (dataSource === "SQL") {
+                alert("SQL query data source is not implemented yet");
+                return false; 
+            }
+            else {
+                if (typeof filePath === 'object' && Object.keys(filePath).length === 0) {
+                    alert("File name is missing");
+                    return false;
+                } else {
+
+                    // $.getJSON('/CheckFileExists', { filePath: filePath }, function (response) {
+                    //     if (!response.exists) {
+                    //         alert("Could not find the data file " + filePath);
+                    //     } else {
+                    //     }
+                    // });
+                }
+            }
             var currentId = @Html.Raw(Model.gModelsSelectedIndex);
 
             var checkbox = document.querySelector(`input[data-rowindex='${currentId}']`);
@@ -187,6 +210,39 @@
                 var selectedID = $(this).attr('id'); // remove "select_" prefix
                 unselectAllRows($(this).attr('id'));
                 var selectedDatasetID = $(this).data('index');
+                var rowIndex = $(this).data('rowindex');
+                var selectedRow = $(this).closest('tr');
+
+                var rowData = {
+                    id: selectedRow.find('td').eq(0).text(), // Assuming ID is in the first cell
+                    dateModel: selectedRow.find('td').eq(1).text(), // Assuming DateModel is in the second cell
+                    sNote: selectedRow.find('td').eq(2).text(),
+                    sProperty: selectedRow.find('td').eq(3).text(),
+                    sDataSource: selectedRow.find('td').eq(4).text()
+                };
+                console.log(rowData)
+                if (rowData.sDataSource === null || rowData.sDataSource === "undefined" || rowData.sDataSource === "") {
+                    alert("You must choose a value for Data Source");
+                }
+                else if (rowData.sDataSource === "SQL") {
+                    alert("SQL query data source is not implemented yet");
+
+                }
+                else {
+                      
+                    if (typeof filePath === 'object' && Object.keys(filePath).length === 0) {
+                        alert("File name is missing");
+
+                    } else {
+
+                        // $.getJSON('/CheckFileExists', { filePath: filePath }, function (response) {
+                        //     if (!response.exists) {
+                        //         alert("Could not find the data file " + filePath);
+                        //     } else {
+                        //     }
+                        // });
+                    }
+                }
                 sendIdToServer(selectedID);
             }
         });
@@ -209,6 +265,9 @@
                 data: { gModelsSelectedIndex: gModelsSelectedIndex },
                 success: function (response) {
                     console.log('Server response:', response);
+                    
+                
+                   
                 },
                 error: function (xhr, status, error) {
                     console.error('Error:', error);

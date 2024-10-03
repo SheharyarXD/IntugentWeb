@@ -167,14 +167,22 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            var dataSource = @Html.Raw(Json.Serialize(Model._objectsService.CDBase.dr["sDataSource"]));
-            var filePath = @Html.Raw(Json.Serialize(Model._objectsService.CDBase.dr["sFilePath"]));
+            var dataSource = null;
+            var filePath = null;
+
+        @if (Model._objectsService.CDBase != null && Model._objectsService.CDBase.dr != null)
+        {
+            <text>
+                dataSource = @Html.Raw(Json.Serialize(Model._objectsService.CDBase.dr["sDataSource"]));
+                filePath = @Html.Raw(Json.Serialize(Model._objectsService.CDBase.dr["sFilePath"]));
+            </text>
+        }
             if (dataSource === null || dataSource === "undefined" || dataSource === "") {
                 alert("You must choose a value for Data Source");
-            } 
+            }
             else if (dataSource === "SQL") {
                 alert("SQL query data source is not implemented yet");
-                return false; 
+                return false;
             }
             else {
                 if (typeof filePath === 'object' && Object.keys(filePath).length === 0) {
@@ -190,6 +198,7 @@
                     // });
                 }
             }
+        
             var currentId = @Html.Raw(Model.gModelsSelectedIndex);
 
             var checkbox = document.querySelector(`input[data-rowindex='${currentId}']`);
@@ -282,7 +291,7 @@
                 url: "/Admin_Group/AIHome?handler=GNewAIModel_Click",
                 headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
                 success: function (response) {
-                    location.reload();
+                   location.reload();
                    // console.log('Server response:', response);
                 },
                 error: function (xhr, status, error) {
@@ -293,4 +302,5 @@
 
         }
     </script>
+
 }

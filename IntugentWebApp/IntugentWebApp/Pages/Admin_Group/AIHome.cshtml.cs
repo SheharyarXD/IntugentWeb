@@ -22,17 +22,22 @@ namespace IntugentWebApp.Pages.Admin_Group
         }
         public void OnGet()
         {
-            try
-            {
+                try
+                {
+                    ViewData["Index"] = HttpContext.Session.GetInt32("UserId");
+                    ViewData["AdminPanel"] = "true";
 
-            ViewData["Index"] = HttpContext.Session.GetInt32("UserId");
-             ViewData["AdminPanel"] = "true";
-            PerformInitialSearch();
-            _objectsService.CNNData.ReadData(_objectsService.CDBase);
+                    PerformInitialSearch();
+                if(_objectsService.CDBase != null && _objectsService.CDBase.dr != null)
+        {
+                    _objectsService.CNNData.ReadData(_objectsService.CDBase);
+
+        }
             }
-            catch (Exception ex)
-            {
-            }
+                catch (Exception ex)
+                {
+                }
+
         }
         public bool bInitialSearchDone = false;
         //DispatcherTimer dispTimer;
@@ -104,12 +109,16 @@ namespace IntugentWebApp.Pages.Admin_Group
             try
             {
 
-            if (_objectsService.CDBase.CreateNewModel()) { gModelsSelectedIndex = _objectsService.CDBase.IndexModel; gModels = _objectsService.CDBase.dt.DefaultView; }
+            if (_objectsService.CDBase.CreateNewModel()) {
+                    gModelsSelectedIndex = _objectsService.CDBase.IndexModel; gModels = _objectsService.CDBase.dt.DefaultView;
+                    return new JsonResult(true);
+                }
+           
             }
             catch (Exception ex)
             {
             }
-            return new JsonResult(true);
+            return new JsonResult(false);
         }
 
         public IActionResult OnPostGModelsSC(int gModelsSelectedIndex)

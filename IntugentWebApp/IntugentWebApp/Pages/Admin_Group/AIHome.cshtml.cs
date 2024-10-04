@@ -25,11 +25,11 @@ namespace IntugentWebApp.Pages.Admin_Group
                 try
                 {
                     ViewData["Index"] = HttpContext.Session.GetInt32("UserId");
-                    ViewData["AdminPanel"] = "true";
 
                     PerformInitialSearch();
                 if(_objectsService.CDBase != null && _objectsService.CDBase.dr != null)
         {
+                    ViewData["AdminPanel"] = "true";
                     _objectsService.CNNData.ReadData(_objectsService.CDBase);
 
         }

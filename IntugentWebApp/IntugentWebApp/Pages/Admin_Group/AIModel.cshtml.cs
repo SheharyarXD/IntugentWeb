@@ -146,33 +146,33 @@ namespace IntugentWebApp.Pages.Admin_Group
             switch (sName)
             {
                 case "gMaxIter":
-                    if (gMaxIter  == null) { 
+                    if (Value == null) { 
                         return new JsonResult(new { message = "Maximum number of iterations must be greater than zero", _objectsService.Cbfile.sAppName });
                         gMaxIter  = nnModel.nMaxIter.ToString(); }
                     else if (int.TryParse(Value, out itmp)) nnModel.nMaxIter = itmp; else gMaxIter  = nnModel.nMaxIter.ToString(); break;
 
                 case "gConvTol":
-                    if (gConvTol  == null) {
+                    if (Value == null) {
                             return new JsonResult(new { message = "The Convergence Tolerance must be greater than zero", _objectsService.Cbfile.sAppName }); 
                         gConvTol  = nnModel.ConvTol.ToString(); }
                     else if (double.TryParse(Value, out dtmp)) nnModel.ConvTol = dtmp; else gConvTol  = nnModel.ConvTol.ToString(); break;
 
                 case "gLearnRate":
-                    if (gLearnRate  == null) {
+                    if (Value == null) {
                             return new JsonResult(new { message = "Learning rate must be greater than zero", _objectsService.Cbfile.sAppName }); 
                         gLearnRate  = nnModel.LearnRate.ToString(); }
                     else if (double.TryParse(Value, out dtmp)) nnModel.LearnRate = dtmp; else gLearnRate  = nnModel.LearnRate.ToString(); break;
 
 
                 case "gStepSizeMin":
-                    if (gStepSizeMin  == null) {
+                    if (Value == null) {
                             return new JsonResult(new { message = "Learning acceleration must be greater than zero", _objectsService.Cbfile.sAppName });
                         gStepSizeMin  = nnModel.StepSizeMin.ToString(); }
                     else if (double.TryParse(Value, out dtmp)) nnModel.StepSizeMin = dtmp; else gStepSizeMin  = nnModel.LearnRate.ToString(); break;
 
 
                 case "gnHiddenLayers":
-                    if (gnHiddenLayers  == null) {
+                    if (Value == null) {
                             return new JsonResult(new { message = "Number of Hidden Layers must be greater than zero", _objectsService.Cbfile.sAppName });
                         gnHiddenLayers  = nnModel.nHLayers.ToString(); }
                     else if (!int.TryParse(Value, out itmp)) gnHiddenLayers  = nnModel.nHLayers.ToString();
@@ -325,7 +325,8 @@ namespace IntugentWebApp.Pages.Admin_Group
 
                 if (tb  == null) {
                     return new JsonResult(new { message = "Number of neurons must be greater than zero", _objectsService.Cbfile.sAppName });
-                    tb  = nnModel.nNeuronsInLayers[irow + 1].ToString(); }
+                    tb  = nnModel.nNeuronsInLayers[irow + 1].ToString();
+                    }
                 else if (!int.TryParse(tb , out itmp)) tb  = nnModel.nNeuronsInLayers[irow + 1].ToString();
                 else
                 if (itmp != nnModel.nNeuronsInLayers[irow + 1]) {

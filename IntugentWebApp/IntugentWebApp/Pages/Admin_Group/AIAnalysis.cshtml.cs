@@ -42,6 +42,7 @@ namespace IntugentWebApp.Pages.Admin_Group
         {
             try
             {
+
                 ViewData["AdminPanel"] = "true";
                 ViewData["Index"] = HttpContext.Session.GetInt32("UserId");
             if (_objectsService.CDBase.dr["sNote"] == DBNull.Value) gStudyName = string.Empty; else gStudyName = (string)_objectsService.CDBase.dr["sNote"];

@@ -167,6 +167,17 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
+            var currentId = @Html.Raw(Model.gModelsSelectedIndex);
+
+            var checkbox = document.querySelector(`input[data-rowindex='${currentId}']`);
+
+
+            console.log(@Model.gModelsSelectedIndex, currentId, @Model._objectsService.CDBase.IndexModel)
+            if (checkbox) {
+
+                    checkbox.checked = true;
+        
+                }
             var dataSource = null;
             var filePath = null;
 
@@ -199,17 +210,6 @@
                 }
             }
         
-            var currentId = @Html.Raw(Model.gModelsSelectedIndex);
-
-            var checkbox = document.querySelector(`input[data-rowindex='${currentId}']`);
-
-
-            console.log(@Model.gModelsSelectedIndex, currentId, @Model._objectsService.CDBase.IndexModel)
-            if (checkbox) {
-
-                    checkbox.checked = true;
-        
-                }
          
         });
 
